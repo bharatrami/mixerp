@@ -1,0 +1,563 @@
+﻿html, body, table, tr, td, h1, h2, h3, h4, h5, input, select, p
+{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Segoe UI', 'Tahoma', 'Arial';
+}
+
+p
+{
+    padding: 3px 0px 3px 0px;
+}
+
+html, body, input, select
+{
+    font-size: 12px;
+}
+
+body
+{
+
+  /* fallback */
+  background-color: #6532B8;
+  background-image: url(images/linear_bg_1.png);
+  background-repeat: repeat-y;
+
+  /* Safari 4-5, Chrome 1-9 */
+  background: -webkit-gradient(linear, left top, right top, from(#7B4FC2), to(#6532B8));
+
+  /* Safari 5.1, Chrome 10+ */
+  background: -webkit-linear-gradient(left, #6532B8, #7B4FC2);
+
+  /* Firefox 3.6+ */
+  background: -moz-linear-gradient(left, #6532B8, #7B4FC2);
+
+  /* IE 10 */
+  background: -ms-linear-gradient(left, #6532B8, #7B4FC2);
+
+  /* Opera 11.10+ */
+  background: -o-linear-gradient(left, #6532B8, #7B4FC2);
+}
+
+
+
+input, select
+{
+    font-weight: bold;
+    padding: 2px;
+    color: #333399;
+}
+
+input[readonly]
+{
+    background-color: #F0EBF5;
+}
+
+.error-message
+{
+    color: Red;
+}
+
+#page
+{
+    margin: auto;
+}
+
+#content
+{
+    background-color: White;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    padding-right: 16px;
+}
+
+.content
+{
+    padding: 8px;
+}
+
+#menu
+{
+    background-color: #8765C5;
+    width: 100%;
+    padding: 12px 8px 12px 8px;
+    font-weight: bold;
+}
+
+
+#footer
+{
+    color: White;
+    font-weight: bold;
+    text-align: center;
+    padding-top:12px;
+}
+
+    #footer a
+    {
+        color:white;
+    }
+
+        #footer a:hover, #footer:hover
+{
+    color: #FFFF00;
+}
+
+#menu a, #menu a:visited, a.menu, a.menu:visited
+{
+    background-color: #9374CB;
+    color: White;
+    text-decoration: none;
+    padding: 4px 8px 4px 8px;
+    border: 1px solid #8A67C5;
+    margin-right: 4px;
+}
+
+    #menu a:hover, a.menu:hover
+    {
+        background-color: #0D9EEC;
+        border: 1px solid #0C89CD;
+        color: White;
+    }
+
+
+.info, .error
+{
+    padding: 6px;
+    margin: 4px 0px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.info
+{
+    border: 1px solid #CFBCDE;
+    background-color: #DACCE6;
+}
+
+    .info:hover
+    {
+        border-color: #C1AAD5;
+        background-color: #CFBCDE;
+    }
+
+.error
+{
+    border: 1px solid #F9E813;
+    background-color: #FDF8B5;
+    color: #CC3300;
+}
+
+    .error:hover
+    {
+        border: 1px solid #E6D506;
+        background-color: #FCF385;
+    }
+
+h1, h2, h3, h4, h5
+{
+    font-weight: lighter;
+    color: #000099;
+    cursor: pointer;
+}
+
+h1
+{
+    font-size: 28px;
+}
+
+h2
+{
+    font-size: 24px;
+}
+
+h3
+{
+    font-size: 20px;
+}
+
+h4
+{
+    font-size: 18px;
+}
+
+h5
+{
+    font-size: 16px;
+}
+
+    h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, a:hover, .menu-panel a:hover
+    {
+        color: #CC3300;
+    }
+
+.hr
+{
+    border: 1px dotted #C0C0C0;
+    border-top: 0px;
+}
+
+
+.menu-panel
+{
+    font-size: 11px;
+    width: 240px;
+    margin: 12px 12px 0px 0px;
+    float: left;
+    cursor: pointer;
+    height: 400px;
+    overflow: auto;
+    border: 1px solid #E9E3EE;
+}
+
+    .menu-panel:hover
+{
+    background-color: #FCFBFD;
+}
+
+.menu-header
+{
+    display: block;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #81659E;
+    background-color: #E9E3EE;
+}
+
+.menu-panel ul
+{
+    maring: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
+
+.menu-panel a, .menu-panel a:link
+{
+    border-style: dotted;
+    border-width: 1px;
+    border-color: transparent transparent #D7C5EB transparent;
+    display: block;
+    padding: 4px;
+    padding-left: 24px;
+    color: #666666;
+}
+
+    .menu-panel a:hover
+{
+    color: #FFFFFF;
+    background-color: #81659E;
+}
+
+
+#GridPanel
+{
+    border: 1px solid #A89CEB;
+    margin: 0px;
+}
+
+.grid
+{
+    width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+    cursor: pointer;
+}
+
+    .grid tbody tr:hover, .grid tbody tr.alt:hover
+    {
+        background-image: none;
+        background-color: #E0D7F4;
+    }
+
+    .grid tbody tr th
+    {
+        border-style: none none none solid;
+        border-width: 1px;
+        border-color: #E0D7F4;
+        height: 18px;
+        padding: 4px;
+        color: #654196;
+        font-size: 14px;
+        background-color: #E0D7F4;
+        padding-left: 12px !important;
+    }
+
+table.grid th[scope=col]
+{
+    text-align: left;
+    padding: 4px;
+}
+
+
+.grid a
+{
+    text-decoration: none;
+    color: White;
+}
+
+.grid td
+{
+    font-size: 8pt;
+    height: 24px;
+    vertical-align: middle !important;
+    padding: 2px;
+    padding-left: 8px !important;
+    border: 1px solid #E0D7F4;
+    color: #717171;
+}
+
+
+.grid tbody tr
+{
+    height: 18px;
+}
+
+
+    .grid tbody tr.alt
+    {
+        background: #F5F4FD;
+    }
+
+
+.pager
+{
+    margin: 8px 0px 8px 4px;
+}
+
+    .pager a, .pager span
+    {
+        padding: 4px 8px 4px 8px;
+        border: 1px solid #D0D5E8;
+        background-color: #F1F1F8;
+    }
+
+        .pager a:hover, .pager span
+        {
+            border-color: #A5ABD3;
+            background-color: #D6D3E4;
+            color: #336699 !important;
+        }
+
+
+
+::-webkit-scrollbar
+{
+    width: 8px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-button
+{
+    width: 8px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track
+{
+    background: #eee;
+    border: thin solid lightgray;
+    box-shadow: 0px 0px 3px #dfdfdf inset;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background: #999;
+    border: thin solid gray;
+    border-radius: 10px;
+}
+
+    ::-webkit-scrollbar-thumb:hover
+    {
+        background: #7d7d7d;
+    }
+
+
+
+.form
+{
+    border: 1px solid #E0DBF2;
+    background-color: #F3F1FA;
+    padding: 12px;
+    width: 670px;
+}
+
+.form-error
+{
+    color: #CC3300;
+    padding: 4px 0px 4px 0px;
+    font-weight: bold;
+}
+
+.form input, .form select
+{
+    outline: none;
+    color: #5A5A87;
+    padding: 2px;
+}
+
+.form table tr td
+{
+    padding: 2px!important;
+}
+
+.form input[type="text"], .form input[type="number"], .form input[type="date"], .form select
+{
+    border: 1px solid #E1DBEE;
+    width: 440px;
+}
+
+.form select
+{
+    width: 446px;
+}
+
+
+.form input[type="submit"], .form input[type="reset"], .form input[type="button"]
+{
+    width: 100px;
+}
+
+.form input[type="date"]
+{
+    width: 140px;
+}
+
+.form input[type="radio"], .form input[type="checkbox"]
+{
+    margin: 4px;
+}
+
+.label-cell
+{
+    width: 210px!important;
+}
+
+label
+{
+    cursor: pointer;
+    width: 328px!important;
+}
+
+#menu-table
+{
+    border-collapse: collapse;
+}
+
+    #menu-table td
+    {
+        padding: 0px;
+        margin: 0px;
+        vertical-align: top;
+    }
+
+.menu2
+{
+    border-width: 1px;
+    border-color: #A7A7C5;
+    background-color: #F3F3F8;
+    width: 252px;
+    border-right-style: solid;
+}
+
+.overflowauto
+{
+    overflow: auto;
+}
+
+.menu-title
+{
+    color: #666699;
+    font-size: 16px;
+    padding: 8px 0px 2px 0px;
+    padding: 12px;
+    font-weight: bold;
+}
+
+a.sub-menu-anchor, a.sub-menu-anchor:visited
+{
+    display: block;
+    border: 1px solid transparent;
+    color: #666666;
+    padding: 3px;
+    padding-left: 18px;
+}
+
+    a.sub-menu-anchor:hover
+    {
+        background-color: #666699;
+        color: White;
+    }
+
+.success
+{
+    color: #009933;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.failure
+{
+    color: #CC3300;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.vpad2
+{
+    padding: 2px 0px 2px 0px;
+}
+
+.vpad4
+{
+    padding: 4px 0px 4px 0px;
+}
+
+.vpad6
+{
+    padding: 6px 0px 6px 0px;
+}
+
+.vpad8
+{
+    padding: 8px 0px 8px 0px;
+}
+
+.vpad10
+{
+    padding: 10px 0px 10px 0px;
+}
+
+.vpad12
+{
+    padding: 12px 0px 12px 0px;
+}
+
+.vpad14
+{
+    padding: 14px 0px 14px 0px;
+}
+
+
+.vpad16
+{
+    padding: 16px 0px 16px 0px;
+}
+
+.activeline
+{
+    background-color: #E1E1EC;
+}
+
+#buttons
+{
+    display: block;
+    padding: 6px;
+    position: absolute;
+    z-index: 20;
+    background-color: #D7D5EC;
+}

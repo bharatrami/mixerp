@@ -1,0 +1,6 @@
+﻿<asp:GridView runat="server"
+    GridLines="None"
+    CssClass="grid"
+    PagerStyle-CssClass="gridpager"
+    AlternatingRowStyle-CssClass="alt">
+</asp:GridView>

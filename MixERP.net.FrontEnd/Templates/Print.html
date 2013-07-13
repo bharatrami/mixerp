@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>MixERP® 2013</title>
+    <link href="/Themes/blue/main.css" rel="stylesheet" media="all" type="text/css" />
+    <style type="text/css" media="all">
+        html, body
+        {
+            background-color: White;
+            padding: 4px;
+        }
+
+        table
+        {
+            border-collapse: collapse;
+        }
+
+        td
+        {
+            padding: 4px;
+        }
+
+        @media print
+        {
+            .hide
+            {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="http://planetearthsolution.com/templates/ja_ores/images/light-blue/logo.png" />
+    </div>
+    <p>
+        Subidhanagar, Tinkune, Kathmandu Bagmati, Nepal
+        <br />
+        Tel : 4465030, 4465142, 4465143, 4485284. Fax : 4465143, 4485284
+        <br />
+        Email : info@planetearthsolution.com. Url : http://planetearthsolution.com
+        <br />
+        <br />
+    </p>
+    <h1>
+        {ReportHeading}
+    </h1>
+    <hr class="hr" />
+    Printed On: {PrintDate}<br />
+    User: {UserName}<br />
+    Office Code: {OfficeCode}
+    <br />
+    <br />
+    {Table}
+    <div class="hide" style="padding-top: 18px;">
+        <a href="javascript:top.close();" class="menu">
+            Close This Report</a>
+    </div>
+</body>
+</html>

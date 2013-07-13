@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MixERPMaster.Master.cs"
+    Inherits="MixERP.net.FrontEnd.MixERPMaster" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <link href="~/themes/blue/main.css" rel="stylesheet" type="text/css" runat="server" />
+    <script src="/Scripts/jquery.min.js" type="text/javascript"></script>
+    <script src="/Scripts/mixerp.js" type="text/javascript"></script>
+    <title>MixERP® Beta</title>
+    <asp:ContentPlaceHolder ID="ScriptContentPlaceHolder" runat="server">
+    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="StyleSheetContentPlaceHolder" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="page">
+        <a href="/Account/Index.aspx">
+            <img src="/themes/blue/mixerp-logo.png" height="50" width="250" />
+        </a>
+        <div id="menu">
+            <asp:Literal ID="MenuLiteral" runat="server" />
+        </div>
+        <div id="content">
+            <asp:ContentPlaceHolder ID="BodyContentPlaceHolder" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div id="footer">
+            Powered by <a href="http://mixerp.net" target="_blank">MixERP® Beta</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("#page").width($(document).width() - 100);
+        $("#content").width($("#page").width());
+        $("#menu").width($("#page").width());
+        $("#footer").width($("#page").width());
+
+        jQuery(document).bind("keyup keydown", function (e) {
+            if (e.ctrlKey && e.keyCode == 80) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    </script>
+    <asp:ContentPlaceHolder ID="BottomScriptContentPlaceHolder" runat="server">
+    </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>

@@ -1,0 +1,39 @@
+﻿.sign-in-logo
+{
+    width:300px;
+    margin:auto;
+    margin-top:160px;
+}
+
+.sign-in
+{
+    width:300px;
+    margin:auto;
+    height:240px;
+    background-color:#F0F0F0;
+    padding:12px;
+}
+
+.sign-in:hover
+{
+    background-color:#F0F0E0;    
+}
+
+a img 
+{
+	border:none;
+}
+
+a
+{
+    text-decoration:none;
+}
+
+h1, h2, h3, h4, h5, h6, a, span, table, tr, td
+{
+    -webkit-transition: all 300ms ease;
+    -moz-transition: all 300ms ease;
+    -o-transition: all 300ms ease;
+    -ms-transition: all 300ms ease;
+    transition: all 300ms ease;
+}
