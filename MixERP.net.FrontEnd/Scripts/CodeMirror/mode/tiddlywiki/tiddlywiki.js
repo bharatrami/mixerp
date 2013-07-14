@@ -1,19 +1,3 @@
-/***
-    |''Name''|tiddlywiki.js|
-    |''Description''|Enables TiddlyWikiy syntax highlighting using CodeMirror|
-    |''Author''|PMario|
-    |''Version''|0.1.7|
-    |''Status''|''stable''|
-    |''Source''|[[GitHub|https://github.com/pmario/CodeMirror2/blob/tw-syntax/mode/tiddlywiki]]|
-    |''Documentation''|http://codemirror.tiddlyspace.com/|
-    |''License''|[[MIT License|http://www.opensource.org/licenses/mit-license.php]]|
-    |''CoreVersion''|2.5.0|
-    |''Requires''|codemirror.js|
-    |''Keywords''|syntax highlighting color code mirror codemirror|
-    ! Info
-    CoreVersion parameter is needed for TiddlyWiki only!
-***/
-//{{{
 CodeMirror.defineMode("tiddlywiki", function () {
   // Tokenizer
   var textwords = {};

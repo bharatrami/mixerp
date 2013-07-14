@@ -725,8 +725,8 @@
     <Content Include="CRM\Setup\LeadStatuses.aspx" />
     <Content Include="CRM\Setup\OpportunityStages.aspx" />
     <Content Include="db\FormControlCodeBackup.txt" />
-    <Content Include="db\quick.postgresql.bak.sql" />
-    <Content Include="db\quick.postgresql.sql" />
+    <Content Include="db\mixerp.postgresql.bak.sql" />
+    <Content Include="db\mixerp.postgresql.sql" />
     <Content Include="Dependencies\AspNetPager.dll" />
     <Content Include="Dependencies\Mono.Security.dll" />
     <Content Include="Dependencies\Npgsql.dll" />
@@ -1067,7 +1067,7 @@
     <Content Include="Scripts\CodeMirror\theme\xq-dark.css" />
     <Content Include="Scripts\CodeMirror\theme\xq-light.css" />
     <Content Include="Scripts\jquery.min.js" />
-    <Content Include="Scripts\quick.js" />
+    <Content Include="Scripts\mixerp.js" />
     <Content Include="Setup\Admin\Backup.aspx" />
     <Content Include="Setup\Admin\ChangePassword.aspx" />
     <Content Include="Setup\Admin\DatabaseStatistics.aspx" />
@@ -1088,6 +1088,7 @@
     <Content Include="Setup\Roles.aspx" />
     <Content Include="Setup\Users.aspx" />
     <Content Include="SignIn.aspx" />
+    <Content Include="spinner.gif" />
     <Content Include="Templates\Print.html" />
     <Content Include="Themes\blue\main.css" />
     <Content Include="Themes\blue\padding.css" />
@@ -1119,6 +1120,7 @@
     <Content Include="Scripts\CodeMirror\package.json" />
     <Content Include="Scripts\CodeMirror\README.md" />
     <Content Include="Web.config" />
+    <Content Include="MixERP.net.FrontEnd.licenseheader" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

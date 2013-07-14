@@ -37,3 +37,26 @@ h1, h2, h3, h4, h5, h6, a, span, table, tr, td
     -ms-transition: all 300ms ease;
     transition: all 300ms ease;
 }
+
+.ajax-container
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #A7D0D9;
+    opacity: .5;
+}
+
+.ajax-loader
+{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -32px; /* -1 * image width / 2 */
+    margin-top: -32px; /* -1 * image height / 2 */
+    display: block;
+    opacity: 0.9;
+}

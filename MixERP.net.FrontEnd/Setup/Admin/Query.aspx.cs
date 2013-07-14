@@ -17,7 +17,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.net.FrontEnd.Setup.Admin
 {
-    public partial class Query : System.Web.UI.Page
+    public partial class Query : MixERP.net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

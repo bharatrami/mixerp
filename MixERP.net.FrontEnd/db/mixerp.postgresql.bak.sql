@@ -705,14 +705,14 @@ LANGUAGE plpgsql;
 
 
 INSERT INTO core.menus(menu_text, url, menu_code, level)
+SELECT 'Account', '/Account/Index.aspx', 'AC', 0 UNION ALL
 SELECT 'Sales', '/Sales/Index.aspx', 'SA', 0 UNION ALL
 SELECT 'Purchase', '/Purchase/Index.aspx', 'PU', 0 UNION ALL
 SELECT 'Products & Items', '/Items/Index.aspx', 'ITM', 0 UNION ALL
 SELECT 'Finance', '/Finance/Index.aspx', 'FI', 0 UNION ALL
 SELECT 'CRM', '/CRM/Index.aspx', 'CRM', 0 UNION ALL
 SELECT 'Setup Paramters', '/Setup/Index.aspx', 'SE', 0 UNION ALL
-SELECT 'POS', '/POS/Index.aspx', 'POS', 0 UNION ALL
-SELECT 'Account', '/Account/Index.aspx', 'AC', 0;
+SELECT 'POS', '/POS/Index.aspx', 'POS', 0;
 
 
 INSERT INTO core.menus(menu_text, url, menu_code, level, parent_menu_id)
@@ -880,6 +880,7 @@ SELECT information_schema.columns.table_schema,
 	   is_nullable,
        column_default, 
        data_type, 
+	   domain_name,
        character_maximum_length, 
        character_octet_length, 
        numeric_precision, 

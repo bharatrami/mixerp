@@ -2,5 +2,6 @@
     GridLines="None"
     CssClass="grid"
     PagerStyle-CssClass="gridpager"
+    RowStyle-CssClass="row"
     AlternatingRowStyle-CssClass="alt">
 </asp:GridView>

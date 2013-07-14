@@ -8,7 +8,6 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-
 <%@ Page Title="" Language="C#" MasterPageFile="~/MenuMaster.Master" AutoEventWireup="true"
     CodeBehind="Index.aspx.cs" Inherits="MixERP.net.FrontEnd.Account.Index" %>
 

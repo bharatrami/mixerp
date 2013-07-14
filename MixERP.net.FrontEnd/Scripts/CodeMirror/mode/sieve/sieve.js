@@ -1,8 +1,3 @@
-/*
- * See LICENSE in this directory for the license under which this code
- * is released.
- */
-
 CodeMirror.defineMode("sieve", function(config) {
   function words(str) {
     var obj = {}, words = str.split(" ");

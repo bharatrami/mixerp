@@ -17,28 +17,20 @@ html, body, input, select
 
 body
 {
-
-  /* fallback */
-  background-color: #6532B8;
-  background-image: url(images/linear_bg_1.png);
-  background-repeat: repeat-y;
-
-  /* Safari 4-5, Chrome 1-9 */
-  background: -webkit-gradient(linear, left top, right top, from(#7B4FC2), to(#6532B8));
-
-  /* Safari 5.1, Chrome 10+ */
-  background: -webkit-linear-gradient(left, #6532B8, #7B4FC2);
-
-  /* Firefox 3.6+ */
-  background: -moz-linear-gradient(left, #6532B8, #7B4FC2);
-
-  /* IE 10 */
-  background: -ms-linear-gradient(left, #6532B8, #7B4FC2);
-
-  /* Opera 11.10+ */
-  background: -o-linear-gradient(left, #6532B8, #7B4FC2);
+    /* fallback */
+    background-color: #6532B8;
+    background-repeat: repeat-y;
+    /* Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, left top, right top, from(#7B4FC2), to(#6532B8));
+    /* Safari 5.1, Chrome 10+ */
+    background: -webkit-linear-gradient(left, #6532B8, #7B4FC2);
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(left, #6532B8, #7B4FC2);
+    /* IE 10 */
+    background: -ms-linear-gradient(left, #6532B8, #7B4FC2);
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(left, #6532B8, #7B4FC2);
 }
-
 
 
 input, select
