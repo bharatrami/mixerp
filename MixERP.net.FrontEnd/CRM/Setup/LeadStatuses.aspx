@@ -14,6 +14,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="LeadStatusForm" runat="server" 
+        DenyAdd="false" DenyDelete="false" DenyEdit="false" 
+        KeyColumn="lead_status_id"
+        PageSize="10" Width="1000" 
+        TableSchema="crm" Table="lead_statuses" 
+        ViewSchema="crm" View="lead_statuses" 
+        Text="Lead Status Maintenace"
+        SelectedValues=""
+        DisplayFields=""/>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

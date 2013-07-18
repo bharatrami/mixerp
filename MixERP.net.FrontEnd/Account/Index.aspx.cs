@@ -28,9 +28,6 @@ namespace MixERP.net.FrontEnd.Account
 
         protected void SignOutLinkButton_Click(object sender, EventArgs e)
         {
-            Session.Remove("UserName");
-            FormsAuthentication.SignOut();
-            FormsAuthentication.RedirectToLoginPage();
         }
     }
 }

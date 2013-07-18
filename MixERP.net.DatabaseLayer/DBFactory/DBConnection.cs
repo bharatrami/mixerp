@@ -24,6 +24,7 @@ namespace MixERP.net.DatabaseLayer.DBFactory
             connectionStringBuilder.Database = Pes.Utility.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Database"]);
             connectionStringBuilder.UserName = Pes.Utility.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["UserId"]);
             connectionStringBuilder.Password = Pes.Utility.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Password"]);
+            connectionStringBuilder.Timeout = 600;
 
             return connectionStringBuilder.ConnectionString;
         }

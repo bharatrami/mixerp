@@ -8,6 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
+
 <%@ Page Title="" Language="C#" MasterPageFile="~/MenuMaster.Master" AutoEventWireup="true"
     CodeBehind="Index.aspx.cs" Inherits="MixERP.net.FrontEnd.Account.Index" %>
 
@@ -16,13 +17,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-        <h1>
-            Account & Security
-        </h1>
-        <hr class="hr" />
-        <asp:Literal ID="MenuLiteral" runat="server" />
-        <br />
-        <asp:LinkButton ID="SignOutLinkButton" runat="server" Text="Sign Out" OnClick="SignOutLinkButton_Click" />
+    <h1>
+        Account & Security
+    </h1>
+    <hr class="hr" />
+    <asp:Literal ID="MenuLiteral" runat="server" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder"
     runat="server">

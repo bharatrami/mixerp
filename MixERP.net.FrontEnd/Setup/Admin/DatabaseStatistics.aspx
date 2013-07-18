@@ -14,8 +14,20 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <h1>Maintenance</h1>
+    <hr class="hr" />
+    <asp:Literal ID="MessageLiteral" runat="server" />
+
+    <asp:Button ID="VacuumButton" runat="server" Text="Vacuum Database" OnClick="VacuumButton_Click" />
+    <asp:Button ID="FullVacuumButton" runat="server" Text="Vacuum Database (Full)" OnClick="FullVacuumButton_Click" />
+    <asp:Button ID="AnalyzeButton" runat="server" Text="Analyze Database" OnClick="AnalyzeButton_Click" />
+
+    <br />
+    <br />
+
     <pes:Form ID="DBStatisticsForm" runat="server" DenyAdd="true" DenyDelete="true" DenyEdit="true" KeyColumn="relname"
         PageSize="500" TableSchema="public" Table="db_stat" ViewSchema="public" View="db_stat" Text="Database Statistics" Width="1800" />
+
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

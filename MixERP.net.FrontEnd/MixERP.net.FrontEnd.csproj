@@ -13,12 +13,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MixERP.net.FrontEnd</RootNamespace>
     <AssemblyName>MixERP.net.FrontEnd</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,27 +39,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\AjaxControlToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="AspNetPager, Version=7.4.3.0, Culture=neutral, PublicKeyToken=fb0a0fe055d40fd4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\AspNetPager.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\SanitizerProviders\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="SanitizerProviders">
+      <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\SanitizerProviders\SanitizerProviders.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\ChangePassword.aspx.cs">
@@ -74,6 +83,20 @@
     </Compile>
     <Compile Include="Account\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Messaging\Inbox.aspx.cs">
+      <DependentUpon>Inbox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Messaging\Inbox.aspx.designer.cs">
+      <DependentUpon>Inbox.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Messaging\SentItems.aspx.cs">
+      <DependentUpon>SentItems.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Messaging\SentItems.aspx.designer.cs">
+      <DependentUpon>SentItems.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\SignOut.aspx.cs">
       <DependentUpon>SignOut.aspx</DependentUpon>
@@ -309,6 +332,12 @@
     <Compile Include="Items\Setup\Brands.aspx.designer.cs">
       <DependentUpon>Brands.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Items\Setup\CostPrices.aspx.cs">
+      <DependentUpon>CostPrices.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Items\Setup\CostPrices.aspx.designer.cs">
+      <DependentUpon>CostPrices.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Items\Setup\CUOM.aspx.cs">
       <DependentUpon>CUOM.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -329,6 +358,13 @@
     </Compile>
     <Compile Include="Items\Setup\Items.aspx.designer.cs">
       <DependentUpon>Items.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Items\Setup\SellingPrices.aspx.cs">
+      <DependentUpon>SellingPrices.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Items\Setup\SellingPrices.aspx.designer.cs">
+      <DependentUpon>SellingPrices.aspx</DependentUpon>
     </Compile>
     <Compile Include="Items\Setup\Shipper.aspx.cs">
       <DependentUpon>Shipper.aspx</DependentUpon>
@@ -702,6 +738,13 @@
     <Compile Include="SignIn.aspx.designer.cs">
       <DependentUpon>SignIn.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DateTextBox.ascx.cs">
+      <DependentUpon>DateTextBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\DateTextBox.ascx.designer.cs">
+      <DependentUpon>DateTextBox.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Forms\FormControl.ascx.cs">
       <DependentUpon>FormControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -709,10 +752,19 @@
     <Compile Include="UserControls\Forms\FormControl.ascx.designer.cs">
       <DependentUpon>FormControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Products\ProductControl.ascx.cs">
+      <DependentUpon>ProductControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Products\ProductControl.ascx.designer.cs">
+      <DependentUpon>ProductControl.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\ChangePassword.aspx" />
     <Content Include="Account\Index.aspx" />
+    <Content Include="Account\Messaging\Inbox.aspx" />
+    <Content Include="Account\Messaging\SentItems.aspx" />
     <Content Include="Account\SignOut.aspx" />
     <Content Include="App_Themes\MixERP\Default.css" />
     <Content Include="CRM\ConvertLeadToOpportunity.aspx" />
@@ -724,7 +776,7 @@
     <Content Include="CRM\Setup\LeadSources.aspx" />
     <Content Include="CRM\Setup\LeadStatuses.aspx" />
     <Content Include="CRM\Setup\OpportunityStages.aspx" />
-    <Content Include="db\FormControlCodeBackup.txt" />
+    <Content Include="db\customer-sample.sql" />
     <Content Include="db\mixerp.postgresql.bak.sql" />
     <Content Include="db\mixerp.postgresql.sql" />
     <Content Include="Dependencies\AspNetPager.dll" />
@@ -750,12 +802,15 @@
     <Content Include="Finance\UpdateExchangeRates.aspx" />
     <Content Include="Finance\VoucherVerification.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="index.html" />
     <Content Include="Items\Adjustment.aspx" />
     <Content Include="Items\Index.aspx" />
     <Content Include="Items\Setup\Brands.aspx" />
+    <Content Include="Items\Setup\CostPrices.aspx" />
     <Content Include="Items\Setup\CUOM.aspx" />
     <Content Include="Items\Setup\ItemGroups.aspx" />
     <Content Include="Items\Setup\Items.aspx" />
+    <Content Include="Items\Setup\SellingPrices.aspx" />
     <Content Include="Items\Setup\Shipper.aspx" />
     <Content Include="Items\Setup\UOM.aspx" />
     <Content Include="Items\Transfer.aspx" />
@@ -1093,6 +1148,7 @@
     <Content Include="Themes\blue\main.css" />
     <Content Include="Themes\blue\padding.css" />
     <Content Include="Themes\blue\mixerp-logo.png" />
+    <Content Include="UserControls\DateTextBox.ascx" />
     <Content Include="UserControls\Forms\FormControl.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -1119,8 +1175,10 @@
     <Content Include="Scripts\CodeMirror\mode\xquery\LICENSE" />
     <Content Include="Scripts\CodeMirror\package.json" />
     <Content Include="Scripts\CodeMirror\README.md" />
+    <Content Include="UserControls\Products\ProductControl.ascx" />
     <Content Include="Web.config" />
     <Content Include="MixERP.net.FrontEnd.licenseheader" />
+    <None Include="Properties\PublishProfiles\MixERP.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1130,6 +1188,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_GlobalResources\" />
+    <Folder Include="Media\Temp\" />
     <Folder Include="Resources\DatabaseBackups\" />
     <Folder Include="Resources\Logo\" />
     <Folder Include="Setup\General\" />
@@ -1159,15 +1218,14 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>34327</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50906/</IISUrl>
+          <IISUrl>http://localhost:50905/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://pes/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

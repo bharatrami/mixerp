@@ -8,12 +8,24 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
+
 <%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="CostCenters.aspx.cs" Inherits="MixERP.net.FrontEnd.Finance.Setup.CostCenters" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="CostCenterForm" runat="server" 
+        DenyAdd="false" DenyDelete="false" DenyEdit="false" 
+        KeyColumn="cost_center_id"
+        PageSize="10" Width="1100" 
+        TableSchema="office" Table="cost_centers" 
+        ViewSchema="office" View="cost_center_view" 
+        Text="Cost Center Maintenace"
+        DisplayFields="office.cost_centers.cost_center_id-->cost_center_code + ' (' + cost_center_name + ')'"
+                
+         />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

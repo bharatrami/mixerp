@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using Npgsql;
 using System.Data;
+using System.IO;
 
 namespace MixERP.net.DatabaseLayer.Helper
 {
@@ -56,7 +57,7 @@ namespace MixERP.net.DatabaseLayer.Helper
             }
         }
 
-        public static bool InsertRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data)
+        public static bool InsertRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data, string imageColumn)
         {
             string columns = string.Empty;
             string columnParamters = string.Empty;
@@ -90,15 +91,29 @@ namespace MixERP.net.DatabaseLayer.Helper
                     }
                     else
                     {
-                        command.Parameters.AddWithValue("@" + pair.Key, pair.Value);
+                        if (pair.Key.Equals(imageColumn))
+                        {
+                            using (FileStream stream = new FileStream(pair.Value, FileMode.Open, FileAccess.Read))
+                            {
+                                using (BinaryReader reader = new BinaryReader(new BufferedStream(stream)))
+                                {
+                                    byte[] byteArray = reader.ReadBytes(Convert.ToInt32(stream.Length));
+                                    command.Parameters.AddWithValue("@" + pair.Key, byteArray);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue("@" + pair.Key, pair.Value);
+                        }
                     }
                 }
 
                 return MixERP.net.DatabaseLayer.DBFactory.DBOperations.ExecuteNonQuery(command);
-            }            
+            }
         }
-        
-        public static bool UpdateRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data, string keyColumn, string keyColumnValue)
+
+        public static bool UpdateRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data, string keyColumn, string keyColumnValue, string imageColumn)
         {
             string columns = string.Empty;
 
@@ -129,10 +144,24 @@ namespace MixERP.net.DatabaseLayer.Helper
                     }
                     else
                     {
-                        command.Parameters.AddWithValue("@" + pair.Key, pair.Value);
+                        if (pair.Key.Equals(imageColumn))
+                        {
+                            using (FileStream stream = new FileStream(pair.Value, FileMode.Open, FileAccess.Read))
+                            {
+                                using (BinaryReader reader = new BinaryReader(new BufferedStream(stream)))
+                                {
+                                    byte[] byteArray = reader.ReadBytes(Convert.ToInt32(stream.Length));
+                                    command.Parameters.AddWithValue("@" + pair.Key, byteArray);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue("@" + pair.Key, pair.Value);
+                        }
                     }
                 }
-                
+
                 command.Parameters.AddWithValue("@" + keyColumn, keyColumnValue);
 
                 return MixERP.net.DatabaseLayer.DBFactory.DBOperations.ExecuteNonQuery(command);
@@ -146,7 +175,7 @@ namespace MixERP.net.DatabaseLayer.Helper
             {
                 command.Parameters.AddWithValue("@" + keyColumn, keyColumnValue);
 
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.ExecuteNonQuery(command);            
+                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.ExecuteNonQuery(command);
             }
         }
     }

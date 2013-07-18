@@ -14,6 +14,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="ShipperForm" runat="server" Text="Shipper Maintenance" TableSchema="core" Table="shippers" KeyColumn="shipper_id"
+        ViewSchema="core" View="shippers" Width="5000" PageSize="10"
+        Exclude="shipper_code, shipper_name"
+        SelectedValues="core.accounts.account_id-->'20100 (Accounts Payable)'"
+        DisplayFields="core.accounts.account_id-->account_code + ' (' + account_name + ')'" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

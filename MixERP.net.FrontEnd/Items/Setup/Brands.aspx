@@ -14,6 +14,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="BrandForm" runat="server" Text="Brand Maintenance" TableSchema="core" Table="brands" KeyColumn="brand_id"
+        ViewSchema="core" View="brands" Width="1000" PageSize="10"
+        SelectedValues=""
+        DisplayFields="" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

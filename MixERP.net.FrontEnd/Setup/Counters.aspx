@@ -14,6 +14,16 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="CounterForm" runat="server" 
+        DenyAdd="false" DenyDelete="false" DenyEdit="false" 
+        KeyColumn="counter_id"
+        PageSize="10" Width="1000"
+        TableSchema="office" Table="counters" 
+        ViewSchema="office" View="counters" 
+        Text="Counter Maintenance"
+        SelectedValues=""
+        DisplayFields="office.cash_repositories.cash_repository_id-->cash_repository_code + ' (' + cash_repository_name + ')', office.stores.store_id-->store_code + ' (' + store_name + ')'"
+          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

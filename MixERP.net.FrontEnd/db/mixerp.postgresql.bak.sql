@@ -27,20 +27,6 @@ CHECK
 	)
 );
 
-DROP DOMAIN IF EXISTS customer_type;
-CREATE DOMAIN customer_type
-AS char(1)
-CHECK
-(
-	VALUE IN
-	(
-		'A', --Agent
-		'C', --Customer
-		'D'  --Dealer
-	)
-);
-
-
 DROP DOMAIN IF EXISTS transaction_type;
 CREATE DOMAIN transaction_type
 AS char(2)
@@ -115,7 +101,7 @@ from
 
 CREATE TABLE core.currencies
 (
-	currency_code varchar(12) NOT NULL PRIMARY KEY,
+	currency_code national character varying(12) NOT NULL PRIMARY KEY,
 	currency_symbol national character varying(12) NOT NULL,
 	currency_name national character varying(48) NOT NULL UNIQUE,
 	hundredth_name national character varying(48) NOT NULL	
@@ -162,24 +148,24 @@ LANGUAGE plpgsql;
 CREATE TABLE office.offices
 (
 	office_id SERIAL  NOT NULL PRIMARY KEY,
-	office_code varchar(12) NOT NULL,
-	office_name varchar(150) NOT NULL,
-	nick_name varchar(50) NULL,
+	office_code national character varying(12) NOT NULL,
+	office_name national character varying(150) NOT NULL,
+	nick_name national character varying(50) NULL,
 	registration_date date NOT NULL,
-	currency_code varchar(12) NOT NULL 
+	currency_code national character varying(12) NOT NULL 
 					CONSTRAINT offices_currencies_fk REFERENCES core.currencies(currency_code)
 					CONSTRAINT offices_currency_code_df DEFAULT('NPR'),
-	street varchar(50) NULL,
-	city varchar(50) NULL,
-	state varchar(50) NULL,
-	country varchar(50) NULL,
-	zip_code varchar(24) NULL,
-	phone varchar(24) NULL,
-	fax varchar(24) NULL,
-	email varchar(128) NULL,
-	url varchar(50) NULL,
-	registration_number varchar(24) NULL,
-	pan_number varchar(24) NULL,
+	street national character varying(50) NULL,
+	city national character varying(50) NULL,
+	state national character varying(50) NULL,
+	country national character varying(50) NULL,
+	zip_code national character varying(24) NULL,
+	phone national character varying(24) NULL,
+	fax national character varying(24) NULL,
+	email national character varying(128) NULL,
+	url national character varying(50) NULL,
+	registration_number national character varying(24) NULL,
+	pan_number national character varying(24) NULL,
 	parent_office_id integer NULL REFERENCES office.offices(office_id)
 		CHECK
 		(
@@ -225,8 +211,8 @@ SELECT 'PES-KAV','Kavre Branch', 'PES Kav', '06/06/1989', 'Banepa', 'Kavre','Bag
 CREATE TYPE office.office_type AS
 (
 	office_id	integer_strict,
-	office_code varchar(12),
-	office_name varchar(150),
+	office_code national character varying(12),
+	office_name national character varying(150),
 	address text
 );
 
@@ -271,8 +257,8 @@ LANGUAGE plpgsql;
 CREATE TABLE office.departments
 (
 	department_id SERIAL  NOT NULL PRIMARY KEY,
-	department_code varchar(12) NOT NULL,
-	department_name varchar(50) NOT NULL
+	department_code national character varying(12) NOT NULL,
+	department_name national character varying(50) NOT NULL
 );
 
 
@@ -293,8 +279,8 @@ SELECT 'CC', 'Customer Care';
 CREATE TABLE office.roles
 (
 	role_id SERIAL  NOT NULL PRIMARY KEY,
-	role_code varchar(12) NOT NULL,
-	role_name varchar(50) NOT NULL
+	role_code national character varying(12) NOT NULL,
+	role_name national character varying(50) NOT NULL
 );
 
 
@@ -324,8 +310,8 @@ CREATE TABLE office.users
 	user_id SERIAL NOT NULL PRIMARY KEY,
 	role_id smallint NOT NULL REFERENCES office.roles(role_id),
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	user_name varchar(50) NOT NULL,
-	full_name varchar(100) NOT NULL,
+	user_name national character varying(50) NOT NULL,
+	full_name national character varying(100) NOT NULL,
 	password text NOT NULL
 );
 
@@ -474,14 +460,14 @@ LANGUAGE plpgsql;
 /*******************************************************************
 	TODO: REMOVE THIS USER ON DEPLOYMENT
 *******************************************************************/
-SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='ADMN'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'binod','binod','Binod Nepal');
+SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='ADMN'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'binod','+qJ9AMyGgrX/AOF4GmwmBa4SrA3+InlErVkJYmAopVZh+WFJD7k2ZO9dxox6XiqT38dSoM72jLoXNzwvY7JAQA==','Binod Nepal');
 
 
 /*******************************************************************
 	TODO: CREATE A TRIGGER IN OFFICE.OFFICES TO AUTOMATICALLY
 	INSERT SYS USER AT THE PARENT LEVEL
 *******************************************************************/
-SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='SYST'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'sys','sys','System');
+SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='SYST'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'sys','','System');
 
 
 CREATE FUNCTION office.validate_login
@@ -515,10 +501,10 @@ CREATE TABLE audit.logins
 	login_id BIGSERIAL NOT NULL PRIMARY KEY,
 	user_id integer NOT NULL REFERENCES office.users(user_id),
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	browser varchar(500) NOT NULL,
-	ip_address varchar(50) NOT NULL,
+	browser national character varying(500) NOT NULL,
+	ip_address national character varying(50) NOT NULL,
 	login_date_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	remote_user varchar(50) NOT NULL
+	remote_user national character varying(50) NOT NULL
 );
 
 CREATE INDEX logins_user_id_inx
@@ -534,13 +520,13 @@ CREATE TABLE audit.failed_logins
 (
 	failed_login_id BIGSERIAL NOT NULL PRIMARY KEY,
 	user_id integer NULL REFERENCES office.users(user_id),
-	user_name varchar(50) NOT NULL,
+	user_name national character varying(50) NOT NULL,
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	browser varchar(500) NOT NULL,
-	ip_address varchar(50) NOT NULL,
+	browser national character varying(500) NOT NULL,
+	ip_address national character varying(50) NOT NULL,
 	failed_date_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	remote_user varchar(50) NOT NULL,
-	details varchar(250) NULL
+	remote_user national character varying(50) NOT NULL,
+	details national character varying(250) NULL
 );
 
 CREATE INDEX failed_logins_user_id_inx
@@ -637,13 +623,33 @@ $$
 LANGUAGE plpgsql;
 
 
+CREATE TABLE core.price_types
+(
+	price_type_id SERIAL  NOT NULL PRIMARY KEY,
+	price_type_code national character varying(12) NOT NULL,
+	price_type_name national character varying(50) NOT NULL
+);
+
+
+CREATE UNIQUE INDEX price_types_price_type_code_uix
+ON core.price_types(UPPER(price_type_code));
+
+CREATE UNIQUE INDEX price_types_price_type_name_uix
+ON core.price_types(UPPER(price_type_name));
+
+
+INSERT INTO core.price_types(price_type_code, price_type_name)
+SELECT 'RET', 'Retail' UNION ALL
+SELECT 'WHO', 'Wholesale';
+
+
 
 CREATE TABLE core.menus
 (
 	menu_id SERIAL NOT NULL PRIMARY KEY,
-	menu_text varchar(250) NOT NULL,
-	url varchar(250) NULL,
-	menu_code varchar(12) NOT NULL,
+	menu_text national character varying(250) NOT NULL,
+	url national character varying(250) NULL,
+	menu_code national character varying(12) NOT NULL,
 	level smallint NOT NULL,
 	parent_menu_id integer NULL REFERENCES core.menus(menu_id)
 );
@@ -736,6 +742,8 @@ UNION ALL SELECT 'Assign Cashier', '/POS/AssignCashier.aspx', 'ASC', 2, core.get
 UNION ALL SELECT 'POS Setup', NULL, 'POSS', 1, core.get_menu_id('POS')
 UNION ALL SELECT 'Store Types', '/POS/Setup/StoreTypes.aspx', 'STT', 2, core.get_menu_id('POSS')
 UNION ALL SELECT 'Stores', '/POS/Setup/Stores.aspx', 'STO', 2, core.get_menu_id('POSS')
+UNION ALL SELECT 'Cash Repository Setup', '/Setup/CashRepositories.aspx', 'SCR', 2, core.get_menu_id('POSS')
+UNION ALL SELECT 'Counter Setup', '/Setup/Counters.aspx', 'SCS', 2, core.get_menu_id('POSS')
 UNION ALL SELECT 'Purchase & Quotation', NULL, 'PUQ', 1, core.get_menu_id('PU')
 UNION ALL SELECT 'Direct Purchase', '/Purchase/DirectPurchase.aspx', 'DRP', 2, core.get_menu_id('PUQ')
 UNION ALL SELECT 'Purchase Order', '/Purchase/Order.aspx', 'PO', 2, core.get_menu_id('PUQ')
@@ -750,6 +758,8 @@ UNION ALL SELECT 'Stock Transfer Journal', '/Items/Transfer.aspx', 'STJ', 2, cor
 UNION ALL SELECT 'Stock Adjustments', '/Items/Adjustment.aspx', 'STA', 2, core.get_menu_id('IIM')
 UNION ALL SELECT 'Setup & Maintenance', NULL, 'ISM', 1, core.get_menu_id('ITM')
 UNION ALL SELECT 'Stock Items', '/Items/Setup/Items.aspx', 'SSI', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Cost Prices', '/Items/Setup/CostPrices.aspx', 'ICP', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Selling Prices', '/Items/Setup/SellingPrices.aspx', 'ISP', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Item Groups', '/Items/Setup/ItemGroups.aspx', 'SSG', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Brands', '/Items/Setup/Brands.aspx', 'SSB', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Units of Measure', '/Items/Setup/UOM.aspx', 'UOM', 2, core.get_menu_id('ISM')
@@ -791,8 +801,6 @@ UNION ALL SELECT 'Department Setup', '/Setup/Departments.aspx', 'SDS', 2, core.g
 UNION ALL SELECT 'Role Management', '/Setup/Roles.aspx', 'SRM', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'User Management', '/Setup/Users.aspx', 'SUM', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'Frequency & Fiscal Year Management', '/Setup/Frequency.aspx', 'SFY', 2, core.get_menu_id('SOS')
-UNION ALL SELECT 'Cash Repository Setup', '/Setup/CashRepositories.aspx', 'SCR', 2, core.get_menu_id('SOS')
-UNION ALL SELECT 'Counter Setup', '/Setup/Counters.aspx', 'SCS', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'Policy Management', NULL, 'SPM', 1, core.get_menu_id('SE')
 UNION ALL SELECT 'Voucher Verification Policy', '/Setup/Policy/VoucherVerification.aspx', 'SVV', 2, core.get_menu_id('SPM')
 UNION ALL SELECT 'Automatic Verification Policy', '/Setup/Policy/AutoVerification.aspx', 'SAV', 2, core.get_menu_id('SPM')
@@ -801,13 +809,18 @@ UNION ALL SELECT 'GL Access Policy', '/Setup/Policy/GLAccess.aspx', 'SAP', 2, co
 UNION ALL SELECT 'Store Policy', '/Setup/Policy/Store.aspx', 'SSP', 2, core.get_menu_id('SPM')
 UNION ALL SELECT 'Admin Tools', NULL, 'SAT', 1, core.get_menu_id('SE')
 UNION ALL SELECT 'SQL Query Tool', '/Setup/Admin/Query.aspx', 'SQL', 2, core.get_menu_id('SAT')
+UNION ALL SELECT 'Database Statistics', '/Setup/Admin/DatabaseStatistics.aspx', 'DBSTAT', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'Backup Database', '/Setup/Admin/Backup.aspx', 'BAK', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'Restore Database', '/Setup/Admin/Restore.aspx', 'RES', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'Change User Password', '/Setup/Admin/ChangePassword.aspx', 'PWD', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'New Company', '/Setup/Admin/NewCompany.aspx', 'NEW', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'General', NULL, 'AGEN', 1, core.get_menu_id('AC')
-UNION ALL SELECT 'Sign Out', '/Acount/SignOut.aspx', 'SOFF', 2, core.get_menu_id('AGEN')
-UNION ALL SELECT 'Change Password', '/Acount/ChangePassword.aspx', 'PASS', 2, core.get_menu_id('AGEN');
+UNION ALL SELECT 'Sign Out', '/Account/SignOut.aspx', 'SOFF', 2, core.get_menu_id('AGEN')
+UNION ALL SELECT 'Change Password', '/Account/ChangePassword.aspx', 'PASS', 2, core.get_menu_id('AGEN')
+UNION ALL SELECT 'Messaging', NULL, 'MSG', 1, core.get_menu_id('AC')
+UNION ALL SELECT 'My Inbox', '/Account/Messaging/Inbox.aspx', 'IBX', 2, core.get_menu_id('MSG')
+UNION ALL SELECT 'Sent Items', '/Account/Messaging/SentItems.aspx', 'SENT', 2, core.get_menu_id('MSG')
+UNION ALL SELECT 'Compose', '/Account/Messaging/Compose.aspx', 'COMP', 2, core.get_menu_id('MSG');
 
 
 
@@ -906,8 +919,8 @@ NOT IN
 CREATE TABLE core.frequencies
 (
 	frequency_id SERIAL NOT NULL PRIMARY KEY,
-	frequency_code varchar(12) NOT NULL,
-	frequency_name varchar(50) NOT NULL
+	frequency_code national character varying(12) NOT NULL,
+	frequency_name national character varying(50) NOT NULL
 );
 
 
@@ -938,8 +951,8 @@ CREATE TABLE core.frequency_setups
 CREATE TABLE core.units
 (
 	unit_id SERIAL NOT NULL PRIMARY KEY,
-	unit_code varchar(12) NOT NULL,
-	unit_name varchar(50) NOT NULL
+	unit_code national character varying(12) NOT NULL,
+	unit_name national character varying(50) NOT NULL
 );
 
 CREATE UNIQUE INDEX units_unit_code_uix
@@ -947,6 +960,16 @@ ON core.units(UPPER(unit_code));
 
 CREATE UNIQUE INDEX "units_unit_name_uix"
 ON core.units(UPPER(unit_name));
+
+INSERT INTO core.units(unit_code, unit_name)
+SELECT 'PC', 'Piece' UNION ALL
+SELECT 'FT', 'Feet' UNION ALL
+SELECT 'MTR', 'Meter' UNION ALL
+SELECT 'LTR', 'Liter' UNION ALL
+SELECT 'GM', 'Gram' UNION ALL
+SELECT 'KG', 'Kilogram' UNION ALL
+SELECT 'DZ', 'Dozen';
+
 
 CREATE TABLE core.compound_units
 (
@@ -960,12 +983,29 @@ CREATE TABLE core.compound_units
 CREATE UNIQUE INDEX compound_units_info_uix
 ON core.compound_units(base_unit_id, compare_unit_id);
 
+CREATE VIEW core.compound_unit_view
+AS
+SELECT
+	compound_unit_id,
+	base_unit.unit_name base_unit_name,
+	value,
+	compare_unit.unit_name compare_unit_name
+FROM
+	core.compound_units,
+	core.units base_unit,
+	core.units compare_unit
+WHERE
+	core.compound_units.base_unit_id = base_unit.unit_id
+AND
+	core.compound_units.compare_unit_id = compare_unit.unit_id;
+
+
 
 CREATE TABLE core.account_masters
 (
     account_master_id SERIAL NOT NULL PRIMARY KEY,
-    account_master_code varchar(3) NOT NULL,
-    account_master_name varchar(40) NOT NULL	
+    account_master_code national character varying(3) NOT NULL,
+    account_master_name national character varying(40) NOT NULL	
 );
 
 CREATE UNIQUE INDEX account_master_code_uix
@@ -980,9 +1020,9 @@ CREATE TABLE core.accounts
 (
     account_id    SERIAL NOT NULL PRIMARY KEY,
     account_master_id  INTEGER NOT NULL REFERENCES core.account_masters(account_master_id),
-    account_code  VARCHAR(12) NOT NULL,
-    account_name  VARCHAR(100) NOT NULL,
-    description      VARCHAR(200) NULL,
+    account_code  national character varying(12) NOT NULL,
+    account_name  national character varying(100) NOT NULL,
+    description      national character varying(200) NULL,
     sys_type BOOLEAN NOT NULL DEFAULT(FALSE),
     parent_account_id INTEGER NULL REFERENCES core.accounts(account_id)
 );
@@ -1273,10 +1313,10 @@ INNER JOIN office.users ON core.cash_bank_accounts.maintained_by_user_id = offic
 CREATE TABLE core.agents
 (
 	agent_id SERIAL NOT NULL PRIMARY KEY,
-	agent_code varchar(12) NOT NULL,
-	agent_name varchar(100) NOT NULL,
-	address varchar(100) NOT NULL,
-	contact_number varchar(50) NOT NULL,
+	agent_code national character varying(12) NOT NULL,
+	agent_name national character varying(100) NOT NULL,
+	address national character varying(100) NOT NULL,
+	contact_number national character varying(50) NOT NULL,
 	commission_rate float_strict NOT NULL DEFAULT(0),
 	account_id integer NOT NULL REFERENCES core.accounts(account_id)
 );
@@ -1286,11 +1326,27 @@ CREATE UNIQUE INDEX agents_agent_name_uix
 ON core.agents(UPPER(agent_name));
 
 
+CREATE VIEW core.agent_view
+AS
+SELECT
+	agent_id,
+	agent_code,
+	agent_name,
+	address,
+	contact_number,
+	commission_rate,
+	account_name
+FROM
+	core.agents,
+	core.accounts
+WHERE
+	core.agents.account_id = core.accounts.account_id;
+
 CREATE TABLE core.bonus_slabs
 (
 	bonus_slab_id SERIAL NOT NULL PRIMARY KEY,
-	bonus_slab_code varchar(12) NOT NULL,
-	bonus_slab_name varchar(50) NOT NULL,
+	bonus_slab_code national character varying(12) NOT NULL,
+	bonus_slab_name national character varying(50) NOT NULL,
 	checking_frequency_id integer NOT NULL REFERENCES core.frequencies(frequency_id)
 );
 
@@ -1301,6 +1357,20 @@ ON core.bonus_slabs(UPPER(bonus_slab_code));
 CREATE UNIQUE INDEX bonus_slabs_bonus_slab_name_uix
 ON core.bonus_slabs(UPPER(bonus_slab_name));
 
+
+CREATE VIEW core.bonus_slab_view
+AS
+SELECT
+	bonus_slab_id,
+	bonus_slab_code,
+	bonus_slab_name,
+	checking_frequency_id,
+	frequency_name
+FROM
+core.bonus_slabs, core.frequencies
+WHERE
+core.bonus_slabs.checking_frequency_id = core.frequencies.frequency_id;
+
 CREATE TABLE core.bonus_slab_details
 (
 	bonus_slab_detail_id SERIAL NOT NULL PRIMARY KEY,
@@ -1310,6 +1380,22 @@ CREATE TABLE core.bonus_slab_details
 	bonus_rate float_strict NOT NULL,
 	CONSTRAINT bonus_slab_details_amounts_chk CHECK(amount_to>amount_from)
 );
+
+
+CREATE VIEW core.bonus_slab_detail_view
+AS
+SELECT
+	bonus_slab_detail_id,
+	core.bonus_slab_details.bonus_slab_id,
+	core.bonus_slabs.bonus_slab_name AS slab_name,
+	amount_from,
+	amount_to,
+	bonus_rate
+FROM
+	core.bonus_slab_details,
+	core.bonus_slabs
+WHERE
+	core.bonus_slab_details.bonus_slab_id = core.bonus_slabs.bonus_slab_id;
 
 CREATE TABLE core.agent_bonus_setups
 (
@@ -1322,10 +1408,25 @@ CREATE UNIQUE INDEX agent_bonus_setups_uix
 ON core.agent_bonus_setups(agent_id,bonus_slab_id);
 
 
+CREATE VIEW core.agent_bonus_setup_view
+AS
+SELECT
+	agent_bonus_setup_id,
+	agent_name,
+	bonus_slab_name
+FROM
+	core.agent_bonus_setups,
+	core.agents,
+	core.bonus_slabs
+WHERE
+	core.agent_bonus_setups.agent_id = core.agents.agent_id
+AND
+	core.agent_bonus_setups.bonus_slab_id = core.bonus_slabs.bonus_slab_id;
+
 CREATE TABLE core.ageing_slabs
 (
 	ageing_slab_id SERIAL NOT NULL PRIMARY KEY,
-	ageing_slab_name varchar(24) NOT NULL,
+	ageing_slab_name national character varying(24) NOT NULL,
 	from_days integer NOT NULL,
 	to_days integer NOT NULL CHECK(to_days > 0)
 );
@@ -1344,8 +1445,8 @@ SELECT 'SLAB 5',366, 999999;
 CREATE TABLE core.customer_types
 (
 	customer_type_id serial NOT NULL PRIMARY KEY,
-	customer_type_code customer_type NOT NULL DEFAULT('C'), 
-	customer_type_name varchar(50) NOT NULL
+	customer_type_code national character varying(12) NOT NULL, 
+	customer_type_name national character varying(50) NOT NULL
 );
 
 INSERT INTO core.customer_types(customer_type_code, customer_type_name) SELECT 'A', 'Agent';
@@ -1357,33 +1458,33 @@ CREATE TABLE core.customers
 (
 	customer_id BIGSERIAL NOT NULL PRIMARY KEY,
 	customer_type_id smallint NOT NULL REFERENCES core.customer_types(customer_type_id),
-	customer_code varchar(12) NULL,
-	first_name varchar(50) NOT NULL,
-	middle_name varchar(50) NULL,
-	last_name varchar(50) NOT NULL,
+	customer_code national character varying(12) NULL,
+	first_name national character varying(50) NOT NULL,
+	middle_name national character varying(50) NULL,
+	last_name national character varying(50) NOT NULL,
 	customer_name text NULL,
 	date_of_birth date NULL,
-	street varchar(50) NULL,
-	city varchar(50) NULL,
-	state varchar(50) NULL,
-	country varchar(50) NULL,
-	shipping_address varchar(250) NULL,
-	phone varchar(24) NULL,
-	fax varchar(24) NULL,
-	cell varchar(24) NULL,
-	email varchar(128) NULL,
-	url varchar(50) NULL,
-	contact_person varchar(50) NULL,
-	contact_street varchar(50) NULL,
-	contact_city varchar(50) NULL,
-	contact_state varchar(50) NULL,
-	contact_country varchar(50) NULL,
-	contact_email varchar(128) NULL,
-	contact_phone varchar(50) NULL,
-	contact_cell varchar(50) NULL,
-	pan_number varchar(50) NULL,
-	sst_number varchar(50) NULL,
-	cst_number varchar(50) NULL,
+	street national character varying(50) NULL,
+	city national character varying(50) NULL,
+	state national character varying(50) NULL,
+	country national character varying(50) NULL,
+	shipping_address national character varying(250) NULL,
+	phone national character varying(24) NULL,
+	fax national character varying(24) NULL,
+	cell national character varying(24) NULL,
+	email national character varying(128) NULL,
+	url national character varying(50) NULL,
+	contact_person national character varying(50) NULL,
+	contact_street national character varying(50) NULL,
+	contact_city national character varying(50) NULL,
+	contact_state national character varying(50) NULL,
+	contact_country national character varying(50) NULL,
+	contact_email national character varying(128) NULL,
+	contact_phone national character varying(50) NULL,
+	contact_cell national character varying(50) NULL,
+	pan_number national character varying(50) NULL,
+	sst_number national character varying(50) NULL,
+	cst_number national character varying(50) NULL,
 	allow_credit boolean NULL,
 	maximum_credit_period smallint NULL,
 	maximum_credit_amount money NULL,
@@ -1487,8 +1588,8 @@ FOR EACH ROW EXECUTE PROCEDURE core.update_customer_code();
 CREATE TABLE core.brands
 (
 	brand_id SERIAL NOT NULL PRIMARY KEY,
-	brand_code varchar(12) NOT NULL,
-	brand_name varchar(150) NOT NULL
+	brand_code national character varying(12) NOT NULL,
+	brand_name national character varying(150) NOT NULL
 );
 
 CREATE UNIQUE INDEX brands_brand_code_uix
@@ -1497,37 +1598,40 @@ ON core.brands(UPPER(brand_code));
 CREATE UNIQUE INDEX brands_brand_name_uix
 ON core.brands(UPPER(brand_name));
 
+INSERT INTO core.brands(brand_code, brand_name)
+SELECT 'DEF', 'Default';
 
 
 CREATE TABLE core.suppliers
 (
 	supplier_id BIGSERIAL NOT NULL PRIMARY KEY,
-	supplier_code varchar(12) NOT NULL,
-	first_name varchar(50) NOT NULL,
-	middle_name varchar(50) NULL,
-	last_name varchar(50) NOT NULL,
-	supplier_name varchar(150) NOT NULL,
-	street varchar(50) NULL,
-	city varchar(50) NULL,
-	state varchar(50) NULL,
-	country varchar(50) NULL,
-	phone varchar(50) NULL,
-	fax varchar(50) NULL,
-	cell varchar(50) NULL,
-	email varchar(128) NULL,
-	url varchar(50) NULL,
-	contact_person varchar(50) NULL,
-	contact_street varchar(50) NULL,
-	contact_city varchar(50) NULL,
-	contact_state varchar(50) NULL,
-	contact_country varchar(50) NULL,
-	contact_email varchar(128) NULL,
-	contact_phone varchar(50) NULL,
-	contact_cell varchar(50) NULL,
-	factory_address varchar(250) NULL,
-	pan_number varchar(50) NULL,
-	sst_number varchar(50) NULL,
-	cst_number varchar(50) NULL,
+	supplier_code national character varying(12) NULL,
+	company_name national character varying(128) NOT NULL,
+	first_name national character varying(50) NOT NULL,
+	middle_name national character varying(50) NULL,
+	last_name national character varying(50) NOT NULL,
+	supplier_name national character varying(150) NULL,
+	street national character varying(50) NULL,
+	city national character varying(50) NULL,
+	state national character varying(50) NULL,
+	country national character varying(50) NULL,
+	phone national character varying(50) NULL,
+	fax national character varying(50) NULL,
+	cell national character varying(50) NULL,
+	email national character varying(128) NULL,
+	url national character varying(50) NULL,
+	contact_person national character varying(50) NULL,
+	contact_street national character varying(50) NULL,
+	contact_city national character varying(50) NULL,
+	contact_state national character varying(50) NULL,
+	contact_country national character varying(50) NULL,
+	contact_email national character varying(128) NULL,
+	contact_phone national character varying(50) NULL,
+	contact_cell national character varying(50) NULL,
+	factory_address national character varying(250) NULL,
+	pan_number national character varying(50) NULL,
+	sst_number national character varying(50) NULL,
+	cst_number national character varying(50) NULL,
 	account_id bigint NOT NULL REFERENCES core.accounts(account_id)
 );
 
@@ -1549,9 +1653,7 @@ ON core.suppliers(UPPER(supplier_code));
 
 CREATE OR REPLACE FUNCTION core.get_supplier_code
 (
-	text, --first_name
-	text, --Middle Name
-	text  --Last Name
+	text --company name
 )
 RETURNS text AS
 $$
@@ -1564,34 +1666,21 @@ BEGIN
 		core.suppliers
 	WHERE
 		supplier_code LIKE 
-			UPPER(left($1,2) ||
-			CASE
-				WHEN $2 IS NULL or $2 = '' 
-				THEN left($3,3)
-			ELSE 
-				left($2,1) || left($3,2)
-			END 
-			|| '%')
+			UPPER(left($1, 3) || '%')
 	ORDER BY supplier_code desc
 	LIMIT 1;
 
 	__supplier_code :=
 					UPPER
 					(
-						left($1,2)||
-						CASE
-							WHEN $2 IS NULL or $2 = '' 
-							THEN left($3,3)
-						ELSE 
-							left($2,1)||left($3,2)
-						END
+						left($1,3)
 					) 
 					|| '-' ||
 					CASE
 						WHEN __supplier_code IS NULL 
 						THEN '0001'
 					ELSE 
-						to_char(CAST(right(__supplier_code,4) AS integer)+1,'FM0000')
+						to_char(CAST(right(__supplier_code, 4) AS integer)+1,'FM0000')
 					END;
 	RETURN __supplier_code;
 END;
@@ -1605,7 +1694,7 @@ $$
 BEGIN
 	UPDATE core.suppliers
     SET 
-		supplier_code=core.get_supplier_code(NEW.first_name, NEW.middle_name, NEW.last_name),
+		supplier_code=core.get_supplier_code(NEW.company_name),
 		supplier_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
     WHERE core.suppliers.supplier_id=NEW.supplier_id;
     
@@ -1620,35 +1709,37 @@ ON core.suppliers
 FOR EACH ROW EXECUTE PROCEDURE core.update_supplier_code();
 
 
+
 CREATE TABLE core.shippers
 (
 	shipper_id BIGSERIAL NOT NULL PRIMARY KEY,
-	shipper_code varchar(12) NOT NULL,
-	first_name varchar(50) NOT NULL,
-	middle_name varchar(50) NULL,
-	last_name varchar(50) NOT NULL,
-	shipper_name varchar(150) NOT NULL,
-	street varchar(50) NULL,
-	city varchar(50) NULL,
-	state varchar(50) NULL,
-	country varchar(50) NULL,
-	phone varchar(50) NULL,
-	fax varchar(50) NULL,
-	cell varchar(50) NULL,
-	email varchar(128) NULL,
-	url varchar(50) NULL,
-	contact_person varchar(50) NULL,
-	contact_street varchar(50) NULL,
-	contact_city varchar(50) NULL,
-	contact_state varchar(50) NULL,
-	contact_country varchar(50) NULL,
-	contact_email varchar(128) NULL,
-	contact_phone varchar(50) NULL,
-	contact_cell varchar(50) NULL,
-	factory_address varchar(250) NULL,
-	pan_number varchar(50) NULL,
-	sst_number varchar(50) NULL,
-	cst_number varchar(50) NULL,
+	shipper_code national character varying(12) NULL,
+	company_name national character varying(128) NOT NULL,
+	first_name national character varying(50) NOT NULL,
+	middle_name national character varying(50) NULL,
+	last_name national character varying(50) NOT NULL,
+	shipper_name national character varying(150) NULL,
+	street national character varying(50) NULL,
+	city national character varying(50) NULL,
+	state national character varying(50) NULL,
+	country national character varying(50) NULL,
+	phone national character varying(50) NULL,
+	fax national character varying(50) NULL,
+	cell national character varying(50) NULL,
+	email national character varying(128) NULL,
+	url national character varying(50) NULL,
+	contact_person national character varying(50) NULL,
+	contact_street national character varying(50) NULL,
+	contact_city national character varying(50) NULL,
+	contact_state national character varying(50) NULL,
+	contact_country national character varying(50) NULL,
+	contact_email national character varying(128) NULL,
+	contact_phone national character varying(50) NULL,
+	contact_cell national character varying(50) NULL,
+	factory_address national character varying(250) NULL,
+	pan_number national character varying(50) NULL,
+	sst_number national character varying(50) NULL,
+	cst_number national character varying(50) NULL,
 	account_id bigint NOT NULL REFERENCES core.accounts(account_id)
 );
 
@@ -1670,9 +1761,7 @@ ON core.shippers(UPPER(shipper_code));
 
 CREATE OR REPLACE FUNCTION core.get_shipper_code
 (
-	text, --first_name
-	text, --Middle Name
-	text  --Last Name
+	text --company name
 )
 RETURNS text AS
 $$
@@ -1685,34 +1774,21 @@ BEGIN
 		core.shippers
 	WHERE
 		shipper_code LIKE 
-			UPPER(left($1,2) ||
-			CASE
-				WHEN $2 IS NULL or $2 = '' 
-				THEN left($3,3)
-			ELSE 
-				left($2,1) || left($3,2)
-			END 
-			|| '%')
+			UPPER(left($1, 3) || '%')
 	ORDER BY shipper_code desc
 	LIMIT 1;
 
 	__shipper_code :=
 					UPPER
 					(
-						left($1,2)||
-						CASE
-							WHEN $2 IS NULL or $2 = '' 
-							THEN left($3,3)
-						ELSE 
-							left($2,1)||left($3,2)
-						END
+						left($1,3)
 					) 
 					|| '-' ||
 					CASE
 						WHEN __shipper_code IS NULL 
 						THEN '0001'
 					ELSE 
-						to_char(CAST(right(__shipper_code,4) AS integer)+1,'FM0000')
+						to_char(CAST(right(__shipper_code, 4) AS integer)+1,'FM0000')
 					END;
 	RETURN __shipper_code;
 END;
@@ -1726,7 +1802,7 @@ $$
 BEGIN
 	UPDATE core.shippers
     SET 
-		shipper_code=core.get_shipper_code(NEW.first_name, NEW.middle_name, NEW.last_name),
+		shipper_code=core.get_shipper_code(NEW.company_name),
 		shipper_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
     WHERE core.shippers.shipper_id=NEW.shipper_id;
     
@@ -1741,11 +1817,12 @@ ON core.shippers
 FOR EACH ROW EXECUTE PROCEDURE core.update_shipper_code();
 
 
+
 CREATE TABLE core.tax_types
 (
 	tax_type_id SERIAL  NOT NULL PRIMARY KEY,
-	tax_type_code varchar(12) NOT NULL,
-	tax_type_name varchar(50) NOT NULL
+	tax_type_code national character varying(12) NOT NULL,
+	tax_type_name national character varying(50) NOT NULL
 );
 
 CREATE UNIQUE INDEX tax_types_tax_type_code_uix
@@ -1754,15 +1831,19 @@ ON core.tax_types(UPPER(tax_type_code));
 CREATE UNIQUE INDEX tax_types_tax_type_name_uix
 ON core.tax_types(UPPER(tax_type_name));
 
+INSERT INTO core.tax_types(tax_type_code, tax_type_name)
+SELECT 'DEF', 'Default';
+
 CREATE TABLE core.taxes
 (
 	tax_id SERIAL  NOT NULL PRIMARY KEY,
 	tax_type_id smallint NOT NULL REFERENCES core.tax_types(tax_type_id),
-	tax_code varchar(12) NOT NULL,
-	tax_name varchar(50) NOT NULL,
+	tax_code national character varying(12) NOT NULL,
+	tax_name national character varying(50) NOT NULL,
 	rate float NOT NULL,
 	account_id integer NOT NULL REFERENCES core.accounts(account_id)
 );
+
 
 
 CREATE UNIQUE INDEX taxes_tax_code_uix
@@ -1770,6 +1851,30 @@ ON core.taxes(UPPER(tax_code));
 
 CREATE UNIQUE INDEX taxes_tax_name_uix
 ON core.taxes(UPPER(tax_name));
+
+INSERT INTO core.taxes(tax_type_id, tax_code, tax_name, rate, account_id)
+SELECT 1, 'VAT', 'Value Added Tax', 13, (SELECT account_id FROM core.accounts WHERE account_name='Sales Tax Payable') UNION ALL
+SELECT 1, 'SAT', 'Sales Tax', 5, (SELECT account_id FROM core.accounts WHERE account_name='Sales Tax Payable');
+
+CREATE VIEW core.tax_view
+AS
+SELECT
+	tax_id,
+	tax_code,
+	tax_name,
+	rate,
+	tax_type_code,
+	tax_type_name,
+	account_code,
+	account_name
+FROM
+	core.taxes,
+	core.accounts,
+	core.tax_types
+WHERE
+	core.taxes.account_id = core.accounts.account_id
+AND
+	core.taxes.tax_type_id = core.tax_types.tax_type_id;
 
 
 /*******************************************************************
@@ -1781,8 +1886,8 @@ ON core.taxes(UPPER(tax_name));
 CREATE TABLE core.tax_forms
 (
 	tax_form_id SERIAL NOT NULL PRIMARY KEY,
-	tax_form_code varchar(12) NOT NULL,
-	tax_form_name varchar(50) NOT NULL,
+	tax_form_code national character varying(12) NOT NULL,
+	tax_form_name national character varying(50) NOT NULL,
 	allow_edit boolean NOT NULL DEFAULT(true)
 );
 
@@ -1793,25 +1898,60 @@ ON core.tax_forms(UPPER(tax_form_code));
 CREATE UNIQUE INDEX tax_forms_tax_form_name_uix
 ON core.tax_forms(UPPER(tax_form_name));
 
+INSERT INTO core.tax_forms(tax_form_code, tax_form_name, allow_edit)
+SELECT 'VAT', 'Value Added Tax', false UNION ALL
+SELECT 'VAT2', 'Value Added Tax2', true;
+
 CREATE TABLE core.tax_form_details
 (
 	tax_form_detail_id SERIAL NOT NULL PRIMARY KEY,
 	tax_form_id integer NOT NULL REFERENCES core.tax_forms(tax_form_id),
-	ordinal_poisition smallint NOT NULL,
+	ordinal_position smallint NOT NULL,
 	tax_id integer NOT NULL REFERENCES core.taxes(tax_id),
-	tax_on_toal boolean NOT NULL DEFAULT(false)
+	tax_on_total boolean NOT NULL DEFAULT(false)
 );
 
+INSERT INTO core.tax_form_details(tax_form_id, ordinal_position, tax_id, tax_on_total)
+SELECT 1, 0, 1, false;
 
-CREATE UNIQUE INDEX tax_form_details_tax_form_id_ordinal_poisition_uix
-ON core.tax_form_details(tax_form_id,ordinal_poisition);
+INSERT INTO core.tax_form_details(tax_form_id, ordinal_position, tax_id, tax_on_total)
+SELECT 2, 0, 1, false UNION ALL
+SELECT 2, 1, 2, true;
+
+
+CREATE UNIQUE INDEX tax_form_details_tax_form_id_ordinal_position_uix
+ON core.tax_form_details(tax_form_id,ordinal_position);
+
+
+CREATE UNIQUE INDEX tax_form_details_tax_form_id_tax_on_total_uix
+ON core.tax_form_details(tax_form_id, tax_on_total);
+
+
+CREATE VIEW core.tax_form_detail_view
+AS
+SELECT
+	tax_form_detail_id,
+	tax_form_code,
+	tax_form_name,
+	tax_code,
+	tax_name,
+	ordinal_position,
+	tax_on_total
+FROM
+	core.tax_form_details,
+	core.tax_forms,
+	core.taxes
+WHERE
+	core.tax_form_details.tax_form_id = core.tax_forms.tax_form_id
+AND
+	core.tax_form_details.tax_id = core.taxes.tax_id;
 
 
 CREATE TABLE core.item_groups
 (
 	item_group_id SERIAL NOT NULL PRIMARY KEY,
-	item_group_code varchar(12) NOT NULL,
-	item_group_name varchar(50) NOT NULL,
+	item_group_code national character varying(12) NOT NULL,
+	item_group_name national character varying(50) NOT NULL,
 	parent_item_group_id integer NULL REFERENCES core.item_groups(item_group_id),
 	tax_id smallint NOT NULL REFERENCES core.taxes(tax_id)
 );
@@ -1823,28 +1963,26 @@ ON core.item_groups(UPPER(item_group_code));
 CREATE UNIQUE INDEX item_groups_item_group_name_uix
 ON core.item_groups(UPPER(item_group_name));
 
+INSERT INTO core.item_groups(item_group_code, item_group_name, tax_id)
+SELECT 'DEF', 'Default', 1;
+
+
 CREATE TABLE core.items
 (
 	item_Id BIGSERIAL NOT NULL PRIMARY KEY,
-	item_code varchar(12) NOT NULL,
-	item_name varchar(150) NOT NULL,
+	item_code national character varying(12) NOT NULL,
+	item_name national character varying(150) NOT NULL,
 	item_group_id integer NOT NULL REFERENCES core.item_groups(item_group_id),
 	brand_id integer NOT NULL REFERENCES core.brands(brand_id),
 	preferred_supplier_id integer NULL REFERENCES core.suppliers(supplier_id),
 	unit_id integer NOT NULL REFERENCES core.units(unit_id),
 	hot_item boolean NOT NULL,
-	tax_inclusive boolean NOT NULL,
+	cost_price money_strict NOT NULL,
+	selling_price money_strict NOT NULL,
+	tax_id integer NOT NULL REFERENCES core.taxes(tax_id),
 	reorder_level integer NOT NULL,
-	cost_price money NOT NULL,
-	selling_price money NOT NULL,
-	agent_selling_price money NOT NULL,
-	dealer_selling_price money NOT NULL,
-	max_retail_price money NOT NULL,
-	item_image bytea NOT NULL,
-	maintain_stock boolean NOT NULL DEFAULT(true),
-	CONSTRAINT check_items_agent_selling_price_chk CHECK(agent_selling_price <= selling_price),
-	CONSTRAINT check_items_dealer_selling_price_chk CHECK(dealer_selling_price <= selling_price),
-	CONSTRAINT check_items_MRP_chk CHECK(selling_price <= max_retail_price)
+	item_image bytea NULL,
+	maintain_stock boolean NOT NULL DEFAULT(true)
 );
 
 CREATE UNIQUE INDEX items_item_name_uix
@@ -1868,34 +2006,73 @@ ON core.items(UPPER(item_name));
 
 *******************************************************************/
 
-CREATE TABLE core.item_prices
-(
-	price_id BIGSERIAL NOT NULL PRIMARY KEY,
-	bar_code_id varchar(50) NOT NULL,
-	unit_id integer NOT NULL REFERENCES core.units(unit_id),
+CREATE TABLE core.item_selling_prices
+(	
+	item_selling_price_id BIGSERIAL NOT NULL PRIMARY KEY,
 	item_id bigint NOT NULL REFERENCES core.items(item_id),
-	user_id integer NOT NULL REFERENCES office.users(user_id),
-	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL,
-	cost_price money NOT NULL,
-	selling_price money NOT NULL,
-	agent_selling_price money NOT NULL,
-	dealer_selling_price money NOT NULL,
-	max_retail_price money NOT NULL,
-	CONSTRAINT check_itemCosts_agent_selling_price_chk CHECK(agent_selling_price <= selling_price),
-	CONSTRAINT check_itemCosts_dealer_selling_price_chk CHECK(dealer_selling_price <= selling_price),
-	CONSTRAINT check_itemCosts_MRP_chk CHECK(selling_price <= max_retail_price)
+	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	customer_type_id smallint NOT NULL REFERENCES core.customer_types(customer_type_id), 
+	price_type_id smallint NOT NULL REFERENCES core.price_types(price_type_id),
+	price money_strict NOT NULL
 );
 
-CREATE UNIQUE INDEX item_prices_bar_code_id_uix
-ON core.item_prices(UPPER(bar_code_id));
 
+CREATE VIEW core.item_selling_price_view
+AS
+SELECT
+	core.item_selling_prices.item_selling_price_id,
+    core.items.item_code,
+    core.items.item_name,
+    core.customer_types.customer_type_code,
+    core.customer_types.customer_type_name,
+    price
+FROM
+	core.item_selling_prices,
+	core.price_types,
+	core.items,
+    core.customer_types
+WHERE 
+	core.item_selling_prices.item_id = core.items.item_id
+AND 
+	core.item_selling_prices.customer_type_id = core.customer_types.customer_type_id
+AND 
+	core.item_selling_prices.price_type_id = core.price_types.price_type_id;
+
+
+CREATE TABLE core.item_cost_prices
+(	
+	item_cost_price_id BIGSERIAL NOT NULL PRIMARY KEY,
+	item_id bigint NOT NULL REFERENCES core.items(item_id),
+	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	supplier_id bigint NULL REFERENCES core.suppliers(supplier_id), 
+	price money_strict NOT NULL
+);
+
+
+CREATE VIEW core.item_cost_price_view
+AS
+SELECT
+	core.item_cost_prices.item_cost_price_id,
+    core.items.item_code,
+    core.items.item_name,
+    core.suppliers.supplier_code,
+    core.suppliers.supplier_name,
+    core.item_cost_prices.price
+FROM 
+core.item_cost_prices
+INNER JOIN
+core.items
+ON core.item_cost_prices.item_id = core.items.item_id
+LEFT JOIN
+core.suppliers
+ON core.item_cost_prices.supplier_id = core.suppliers.supplier_id;
 
 
 CREATE TABLE office.store_types
 (
 	store_type_id SERIAL NOT NULL PRIMARY KEY,
-	store_type_code varchar(12) NOT NULL,
-	store_type_name varchar(50) NOT NULL
+	store_type_code national character varying(12) NOT NULL,
+	store_type_name national character varying(50) NOT NULL
 );
 
 CREATE UNIQUE INDEX store_types_Code_uix
@@ -1916,9 +2093,9 @@ CREATE TABLE office.stores
 (
 	store_id SERIAL  NOT NULL PRIMARY KEY,
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	store_code varchar(12) NOT NULL,
-	store_name varchar(50) NOT NULL,
-	address varchar(50) NULL,
+	store_code national character varying(12) NOT NULL,
+	store_name national character varying(50) NOT NULL,
+	address national character varying(50) NULL,
 	store_type_id integer NOT NULL REFERENCES office.store_types(store_type_id),
 	allow_sales boolean NOT NULL DEFAULT(true)
 );
@@ -1934,10 +2111,10 @@ ON office.stores(UPPER(store_name));
 CREATE TABLE office.cash_repositories
 (
 	cash_repository_id BIGSERIAL NOT NULL PRIMARY KEY,
-	cash_repository_code varchar(12) NOT NULL,
-	cash_repository_name varchar(50) NOT NULL,
+	cash_repository_code national character varying(12) NOT NULL,
+	cash_repository_name national character varying(50) NOT NULL,
 	parent_cash_repository_id integer NULL REFERENCES office.cash_repositories(cash_repository_id),
-	description varchar(100) NULL
+	description national character varying(100) NULL
 );
 
 
@@ -1947,13 +2124,30 @@ ON office.cash_repositories(UPPER(cash_repository_code));
 CREATE UNIQUE INDEX cash_repositories_cash_repository_name_uix
 ON office.cash_repositories(UPPER(cash_repository_name));
 
+
+CREATE VIEW office.cash_repository_view
+AS
+SELECT
+	office.cash_repositories.cash_repository_id,
+	office.cash_repositories.cash_repository_code,
+	office.cash_repositories.cash_repository_name,
+	parent_cash_repositories.cash_repository_code parent_cr_code,
+	parent_cash_repositories.cash_repository_name parent_cr_name,
+	office.cash_repositories.description
+FROM
+	office.cash_repositories
+LEFT OUTER JOIN
+	office.cash_repositories AS parent_cash_repositories
+ON
+	office.cash_repositories.parent_cash_repository_id=parent_cash_repositories.cash_repository_id;
+
 CREATE TABLE office.counters
 (
 	counter_id SERIAL NOT NULL PRIMARY KEY,
 	store_id smallint NOT NULL REFERENCES office.stores(store_id),
 	cash_repository_id integer NOT NULL REFERENCES office.cash_repositories(cash_repository_id),
-	counter_code varchar(12) NOT NULL,
-	counter_name varchar(50) NOT NULL
+	counter_code national character varying(12) NOT NULL,
+	counter_name national character varying(50) NOT NULL
 );
 
 
@@ -1967,8 +2161,8 @@ ON office.counters(UPPER(counter_name));
 CREATE TABLE office.cost_centers
 (
 	cost_center_id SERIAL NOT NULL PRIMARY KEY,
-	cost_center_code varchar(24) NOT NULL,
-	cost_center_name varchar(50) NOT NULL,
+	cost_center_code national character varying(24) NOT NULL,
+	cost_center_name national character varying(50) NOT NULL,
 	parent_cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id)
 );
 
@@ -1977,6 +2171,32 @@ ON office.cost_centers(UPPER(cost_center_code));
 
 CREATE UNIQUE INDEX cost_centers_cost_center_name_uix
 ON office.cost_centers(UPPER(cost_center_name));
+
+INSERT INTO office.cost_centers(cost_center_code, cost_center_name)
+SELECT 'DEF', 'Default' UNION ALL
+SELECT 'GEN', 'General Administration' UNION ALL
+SELECT 'HUM', 'Human Resources' UNION ALL
+SELECT 'SCC', 'Support & Customer Care' UNION ALL
+SELECT 'GAE', 'Guest Accomodation & Entertainment' UNION ALL
+SELECT 'MKT', 'Marketing & Promotion' UNION ALL
+SELECT 'SAL', 'Sales & Billing' UNION ALL
+SELECT 'FIN', 'Finance & Accounting';
+
+CREATE VIEW office.cost_center_view
+AS
+SELECT
+	office.cost_centers.cost_center_id,
+	office.cost_centers.cost_center_code,
+	office.cost_centers.cost_center_name,
+	parent_cost_centers.cost_center_code AS parent_cc_code,
+	parent_cost_centers.cost_center_name AS parent_cc_name
+FROM
+	office.cost_centers
+LEFT OUTER JOIN
+	office.cost_centers AS parent_cost_centers
+ON
+	office.cost_centers.parent_cost_center_id = parent_cost_centers.cost_center_id;
+
 
 CREATE TABLE office.cashiers
 (
@@ -2032,13 +2252,13 @@ CREATE TABLE audit.history
 (
 	activity_id BIGSERIAL NOT NULL PRIMARY KEY,
 	event_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW()),
-	principal_user varchar(50) NOT NULL DEFAULT(current_user),
+	principal_user national character varying(50) NOT NULL DEFAULT(current_user),
 	user_id integer /*NOT*/ NULL REFERENCES office.users(user_id),
-	type varchar(50) NOT NULL,
-	table_schema varchar(50) NOT NULL,
-	table_name varchar(50) NOT NULL,
-	primary_key_id varchar(50) NOT NULL,
-	column_name varchar(50) NOT NULL,
+	type national character varying(50) NOT NULL,
+	table_schema national character varying(50) NOT NULL,
+	table_name national character varying(50) NOT NULL,
+	primary_key_id national character varying(50) NOT NULL,
+	column_name national character varying(50) NOT NULL,
 	old_val text NULL,
 	new_val text NULL,
 	CONSTRAINT audit_history_val_chk 
@@ -2055,15 +2275,15 @@ CREATE TABLE transactions.transaction_master
 (
 	transaction_master_id BIGSERIAL NOT NULL PRIMARY KEY,
 	transaction_counter integer NOT NULL, --Sequence of transactions of a date
-	transaction_code varchar(50) NOT NULL,
-	book varchar(50) NOT NULL, --Transaction book. Ex. Sales, Purchase, Journal
+	transaction_code national character varying(50) NOT NULL,
+	book national character varying(50) NOT NULL, --Transaction book. Ex. Sales, Purchase, Journal
 	value_date date NOT NULL,
 	transaction_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
 	login_id integer NOT NULL REFERENCES audit.logins(login_id),
 	sys_user_id integer NULL REFERENCES office.users(user_id),
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
 	cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id),
-	ref_no varchar(24) NULL,
+	ref_no national character varying(24) NULL,
 	verification verification NOT NULL DEFAULT(0/*Awaiting verification*/),
 	CONSTRAINT transaction_master_login_id_sys_user_id
 		CHECK
@@ -2174,8 +2394,8 @@ CREATE TABLE transactions.stock_master_rates
 CREATE TABLE crm.lead_sources
 (
 	lead_source_id    SERIAL NOT NULL PRIMARY KEY,
-	lead_source_code varchar(12) NOT NULL,
-	lead_source_name varchar(128) NOT NULL
+	lead_source_code national character varying(12) NOT NULL,
+	lead_source_name national character varying(128) NOT NULL
 );
 
 CREATE UNIQUE INDEX lead_sources_lead_source_code_uix
@@ -2196,8 +2416,8 @@ SELECT 'PR', 'Partner';
 CREATE TABLE crm.lead_statuses
 (
 	lead_status_id    SERIAL NOT NULL PRIMARY KEY,
-	lead_status_code varchar(12) NOT NULL,
-	lead_status_name varchar(128) NOT NULL
+	lead_status_code national character varying(12) NOT NULL,
+	lead_status_name national character varying(128) NOT NULL
 );
 
 CREATE UNIQUE INDEX lead_statuses_lead_status_code_uix
@@ -2217,8 +2437,8 @@ SELECT 'QF', 'Qualified';
 CREATE TABLE crm.opportunity_stages
 (
 	opportunity_stage_id SERIAL  NOT NULL PRIMARY KEY,
-	opportunity_stage_code varchar(12) NOT NULL,
-	opportunity_stage_name varchar(50) NOT NULL
+	opportunity_stage_code national character varying(12) NOT NULL,
+	opportunity_stage_name national character varying(50) NOT NULL
 );
 
 

@@ -14,6 +14,12 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="ItemGroupForm" runat="server" Text="Item Group Maintenance" TableSchema="core" Table="item_groups" KeyColumn="item_group_id"
+        ViewSchema="core" View="item_groups" Width="1000" PageSize="10"
+        SelectedValues=""
+        DisplayFields="core.item_groups.item_group_id-->item_group_name, core.taxes.tax_id-->tax_name" />
+
+    <%--TODO--%>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

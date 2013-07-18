@@ -47,7 +47,7 @@ namespace MixERP.net.BusinessLayer.Security
         {
             try
             {
-                bool signInSuccess = MixERP.net.DatabaseLayer.Security.User.SignIn(officeId, userName, password, page.Request.UserAgent, "0", "");
+                bool signInSuccess = MixERP.net.DatabaseLayer.Security.User.SignIn(officeId, userName, Pes.Utility.Conversion.HashSha512(password, userName), page.Request.UserAgent, "0", "");
 
                 if (signInSuccess)
                 {

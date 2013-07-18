@@ -5,6 +5,16 @@
     font-family: 'Segoe UI', 'Tahoma', 'Arial';
 }
 
+html
+{
+    height: 100%;
+}
+
+body
+{
+    min-height: 100%;
+}
+
 p
 {
     padding: 3px 0px 3px 0px;
@@ -40,10 +50,10 @@ input, select
     color: #333399;
 }
 
-input[readonly]
-{
-    background-color: #F0EBF5;
-}
+    input[readonly]
+    {
+        background-color: #F0EBF5;
+    }
 
 .error-message
 {
@@ -83,18 +93,18 @@ input[readonly]
     color: White;
     font-weight: bold;
     text-align: center;
-    padding-top:12px;
+    padding-top: 12px;
 }
 
     #footer a
     {
-        color:white;
+        color: white;
     }
 
         #footer a:hover, #footer:hover
-{
-    color: #FFFF00;
-}
+        {
+            color: #FFFF00;
+        }
 
 #menu a, #menu a:visited, a.menu, a.menu:visited
 {
@@ -113,39 +123,13 @@ input[readonly]
         color: White;
     }
 
-
-.info, .error
-{
-    padding: 6px;
-    margin: 4px 0px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.info
-{
-    border: 1px solid #CFBCDE;
-    background-color: #DACCE6;
-}
-
-    .info:hover
-    {
-        border-color: #C1AAD5;
-        background-color: #CFBCDE;
-    }
-
 .error
 {
-    border: 1px solid #F9E813;
-    background-color: #FDF8B5;
+    font-weight: bold;
+    font-size: 16px;
     color: #CC3300;
 }
 
-    .error:hover
-    {
-        border: 1px solid #E6D506;
-        background-color: #FCF385;
-    }
 
 h1, h2, h3, h4, h5
 {
@@ -204,9 +188,9 @@ h5
 }
 
     .menu-panel:hover
-{
-    background-color: #FCFBFD;
-}
+    {
+        background-color: #FCFBFD;
+    }
 
 .menu-header
 {
@@ -237,10 +221,10 @@ h5
 }
 
     .menu-panel a:hover
-{
-    color: #FFFFFF;
-    background-color: #81659E;
-}
+    {
+        color: #FFFFFF;
+        background-color: #81659E;
+    }
 
 
 #GridPanel
@@ -388,6 +372,11 @@ table.grid th[scope=col]
     outline: none;
     color: #5A5A87;
     padding: 2px;
+}
+
+.form input
+{
+    padding:3px;
 }
 
 .form table tr td
@@ -552,4 +541,84 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
     position: absolute;
     z-index: 20;
     background-color: #D7D5EC;
+}
+
+.form-table td
+{
+    vertical-align: middle!important;
+}
+
+.grid2
+{
+    width: 100%;
+    color: #8A38AD;
+    font-weight:bold;
+}
+
+.grid2 td
+{
+    border: 1px solid #E9DCF1;
+}
+
+.grid2 td, .grid2 th
+{
+    vertical-align: middle !important;
+}
+
+.grid2-header
+{
+    height: 30px;
+    background-color: #9A61C0;
+    color: #FFFFFF;
+}
+
+
+.grid2 input[type="text"], .grid2 input[type="number"], .grid2 select
+{
+    margin: 2px;
+    padding: 2px;
+    border: 1px solid transparent;
+    height: 18px;
+}
+
+.grid2 select
+{
+    height: 24px;
+}
+
+.grid2-footer
+{
+}
+
+.grid2-row td, .grid2-row-alt td
+{
+    padding: 4px!important;
+    padding-left:8px!important;
+}
+
+.grid2-row-alt
+{
+    background-color: #FBF8FC;
+}
+
+    .grid2-row:hover, .grid2-row-alt:hover
+{
+    background-color: #EEE9F8;
+}
+
+.right
+{
+    text-align: right;
+}
+
+.dirty
+{
+    border: 1px solid #FF9933!important;
+}
+
+
+.button
+{
+    margin-left: 2px;
+    padding: 2px;
 }

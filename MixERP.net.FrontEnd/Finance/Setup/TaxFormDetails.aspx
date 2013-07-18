@@ -14,6 +14,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="TaxFormDetailForm" runat="server" Text="Tax Form Details" TableSchema="core" Table="tax_form_details" KeyColumn="tax_form_detail_id"
+        ViewSchema="core" View="tax_form_detail_view" Width="1000" PageSize="10" 
+        SelectedValues=""
+        DisplayFields="core.tax_forms.tax_form_id-->tax_form_code + ' (' + tax_form_name + ')', core.taxes.tax_id-->tax_code + ' (' + tax_name + ')'" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

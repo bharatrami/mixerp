@@ -13,6 +13,42 @@ namespace MixERP.net.FrontEnd.Setup.Admin {
     public partial class DatabaseStatistics {
         
         /// <summary>
+        /// MessageLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal MessageLiteral;
+        
+        /// <summary>
+        /// VacuumButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button VacuumButton;
+        
+        /// <summary>
+        /// FullVacuumButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button FullVacuumButton;
+        
+        /// <summary>
+        /// AnalyzeButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AnalyzeButton;
+        
+        /// <summary>
         /// DBStatisticsForm control.
         /// </summary>
         /// <remarks>

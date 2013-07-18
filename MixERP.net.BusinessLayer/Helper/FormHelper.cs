@@ -74,11 +74,11 @@ namespace MixERP.net.BusinessLayer.Helper
             return 0;
         }
 
-        public static bool InsertRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data)
+        public static bool InsertRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data, string imageColumn)
         {
             try
             {
-                return MixERP.net.DatabaseLayer.Helper.FormHelper.InsertRecord(tableSchema, tableName, data);
+                return MixERP.net.DatabaseLayer.Helper.FormHelper.InsertRecord(tableSchema, tableName, data, imageColumn);
             }
             catch (Exception ex)
             {
@@ -88,11 +88,11 @@ namespace MixERP.net.BusinessLayer.Helper
             return false;
         }
 
-        public static bool UpdateRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data, string keyColumn, string keyColumnValue)
+        public static bool UpdateRecord(string tableSchema, string tableName, List<KeyValuePair<string, string>> data, string keyColumn, string keyColumnValue, string imageColumn)
         {
             try
             {
-                return MixERP.net.DatabaseLayer.Helper.FormHelper.UpdateRecord(tableSchema, tableName, data, keyColumn, keyColumnValue);
+                return MixERP.net.DatabaseLayer.Helper.FormHelper.UpdateRecord(tableSchema, tableName, data, keyColumn, keyColumnValue, imageColumn);
             }
             catch (Exception ex)
             {

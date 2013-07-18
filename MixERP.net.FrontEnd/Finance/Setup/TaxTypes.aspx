@@ -14,6 +14,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="TaxTypeForm" runat="server" Text="Tax Types" TableSchema="core" Table="tax_types" KeyColumn="tax_type_id"
+        ViewSchema="core" View="tax_types" Width="1000" PageSize="10" 
+        SelectedValues=""
+        DisplayFields=""
+         />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="Core\Menu.cs" />
     <Compile Include="Helper\FormHelper.cs" />
+    <Compile Include="Helper\Maintenance.cs" />
     <Compile Include="Helper\MenuHelper.cs" />
     <Compile Include="Helper\TableHelper.cs" />
     <Compile Include="Office\Offices.cs" />

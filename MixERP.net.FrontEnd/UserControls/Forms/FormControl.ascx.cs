@@ -20,6 +20,8 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 {
     public partial class FormControl : System.Web.UI.UserControl
     {
+        private string imageColumn = string.Empty;
+
         #region Properties
         public bool DenyEdit { get; set; }
         public bool DenyDelete { get; set; }
@@ -135,6 +137,13 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         
         protected void SaveButton_Click(object sender, EventArgs e)
         {
+            this.Page.Validate();
+
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
+
             List<KeyValuePair<string, string>> list = this.GetFormCollection(true);
             string id = this.GetSelectedValue();
 
@@ -146,7 +155,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 }
                 else
                 {
-                    if (MixERP.net.BusinessLayer.Helper.FormHelper.InsertRecord(this.TableSchema, this.Table, list))
+                    if (MixERP.net.BusinessLayer.Helper.FormHelper.InsertRecord(this.TableSchema, this.Table, list, this.imageColumn))
                     {
                         //Clear the form container.
                         FormContainer.Controls.Clear();
@@ -170,7 +179,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 }
                 else
                 {
-                    if (MixERP.net.BusinessLayer.Helper.FormHelper.UpdateRecord(this.TableSchema, this.Table, list, this.KeyColumn, id))
+                    if (MixERP.net.BusinessLayer.Helper.FormHelper.UpdateRecord(this.TableSchema, this.Table, list, this.KeyColumn, id, this.imageColumn))
                     {
                         //Clear the form container.
                         FormContainer.Controls.Clear();
@@ -379,9 +388,14 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                                     }
                                     break;
                                 case "boolean":
-                                    //RadioButtonList
                                     RadioButtonList r = (RadioButtonList)FormContainer.FindControl(columnName + "_radiobuttonlist");
                                     list.Add(new KeyValuePair<string, string>(columnName, r.Text));
+                                    break;
+                                case "bytea":
+                                    FileUpload f = (FileUpload)FormContainer.FindControl(columnName + "_fileupload");
+                                    string file = this.UploadFile(f);
+                                    list.Add(new KeyValuePair<string, string>(columnName, file));
+                                    imageColumn = columnName;
                                     break;
                             }
 
@@ -399,6 +413,28 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             return list;
         }
 
+
+        private string UploadFile(FileUpload fileUpload)
+        {
+            string uploadDirectory = Server.MapPath("~/Media/Temp");
+            if (!System.IO.Directory.Exists(uploadDirectory))
+            {
+                System.IO.Directory.CreateDirectory(uploadDirectory);
+            }
+
+            string id = Guid.NewGuid().ToString();
+
+            if (fileUpload.HasFile)
+            {
+                id += System.IO.Path.GetExtension(fileUpload.FileName);
+                id = System.IO.Path.Combine(uploadDirectory, id);
+
+                fileUpload.SaveAs(id);
+            }
+
+            return id;
+        }
+        
         private void AddRow(HtmlTable table, string label, params Control[] controls)
         {
             HtmlTableRow newRow = new HtmlTableRow();
@@ -461,6 +497,9 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         break;
                     case "date":
                         this.AddDateTextBox(t, columnName, defaultValue, isNullable, maxLength);
+                        break;
+                    case "bytea":
+                        this.AddFileUpload(t, columnName, isNullable);
                         break;
                     case "timestamp with time zone":
                         //Do not show this field
@@ -753,9 +792,36 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
             AddRow(t, columnName, textBox);
         }
+
+        private void AddFileUpload(HtmlTable t, string columnName, bool isNullable)
+        {
+            FileUpload fileUpload = this.GetFileUpload(columnName + "_fileupload");
+            RegularExpressionValidator validator = this.GetImageValidator(fileUpload);
+
+            UpdatePanel1.Triggers.Clear();
+            ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(SaveButton);
+
+            if (!isNullable)
+            {
+                RequiredFieldValidator required = GetRequiredFieldValidator(fileUpload);
+
+                AddRow(t, columnName + " *", fileUpload, required, validator);
+                return;
+            }
+
+            AddRow(t, columnName, fileUpload, validator);
+        }
         #endregion
 
         #region Get Controls
+        private FileUpload GetFileUpload(string id)
+        {
+            FileUpload fileUpload = new FileUpload();
+            fileUpload.ID = id;
+
+            return fileUpload;
+        }
+
         private CheckBoxList GetCheckBoxList(string id, string keys, string values, string selectedValues)
         {
             CheckBoxList list = new CheckBoxList();
@@ -912,6 +978,20 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             validator.Display = ValidatorDisplay.Dynamic;
 
             return validator;
+        }
+
+        private RegularExpressionValidator GetImageValidator(Control controlToValidate)
+        {
+            RegularExpressionValidator validator = new RegularExpressionValidator();
+            validator.ID = controlToValidate.ID + "RegexValidator";
+            validator.ErrorMessage = "<br/>Invalid image.";
+            validator.CssClass = "form-error";
+            validator.ControlToValidate = controlToValidate.ID;
+            validator.EnableClientScript = true;
+            validator.SetFocusOnError = true;
+            validator.Display = ValidatorDisplay.Dynamic;
+            validator.ValidationExpression = @"(.*\.([gG][iI][fF]|[jJ][pP][gG]|[jJ][pP][eE][gG]|[bB][mM][pP])$)";
+            return validator;        
         }
         #endregion
 

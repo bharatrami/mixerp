@@ -14,6 +14,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="LeadSourceForm" runat="server" 
+        DenyAdd="false" DenyDelete="false" DenyEdit="false" 
+        KeyColumn="lead_source_id"
+        PageSize="10" Width="1000" 
+        TableSchema="crm" Table="lead_sources" 
+        ViewSchema="crm" View="lead_sources" 
+        Text="Lead Source Maintenace"
+        SelectedValues=""
+        DisplayFields=""/>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

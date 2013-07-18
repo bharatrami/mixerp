@@ -37,7 +37,7 @@
         <div class="vpad16">
             <a href="#" id="ShowCompactAnchor" class="menu" onclick="window.location = window.location.pathname + '?show=compact';">Show Compact</a>
             <a href="#" id="ShowAllAnchor" class="menu" onclick="window.location = window.location.pathname + '?show=all';">Show All</a>
-            <a href="#" id="AddAnchor" class="menu" onclick="$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">Add New</a>
+            <a href="#" id="AddAnchor" class="menu" onclick="$('#FormGridView tr').find('td input:radio').removeAttr('checked');$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">Add New</a>
             <asp:LinkButton ID="EditLinkButton" runat="server" Text="Edit Selected" CssClass="menu"
                 OnClick="EditLinkButton_Click" OnClientClick="return(confirmAction());" CausesValidation="false" />
             <asp:LinkButton ID="DeleteLinkButton" runat="server" Text="Delete Selected" CssClass="menu" CausesValidation="false"
@@ -85,7 +85,7 @@
                         <td class="label-cell">
                         </td>
                         <td>
-                            <asp:Button ID="SaveButton" runat="server" Text="Save" OnClick="SaveButton_Click" />
+                            <asp:Button ID="SaveButton" runat="server" Text="Save" OnClientClick="adjustSpinnerSize();" OnClick="SaveButton_Click" />
                             <asp:Button ID="CancelButton" runat="server" Text="Cancel" CausesValidation="false" OnClientClick="$('#FormPanel').hide(500); $('#GridPanel').show(500);" OnClick="CancelButton_Click" />
                             <input type="reset" value="Reset" runat="server" />
                         </td>
@@ -101,7 +101,7 @@
             <asp:LinkButton ID="ShowCompact2" runat="server" Text="Show Compact" CssClass="menu"
                 OnClientClick="window.location = window.location.pathname + '?show=compact';" />
             <asp:LinkButton ID="ShowAll2" runat="server" Text="Show All" CssClass="menu" OnClientClick="window.location = window.location.pathname + '?show=all';" />
-            <a href="#" id="AddAnchor" class="menu" onclick="$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">
+            <a href="#" id="AddAnchor" class="menu" onclick="$('#FormGridView tr').find('td input:radio').removeAttr('checked');$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">
                 Add New
             </a>
             <asp:LinkButton ID="EditLinkButton2" runat="server" Text="Edit Selected" CssClass="menu"
@@ -164,41 +164,96 @@
             var office = $("#OfficeCodeHidden").val();
             var date = '<%= System.DateTime.Now.ToString() %>';
 
-                    $(table).find("th:first").remove();
-                    $(table).find("td:first-child").remove();
+            $(table).find("tr.tableFloatingHeader").remove();
 
-                    table = "<table border='1' class='preview'>" + table.html() + "</table>";
+            $(table).find("th:first").remove();
+            $(table).find("td:first-child").remove();
 
-                    data = data.replace("{ReportHeading}", $("#TitleLabel").html());
-                    data = data.replace("{PrintDate}", date);
-                    data = data.replace("{UserName}", user);
-                    data = data.replace("{OfficeCode}", office);
-                    data = data.replace("{Table}", table);
+            table = "<table border='1' class='preview'>" + table.html() + "</table>";
 
-                    var w = window.open();
-                    w.moveTo(0, 0);
-                    w.resizeTo(screen.width, screen.height);
+            data = data.replace("{ReportHeading}", $("#TitleLabel").html());
+            data = data.replace("{PrintDate}", date);
+            data = data.replace("{UserName}", user);
+            data = data.replace("{OfficeCode}", office);
+            data = data.replace("{Table}", table);
 
-                    w.document.writeln(data);
+            var w = window.open();
+            w.moveTo(0, 0);
+            w.resizeTo(screen.width, screen.height);
 
+            w.document.writeln(data);
+
+        });
+    }
+
+
+    function pageLoad(sender, args) {
+        var gridPanel = $('#GridPanel');
+        gridPanel.width($(window).width() - 364);
+
+        $('#FormGridView tr').click(function () {
+            var radio = $(this).find('td input:radio')
+            console.log(radio.prop('id'));
+            radio.prop('checked', true);
+            selected(radio.attr("id"));
+        })
+
+        this.adjustSpinnerSize();
+    }
+
+    function adjustSpinnerSize()
+    {
+        $(".ajax-container").height($(document).height());
+    }
+
+
+
+
+
+    function UpdateTableHeaders() {
+        $("div.floating-header").each(function () {
+            var originalHeaderRow = $(".tableFloatingHeaderOriginal", this);
+            var floatingHeaderRow = $(".tableFloatingHeader", this);
+            var offset = $(this).offset();
+            var scrollTop = $(window).scrollTop();
+            if ((scrollTop > offset.top) && (scrollTop < offset.top + $(this).height())) {
+                floatingHeaderRow.css("visibility", "visible");
+                floatingHeaderRow.css("top", Math.min(scrollTop - offset.top, $(this).height() - floatingHeaderRow.height()) + "px");
+
+                // Copy cell widths from original header
+                $("th", floatingHeaderRow).each(function (index) {
+                    var cellWidth = $("th", originalHeaderRow).eq(index).css('width');
+                    $(this).css('width', cellWidth);
                 });
+
+                // Copy row width from whole table
+                floatingHeaderRow.css("width", $("table.grid").css("width"));
             }
-
-
-            function pageLoad(sender, args) {
-                var gridPanel = $('#GridPanel');
-                gridPanel.width($(window).width() - 364);
-
-                $('#FormGridView tr').click(function () {
-                    var radio = $(this).find('td input:radio')
-                    console.log(radio.prop('id'));
-                    radio.prop('checked', true);
-                    selected(radio.attr("id"));
-                })
-
-                jQuery(document).ready(function () {
-                    $(".ajax-container").height($(document).height() + 100);
-                }
-            );
+            else {
+                floatingHeaderRow.css("visibility", "hidden");
+                floatingHeaderRow.css("top", "0px");
             }
+        });
+    }
+
+    $(document).ready(function () {
+        $("table.grid").each(function () {
+            $(this).wrap("<div class=\"floating-header\" style=\"position:relative\"></div>");
+
+            var originalHeaderRow = $("tr:first", this)
+            originalHeaderRow.before(originalHeaderRow.clone());
+            var clonedHeaderRow = $("tr:first", this)
+
+            clonedHeaderRow.addClass("tableFloatingHeader");
+            clonedHeaderRow.css("position", "absolute");
+            clonedHeaderRow.css("top", "0px");
+            clonedHeaderRow.css("left", $(this).css("margin-left"));
+            clonedHeaderRow.css("visibility", "hidden");
+
+            originalHeaderRow.addClass("tableFloatingHeaderOriginal");
+        });
+        UpdateTableHeaders();
+        $(window).scroll(UpdateTableHeaders);
+        $(window).resize(UpdateTableHeaders);
+    });
 </script>

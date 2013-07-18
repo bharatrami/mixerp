@@ -14,6 +14,16 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="DepartmentForm" runat="server" 
+        DenyAdd="false" DenyDelete="false" DenyEdit="false" 
+        KeyColumn="department_id"
+        PageSize="10" Width="1000"
+        TableSchema="office" Table="departments" 
+        ViewSchema="office" View="departments" 
+        Text="Department Maintenance"
+        SelectedValues=""
+        DisplayFields=""
+          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

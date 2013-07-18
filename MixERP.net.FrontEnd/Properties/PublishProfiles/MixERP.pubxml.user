@@ -1,0 +1,1269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="Account/ChangePassword.aspx">
+      <publishTime>07/14/2013 15:33:18</publishTime>
+    </File>
+    <File Include="Account/Index.aspx">
+      <publishTime>07/15/2013 03:12:23</publishTime>
+    </File>
+    <File Include="Account/Messaging/Inbox.aspx">
+      <publishTime>07/15/2013 03:13:20</publishTime>
+    </File>
+    <File Include="Account/Messaging/SentItems.aspx">
+      <publishTime>07/15/2013 03:14:10</publishTime>
+    </File>
+    <File Include="Account/SignOut.aspx">
+      <publishTime>07/14/2013 15:33:19</publishTime>
+    </File>
+    <File Include="App_Themes/MixERP/Default.css">
+      <publishTime>07/14/2013 20:44:19</publishTime>
+    </File>
+    <File Include="App_Themes/MixERP/Skin1.skin">
+      <publishTime>07/14/2013 21:20:47</publishTime>
+    </File>
+    <File Include="bin/AspNetPager.dll">
+      <publishTime>07/14/2013 01:51:27</publishTime>
+    </File>
+    <File Include="bin/MixERP.net.BusinessLayer.dll">
+      <publishTime>07/15/2013 14:25:05</publishTime>
+    </File>
+    <File Include="bin/MixERP.net.Common.dll">
+      <publishTime>07/15/2013 02:23:20</publishTime>
+    </File>
+    <File Include="bin/MixERP.net.DatabaseLayer.dll">
+      <publishTime>07/15/2013 14:25:04</publishTime>
+    </File>
+    <File Include="bin/MixERP.net.FrontEnd.dll">
+      <publishTime>07/15/2013 14:25:08</publishTime>
+    </File>
+    <File Include="bin/Mono.Security.dll">
+      <publishTime>07/14/2013 01:51:27</publishTime>
+    </File>
+    <File Include="bin/Npgsql.dll">
+      <publishTime>07/10/2013 23:08:54</publishTime>
+    </File>
+    <File Include="bin/Pes.Utility.dll">
+      <publishTime>07/15/2013 02:23:20</publishTime>
+    </File>
+    <File Include="ContentMaster.Master">
+      <publishTime>07/14/2013 02:46:09</publishTime>
+    </File>
+    <File Include="CRM/ConvertLeadToOpportunity.aspx">
+      <publishTime>07/14/2013 15:33:19</publishTime>
+    </File>
+    <File Include="CRM/Index.aspx">
+      <publishTime>07/14/2013 15:33:20</publishTime>
+    </File>
+    <File Include="CRM/Lead.aspx">
+      <publishTime>07/14/2013 15:33:20</publishTime>
+    </File>
+    <File Include="CRM/LeadFollowup.aspx">
+      <publishTime>07/14/2013 15:33:21</publishTime>
+    </File>
+    <File Include="CRM/Opportunity.aspx">
+      <publishTime>07/14/2013 15:33:21</publishTime>
+    </File>
+    <File Include="CRM/OpportunityFollowup.aspx">
+      <publishTime>07/14/2013 15:33:22</publishTime>
+    </File>
+    <File Include="CRM/Setup/LeadSources.aspx">
+      <publishTime>07/15/2013 14:08:26</publishTime>
+    </File>
+    <File Include="CRM/Setup/LeadStatuses.aspx">
+      <publishTime>07/15/2013 14:07:57</publishTime>
+    </File>
+    <File Include="CRM/Setup/OpportunityStages.aspx">
+      <publishTime>07/15/2013 14:09:37</publishTime>
+    </File>
+    <File Include="db/FormControlCodeBackup.txt">
+      <publishTime>07/14/2013 02:42:51</publishTime>
+    </File>
+    <File Include="db/mixerp.postgresql.bak.sql">
+      <publishTime>07/15/2013 14:24:46</publishTime>
+    </File>
+    <File Include="db/mixerp.postgresql.sql">
+      <publishTime>07/15/2013 04:41:02</publishTime>
+    </File>
+    <File Include="Dependencies/AspNetPager.dll">
+      <publishTime>07/14/2013 01:51:27</publishTime>
+    </File>
+    <File Include="Dependencies/Mono.Security.dll">
+      <publishTime>07/14/2013 01:51:27</publishTime>
+    </File>
+    <File Include="Dependencies/Npgsql.dll">
+      <publishTime>07/10/2013 23:08:54</publishTime>
+    </File>
+    <File Include="Finance/BankReconcilation.aspx">
+      <publishTime>07/14/2013 15:33:24</publishTime>
+    </File>
+    <File Include="Finance/Index.aspx">
+      <publishTime>07/14/2013 15:33:25</publishTime>
+    </File>
+    <File Include="Finance/JournalVoucher.aspx">
+      <publishTime>07/14/2013 15:33:25</publishTime>
+    </File>
+    <File Include="Finance/Setup/AgeingSlabs.aspx">
+      <publishTime>07/14/2013 15:33:26</publishTime>
+    </File>
+    <File Include="Finance/Setup/BudgetAndTarget.aspx">
+      <publishTime>07/14/2013 15:33:26</publishTime>
+    </File>
+    <File Include="Finance/Setup/CashBankAccounts.aspx">
+      <publishTime>07/14/2013 15:33:27</publishTime>
+    </File>
+    <File Include="Finance/Setup/COA.aspx">
+      <publishTime>07/14/2013 15:33:27</publishTime>
+    </File>
+    <File Include="Finance/Setup/CostCenters.aspx">
+      <publishTime>07/15/2013 14:05:57</publishTime>
+    </File>
+    <File Include="Finance/Setup/Currencies.aspx">
+      <publishTime>07/15/2013 13:55:04</publishTime>
+    </File>
+    <File Include="Finance/Setup/ProductGLMapping.aspx">
+      <publishTime>07/14/2013 15:33:29</publishTime>
+    </File>
+    <File Include="Finance/Setup/TaxFormDetails.aspx">
+      <publishTime>07/15/2013 13:46:52</publishTime>
+    </File>
+    <File Include="Finance/Setup/TaxForms.aspx">
+      <publishTime>07/15/2013 13:44:34</publishTime>
+    </File>
+    <File Include="Finance/Setup/TaxSetup.aspx">
+      <publishTime>07/15/2013 13:42:05</publishTime>
+    </File>
+    <File Include="Finance/Setup/TaxTypes.aspx">
+      <publishTime>07/15/2013 13:31:49</publishTime>
+    </File>
+    <File Include="Finance/StandingInstructions.aspx">
+      <publishTime>07/14/2013 15:33:32</publishTime>
+    </File>
+    <File Include="Finance/TemplateTransaction.aspx">
+      <publishTime>07/14/2013 15:33:33</publishTime>
+    </File>
+    <File Include="Finance/TransactionDocumentManager.aspx">
+      <publishTime>07/14/2013 15:33:33</publishTime>
+    </File>
+    <File Include="Finance/UpdateExchangeRates.aspx">
+      <publishTime>07/14/2013 15:33:34</publishTime>
+    </File>
+    <File Include="Finance/VoucherVerification.aspx">
+      <publishTime>07/14/2013 15:33:34</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>07/14/2013 02:42:54</publishTime>
+    </File>
+    <File Include="index.html">
+      <publishTime>07/15/2013 02:57:21</publishTime>
+    </File>
+    <File Include="Items/Adjustment.aspx">
+      <publishTime>07/14/2013 15:33:35</publishTime>
+    </File>
+    <File Include="Items/Index.aspx">
+      <publishTime>07/14/2013 15:33:36</publishTime>
+    </File>
+    <File Include="Items/Setup/Brands.aspx">
+      <publishTime>07/15/2013 04:34:28</publishTime>
+    </File>
+    <File Include="Items/Setup/CUOM.aspx">
+      <publishTime>07/15/2013 04:40:16</publishTime>
+    </File>
+    <File Include="Items/Setup/ItemGroups.aspx">
+      <publishTime>07/15/2013 04:47:00</publishTime>
+    </File>
+    <File Include="Items/Setup/Items.aspx">
+      <publishTime>07/14/2013 15:33:38</publishTime>
+    </File>
+    <File Include="Items/Setup/Shipper.aspx">
+      <publishTime>07/15/2013 04:47:40</publishTime>
+    </File>
+    <File Include="Items/Setup/UOM.aspx">
+      <publishTime>07/14/2013 15:33:39</publishTime>
+    </File>
+    <File Include="Items/Transfer.aspx">
+      <publishTime>07/14/2013 15:33:39</publishTime>
+    </File>
+    <File Include="Manufacturing/Index.aspx">
+      <publishTime>07/14/2013 15:33:40</publishTime>
+    </File>
+    <File Include="MenuMaster.Master">
+      <publishTime>07/14/2013 02:46:17</publishTime>
+    </File>
+    <File Include="MixERP.net.FrontEnd.licenseheader">
+      <publishTime>07/14/2013 15:22:22</publishTime>
+    </File>
+    <File Include="MixERPMaster.Master">
+      <publishTime>07/14/2013 03:01:07</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>07/14/2013 15:33:41</publishTime>
+    </File>
+    <File Include="POS/AssignCashier.aspx">
+      <publishTime>07/14/2013 15:33:41</publishTime>
+    </File>
+    <File Include="POS/Index.aspx">
+      <publishTime>07/14/2013 15:33:42</publishTime>
+    </File>
+    <File Include="POS/Setup/Stores.aspx">
+      <publishTime>07/14/2013 15:33:42</publishTime>
+    </File>
+    <File Include="POS/Setup/StoreTypes.aspx">
+      <publishTime>07/14/2013 15:33:43</publishTime>
+    </File>
+    <File Include="Purchase/DirectPurchase.aspx">
+      <publishTime>07/14/2013 15:33:44</publishTime>
+    </File>
+    <File Include="Purchase/GRN.aspx">
+      <publishTime>07/14/2013 15:33:44</publishTime>
+    </File>
+    <File Include="Purchase/Index.aspx">
+      <publishTime>07/14/2013 15:33:45</publishTime>
+    </File>
+    <File Include="Purchase/Invoice.aspx">
+      <publishTime>07/14/2013 15:33:45</publishTime>
+    </File>
+    <File Include="Purchase/Order.aspx">
+      <publishTime>07/14/2013 15:33:46</publishTime>
+    </File>
+    <File Include="Purchase/Payment.aspx">
+      <publishTime>07/14/2013 15:33:47</publishTime>
+    </File>
+    <File Include="Purchase/Return.aspx">
+      <publishTime>07/14/2013 15:33:48</publishTime>
+    </File>
+    <File Include="Purchase/Setup/Suppliers.aspx">
+      <publishTime>07/15/2013 04:31:54</publishTime>
+    </File>
+    <File Include="RuntimeError.aspx">
+      <publishTime>07/14/2013 22:11:58</publishTime>
+    </File>
+    <File Include="Sales/Delivery.aspx">
+      <publishTime>07/14/2013 15:33:49</publishTime>
+    </File>
+    <File Include="Sales/DirectSales.aspx">
+      <publishTime>07/14/2013 15:33:50</publishTime>
+    </File>
+    <File Include="Sales/Index.aspx">
+      <publishTime>07/14/2013 15:33:51</publishTime>
+    </File>
+    <File Include="Sales/Invoice.aspx">
+      <publishTime>07/14/2013 15:33:51</publishTime>
+    </File>
+    <File Include="Sales/Order.aspx">
+      <publishTime>07/14/2013 15:33:52</publishTime>
+    </File>
+    <File Include="Sales/Quotation.aspx">
+      <publishTime>07/14/2013 15:33:53</publishTime>
+    </File>
+    <File Include="Sales/Receipt.aspx">
+      <publishTime>07/14/2013 15:33:53</publishTime>
+    </File>
+    <File Include="Sales/Return.aspx">
+      <publishTime>07/14/2013 15:33:54</publishTime>
+    </File>
+    <File Include="Sales/Setup/AgentBonusSlabDetails.aspx">
+      <publishTime>07/15/2013 04:07:55</publishTime>
+    </File>
+    <File Include="Sales/Setup/AgentBonusSlabs.aspx">
+      <publishTime>07/15/2013 04:05:23</publishTime>
+    </File>
+    <File Include="Sales/Setup/Agents.aspx">
+      <publishTime>07/15/2013 04:11:20</publishTime>
+    </File>
+    <File Include="Sales/Setup/BonusSlabAssignment.aspx">
+      <publishTime>07/15/2013 04:14:20</publishTime>
+    </File>
+    <File Include="Sales/Setup/Customers.aspx">
+      <publishTime>07/14/2013 15:33:58</publishTime>
+    </File>
+    <File Include="Sales/Setup/CustomerTypes.aspx">
+      <publishTime>07/15/2013 03:47:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/.gitattributes">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/.gitignore">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/.travis.yml">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/comment/comment.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/dialog/dialog.css">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/dialog/dialog.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/display/placeholder.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/edit/closebrackets.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/edit/closetag.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/edit/continuecomment.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/edit/continuelist.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/edit/matchbrackets.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/edit/trailingspace.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/fold/brace-fold.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/fold/foldcode.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/fold/indent-fold.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/fold/xml-fold.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/hint/html-hint.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/hint/javascript-hint.js">
+      <publishTime>07/14/2013 01:51:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/hint/pig-hint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/hint/python-hint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/hint/show-hint.css">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/hint/show-hint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/hint/xml-hint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/lint/coffeescript-lint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/lint/javascript-lint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/lint/json-lint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/lint/lint.css">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/lint/lint.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/merge/dep/diff_match_patch.js">
+      <publishTime>07/14/2013 15:24:39</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/merge/merge.css">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/merge/merge.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/mode/loadmode.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/mode/multiplex.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/mode/multiplex_test.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/mode/overlay.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/runmode/colorize.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/runmode/runmode-standalone.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/runmode/runmode.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/runmode/runmode.node.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/search/match-highlighter.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/search/search.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/search/searchcursor.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/selection/active-line.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/addon/selection/mark-selection.js">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/bin/compress">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/bin/lint">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/bin/source-highlight">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/bower.json">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/CONTRIBUTING.md">
+      <publishTime>07/14/2013 01:51:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/activeline.html">
+      <publishTime>07/14/2013 15:26:11</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/bidi.html">
+      <publishTime>07/14/2013 15:26:11</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/btree.html">
+      <publishTime>07/14/2013 15:26:11</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/buffers.html">
+      <publishTime>07/14/2013 15:26:11</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/changemode.html">
+      <publishTime>07/14/2013 15:26:11</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/closebrackets.html">
+      <publishTime>07/14/2013 15:26:11</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/closetag.html">
+      <publishTime>07/14/2013 15:26:11</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/complete.html">
+      <publishTime>07/14/2013 15:26:12</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/emacs.html">
+      <publishTime>07/14/2013 15:26:12</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/folding.html">
+      <publishTime>07/14/2013 15:26:12</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/fullscreen.html">
+      <publishTime>07/14/2013 15:26:12</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/html5complete.html">
+      <publishTime>07/14/2013 15:26:12</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/indentwrap.html">
+      <publishTime>07/14/2013 15:26:12</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/lint.html">
+      <publishTime>07/14/2013 15:26:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/loadmode.html">
+      <publishTime>07/14/2013 15:26:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/marker.html">
+      <publishTime>07/14/2013 15:26:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/markselection.html">
+      <publishTime>07/14/2013 15:26:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/matchhighlighter.html">
+      <publishTime>07/14/2013 15:26:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/merge.html">
+      <publishTime>07/14/2013 15:26:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/multiplex.html">
+      <publishTime>07/14/2013 15:26:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/mustache.html">
+      <publishTime>07/14/2013 15:26:14</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/placeholder.html">
+      <publishTime>07/14/2013 15:26:14</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/preview.html">
+      <publishTime>07/14/2013 15:26:14</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/resize.html">
+      <publishTime>07/14/2013 15:26:14</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/runmode.html">
+      <publishTime>07/14/2013 15:26:14</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/search.html">
+      <publishTime>07/14/2013 15:26:14</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/spanaffectswrapping_shim.html">
+      <publishTime>07/14/2013 15:26:14</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/theme.html">
+      <publishTime>07/14/2013 15:26:15</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/trailingspace.html">
+      <publishTime>07/14/2013 15:26:15</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/variableheight.html">
+      <publishTime>07/14/2013 15:26:15</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/vim.html">
+      <publishTime>07/14/2013 15:26:15</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/visibletabs.html">
+      <publishTime>07/14/2013 15:26:15</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/widget.html">
+      <publishTime>07/14/2013 15:26:15</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/demo/xmlcomplete.html">
+      <publishTime>07/14/2013 15:26:15</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/baboon.png">
+      <publishTime>07/14/2013 01:51:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/baboon_vector.svg">
+      <publishTime>07/14/2013 01:51:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/compress.html">
+      <publishTime>07/14/2013 15:26:16</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/docs.css">
+      <publishTime>07/14/2013 01:51:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/internals.html">
+      <publishTime>07/14/2013 15:26:16</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/manual.html">
+      <publishTime>07/14/2013 15:26:16</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/modes.html">
+      <publishTime>07/14/2013 15:26:16</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/oldrelease.html">
+      <publishTime>07/14/2013 15:26:17</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/realworld.html">
+      <publishTime>07/14/2013 15:26:17</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/reporting.html">
+      <publishTime>07/14/2013 15:26:17</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/upgrade_v2.2.html">
+      <publishTime>07/14/2013 15:26:17</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/doc/upgrade_v3.html">
+      <publishTime>07/14/2013 15:26:17</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/index.html">
+      <publishTime>07/14/2013 15:26:18</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/keymap/emacs.js">
+      <publishTime>07/14/2013 01:51:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/keymap/extra.js">
+      <publishTime>07/14/2013 01:51:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/keymap/vim.js">
+      <publishTime>07/14/2013 01:51:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/lib/codemirror.css">
+      <publishTime>07/14/2013 01:51:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/lib/codemirror.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/LICENSE">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/apl/apl.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/apl/index.html">
+      <publishTime>07/14/2013 15:26:19</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/asterisk/asterisk.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/asterisk/index.html">
+      <publishTime>07/14/2013 15:26:19</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/clike/clike.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/clike/index.html">
+      <publishTime>07/14/2013 15:26:19</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/clike/scala.html">
+      <publishTime>07/14/2013 15:26:20</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/clojure/clojure.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/clojure/index.html">
+      <publishTime>07/14/2013 15:26:20</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/cobol/cobol.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/cobol/index.html">
+      <publishTime>07/14/2013 15:26:20</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/coffeescript/coffeescript.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/coffeescript/index.html">
+      <publishTime>07/14/2013 15:26:20</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/coffeescript/LICENSE">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/commonlisp/commonlisp.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/commonlisp/index.html">
+      <publishTime>07/14/2013 15:26:21</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/css/css.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/css/index.html">
+      <publishTime>07/14/2013 15:26:21</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/css/scss.html">
+      <publishTime>07/14/2013 15:26:21</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/css/scss_test.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/css/test.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/d/d.js">
+      <publishTime>07/14/2013 01:51:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/d/index.html">
+      <publishTime>07/14/2013 15:26:22</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/diff/diff.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/diff/index.html">
+      <publishTime>07/14/2013 15:26:22</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ecl/ecl.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ecl/index.html">
+      <publishTime>07/14/2013 15:26:22</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/erlang/erlang.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/erlang/index.html">
+      <publishTime>07/14/2013 15:26:22</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/gas/gas.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/gas/index.html">
+      <publishTime>07/14/2013 15:26:23</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/gfm/gfm.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/gfm/index.html">
+      <publishTime>07/14/2013 15:26:23</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/gfm/test.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/go/go.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/go/index.html">
+      <publishTime>07/14/2013 15:26:23</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/groovy/groovy.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/groovy/index.html">
+      <publishTime>07/14/2013 15:26:24</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/haml/haml.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/haml/index.html">
+      <publishTime>07/14/2013 15:26:24</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/haml/test.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/haskell/haskell.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/haskell/index.html">
+      <publishTime>07/14/2013 15:26:24</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/haxe/haxe.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/haxe/index.html">
+      <publishTime>07/14/2013 15:26:24</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/htmlembedded/htmlembedded.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/htmlembedded/index.html">
+      <publishTime>07/14/2013 15:26:25</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/htmlmixed/htmlmixed.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/htmlmixed/index.html">
+      <publishTime>07/14/2013 15:26:25</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/http/http.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/http/index.html">
+      <publishTime>07/14/2013 15:26:25</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/javascript/index.html">
+      <publishTime>07/14/2013 15:26:25</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/javascript/javascript.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/javascript/typescript.html">
+      <publishTime>07/14/2013 15:26:26</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/jinja2/index.html">
+      <publishTime>07/14/2013 15:26:26</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/jinja2/jinja2.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/less/index.html">
+      <publishTime>07/14/2013 15:26:26</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/less/less.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/livescript/index.html">
+      <publishTime>07/14/2013 15:26:26</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/livescript/LICENSE">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/livescript/livescript.js">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/livescript/livescript.ls">
+      <publishTime>07/14/2013 01:51:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/lua/index.html">
+      <publishTime>07/14/2013 15:26:27</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/lua/lua.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/markdown/index.html">
+      <publishTime>07/14/2013 15:26:27</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/markdown/markdown.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/markdown/test.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/meta.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/mirc/index.html">
+      <publishTime>07/14/2013 15:26:28</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/mirc/mirc.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ntriples/index.html">
+      <publishTime>07/14/2013 15:26:28</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ntriples/ntriples.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ocaml/index.html">
+      <publishTime>07/14/2013 15:26:28</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ocaml/ocaml.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/pascal/index.html">
+      <publishTime>07/14/2013 15:26:28</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/pascal/LICENSE">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/pascal/pascal.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/perl/index.html">
+      <publishTime>07/14/2013 15:26:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/perl/LICENSE">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/perl/perl.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/php/index.html">
+      <publishTime>07/14/2013 15:26:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/php/php.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/pig/index.html">
+      <publishTime>07/14/2013 15:26:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/pig/pig.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/properties/index.html">
+      <publishTime>07/14/2013 15:26:29</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/properties/properties.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/python/index.html">
+      <publishTime>07/14/2013 15:26:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/python/LICENSE.txt">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/python/python.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/q/index.html">
+      <publishTime>07/14/2013 15:26:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/q/q.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/r/index.html">
+      <publishTime>07/14/2013 15:26:30</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/r/LICENSE">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/r/r.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rpm/changes/changes.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rpm/changes/index.html">
+      <publishTime>07/14/2013 15:26:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rpm/spec/index.html">
+      <publishTime>07/14/2013 15:26:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rpm/spec/spec.css">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rpm/spec/spec.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rst/index.html">
+      <publishTime>07/14/2013 15:26:31</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rst/LICENSE.txt">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rst/rst.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ruby/index.html">
+      <publishTime>07/14/2013 15:26:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ruby/LICENSE">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/ruby/ruby.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rust/index.html">
+      <publishTime>07/14/2013 15:26:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/rust/rust.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sass/index.html">
+      <publishTime>07/14/2013 15:26:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sass/sass.js">
+      <publishTime>07/14/2013 01:51:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/scheme/index.html">
+      <publishTime>07/14/2013 15:26:32</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/scheme/scheme.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/shell/index.html">
+      <publishTime>07/14/2013 15:26:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/shell/shell.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sieve/index.html">
+      <publishTime>07/14/2013 15:26:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sieve/LICENSE">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sieve/sieve.js">
+      <publishTime>07/14/2013 15:25:05</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/smalltalk/index.html">
+      <publishTime>07/14/2013 15:26:33</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/smalltalk/smalltalk.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/smarty/index.html">
+      <publishTime>07/14/2013 15:26:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/smarty/smarty.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sparql/index.html">
+      <publishTime>07/14/2013 15:26:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sparql/sparql.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sql/index.html">
+      <publishTime>07/14/2013 15:26:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/sql/sql.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/stex/index.html">
+      <publishTime>07/14/2013 15:26:34</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/stex/stex.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/stex/test.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tcl/index.html">
+      <publishTime>07/14/2013 15:26:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tcl/tcl.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tiddlywiki/index.html">
+      <publishTime>07/14/2013 15:26:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tiddlywiki/tiddlywiki.css">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tiddlywiki/tiddlywiki.js">
+      <publishTime>07/14/2013 15:25:08</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tiki/index.html">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tiki/tiki.css">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/tiki/tiki.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/turtle/index.html">
+      <publishTime>07/14/2013 15:26:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/turtle/turtle.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/vb/index.html">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/vb/LICENSE.txt">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/vb/vb.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/vbscript/index.html">
+      <publishTime>07/14/2013 15:26:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/vbscript/vbscript.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/velocity/index.html">
+      <publishTime>07/14/2013 15:26:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/velocity/velocity.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/verilog/index.html">
+      <publishTime>07/14/2013 15:26:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/verilog/verilog.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/xml/index.html">
+      <publishTime>07/14/2013 15:26:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/xml/xml.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/xquery/index.html">
+      <publishTime>07/14/2013 15:26:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/xquery/LICENSE">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/xquery/test.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/xquery/xquery.js">
+      <publishTime>07/14/2013 15:25:10</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/yaml/index.html">
+      <publishTime>07/14/2013 15:26:38</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/yaml/yaml.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/z80/index.html">
+      <publishTime>07/14/2013 15:26:38</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/mode/z80/z80.js">
+      <publishTime>07/14/2013 01:51:35</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/package.json">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/README.md">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/comment_test.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/doc_test.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/driver.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/emacs_test.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/index.html">
+      <publishTime>07/14/2013 15:26:39</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/lint/acorn.js">
+      <publishTime>07/14/2013 15:25:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/lint/lint.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/lint/parse-js.js">
+      <publishTime>07/14/2013 15:25:13</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/lint/walk.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/mode_test.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/mode_test.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/phantom_driver.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/run.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/test.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/test/vim_test.js">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/ambiance-mobile.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/ambiance.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/blackboard.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/cobalt.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/default.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/eclipse.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/elegant.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/erlang-dark.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/lesser-dark.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/midnight.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/monokai.css">
+      <publishTime>07/14/2013 01:51:36</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/neat.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/night.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/rubyblue.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/solarized.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/twilight.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/vibrant-ink.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/visual-studio-ex.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/visual-studio.css">
+      <publishTime>07/14/2013 15:37:10</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/xq-dark.css">
+      <publishTime>07/14/2013 15:25:17</publishTime>
+    </File>
+    <File Include="Scripts/CodeMirror/theme/xq-light.css">
+      <publishTime>07/14/2013 15:25:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery.min.js">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Scripts/mixerp.js">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="Setup/Admin/Backup.aspx">
+      <publishTime>07/14/2013 15:34:16</publishTime>
+    </File>
+    <File Include="Setup/Admin/ChangePassword.aspx">
+      <publishTime>07/14/2013 15:34:17</publishTime>
+    </File>
+    <File Include="Setup/Admin/DatabaseStatistics.aspx">
+      <publishTime>07/14/2013 15:34:18</publishTime>
+    </File>
+    <File Include="Setup/Admin/NewCompany.aspx">
+      <publishTime>07/14/2013 15:34:19</publishTime>
+    </File>
+    <File Include="Setup/Admin/Query.aspx">
+      <publishTime>07/14/2013 15:34:20</publishTime>
+    </File>
+    <File Include="Setup/Admin/Restore.aspx">
+      <publishTime>07/14/2013 15:34:21</publishTime>
+    </File>
+    <File Include="Setup/CashRepositories.aspx">
+      <publishTime>07/15/2013 14:18:31</publishTime>
+    </File>
+    <File Include="Setup/Counters.aspx">
+      <publishTime>07/15/2013 14:20:36</publishTime>
+    </File>
+    <File Include="Setup/Departments.aspx">
+      <publishTime>07/15/2013 14:11:45</publishTime>
+    </File>
+    <File Include="Setup/Frequency.aspx">
+      <publishTime>07/14/2013 15:34:25</publishTime>
+    </File>
+    <File Include="Setup/Index.aspx">
+      <publishTime>07/14/2013 15:34:26</publishTime>
+    </File>
+    <File Include="Setup/Offices.aspx">
+      <publishTime>07/14/2013 15:34:27</publishTime>
+    </File>
+    <File Include="Setup/Policy/AutoVerification.aspx">
+      <publishTime>07/14/2013 15:34:28</publishTime>
+    </File>
+    <File Include="Setup/Policy/GLAccess.aspx">
+      <publishTime>07/14/2013 15:34:29</publishTime>
+    </File>
+    <File Include="Setup/Policy/MenuAccess.aspx">
+      <publishTime>07/14/2013 15:34:29</publishTime>
+    </File>
+    <File Include="Setup/Policy/Store.aspx">
+      <publishTime>07/14/2013 15:34:30</publishTime>
+    </File>
+    <File Include="Setup/Policy/VoucherVerification.aspx">
+      <publishTime>07/14/2013 15:34:31</publishTime>
+    </File>
+    <File Include="Setup/Roles.aspx">
+      <publishTime>07/15/2013 14:10:45</publishTime>
+    </File>
+    <File Include="Setup/Users.aspx">
+      <publishTime>07/14/2013 15:34:33</publishTime>
+    </File>
+    <File Include="SignIn.aspx">
+      <publishTime>07/15/2013 01:58:27</publishTime>
+    </File>
+    <File Include="spinner.gif">
+      <publishTime>07/14/2013 20:38:05</publishTime>
+    </File>
+    <File Include="Templates/Print.html">
+      <publishTime>07/14/2013 21:45:07</publishTime>
+    </File>
+    <File Include="Themes/blue/main.css">
+      <publishTime>07/15/2013 03:39:52</publishTime>
+    </File>
+    <File Include="Themes/blue/mixerp-logo.png">
+      <publishTime>07/14/2013 03:06:06</publishTime>
+    </File>
+    <File Include="Themes/blue/padding.css">
+      <publishTime>07/14/2013 01:51:37</publishTime>
+    </File>
+    <File Include="UserControls/Forms/FormControl.ascx">
+      <publishTime>07/15/2013 03:43:06</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>07/15/2013 02:27:13</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.net.DatabaseLayer", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pes.Utility", "Pes.Utility\Pes.Utility.csproj", "{D5F5C51D-250D-4775-8E63-AE792A9A04A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Npgsql2010", "Npgsql\Npgsql2010.csproj", "{9D13B739-62B1-4190-B386-7A9547304EB3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.net.FrontEnd", "MixERP.net.FrontEnd\MixERP.net.FrontEnd.csproj", "{ACE1017D-71BC-4417-A906-72C4B9C55823}"
 EndProject
 Global
@@ -53,14 +51,6 @@ Global
 		{D5F5C51D-250D-4775-8E63-AE792A9A04A0}.Mono-Release|Any CPU.Build.0 = Release|Any CPU
 		{D5F5C51D-250D-4775-8E63-AE792A9A04A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5F5C51D-250D-4775-8E63-AE792A9A04A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Mono-Debug|Any CPU.ActiveCfg = Mono-Debug|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Mono-Debug|Any CPU.Build.0 = Mono-Debug|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Mono-Release|Any CPU.ActiveCfg = Mono-Release|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Mono-Release|Any CPU.Build.0 = Mono-Release|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D13B739-62B1-4190-B386-7A9547304EB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ACE1017D-71BC-4417-A906-72C4B9C55823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACE1017D-71BC-4417-A906-72C4B9C55823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACE1017D-71BC-4417-A906-72C4B9C55823}.Mono-Debug|Any CPU.ActiveCfg = Debug|Any CPU

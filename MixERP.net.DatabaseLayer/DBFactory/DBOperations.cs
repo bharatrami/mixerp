@@ -29,6 +29,7 @@ namespace MixERP.net.DatabaseLayer.DBFactory
                     try
                     {
                         command.Connection = connection;
+                        command.CommandTimeout = 300;
                         connection.Open();
 
                         command.ExecuteNonQuery();
@@ -51,6 +52,7 @@ namespace MixERP.net.DatabaseLayer.DBFactory
                 using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
+                    command.CommandTimeout = 300;
                     connection.Open();
                     return command.ExecuteScalar();
                 }
@@ -66,6 +68,8 @@ namespace MixERP.net.DatabaseLayer.DBFactory
                 using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
+                    command.CommandTimeout = 300;
+
                     using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
                     {
                         using (DataTable dataTable = new DataTable())
@@ -89,6 +93,8 @@ namespace MixERP.net.DatabaseLayer.DBFactory
                 using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
+                    command.CommandTimeout = 300;
+
                     command.Connection.Open();
                     reader = command.ExecuteReader(CommandBehavior.CloseConnection);
                     return reader;
@@ -118,6 +124,8 @@ namespace MixERP.net.DatabaseLayer.DBFactory
                 using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
+                    command.CommandTimeout = 300;
+
                     using (Npgsql.NpgsqlDataAdapter adapter = new Npgsql.NpgsqlDataAdapter(command))
                     {
                         return adapter;

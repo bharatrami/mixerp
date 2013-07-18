@@ -49,6 +49,24 @@ namespace MixERP.net.FrontEnd.Setup.Admin {
         protected global::System.Web.UI.WebControls.Button SaveButton;
         
         /// <summary>
+        /// RunButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button RunButton;
+        
+        /// <summary>
+        /// LoadCustomerButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button LoadCustomerButton;
+        
+        /// <summary>
         /// GoToTopButton control.
         /// </summary>
         /// <remarks>

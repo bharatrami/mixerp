@@ -15,7 +15,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <pes:Form ID="CompoundUnitForm" runat="server" DenyAdd="false" DenyDelete="false" DenyEdit="false" KeyColumn="compound_unit_id"
-        PageSize="10" TableSchema="core" Table="compound_units" ViewSchema="core" View="compound_units" Text="Compound Unit of Measure" Width="1000"
+        PageSize="10" TableSchema="core" Table="compound_units" ViewSchema="core" View="compound_unit_view" Text="Compound Unit of Measure" Width="1000"
         DisplayFields="core.units.unit_id-->unit_name"
          />
 </asp:Content>

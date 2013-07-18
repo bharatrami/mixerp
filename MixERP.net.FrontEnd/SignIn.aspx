@@ -14,6 +14,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link href="themes/blue/main.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/jquery.min.js"></script>
     <title>Sign In</title>
 </head>
 <body>
@@ -66,7 +67,7 @@
                 </td>
                 <td>
                     <p>
-                        <asp:CheckBox ID="RememberMe" runat="server" Text="Don't Forget Me" />
+                        <asp:CheckBox ID="RememberMe" runat="server" Text="&nbsp;Don't Forget Me" />
                     </p>
                 </td>
             </tr>
@@ -98,6 +99,10 @@
             </tr>
         </table>
     </div>
+        <script type="text/javascript">
+            $("#UserIdTextBox").val('binod');
+            $("#PasswordTextBox").val('binod');
+        </script>
     </form>
 </body>
 </html>

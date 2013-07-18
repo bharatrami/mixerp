@@ -14,6 +14,16 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Form ID="CashRepositoryForm" runat="server" 
+        DenyAdd="false" DenyDelete="false" DenyEdit="false" 
+        KeyColumn="cash_repository_id"
+        PageSize="10" Width="1000"
+        TableSchema="office" Table="cash_repositories" 
+        ViewSchema="office" View="cash_repository_view" 
+        Text="Cash Repository Maintenance"
+        SelectedValues=""
+        DisplayFields="office.cash_repositories.cash_repository_id-->cash_repository_code + ' (' + cash_repository_name + ')'"
+          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

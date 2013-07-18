@@ -40,6 +40,10 @@
         <asp:Button ID="LoadButton" runat="server" Text="Load" OnClick="LoadButton_Click" />
         <asp:Button ID="ClearButton" runat="server" Text="Clear" OnClick="ClearButton_Click" />
         <asp:Button ID="SaveButton" runat="server" Text="Save" OnClientClick="$('#QueryHidden').val(editor.getValue());" OnClick="SaveButton_Click" />
+
+        <asp:Button ID="RunButton" runat="server" Text="Run" OnClick="RunButton_Click" />
+        <asp:Button ID="LoadCustomerButton" runat="server" Text="Load Customers" OnClick="LoadCustomerButton_Click" />
+
         <asp:Button ID="GoToTopButton" runat="server" Text="Go to Top" OnClientClick="$('html, body').animate({ scrollTop: 0 }, 'slow');return(false);" />
     </div>
 
@@ -118,6 +122,29 @@
     {
         string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/mixerp.postgresql.bak.sql"));
         QueryTextBox.Text = sql;
+    }
+
+
+    protected void RunButton_Click(object sender, EventArgs e)
+    {
+        string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/mixerp.postgresql.bak.sql"));
+        using (System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
+        {
+            MessageLiteral.Text = string.Format("<div class='success'>{0} row(s) affected.</div>", table.Rows.Count);
+            SQLGridView.DataSource = table;
+            SQLGridView.DataBind();
+        }
+    }
+
+    protected void LoadCustomerButton_Click(object sender, EventArgs e)
+    {
+        string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/customer-sample.sql"));
+        using (System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
+        {
+            MessageLiteral.Text = string.Format("<div class='success'>{0} row(s) affected.</div>", table.Rows.Count);
+            SQLGridView.DataSource = table;
+            SQLGridView.DataBind();
+        }
     }
 
     protected void ExecuteButton_Click(object sender, EventArgs e)

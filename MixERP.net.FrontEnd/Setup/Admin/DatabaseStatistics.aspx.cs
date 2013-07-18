@@ -23,5 +23,28 @@ namespace MixERP.net.FrontEnd.Setup.Admin
         {
 
         }
+
+        protected void VacuumButton_Click(object sender, EventArgs e)
+        {
+            MixERP.net.BusinessLayer.Helper.Maintenance.Vacuum();
+            this.DisplaySuccess();
+        }
+
+        protected void FullVacuumButton_Click(object sender, EventArgs e)
+        {
+            MixERP.net.BusinessLayer.Helper.Maintenance.VacuumFull();
+            this.DisplaySuccess();
+        }
+
+        protected void AnalyzeButton_Click(object sender, EventArgs e)
+        {
+            MixERP.net.BusinessLayer.Helper.Maintenance.Analyze();
+            this.DisplaySuccess();
+        }
+
+        private void DisplaySuccess()
+        {
+            MessageLiteral.Text = "<div class='success'>Task completed successfully.</div>";
+        }
     }
 }
