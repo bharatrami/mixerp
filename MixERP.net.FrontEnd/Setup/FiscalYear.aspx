@@ -8,16 +8,23 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="TaxFormDetails.aspx.cs" Inherits="MixERP.net.FrontEnd.Finance.Setup.TaxFormDetails" %>
+
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="FiscalYear.aspx.cs" Inherits="MixERP.net.FrontEnd.Setup.FiscalYear" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <pes:Form ID="TaxFormDetailForm" runat="server" Text="Tax Form Details" TableSchema="core" Table="tax_form_details" KeyColumn="tax_form_detail_id"
-        ViewSchema="core" View="tax_form_detail_view" Width="1000" PageSize="10" 
-        SelectedValues=""
-        DisplayFields="core.tax_forms.tax_form_id-->tax_form_code + ' (' + tax_form_name + ')', core.taxes.tax_id-->tax_code + ' (' + tax_name + ')'" />
+    <pes:Form ID="FiscalYearForm" runat="server"
+        DenyAdd="false" DenyEdit="true" DenyDelete="true"
+        KeyColumn="fiscal_year_code"
+        PageSize="10"
+        TableSchema="core"
+        Table="fiscal_year"
+        ViewSchema="core"
+        View="fiscal_year"
+        Width="1000" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

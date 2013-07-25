@@ -20,7 +20,7 @@
         PageSize="10" Width="1000" 
         TableSchema="crm" Table="opportunity_stages" 
         ViewSchema="crm" View="opportunity_stages" 
-        Text="Lead Source Maintenace"
+        Text="Opportunity Stages Setup"
         SelectedValues=""
         DisplayFields=""/>
 </asp:Content>

@@ -27,6 +27,12 @@ namespace MixERP.net.BusinessLayer
             {
                 if (Request.IsAuthenticated)
                 {
+                    if(Context.Session["OfficeId"] == null)
+                    {
+                        MixERP.net.BusinessLayer.BasePageClass.RequestLoginPage();
+                        return;
+                    }
+
                     if (Context.Session != null)
                     {
                         if (Context.Session.IsNewSession)
@@ -55,8 +61,9 @@ namespace MixERP.net.BusinessLayer
             MixERP.net.BusinessLayer.Security.User.SetSession(this.Page, User.Identity.Name);
         }
 
-        private void RequestLoginPage()
+        public static void RequestLoginPage()
         {
+            FormsAuthentication.SignOut();
             string currentUrl = HttpContext.Current.Request.RawUrl;
             string loginPageUrl = FormsAuthentication.LoginUrl;
             HttpContext.Current.Response.Redirect(String.Format("{0}?ReturnUrl={1}", loginPageUrl, currentUrl));

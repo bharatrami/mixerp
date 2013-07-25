@@ -16,7 +16,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <pes:Form ID="FrequencySetupForm" runat="server" DenyAdd="false" DenyDelete="false" DenyEdit="false" KeyColumn="frequency_setup_id"
         PageSize="10" TableSchema="core" Table="frequency_setups" ViewSchema="core" View="frequency_setups" Text="Frequency Setup" Width="1000"
-        DisplayFields="core.frequencies.frequency_id-->frequency_name" />
+        DisplayFields="core.frequencies.frequency_id-->frequency_name, core.fiscal_year.fiscal_year_code-->fiscal_year_code + ' (' + fiscal_year_name + ')'" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

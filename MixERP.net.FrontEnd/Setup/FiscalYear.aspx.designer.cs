@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Finance.Setup {
+namespace MixERP.net.FrontEnd.Setup {
     
     
-    public partial class TaxFormDetails {
+    public partial class FiscalYear {
         
         /// <summary>
-        /// TaxFormDetailForm control.
+        /// FiscalYearForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl TaxFormDetailForm;
+        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl FiscalYearForm;
     }
 }

@@ -37,24 +37,25 @@
         <div class="vpad16">
             <a href="#" id="ShowCompactAnchor" class="menu" onclick="window.location = window.location.pathname + '?show=compact';">Show Compact</a>
             <a href="#" id="ShowAllAnchor" class="menu" onclick="window.location = window.location.pathname + '?show=all';">Show All</a>
-            <a href="#" id="AddAnchor" class="menu" onclick="$('#FormGridView tr').find('td input:radio').removeAttr('checked');$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">Add New</a>
-            <asp:LinkButton ID="EditLinkButton" runat="server" Text="Edit Selected" CssClass="menu"
+            <a href="#" id="AddAnchor" class="menu" onclick="$('#FormGridView tr').find('td input:radio').removeAttr('checked');$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">
+                <asp:Literal ID="AddNewLiteral" runat="server" Text="<%$Resources:Titles, AddNew %>" /></a>
+            <asp:LinkButton ID="EditLinkButton" runat="server" Text="<%$Resources:Titles, EditSelected %>" CssClass="menu"
                 OnClick="EditLinkButton_Click" OnClientClick="return(confirmAction());" CausesValidation="false" />
-            <asp:LinkButton ID="DeleteLinkButton" runat="server" Text="Delete Selected" CssClass="menu" CausesValidation="false"
+            <asp:LinkButton ID="DeleteLinkButton" runat="server" Text="<%$Resources:Titles, DeleteSelected %>" CssClass="menu" CausesValidation="false"
                 OnClick="DeleteLinkButton_Click" OnClientClick="return(confirmAction());" />
             <a href="#" id="PrintAnchor" class="menu" onclick="printThis();">
-                Print</a>
+                <asp:Literal ID="PrintLiteral" runat="server" Text="<%$Resources:Titles, Print %>" />
+            </a>
         </div>
 
-
-        <asp:Literal ID="FormLiteral" runat="server" />
+        <asp:Label ID="FormLabel" runat="server" />
 
         <asp:Panel ID="GridPanel" runat="server" ScrollBars="Auto" Width="600">
             <asp:GridView ID="FormGridView" runat="server" AutoGenerateColumns="true" OnRowDataBound="FormGridView_RowDataBound">
                 <Columns>
-                    <asp:TemplateField HeaderText="Select" ItemStyle-Width="20px">
+                    <asp:TemplateField HeaderText="<%$Resources:Titles, Select %>" ItemStyle-Width="20px">
                         <HeaderTemplate>
-                            Select
+                            <asp:Literal ID="SelectLiteral" runat="server" Text="<%$Resources:Titles, Select %>" />
                         </HeaderTemplate>
                     </asp:TemplateField>
                 </Columns>
@@ -71,11 +72,11 @@
         <asp:Panel ID="FormPanel" runat="server" Style="display: none;">
             <div class="form">
                 <h3>
-                    Add a New Entry
+                    <asp:Literal ID="AddNewEntryLiteral" runat="server" Text="<%$Resources:Titles, AddNewEntry %>" />
                 </h3>
                 <hr class="hr" />
                 <p class="info" style="text-align: left; font-weight: bold;">
-                    The fields marked with asterisk (*) are required.
+                    <asp:Literal ID="RequiredFieldDetailsLiteral" runat="server" Text="<%$Resources:Labels, RequiredFieldDetails %>" />
                 </p>
                 <asp:Panel ID="FormContainer" runat="server">
                 </asp:Panel>
@@ -85,9 +86,9 @@
                         <td class="label-cell">
                         </td>
                         <td>
-                            <asp:Button ID="SaveButton" runat="server" Text="Save" OnClientClick="adjustSpinnerSize();" OnClick="SaveButton_Click" />
-                            <asp:Button ID="CancelButton" runat="server" Text="Cancel" CausesValidation="false" OnClientClick="$('#FormPanel').hide(500); $('#GridPanel').show(500);" OnClick="CancelButton_Click" />
-                            <input type="reset" value="Reset" runat="server" />
+                            <asp:Button ID="SaveButton" runat="server" Text="<%$Resources:Titles, Save %>" OnClientClick="adjustSpinnerSize();" OnClick="SaveButton_Click" />
+                            <asp:Button ID="CancelButton" runat="server" Text="<%$Resources:Titles, Cancel %>" CausesValidation="false" OnClientClick="$('#FormPanel').hide(500); $('#GridPanel').show(500);" OnClick="CancelButton_Click" />
+                            <input type="reset" value="<%$Resources:Titles, Reset %>" runat="server" />
                         </td>
                     </tr>
                 </table>
@@ -98,18 +99,19 @@
 
 
         <p>
-            <asp:LinkButton ID="ShowCompact2" runat="server" Text="Show Compact" CssClass="menu"
+            <asp:LinkButton ID="ShowCompact2" runat="server" Text="<%$Resources:Titles, ShowCompact %>" CssClass="menu"
                 OnClientClick="window.location = window.location.pathname + '?show=compact';" />
-            <asp:LinkButton ID="ShowAll2" runat="server" Text="Show All" CssClass="menu" OnClientClick="window.location = window.location.pathname + '?show=all';" />
+            <asp:LinkButton ID="ShowAll2" runat="server" Text="<%$Resources:Titles, ShowAll %>" CssClass="menu" OnClientClick="window.location = window.location.pathname + '?show=all';" />
             <a href="#" id="AddAnchor" class="menu" onclick="$('#FormGridView tr').find('td input:radio').removeAttr('checked');$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">
-                Add New
+                <asp:Literal ID="AddNewLiteral2" runat="server" Text="<%$Resources:Titles, AddNew %>" />
             </a>
-            <asp:LinkButton ID="EditLinkButton2" runat="server" Text="Edit Selected" CssClass="menu"
+            <asp:LinkButton ID="EditLinkButton2" runat="server" Text="<%$Resources:Titles, EditSelected %>" CssClass="menu"
                 OnClick="EditLinkButton_Click" OnClientClick="return(confirmAction());" CausesValidation="false" />
-            <asp:LinkButton ID="DeleteLinkButton2" runat="server" Text="Delete Selected" CssClass="menu" CausesValidation="false"
+            <asp:LinkButton ID="DeleteLinkButton2" runat="server" Text="<%$Resources:Titles, DeleteSelected %>" CssClass="menu" CausesValidation="false"
                 OnClick="DeleteLinkButton_Click" OnClientClick="return(confirmAction());" />
             <a href="#" id="PrintAnchor2" class="menu" onclick="printThis();">
-                Print</a>
+                <asp:Literal ID="PrintLiteral2" runat="server" Text="<%$Resources:Titles, Print %>" />
+            </a>
         </p>
         <p class="vpad16">
         </p>
@@ -122,13 +124,13 @@
 <script type="text/javascript">
 
     var confirmAction = function () {
-        var c = confirm('Are you sure?');
+        var c = confirm("<%= Resources.Questions.AreYouSure %>");
 
         if (c) {
             var selected = this.selectedValue();
 
             if (selected == undefined) {
-                alert('Nothing selected!');
+                alert("<%= Resources.Labels.NothingSelected %>");
                 return false;
             }
             return true;
@@ -201,8 +203,7 @@
         this.adjustSpinnerSize();
     }
 
-    function adjustSpinnerSize()
-    {
+    function adjustSpinnerSize() {
         $(".ajax-container").height($(document).height());
     }
 

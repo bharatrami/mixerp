@@ -10,14 +10,8 @@
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DateTextBox.ascx.cs" Inherits="MixERP.net.FrontEnd.UserControls.DateTextBox" %>
 <asp:TextBox ID="TextBox1" runat="server" Width="100">
-
 </asp:TextBox>
+<ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" />
+<br />
+<asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" />
 
-<script runat="server">
-    public string ID { get; set; }
-    
-    protected void Page_Init(object sender, EventArgs e)
-    {
-        TextBox1.ID = this.ID;
-    }
-</script>

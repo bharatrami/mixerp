@@ -17,7 +17,7 @@
     <pes:Form ID="ItemCostPriceForm" runat="server" Text="Item Cost Price Maintenance" TableSchema="core" Table="item_cost_prices" KeyColumn="item_cost_price_id"
         ViewSchema="core" View="item_cost_price_view" Width="1000" PageSize="10"
         SelectedValues=""
-        DisplayFields="core.items.item_id-->item_code + ' (' + item_name + ')', core.suppliers.supplier_id-->supplier_code + ' (' + supplier_name + ')' " />
+        DisplayFields="core.items.item_id-->item_code + ' (' + item_name + ')', core.suppliers.supplier_id-->supplier_code + ' (' + supplier_name + ')', core.units.unit_id-->unit_code + ' (' + unit_name + ')' " />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

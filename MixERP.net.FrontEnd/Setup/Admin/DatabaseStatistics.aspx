@@ -8,7 +8,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
+
 <%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="DatabaseStatistics.aspx.cs" Inherits="MixERP.net.FrontEnd.Setup.Admin.DatabaseStatistics" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
@@ -18,9 +20,9 @@
     <hr class="hr" />
     <asp:Literal ID="MessageLiteral" runat="server" />
 
-    <asp:Button ID="VacuumButton" runat="server" Text="Vacuum Database" OnClick="VacuumButton_Click" />
-    <asp:Button ID="FullVacuumButton" runat="server" Text="Vacuum Database (Full)" OnClick="FullVacuumButton_Click" />
-    <asp:Button ID="AnalyzeButton" runat="server" Text="Analyze Database" OnClick="AnalyzeButton_Click" />
+    <asp:Button ID="VacuumButton" runat="server" Text="Vacuum Database" OnClick="VacuumButton_Click" OnClientClick="return(confirm('This will lock client database access during execution. Are you sure you want to execute this action right now?'));" />
+    <asp:Button ID="FullVacuumButton" runat="server" Text="Vacuum Database (Full)" OnClick="FullVacuumButton_Click" OnClientClick="return(confirm('This will lock client database access during execution. Are you sure you want to execute this action right now?'));" />
+    <asp:Button ID="AnalyzeButton" runat="server" Text="Analyze Database" OnClick="AnalyzeButton_Click" OnClientClick="return(confirm('This will lock client database access during execution. Are you sure you want to execute this action right now?'));" />
 
     <br />
     <br />

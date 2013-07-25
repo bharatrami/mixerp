@@ -11,434 +11,293 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProductControl.ascx.cs" Inherits="MixERP.net.FrontEnd.UserControls.Products.ProductControl" %>
 <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
-<p>
-    <h2>Direct Sales</h2>
-</p>
+<div style="width: 1000px; overflow: hidden; margin: 0 auto;">
+    <asp:Label ID="TitleLabel" CssClass="title" runat="server" />
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+        <ProgressTemplate>
+            <div class="ajax-container">
+                <img alt="progress" src="/spinner.gif" class="ajax-loader" />
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
 
-<div class="form" style="width: 99%;">
-    <table class="form-table">
-        <tr>
-            <td>
-                <label for="TranIdTextBox">Tran Id</label>
-            </td>
-            <td>
-                <label for="DateTextBox">Value Date</label>
-            </td>
-            <td>
-                Types
-            </td>
-            <td>
-                <label for="CustomerCodeTextBox">Select Customer</label>
-            </td>
-            <td>
-                <asp:Literal ID="PriceTypeLiteral" runat="server" Text="<label for='PriceTypeDropDownList'>Price Type</label>" />
-            </td>
-            <td>
-                <label for="CostCenterDropDownList">Cost Center</label>
-            </td>
-            <td>
-                <label for="TaxFormDropDownList">Tax Form</label>
-            </td>
-            <td>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:TextBox ID="TranIdTextBox" runat="server" Width="30" Text="Auto" ReadOnly="true" />
-            </td>
-            <td>
-                <pes:DateTextBox ID="DateTextBox" runat="server" />
-            </td>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="true" UpdateMode="Always">
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="CashRepositoryDropDownList" />
+            <asp:AsyncPostBackTrigger ControlID="ProductGridView" />
+            <asp:AsyncPostBackTrigger ControlID="AddButton" />
+            <asp:AsyncPostBackTrigger ControlID="OKButton" />
+            <asp:AsyncPostBackTrigger ControlID="CancelButton" />
+            <asp:AsyncPostBackTrigger ControlID="ItemDropDownList" />
+            <asp:AsyncPostBackTrigger ControlID="UnitDropDownList" />
+            <asp:PostBackTrigger ControlID="SaveButton" />
+        </Triggers>
+        <ContentTemplate>
+            <asp:HiddenField ID="ModeHiddenField" runat="server" />
 
-            <td>
-                <asp:RadioButtonList ID="SalesTypeRadioButtonList" runat="server" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="Cash" Value="Cash" Selected="True" />
-                    <asp:ListItem Text="Credit" Value="Cash" />
-                </asp:RadioButtonList>
-            </td>
+            <asp:Panel ID="TopPanel" CssClass="form" runat="server">
+                <table class="form-table">
+                    <tr>
+                        <td>
+                            <asp:Literal ID="DateLiteral" runat="server" />
+                        </td>
+                        <td>
+                            <asp:Literal ID="StoreLiteral" runat="server" />
+                        </td>
+                        <td>
+                            <asp:Literal ID="TransactionTypeLiteral" runat="server" />
+                        </td>
+                        <td>
+                            <asp:Literal ID="CustomerLiteral" runat="server" />
+                            <asp:Literal ID="SupplierLiteral" runat="server" />
+                        </td>
+                        <td>
+                            <asp:Literal ID="PriceTypeLiteral" runat="server" />
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr style="vertical-align: middle;">
+                        <td>
+                            <pes:DateTextBox ID="DateTextBox" runat="server" Width="70" />
+                        </td>
+                        <td>
+                            <asp:DropDownList ID="StoreDropDownList" runat="server" Width="80">
+                            </asp:DropDownList>
+                        </td>
+                        <td>
+                            <asp:RadioButtonList ID="TransactionTypeRadioButtonList" runat="server" RepeatDirection="Horizontal">
+                                <asp:ListItem Text="<%$ Resources:Titles, Cash %>" Value="<%$ Resources:Titles, Cash %>" Selected="True" />
+                                <asp:ListItem Text="<%$ Resources:Titles, Credit %>" Value="<%$ Resources:Titles, Credit %>" />
+                            </asp:RadioButtonList>
+                        </td>
+                        <td>
+                            <asp:TextBox ID="CustomerCodeTextBox" runat="server" Width="80" onblur="selectItem(this.id, 'CustomerDropDownList');" />
+                            <asp:DropDownList ID="CustomerDropDownList" runat="server" Width="150">
+                            </asp:DropDownList>
 
-            <td>
-                <asp:TextBox ID="CustomerCodeTextBox" runat="server" Width="80" onblur="selectItem(this.id, 'CustomerDropDownList');" />
-                <asp:DropDownList ID="CustomerDropDownList" runat="server" Width="150">
-                </asp:DropDownList>
-            </td>
-            <td>
-                <asp:DropDownList ID="PriceTypeDropDownList" runat="server" Width="80">
-                </asp:DropDownList>
-            </td>
-            <td>
-                <asp:DropDownList ID="CostCenterDropDownList" runat="server" Width="170">
-                </asp:DropDownList>
+                            <asp:TextBox ID="SupplierCodeTextBox" runat="server" Width="80" onblur="selectItem(this.id, 'SupplierDropDownList');" />
+                            <asp:DropDownList ID="SupplierDropDownList" runat="server" Width="150">
+                            </asp:DropDownList>
+                        </td>
+                        <td>
+                            <asp:DropDownList ID="PriceTypeDropDownList" runat="server" Width="80">
+                            </asp:DropDownList>
+                        </td>
+                        <td>
+                            <asp:Button ID="OKButton" runat="server" Text="<%$ Resources:Titles, OK %>" Width="40" OnClick="OKButton_Click" />
+                            <asp:Button ID="CancelButton" runat="server" Text="<%$ Resources:Titles, Cancel %>" Width="50" Enabled="false" OnClick="CancelButton_Click" />
+                        </td>
+                    </tr>
+                </table>
+            </asp:Panel>
 
-            </td>
-            <td>
-                <asp:DropDownList ID="TaxFormDropDownList" runat="server" Width="70">
-                </asp:DropDownList>
-            </td>
-            <td>
-                <asp:Button ID="OKButton" runat="server" Text="OK" Width="30" OnClick="OKButton_Click" />
-            </td>
-        </tr>
-    </table>
+            <p>
+                <asp:Label ID="ErrorLabelTop" runat="server" CssClass="error" />
+            </p>
+            <div class="center">
+                <asp:GridView ID="ProductGridView" runat="server" EnableTheming="False"
+                    CssClass="grid2" ShowHeaderWhenEmpty="true"
+                    AlternatingRowStyle-CssClass="grid2-row-alt"
+                    OnRowDataBound="OrderGrid_RowDataBound"
+                    OnRowCommand="ProductGridView_RowCommand"
+                    AutoGenerateColumns="False">
+                    <Columns>
+                        <asp:BoundField DataField="ItemCode" HeaderText="<%$ Resources:Titles, Code %>" HeaderStyle-Width="70" />
+                        <asp:BoundField DataField="ItemName" HeaderText="<%$ Resources:Titles, ItemName %>" HeaderStyle-Width="315" />
+                        <asp:BoundField DataField="Quantity" HeaderText="<%$ Resources:Titles, QuantityAbbreviated %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" />
+                        <asp:BoundField DataField="Unit" HeaderText="<%$ Resources:Titles, Unit %>" HeaderStyle-Width="70" />
+                        <asp:BoundField DataField="Price" HeaderText="<%$ Resources:Titles, Price %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" />
+                        <asp:BoundField DataField="Amount" HeaderText="<%$ Resources:Titles, Amount %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" />
+                        <asp:BoundField DataField="Discount" HeaderText="<%$ Resources:Titles, Discount %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" />
+                        <asp:BoundField DataField="SubTotal" HeaderText="<%$ Resources:Titles, SubTotal %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" />
+                        <asp:BoundField DataField="Rate" HeaderText="<%$ Resources:Titles, Rate %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="40" />
+                        <asp:BoundField DataField="Tax" HeaderText="<%$ Resources:Titles, Tax %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" />
+                        <asp:BoundField DataField="Total" HeaderText="<%$ Resources:Titles, Total %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="80" />
+                        <asp:TemplateField ShowHeader="False" HeaderStyle-Width="50" HeaderText="<%$ Resources:Titles, Action %>">
+                            <ItemTemplate>
+                                <asp:ImageButton ID="DeleteImageButton" ClientIDMode="Predictable" runat="server"
+                                    CausesValidation="false"
+                                    OnClientClick="return(confirmAction());"
+                                    ImageUrl="~/Resources/Icons/delete-16.png" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                    <AlternatingRowStyle CssClass="grid2-row-alt" />
+                    <FooterStyle CssClass="grid2-footer" />
+                    <HeaderStyle CssClass="grid2-header" />
+                    <RowStyle CssClass="grid2-row" />
+                </asp:GridView>
+
+                <asp:Panel ID="FormPanel" runat="server" Enabled="false">
+                    <table id="FormTable" class="grid3" runat="server">
+                        <tr>
+                            <td>
+                                <asp:TextBox ID="ItemCodeTextBox" runat="server" onblur="selectItem(this.id, 'ItemDropDownList');" ToolTip="ALT + C" Width="58" />
+                            </td>
+                            <td>
+                                <asp:DropDownList ID="ItemDropDownList" runat="server"
+                                    onchange="document.getElementById('ItemCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0) { return false };"
+                                    onblur="getPrice();"
+                                    ToolTip="ALT + I" Width="300">
+                                </asp:DropDownList>
+                                <ajaxToolkit:CascadingDropDown ID="ItemDropDownListCascadingDropDown" runat="server"
+                                    TargetControlID="ItemDropDownList" Category="Item" ServiceMethod="GetItems"
+                                    ServicePath="~/Services/ItemData.asmx"
+                                    LoadingText="<%$Resources:Labels, Loading %>"
+                                    PromptText="<%$Resources:Titles, Select %>">
+                                </ajaxToolkit:CascadingDropDown>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="QuantityTextBox" runat="server" type="number" onblur="calculateAmount();" CssClass="right"
+                                    Text="1"
+                                    ToolTip="ALT + Q" Width="42" />
+                            </td>
+                            <td>
+                                <asp:DropDownList ID="UnitDropDownList" runat="server" AutoPostBack="true"
+                                    ToolTip="ALT + U" Width="68">
+                                </asp:DropDownList>
+                                <ajaxToolkit:CascadingDropDown ID="UnitDropDownListCascadingDropDown" runat="server"
+                                    ParentControlID="ItemDropDownList" TargetControlID="UnitDropDownList"
+                                    Category="Unit" ServiceMethod="GetUnits"
+                                    ServicePath="~/Services/ItemData.asmx"
+                                    LoadingText="<%$Resources:Labels, Loading %>"
+                                    PromptText="<%$Resources:Titles, Select %>">
+                                </ajaxToolkit:CascadingDropDown>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="PriceTextBox" runat="server" CssClass="right" onblur="updateTax();calculateAmount();"
+                                    ToolTip="ALT + P" Width="65">
+                                </asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="AmountTextBox" runat="server" CssClass="right" ReadOnly="true" Width="65">
+                                </asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="DiscountTextBox" runat="server" CssClass="right" onblur="updateTax();calculateAmount();"
+                                    ToolTip="CTRL + D" Width="50">
+                                </asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="SubTotalTextBox" runat="server" CssClass="right" ReadOnly="true" Width="65">
+                                </asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="TaxRateTextBox" runat="server" onblur="updateTax();calculateAmount();" CssClass="right" Width="35">
+                                </asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="TaxTextBox" runat="server" CssClass="right" onblur="calculateAmount();" ToolTip="ALT + T" Width="45">
+                                </asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="TotalTextBox" runat="server" CssClass="right" ReadOnly="true" Width="70">
+                                </asp:TextBox>
+                            </td>
+                            <td style="width: 52px;">
+                                <asp:Button ID="AddButton" runat="server" OnClientClick="calculateAmount();" OnClick="AddButton_Click"
+                                    Text="<%$Resources:Titles, Add %>"
+                                    ToolTip="CTRL + Enter" />
+                            </td>
+                        </tr>
+                    </table>
+                    <asp:Label ID="ErrorLabel" runat="server" CssClass="error" />
+                </asp:Panel>
+                <div class="vpad8"></div>
+                <asp:Table runat="server" CssClass="grid3 grid4">
+                    <asp:TableRow>
+                        <asp:TableCell>
+                            <asp:Literal ID="TotalsLiteral" runat="server" Text="<%$Resources:Titles, Totals %>">
+                            </asp:Literal>
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <table style="border-collapse: collapse; width: 100%;">
+                                <tr>
+                                    <td>
+                                        <asp:Literal ID="RunningTotalTextBoxLabelLiteral" runat="server" />
+                                    </td>
+                                    <td>
+                                        <asp:Literal ID="TaxTotalTextBoxLabelLiteral" runat="server" />
+                                    </td>
+                                    <td>
+                                        <asp:Literal ID="GrandTotalTextBoxLabelLiteral" runat="server" />
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:TextBox ID="RunningTotalTextBox" runat="server" Width="100" ReadOnly="true" />
+
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="TaxTotalTextBox" runat="server" Width="100" ReadOnly="true" />
+
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="GrandTotalTextBox" runat="server" Width="100" ReadOnly="true" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </asp:TableCell>
+                    </asp:TableRow>
+                    <asp:TableRow ID="CashRepositoryRow" runat="server">
+                        <asp:TableCell runat="server">
+                            <asp:Literal ID="CashRepositoryDropDownListLabelLiteral" runat="server" />
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:DropDownList ID="CashRepositoryDropDownList" runat="server" DataValueField="cash_repository_id" DataTextField="cash_repository_name" AutoPostBack="true" OnSelectedIndexChanged="CashRepositoryDropDownList_SelectIndexChanged">
+                            </asp:DropDownList>
+                        </asp:TableCell>
+                    </asp:TableRow>
+                    <asp:TableRow ID="CashRepositoryBalanceRow" runat="server">
+                        <asp:TableCell>
+                            <asp:Literal ID="CashRepositoryBalanceTextBoxLabelLiteral" runat="server" />
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:TextBox ID="CashRepositoryBalanceTextBox" runat="server" Width="100" ReadOnly="true" />
+                            <asp:Literal ID="DrLiteral" runat="server" Text="<%$Resources:Titles, Dr %>" />
+                        </asp:TableCell>
+                    </asp:TableRow>
+                    <asp:TableRow>
+                        <asp:TableCell>
+                            <asp:Literal ID="CostCenterDropDownListLabelLiteral" runat="server" />
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:DropDownList ID="CostCenterDropDownList" runat="server" Width="300">
+                            </asp:DropDownList>
+                        </asp:TableCell>
+                    </asp:TableRow>
+                    <asp:TableRow>
+                        <asp:TableCell>
+                            <asp:Literal ID="StatementReferenceTextBoxLabelLiteral" runat="server" />
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:TextBox ID="StatementReferenceTextBox" runat="server" TextMode="MultiLine" Width="400" Height="100">
+                            </asp:TextBox>
+                        </asp:TableCell>
+                    </asp:TableRow>
+                    <asp:TableRow>
+                        <asp:TableCell>
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:Button ID="SaveButton" runat="server" Text="<%$Resources:Titles, Save %>" OnClick="SaveButton_Click" />
+                        </asp:TableCell>
+                    </asp:TableRow>
+                </asp:Table>
+                <p>
+                    <asp:Label ID="ErrorLabelBottom" runat="server" CssClass="error" />
+                </p>
+
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </div>
-
-
-<p>
-    <h3>Add Items</h3>
-</p>
-<asp:UpdateProgress ID="updProgress" runat="server">
-    <ProgressTemplate>
-        <div class="ajax-container">
-            <img alt="progress" src="/spinner.gif" class="ajax-loader" />
-        </div>
-    </ProgressTemplate>
-</asp:UpdateProgress>
-
-<asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
-    <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="ProductGridView" />
-    </Triggers>
-    <ContentTemplate>
-        <asp:Literal ID="TestLiteral" runat="server" />
-
-        <asp:GridView ID="ProductGridView" runat="server" EnableTheming="False"
-            CssClass="grid2"
-            AlternatingRowStyle-CssClass="grid2-row-alt"
-            OnRowDataBound="OrderGrid_RowDataBound"
-            OnRowCommand="ProductGridView_RowCommand"
-            AutoGenerateColumns="False">
-            <Columns>
-                <asp:BoundField DataField="Item Code" HeaderText="Item Code" />
-                <asp:BoundField DataField="Item Name" HeaderText="Item Name" />
-                <asp:BoundField DataField="Quantity" HeaderText="Quantity" ItemStyle-CssClass="right" HeaderStyle-CssClass="right"  />
-                <asp:BoundField DataField="Unit" HeaderText="Unit" />
-                <asp:BoundField DataField="Price" HeaderText="Price" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" />
-                <asp:BoundField DataField="Amount" HeaderText="Amount" ItemStyle-CssClass="right" HeaderStyle-CssClass="right"  />
-                <asp:TemplateField ShowHeader="False">
-                    <ItemTemplate>
-                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete2" Text="Delete" OnClientClick="return(confirm('Are you sure?'));">
-                        </asp:LinkButton>
-                    </ItemTemplate>
-                </asp:TemplateField>
-            </Columns>
-            <AlternatingRowStyle CssClass="grid2-row-alt" />
-            <FooterStyle CssClass="grid2-footer" />
-            <HeaderStyle CssClass="grid2-header" />
-            <RowStyle CssClass="grid2-row" />
-        </asp:GridView>
-    </ContentTemplate>
-</asp:UpdatePanel>
-
-<script runat="server">
-    public enum TranType { Sales, Purchase }
-    public TranType TransactionType { get; set; }
-
-    protected void ProductGridView_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-        using (System.Data.DataTable table = this.GetTable())
-        {
-            GridViewRow row = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
-            int index = row.RowIndex;
-
-            table.Rows.RemoveAt(index);
-            Session[this.ID] = table;
-            this.BindGridView();
-            //UpdatePanel1.Update();
-        }
-    }
-
-    protected void OrderGrid_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            LinkButton lb = e.Row.FindControl("LinkButton1") as LinkButton;
-            ScriptManager.GetCurrent(this.Page).RegisterAsyncPostBackControl(lb);
-        }
-    }
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        PriceTypeDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "price_types");
-        PriceTypeDropDownList.DataValueField = "price_type_id";
-        PriceTypeDropDownList.DataTextField = "price_type_name";
-        PriceTypeDropDownList.DataBind();
-
-        CostCenterDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("office", "cost_centers");
-        CostCenterDropDownList.DataValueField = "cost_center_id";
-        CostCenterDropDownList.DataTextField = "cost_center_name";
-        CostCenterDropDownList.DataBind();
-
-
-
-        TaxFormDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "tax_forms");
-        TaxFormDropDownList.DataValueField = "tax_form_id";
-        TaxFormDropDownList.DataTextField = "tax_form_code";
-        TaxFormDropDownList.DataBind();
-
-        CustomerDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "customers");
-        CustomerDropDownList.DataValueField = "customer_code";
-        CustomerDropDownList.DataTextField = "customer_name";
-        CustomerDropDownList.DataBind();
-
-        this.BindGridView();
-        ScriptManager1.RegisterAsyncPostBackControl(ProductGridView);
-    }
-
-    private void ProcessEmptyGrid(System.Data.DataTable table, GridView grid)
-    {
-        bool isEmpty = false;
-        bool hasRow = false;
-
-        if (table.Rows.Count.Equals(1))
-        {
-            if (string.IsNullOrWhiteSpace(table.Rows[0][0].ToString()))
-            {
-                isEmpty = true;
-                hasRow = true;
-            }
-        }
-
-        if (table.Rows.Count.Equals(0))
-        {
-            isEmpty = true;
-        }
-
-        if (isEmpty)
-        {
-            if (!hasRow)
-            {
-                table.Rows.Add(table.NewRow());
-            }
-        }
-
-        grid.DataSource = table;
-        grid.DataBind();
-
-        if (isEmpty)
-        {
-            TableCell cell = new TableCell();
-            cell.ColumnSpan = grid.Columns.Count;
-            cell.Height = 0;
-                
-            grid.Rows[0].Cells.Clear();
-            grid.Rows[0].Cells.Add(cell);
-
-        }
-    }
-
-    private void BindGridView()
-    {
-        ProductGridView.ShowFooter = true;
-
-        using (System.Data.DataTable table = this.GetTable())
-        {
-           ProcessEmptyGrid(table, ProductGridView);
-        }
-
-        GridViewRow footer = ProductGridView.FooterRow;
-
-        TextBox itemCodeTextBox = new TextBox();
-        itemCodeTextBox.ID = "ItemCodeTextBox";
-        itemCodeTextBox.Attributes["onblur"] = "selectItem(this.id, 'ItemDropDownList');";
-        itemCodeTextBox.Width = 60;
-        footer.Cells[0].Controls.Add(itemCodeTextBox);
-
-        DropDownList itemDropDownList = new DropDownList();
-
-        itemDropDownList.ID = "ItemDropDownList";
-        itemDropDownList.Width = 500;
-
-        itemDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "items");
-        itemDropDownList.DataValueField = "item_code";
-        itemDropDownList.DataTextField = "item_name";
-        itemDropDownList.DataBind();
-
-        itemDropDownList.Items.Insert(0, new ListItem("Select", ""));
-        itemDropDownList.AutoPostBack = true;
-        itemDropDownList.Attributes.Add("onchange", "document.getElementById('ItemCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0)return false;");
-        itemDropDownList.SelectedIndexChanged += ItemDropDownList_TextChanged;
-
-        footer.Cells[1].Controls.Add(itemDropDownList);
-
-        ScriptManager1.RegisterAsyncPostBackControl(itemDropDownList);
-
-        TextBox quantityTextBox = new TextBox();
-        quantityTextBox.ID = "QuantityTextBox";
-        quantityTextBox.Attributes.Add("type", "number");
-        quantityTextBox.Attributes.Add("onblur", "calculateAmount();");
-        quantityTextBox.CssClass = "right";
-        quantityTextBox.Width = 60;
-        quantityTextBox.Text = "1";
-        footer.Cells[2].Controls.Add(quantityTextBox);
-
-        DropDownList unitDropDownList = new DropDownList();
-        unitDropDownList.ID = "UnitDropDownList";
-        unitDropDownList.Width = 70;
-
-        unitDropDownList.AutoPostBack = true;
-        unitDropDownList.SelectedIndexChanged += UnitDropDownList_SelectedIndexChanged;
-        footer.Cells[3].Controls.Add(unitDropDownList);
-
-        ScriptManager1.RegisterAsyncPostBackControl(unitDropDownList);
-
-        TextBox priceTextBox = new TextBox();
-        priceTextBox.ID = "PriceTextBox";
-        priceTextBox.Width = 100;
-        priceTextBox.CssClass = "right";
-
-        footer.Cells[4].Controls.Add(priceTextBox);
-
-        TextBox amountTextBox = new TextBox();
-        amountTextBox.ID = "AmountTextBox";
-        amountTextBox.Width = 100;
-        amountTextBox.CssClass = "right";
-        quantityTextBox.Attributes.Add("onblur", "calculateAmount();");
-        amountTextBox.ReadOnly = true;
-
-        footer.Cells[5].Controls.Add(amountTextBox);
-
-        Button addButton = new Button();
-        addButton.ID = "AddButton";
-        addButton.CssClass = "button";
-        addButton.Text = "Add";
-        addButton.Width = 50;
-        addButton.Click += AddButton_Click;
-        footer.Cells[6].Controls.Add(addButton);
-
-        ScriptManager1.RegisterAsyncPostBackControl(addButton);
-
-    }
-
-    protected void AddButton_Click(object sender, EventArgs e)
-    {
-        TextBox itemCodeTextBox = (TextBox)ProductGridView.FooterRow.FindControl("ItemCodeTextBox");
-        DropDownList itemDropDownList = (DropDownList)ProductGridView.FooterRow.FindControl("ItemDropDownList");
-        TextBox quantityTextBox = (TextBox)ProductGridView.FooterRow.FindControl("QuantityTextBox");
-        DropDownList unitDropDownList = (DropDownList)ProductGridView.FooterRow.FindControl("UnitDropDownList");
-        TextBox priceTextBox = (TextBox)ProductGridView.FooterRow.FindControl("PriceTextBox");
-
-
-        if (Pes.Utility.Conversion.TryCastInteger(quantityTextBox.Text) < 1)
-        {
-            quantityTextBox.CssClass = "dirty";
-            return;
-        }
-        
-
-        System.Data.DataTable table = null;
-
-        if (Session[this.ID] == null)
-        {
-            table = this.GetTable();
-        }
-        else
-        {
-            table = (System.Data.DataTable)Session[this.ID];
-        }
-
-        table = AddRowToTable(table, itemCodeTextBox.Text, itemDropDownList.SelectedItem.Text, Pes.Utility.Conversion.TryCastInteger(quantityTextBox.Text), unitDropDownList.SelectedItem.Text, Pes.Utility.Conversion.TryCastDecimal(priceTextBox.Text));
-        Session[this.ID] = table;
-
-        this.BindGridView();
-        itemCodeTextBox.Focus();
-    }
-
-    private System.Data.DataTable AddRowToTable(System.Data.DataTable table, string itemCode, string itemName, int quantity, string unit, decimal price)
-    {
-        if (table.Rows.Count > 0)
-        {
-            if (string.IsNullOrWhiteSpace(table.Rows[0][0].ToString()))
-            {
-                table.Rows.RemoveAt(0);
-            }
-        }
-
-        decimal amount = price * quantity;
-        System.Data.DataRow row = table.NewRow();
-        row[0] = itemCode;
-        row[1] = itemName;
-        row[2] = quantity;
-        row[3] = unit;
-        row[4] = price;
-        row[5] = amount;
-
-        table.Rows.Add(row);
-        return table;
-    }
-
-    private System.Data.DataTable GetTable()
-    {
-        if (Session[this.ID] != null)
-        {
-            return (System.Data.DataTable)Session[this.ID];
-        }
-
-        using (System.Data.DataTable table = new System.Data.DataTable())
-        {
-            table.Columns.Add("Item Code");
-            table.Columns.Add("Item Name");
-            table.Columns.Add("Quantity");
-            table.Columns.Add("Unit");
-            table.Columns.Add("Price");
-            table.Columns.Add("Amount");
-            return table;
-        }
-    }
-
-    protected void ItemDropDownList_TextChanged(object sender, EventArgs e)
-    {
-        this.BindUnitDropDownList();
-
-        this.DisplayPrice();
-
-        ((TextBox)ProductGridView.FooterRow.FindControl("QuantityTextBox")).Focus();
-    }
-
-    private void BindUnitDropDownList()
-    {
-        DropDownList unitDropDownList = (DropDownList)ProductGridView.FooterRow.FindControl("UnitDropDownList");
-        unitDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "units");
-        unitDropDownList.DataValueField = "unit_id";
-        unitDropDownList.DataTextField = "unit_name";
-        unitDropDownList.DataBind();
-        unitDropDownList.Items.Insert(0, new ListItem("Select", ""));
-        unitDropDownList.SelectedIndex = 1;
-    }
-
-    void UnitDropDownList_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        this.DisplayPrice();
-
-        ((TextBox)ProductGridView.FooterRow.FindControl("PriceTextBox")).Focus();
-
-        DropDownList unitDropDownList = (DropDownList)ProductGridView.FooterRow.FindControl("UnitDropDownList");
-    }
-
-
-    private void DisplayPrice()
-    {
-        DropDownList itemDropDownList = (DropDownList)ProductGridView.FooterRow.FindControl("ItemDropDownList");
-        DropDownList unitDropDownList = (DropDownList)ProductGridView.FooterRow.FindControl("UnitDropDownList");
-        TextBox itemCodeTextBox = (TextBox)ProductGridView.FooterRow.FindControl("ItemCodeTextBox");
-        TextBox priceTextBox = (TextBox)ProductGridView.FooterRow.FindControl("PriceTextBox");
-
-        TestLiteral.Text = itemCodeTextBox.Text + " / " + unitDropDownList.SelectedValue;
-
-        string itemCode = itemDropDownList.SelectedItem.Value;
-        int priceTypeId = Pes.Utility.Conversion.TryCastInteger(PriceTypeDropDownList.SelectedItem.Value);
-        int unitId = Pes.Utility.Conversion.TryCastInteger(unitDropDownList.SelectedItem.Value);
-
-        priceTextBox.Text = 5000.ToString();
-    }
-
-    protected void OKButton_Click(object sender, EventArgs e)
-    {
-
-    }
-
-</script>
-
-
 <script type="text/javascript">
+
+    var confirmAction = function () {
+        return confirm('<%= Resources.Questions.AreYouSure %>');
+    }
 
     var selectItem = function (tb, ddl) {
         var listControl = $("#" + ddl);
@@ -455,22 +314,120 @@
         }
 
         if (exists) {
-            listControl.val(selectedValue);
+            listControl.val(selectedValue).trigger('change');
         }
         else {
             textBox.val('');
         }
 
-        listControl.change();
+        triggerChange(ddl);
+    }
+
+    var triggerChange = function (controlId) {
+        var element = document.getElementById(controlId);
+
+        if ('createEvent' in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            element.dispatchEvent(evt);
+        }
+        else {
+            if ("fireEvent" in element)
+                element.fireEvent("onchange");
+        }
+
+    }
+
+    var getPrice = function () {
+        var itemDropDownList = $('#ItemDropDownList');
+        var unitDropDownList = $('#UnitDropDownList');
+
+        if (unitDropDownList.val()) {
+            triggerChange(unitDropDownList.attr('id'));
+        }
+    }
+
+
+    var parseFloat2 = function (arg) {
+        return parseFloat(arg || 0);
     }
 
     var calculateAmount = function () {
         var quantityTextBox = $("#QuantityTextBox");
         var priceTextBox = $("#PriceTextBox");
         var amountTextBox = $("#AmountTextBox");
+        var discountTextBox = $("#DiscountTextBox");
+        var subTotalTextBox = $("#SubTotalTextBox");
+        var taxTextBox = $("#TaxTextBox");
+        var totalTextBox = $("#TotalTextBox");
 
-        amountTextBox.val(quantityTextBox.val() * priceTextBox.val());
+        amountTextBox.val(parseFloat2(quantityTextBox.val()) * parseFloat2(priceTextBox.val()));
+
+        subTotalTextBox.val(parseFloat2(amountTextBox.val()) - parseFloat2(discountTextBox.val()));
+        totalTextBox.val(parseFloat2(subTotalTextBox.val()) + parseFloat2(taxTextBox.val()));
     }
 
-    this.calculateAmount();
+    var updateTax = function () {
+
+        var taxRateTextBox = $("#TaxRateTextBox");
+        var taxTextBox = $("#TaxTextBox");
+
+        var priceTextBox = $("#PriceTextBox");
+
+        var discountTextBox = $("#DiscountTextBox");
+
+        var subTotal = parseFloat2(priceTextBox.val()) - parseFloat2(discountTextBox.val());
+        var tax = (subTotal * parseFloat2(taxRateTextBox.val())) / 100;
+
+        if (parseFloat2(tax).toFixed(2) != parseFloat2(taxTextBox.val())) {
+            var question = confirm("Update tax?");
+            if (question) {
+
+                if (tax.toFixed) {
+                    taxTextBox.val(tax.toFixed(2));
+                }
+                else {
+                    taxTextBox.val(tax);
+                }
+            }
+        }
+    }
+
+    function pageLoad() {
+        this.calculateAmount();
+    }
+
+    $(document).ready(function () {
+        shortcut.add("ALT+C", function () {
+            $('#ItemCodeTextBox').focus();
+        });
+
+        shortcut.add("ALT+I", function () {
+            $('#ItemDropDownList').focus();
+        });
+
+        shortcut.add("ALT+Q", function () {
+            $('#QuantityTextBox').focus();
+        });
+
+        shortcut.add("ALT+P", function () {
+            $('#PriceTextBox').focus();
+        });
+
+        shortcut.add("CTRL+D", function () {
+            $('#DiscountTextBox').focus();
+        });
+
+        shortcut.add("ALT+T", function () {
+            $('#TaxTextBox').focus();
+        });
+
+        shortcut.add("ALT+U", function () {
+            $('#UnitDropDownList').focus();
+        });
+
+        shortcut.add("CTRL+ENTER", function () {
+            $('#AddButton').click();
+        });
+    });
 </script>

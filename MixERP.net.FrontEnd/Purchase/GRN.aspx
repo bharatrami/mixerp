@@ -14,6 +14,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Product runat="server" ID="GoodReceiptNote"
+       TransactionType="Purchase" Text="Goods Receipt Note"
+        ShowTransactionType="false"
+         />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

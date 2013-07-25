@@ -10,6 +10,7 @@
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -43,14 +44,13 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         protected void Page_Load(object sender, EventArgs e)
         {
             TitleLabel.Text = this.Text;
-
             this.LoadGrid();
             this.LoadForm(this.FormContainer, new System.Data.DataTable());
         }
 
         protected void FormGridView_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
+            if(e.Row.RowType == DataControlRowType.DataRow)
             {
                 HtmlInputRadioButton radio = new HtmlInputRadioButton();
                 radio.ClientIDMode = System.Web.UI.ClientIDMode.Static;
@@ -61,15 +61,13 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 radio.Attributes.Add("onclick", "selected(this.id);");
                 e.Row.Cells[0].Controls.Add(radio);
             }
-            else if (e.Row.RowType == DataControlRowType.Header)
+            else if(e.Row.RowType == DataControlRowType.Header)
             {
-                for (int i = 0; i < e.Row.Cells.Count; i++)
+                for(int i = 0; i < e.Row.Cells.Count; i++)
                 {
                     string cellText = e.Row.Cells[i].Text;
-                    cellText = cellText.Replace("_", " ");
 
-                    System.Globalization.TextInfo ti = new System.Globalization.CultureInfo("en-US", false).TextInfo;
-                    cellText = ti.ToTitleCase(cellText);
+                    cellText = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", cellText);
                     e.Row.Cells[i].Text = cellText;
                 }
             }
@@ -90,14 +88,14 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         protected void EditLinkButton_Click(object sender, EventArgs e)
         {
             string id = this.GetSelectedValue();
-            if (string.IsNullOrWhiteSpace(id))
+            if(string.IsNullOrWhiteSpace(id))
             {
                 return;
             }
 
-            using (System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable(this.TableSchema, this.Table, this.KeyColumn, id))
+            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable(this.TableSchema, this.Table, this.KeyColumn, id))
             {
-                if (table.Rows.Count.Equals(1))
+                if(table.Rows.Count.Equals(1))
                 {
                     //Clear the form container.
                     FormContainer.Controls.Clear();
@@ -114,18 +112,19 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         protected void DeleteLinkButton_Click(object sender, EventArgs e)
         {
             string id = this.GetSelectedValue();
-            if (string.IsNullOrWhiteSpace(id))
+            if(string.IsNullOrWhiteSpace(id))
             {
                 return;
             }
 
-            if (DenyDelete)
+            if(DenyDelete)
             {
-                FormLiteral.Text = "<p class='failure'>Could not delete the entry due to the following error:</p><hr class='hr' /><p class='failure'>Access is denied!</p>";
+                FormLabel.CssClass = "failure";
+                FormLabel.Text = Resources.Warnings.AccessDenied;
                 return;
             }
 
-            if (MixERP.net.BusinessLayer.Helper.FormHelper.DeleteRecord(this.TableSchema, this.Table, this.KeyColumn, id))
+            if(MixERP.net.BusinessLayer.Helper.FormHelper.DeleteRecord(this.TableSchema, this.Table, this.KeyColumn, id))
             {
                 //Refresh the grid.
                 this.BindGridView();
@@ -134,12 +133,12 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             }
 
         }
-        
+
         protected void SaveButton_Click(object sender, EventArgs e)
         {
             this.Page.Validate();
 
-            if (!this.Page.IsValid)
+            if(!this.Page.IsValid)
             {
                 return;
             }
@@ -147,15 +146,16 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             List<KeyValuePair<string, string>> list = this.GetFormCollection(true);
             string id = this.GetSelectedValue();
 
-            if (string.IsNullOrWhiteSpace(id))
+            if(string.IsNullOrWhiteSpace(id))
             {
-                if (DenyAdd)
+                if(DenyAdd)
                 {
-                    FormLiteral.Text = "<p class='failure'>Could not add the entry due to the following error:</p><hr class='hr' /><p class='failure'>Access is denied!</p>";
+                    FormLabel.CssClass = "failure";
+                    FormLabel.Text = Resources.Warnings.AccessDenied;
                 }
                 else
                 {
-                    if (MixERP.net.BusinessLayer.Helper.FormHelper.InsertRecord(this.TableSchema, this.Table, list, this.imageColumn))
+                    if(MixERP.net.BusinessLayer.Helper.FormHelper.InsertRecord(this.TableSchema, this.Table, list, this.imageColumn))
                     {
                         //Clear the form container.
                         FormContainer.Controls.Clear();
@@ -173,13 +173,14 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             }
             else
             {
-                if (DenyEdit)
+                if(DenyEdit)
                 {
-                    FormLiteral.Text = "<p class='failure'>Could not edit the entry due to the following error:</p><hr class='hr' /><p class='failure'>Access is denied!</p>";
+                    FormLabel.CssClass = "failure";
+                    FormLabel.Text = Resources.Warnings.AccessDenied;
                 }
                 else
                 {
-                    if (MixERP.net.BusinessLayer.Helper.FormHelper.UpdateRecord(this.TableSchema, this.Table, list, this.KeyColumn, id, this.imageColumn))
+                    if(MixERP.net.BusinessLayer.Helper.FormHelper.UpdateRecord(this.TableSchema, this.Table, list, this.KeyColumn, id, this.imageColumn))
                     {
                         //Clear the form container.
                         FormContainer.Controls.Clear();
@@ -194,7 +195,8 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                     }
                     else
                     {
-                        FormLiteral.Text = "<p class='failure'>Could not complete the request due to an unknown error!</p>";
+                        FormLabel.CssClass = "failure";
+                        FormLabel.Text = Resources.Warnings.UnknownError;
                     }
                 }
             }
@@ -204,10 +206,10 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
         private void ClearSelectedValue()
         {
-            foreach (GridViewRow row in FormGridView.Rows)
+            foreach(GridViewRow row in FormGridView.Rows)
             {
                 HtmlInputRadioButton r = (HtmlInputRadioButton)row.Controls[0].Controls[0];
-                if (r.Checked)
+                if(r.Checked)
                 {
                     r.Checked = false;
                 }
@@ -216,10 +218,10 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
         private string GetSelectedValue()
         {
-            foreach (GridViewRow row in FormGridView.Rows)
+            foreach(GridViewRow row in FormGridView.Rows)
             {
                 HtmlInputRadioButton r = (HtmlInputRadioButton)row.Controls[0].Controls[0];
-                if (r.Checked)
+                if(r.Checked)
                 {
                     return r.Value;
                 }
@@ -238,19 +240,19 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             this.Pager.PageSize = 10;
 
 
-            if (this.PageSize != 0)
+            if(this.PageSize != 0)
             {
                 this.Pager.PageSize = this.PageSize;
             }
 
-            if (showAll)
+            if(showAll)
             {
                 this.Pager.PageSize = 1000;
             }
 
 
-            this.UserIdHidden.Value = Session["UserName"].ToString();
-            this.OfficeCodeHidden.Value = Session["OfficeName"].ToString();
+            this.UserIdHidden.Value = MixERP.net.BusinessLayer.Helper.SessionHelper.UserName();
+            this.OfficeCodeHidden.Value = MixERP.net.BusinessLayer.Helper.SessionHelper.OfficeName();
         }
 
         private void BindGridView()
@@ -260,23 +262,23 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             int limit = 10;
             int offset = 0;
 
-            if (this.PageSize != 0)
+            if(this.PageSize != 0)
             {
                 limit = this.PageSize;
             }
 
-            if (showAll)
+            if(showAll)
             {
                 limit = 1000;
             }
 
-            if (this.Page.Request["page"] != null)
+            if(this.Page.Request["page"] != null)
             {
                 offset = (Pes.Utility.Conversion.TryCastInteger(this.Page.Request["page"]) - 1) * limit;
             }
 
 
-            using (System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetView(this.ViewSchema, this.View, this.KeyColumn, limit, offset))
+            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetView(this.ViewSchema, this.View, this.KeyColumn, limit, offset))
             {
                 this.FormGridView.DataSource = table;
                 this.FormGridView.DataBind();
@@ -287,11 +289,11 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             HtmlTable t = new HtmlTable();
 
-            using (System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
+            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
             {
-                if (table.Rows.Count > 0)
+                if(table.Rows.Count > 0)
                 {
-                    foreach (System.Data.DataRow row in table.Rows)
+                    foreach(System.Data.DataRow row in table.Rows)
                     {
                         string columnName = Pes.Utility.Conversion.TryCastString(row["column_name"]);
                         string defaultValue = Pes.Utility.Conversion.TryCastString(row["column_default"]); //nextval('core.menus_menu_id_seq'::regclass)
@@ -305,7 +307,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         string parentTable = Pes.Utility.Conversion.TryCastString(row["references_table"]);
                         string parentTableColumn = Pes.Utility.Conversion.TryCastString(row["references_field"]);
 
-                        if (values.Rows.Count.Equals(1))
+                        if(values.Rows.Count.Equals(1))
                         {
                             defaultValue = Pes.Utility.Conversion.TryCastString(values.Rows[0][columnName]);
                         }
@@ -320,11 +322,12 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
         private void DisplaySuccess()
         {
-            this.FormLiteral.Text = "<p class='success' style='text-align:left;'>Task completed successfully.</p>";
+            FormLabel.CssClass = "success";
+            FormLabel.Text = Resources.Labels.TaskCompletedSuccessfully;
+
             GridPanel.Attributes["style"] = "display:block;";
             FormPanel.Attributes["style"] = "display:none;";
             Pes.Utility.PageUtility.ExecuteJavaScript("resetForm", "$('#form1').each(function(){this.reset();});", this.Page);
-            //Response.Redirect(this.Page.Request.Url.AbsoluteUri);
         }
 
         #region Form Generator
@@ -337,29 +340,29 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             List<KeyValuePair<string, string>> list = new List<KeyValuePair<string, string>>();
 
-            using (System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
+            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
             {
-                if (table.Rows.Count > 0)
+                if(table.Rows.Count > 0)
                 {
-                    foreach (System.Data.DataRow row in table.Rows)
+                    foreach(System.Data.DataRow row in table.Rows)
                     {
                         string columnName = Pes.Utility.Conversion.TryCastString(row["column_name"]);
-                        string defaultValue = Pes.Utility.Conversion.TryCastString(row["column_default"]); //nextval('core.menus_menu_id_seq'::regclass)
+                        string defaultValue = Pes.Utility.Conversion.TryCastString(row["column_default"]);
                         bool isSerial = defaultValue.StartsWith("nextval");
                         string parentTableColumn = Pes.Utility.Conversion.TryCastString(row["references_field"]);
                         string dataType = Pes.Utility.Conversion.TryCastString(row["data_type"]);
 
-                        if (skipSerial)
+                        if(skipSerial)
                         {
-                            if (isSerial)
+                            if(isSerial)
                             {
                                 continue;
                             }
                         }
 
-                        if (string.IsNullOrWhiteSpace(parentTableColumn))
+                        if(string.IsNullOrWhiteSpace(parentTableColumn))
                         {
-                            switch (dataType)
+                            switch(dataType)
                             {
                                 case "national character varying":
                                 case "character varying":
@@ -382,7 +385,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                                 case "currency":
                                     //TextBox
                                     TextBox t = (TextBox)FormContainer.FindControl(columnName + "_textbox");
-                                    if (t != null)
+                                    if(t != null)
                                     {
                                         list.Add(new KeyValuePair<string, string>(columnName, t.Text));
                                     }
@@ -417,14 +420,14 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private string UploadFile(FileUpload fileUpload)
         {
             string uploadDirectory = Server.MapPath("~/Media/Temp");
-            if (!System.IO.Directory.Exists(uploadDirectory))
+            if(!System.IO.Directory.Exists(uploadDirectory))
             {
                 System.IO.Directory.CreateDirectory(uploadDirectory);
             }
 
             string id = Guid.NewGuid().ToString();
 
-            if (fileUpload.HasFile)
+            if(fileUpload.HasFile)
             {
                 id += System.IO.Path.GetExtension(fileUpload.FileName);
                 id = System.IO.Path.Combine(uploadDirectory, id);
@@ -434,7 +437,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
             return id;
         }
-        
+
         private void AddRow(HtmlTable table, string label, params Control[] controls)
         {
             HtmlTableRow newRow = new HtmlTableRow();
@@ -442,17 +445,12 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             HtmlTableCell controlCell = new HtmlTableCell();
             Literal labelLiteral = new Literal();
 
-            label = label.Replace("_", " ");
-
-            System.Globalization.TextInfo ti = new System.Globalization.CultureInfo("en-US", false).TextInfo;
-            label = ti.ToTitleCase(label);
-
             labelLiteral.Text = string.Format("<label for='{0}'>{1}</label>", controls[0].ID, label);
             labelCell.Attributes.Add("class", "label-cell");
 
             labelCell.Controls.Add(labelLiteral);
 
-            foreach (Control control in controls)
+            foreach(Control control in controls)
             {
                 controlCell.Controls.Add(control);
             }
@@ -464,9 +462,9 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
         private void AddField(HtmlTable t, string columnName, string defaultValue, bool isSerial, bool isNullable, string dataType, string domain, int maxLength, string parentTableSchema, string parentTable, string parentTableColumn)
         {
-            if (string.IsNullOrWhiteSpace(parentTableColumn))
+            if(string.IsNullOrWhiteSpace(parentTableColumn))
             {
-                switch (dataType)
+                switch(dataType)
                 {
                     case "national character varying":
                     case "character varying":
@@ -493,7 +491,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         this.AddDecimalTextBox(t, columnName, defaultValue, isNullable, maxLength, domain);
                         break;
                     case "boolean":
-                        this.AddRadioButtonList(t, columnName, isNullable, "Yes, No", "1, 0", defaultValue);
+                        this.AddRadioButtonList(t, columnName, isNullable, Resources.Titles.YesNo, Resources.Titles.YesNo, defaultValue);
                         break;
                     case "date":
                         this.AddDateTextBox(t, columnName, defaultValue, isNullable, maxLength);
@@ -521,17 +519,18 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             string relation = string.Empty;
             string field = string.Empty;
             string selected = string.Empty;
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             DropDownList dropDownList = this.GetDropDownList(columnName + "_dropdownlist");
 
 
-            using (System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable(tableSchema, tableName))
+            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable(tableSchema, tableName))
             {
-                if (table.Rows.Count > 0)
+                if(table.Rows.Count > 0)
                 {
                     //See DisplayFields Property for more information.
                     //Loop through all the DisplayFields to match this control.
-                    foreach (string displayField in this.DisplayFields.Split(','))
+                    foreach(string displayField in this.DisplayFields.Split(','))
                     {
                         //First, trim the field to remove whitespaces.
                         field = displayField.Trim();
@@ -540,7 +539,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         relation = tableSchema + "." + tableName + "." + tableColumn;
 
                         //Check whether this field matches exactly with this column.
-                        if (field.StartsWith(relation))
+                        if(field.StartsWith(relation))
                         {
                             //This field in this loop contained the column name we were looking for.
                             //Now, get the mapped column (display field) to show on the drop down list.
@@ -558,7 +557,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
                     //The display field can be an existing column or a representation of different columns (formula).
                     //Let's check whether the display field really exists.
-                    if (!table.Columns.Contains(dataTextField))
+                    if(!table.Columns.Contains(dataTextField))
                     {
                         //This display field was a formula based various columns.
                         //Now, we are adding a new column "DataTextField" in the data table using the requested formula.
@@ -578,7 +577,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
             //If the "defaultValue" parameter has a value, it means that the form is being edited.
             //Check if "defaultValue" is empty.
-            if (!string.IsNullOrWhiteSpace(defaultValue))
+            if(!string.IsNullOrWhiteSpace(defaultValue))
             {
                 selectedItemValue = defaultValue;
             }
@@ -586,9 +585,9 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             {
                 //In this case, this is probably a fresh form for entry.
                 //Checking if the "SelectedValues" has a value.
-                if (!string.IsNullOrWhiteSpace(this.SelectedValues))
+                if(!string.IsNullOrWhiteSpace(this.SelectedValues))
                 {
-                    foreach (string selectedValue in this.SelectedValues.Split(','))
+                    foreach(string selectedValue in this.SelectedValues.Split(','))
                     {
                         //Trim whitespaces
                         selected = selectedValue.Trim();
@@ -597,7 +596,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         relation = tableSchema + "." + tableName + "." + tableColumn;
 
                         //Checking again whether this field matches exactly with this column.
-                        if (selected.StartsWith(relation))
+                        if(selected.StartsWith(relation))
                         {
                             //This field in this loop contained the column name we were looking for.
                             //Now, get the mapped column (display field) to show on the drop down list.
@@ -608,12 +607,12 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
                             //Check the type of the value.
                             //If the value starts with single inverted comma, the value is a text.
-                            if (value.StartsWith("'"))
+                            if(value.StartsWith("'"))
                             {
                                 //The selected item value from the drop down list text fields.
                                 ListItem item = dropDownList.Items.FindByText(value.Replace("'", ""));
 
-                                if (item != null)
+                                if(item != null)
                                 {
                                     selectedItemValue = item.Value;
                                 }
@@ -629,20 +628,20 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             }
 
 
-            if (!string.IsNullOrWhiteSpace(selectedItemValue))
+            if(!string.IsNullOrWhiteSpace(selectedItemValue))
             {
                 dropDownList.SelectedValue = selectedItemValue;
             }
 
-            if (isNullable)
+            if(isNullable)
             {
                 dropDownList.Items.Insert(0, new ListItem(String.Empty, String.Empty));
-                AddRow(t, columnName, dropDownList);
+                AddRow(t, label, dropDownList);
             }
             else
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(dropDownList);
-                AddRow(t, columnName + " *", dropDownList, required);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, dropDownList, required);
             }
 
         }
@@ -650,29 +649,31 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private void AddRadioButtonList(HtmlTable t, string columnName, bool isNullable, string keys, string values, string selectedValue)
         {
             RadioButtonList radioButtonList = this.GetRadioButtonList(columnName + "_radiobuttonlist", keys, values, selectedValue);
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
 
-            if (!isNullable)
+            if(!isNullable)
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(radioButtonList);
-                AddRow(t, columnName + " *", radioButtonList, required);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, radioButtonList, required);
                 return;
             }
 
-            AddRow(t, columnName, radioButtonList);
+            AddRow(t, label, radioButtonList);
         }
 
         private void AddCheckBoxList(HtmlTable t, string columnName, bool isNullable, string keys, string values, string selectedValues)
         {
             CheckBoxList checkBoxList = this.GetCheckBoxList(columnName + "_radiobuttonlist", keys, values, selectedValues);
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
 
-            if (!isNullable)
+            if(!isNullable)
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(checkBoxList);
-                AddRow(t, columnName + " *", checkBoxList, required);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, checkBoxList, required);
                 return;
             }
 
-            AddRow(t, columnName, checkBoxList);
+            AddRow(t, label, checkBoxList);
         }
 
         private void AddListItems(ListControl control, string keys, string values, string selectedValues)
@@ -680,22 +681,22 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             string[] key = keys.Split(',');
             string[] value = values.Split(',');
 
-            if (key.Count() == value.Count())
+            if(key.Count() == value.Count())
             {
-                for (int i = 0; i < key.Length; i++)
+                for(int i = 0; i < key.Length; i++)
                 {
                     ListItem item = new ListItem(key[i].Trim(), value[i].Trim());
                     control.Items.Add(item);
                 }
             }
 
-            foreach (ListItem item in control.Items)
+            foreach(ListItem item in control.Items)
             {
-                if (control is CheckBoxList)
+                if(control is CheckBoxList)
                 {
-                    foreach (string selectedValue in selectedValues.Split(','))
+                    foreach(string selectedValue in selectedValues.Split(','))
                     {
-                        if (item.Value.Trim().Equals(selectedValue.Trim()))
+                        if(item.Value.Trim().Equals(selectedValue.Trim()))
                         {
                             item.Selected = true;
                         }
@@ -703,7 +704,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 }
                 else
                 {
-                    if (item.Value.Trim().Equals(selectedValues.Split(',').Last().Trim()))
+                    if(item.Value.Trim().Equals(selectedValues.Split(',').Last().Trim()))
                     {
                         item.Selected = true;
                         break;
@@ -715,101 +716,114 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private void AddNumberTextBox(HtmlTable t, string columnName, string defaultValue, bool isSerial, bool isNullable, int maxLength, string domain)
         {
             TextBox textBox = this.GetNumberTextBox(columnName + "_textbox", maxLength);
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
 
-            if (!defaultValue.StartsWith("nextVal"))
+            if(!defaultValue.StartsWith("nextVal"))
             {
                 textBox.Text = defaultValue;
             }
 
-            if (isSerial)
+            if(isSerial)
             {
                 textBox.ReadOnly = true;
                 textBox.Width = 100;
-                //textBox.Text = "0";
             }
             else
             {
-                if (!isNullable)
+                if(!isNullable)
                 {
                     CompareValidator validator = this.GetNumericalValidator(textBox, domain);
                     RequiredFieldValidator required = GetRequiredFieldValidator(textBox);
-                    AddRow(t, columnName + " *", textBox, validator, required);
+                    AddRow(t, label + Resources.Setup.RequiredFieldIndicator, textBox, validator, required);
                     return;
                 }
             }
 
-            AddRow(t, columnName, textBox);
+            AddRow(t, label, textBox);
         }
 
         private void AddDecimalTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength, string domain)
         {
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+
             CompareValidator validator = this.GetDecimalValidator(textBox, domain);
             textBox.Text = defaultValue;
 
-            if (!isNullable)
+            if(!isNullable)
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(textBox);
-                AddRow(t, columnName + " *", textBox, validator, required);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, textBox, validator, required);
                 return;
             }
 
-            AddRow(t, columnName, textBox, validator);
+            AddRow(t, label, textBox, validator);
         }
 
         private void AddDateTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength)
         {
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
             CompareValidator validator = this.GetDateValidator(textBox);
+            AjaxControlToolkit.CalendarExtender extender = new AjaxControlToolkit.CalendarExtender();
 
-            if (!string.IsNullOrWhiteSpace(defaultValue))
+            textBox.Width = 70;
+            extender.ID = textBox.ID + "_calendar_extender";
+            extender.TargetControlID = textBox.ID;
+            extender.PopupButtonID = textBox.ID;
+
+            if(!string.IsNullOrWhiteSpace(defaultValue))
             {
                 textBox.Text = Pes.Utility.Conversion.TryCastDate(defaultValue).ToShortDateString();
             }
 
 
-            if (!isNullable)
+            if(!isNullable)
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(textBox);
-                AddRow(t, columnName + " *", textBox, validator, required);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, textBox, validator, required, extender);
                 return;
             }
 
-            AddRow(t, columnName, textBox, validator);
+            AddRow(t, label, textBox, validator, extender);
         }
 
         private void AddTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength)
         {
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+
             textBox.Text = defaultValue;
 
-            if (!isNullable)
+            if(!isNullable)
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(textBox);
-                AddRow(t, columnName + " *", textBox, required);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, textBox, required);
                 return;
             }
 
-            AddRow(t, columnName, textBox);
+            AddRow(t, label, textBox);
         }
 
         private void AddFileUpload(HtmlTable t, string columnName, bool isNullable)
         {
+            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
             FileUpload fileUpload = this.GetFileUpload(columnName + "_fileupload");
             RegularExpressionValidator validator = this.GetImageValidator(fileUpload);
 
             UpdatePanel1.Triggers.Clear();
             ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(SaveButton);
 
-            if (!isNullable)
+            if(!isNullable)
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(fileUpload);
 
-                AddRow(t, columnName + " *", fileUpload, required, validator);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, fileUpload, required, validator);
                 return;
             }
 
-            AddRow(t, columnName, fileUpload, validator);
+            AddRow(t, label, fileUpload, validator);
         }
         #endregion
 
@@ -869,7 +883,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             TextBox textBox = new TextBox();
             textBox.ID = id;
 
-            if (!maxLength.Equals(int.MinValue))
+            if(maxLength > 0)
             {
                 textBox.MaxLength = maxLength;
             }
@@ -899,7 +913,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             CompareValidator validator = new CompareValidator();
             validator.ID = controlToValidate.ID + "DateValidator";
-            validator.ErrorMessage = "<br/>This is not a valid date.";
+            validator.ErrorMessage = "<br/>" + Resources.Warnings.InvalidDate;
             validator.CssClass = "form-error";
             validator.ControlToValidate = controlToValidate.ID;
             validator.EnableClientScript = true;
@@ -916,7 +930,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             CompareValidator validator = new CompareValidator();
             validator.ID = controlToValidate.ID + "DecimalValidator";
-            validator.ErrorMessage = "<br/>Only numbers are allowed.";
+            validator.ErrorMessage = "<br/>" + Resources.Warnings.OnlyNumbersAllowed;
             validator.CssClass = "form-error";
             validator.ControlToValidate = controlToValidate.ID;
             validator.EnableClientScript = true;
@@ -925,7 +939,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             validator.Type = ValidationDataType.Double;
 
             //MixNP strict data type
-            if (domain.Contains("strict"))
+            if(domain.Contains("strict"))
             {
                 validator.Operator = ValidationCompareOperator.GreaterThan;
             }
@@ -943,7 +957,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             CompareValidator validator = new CompareValidator();
             validator.ID = controlToValidate.ID + "NumberValidator";
-            validator.ErrorMessage = "<br/>Only numbers are allowed.";
+            validator.ErrorMessage = "<br/>" + Resources.Warnings.OnlyNumbersAllowed;
             validator.CssClass = "form-error";
             validator.ControlToValidate = controlToValidate.ID;
             validator.EnableClientScript = true;
@@ -952,7 +966,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             validator.Type = ValidationDataType.Integer;
 
             //MixNP strict data type
-            if (domain.Contains("strict"))
+            if(domain.Contains("strict"))
             {
                 validator.Operator = ValidationCompareOperator.GreaterThan;
             }
@@ -970,7 +984,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             RequiredFieldValidator validator = new RequiredFieldValidator();
             validator.ID = controlToValidate.ID + "RequiredValidator";
-            validator.ErrorMessage = "<br/>This is a required field.";
+            validator.ErrorMessage = "<br/>" + Resources.Warnings.RequiredField;
             validator.CssClass = "form-error";
             validator.ControlToValidate = controlToValidate.ID;
             validator.EnableClientScript = true;
@@ -984,14 +998,14 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             RegularExpressionValidator validator = new RegularExpressionValidator();
             validator.ID = controlToValidate.ID + "RegexValidator";
-            validator.ErrorMessage = "<br/>Invalid image.";
+            validator.ErrorMessage = "<br/>" + Resources.Warnings.InvalidImage;
             validator.CssClass = "form-error";
             validator.ControlToValidate = controlToValidate.ID;
             validator.EnableClientScript = true;
             validator.SetFocusOnError = true;
             validator.Display = ValidatorDisplay.Dynamic;
             validator.ValidationExpression = @"(.*\.([gG][iI][fF]|[jJ][pP][gG]|[jJ][pP][eE][gG]|[bB][mM][pP])$)";
-            return validator;        
+            return validator;
         }
         #endregion
 

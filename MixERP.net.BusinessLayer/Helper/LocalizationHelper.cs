@@ -10,18 +10,28 @@
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Text;
 
-namespace MixERP.net.FrontEnd.Finance.Setup
+namespace MixERP.net.BusinessLayer.Helper
 {
-    public partial class TaxFormDetails : MixERP.net.BusinessLayer.BasePageClass
+    public static class LocalizationHelper
     {
-        protected void Page_Load(object sender, EventArgs e)
+        public static string GetResourceString(string className, string key)
         {
-
+            if(string.IsNullOrWhiteSpace(key) || System.Web.HttpContext.Current == null)
+            {
+                return string.Empty;
+            }
+            try
+            {
+                return System.Web.HttpContext.GetGlobalResourceObject(className, key).ToString();
+            }
+            catch
+            {
+                throw new InvalidOperationException("Resource could not be found for the key " + key + " on class " + className + " .");
+            }
         }
     }
 }

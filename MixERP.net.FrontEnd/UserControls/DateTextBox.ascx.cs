@@ -19,9 +19,81 @@ namespace MixERP.net.FrontEnd.UserControls
 {
     public partial class DateTextBox : System.Web.UI.UserControl
     {
-        protected void Page_Load(object sender, EventArgs e)
+        public new string ID { get; set; }
+        public bool Disabled
         {
+            get
+            {
+                return !TextBox1.Enabled;
+            }
+            set
+            {
+                TextBox1.Enabled = !value;
+            }
+        }
+        public bool EnableValidation { get; set; }
+        public string CssClass {
+            get
+            {
+                return TextBox1.CssClass;
+            }
+            set
+            {
+                TextBox1.CssClass = value;
+            }
+        }
+        private string text;
+        public string Text
+        {
+            get
+            {
+                return TextBox1.Text;
+            }
+            set
+            {
+                this.text = value;
+            }
+        }
+        public Unit Width
+        {
+            get
+            {
+                return TextBox1.Width;
+            }
+            set
+            {
+                TextBox1.Width = value;
+            }
+        }
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            TextBox1.ID = this.ID;
+            
+            if(string.IsNullOrEmpty(this.text))
+            {
+                this.text = DateTime.Now.ToShortDateString();
+            }
+            
+            TextBox1.Text = this.text;
+            CalendarExtender1.ID = this.ID + "CalendarExtender";
+            CalendarExtender1.TargetControlID = this.ID;
+            CalendarExtender1.PopupButtonID = this.ID;
 
+
+            if(EnableValidation)
+            {
+                CompareValidator1.ID = this.ID + "CompareValidator";
+                CompareValidator1.ControlToValidate = this.ID;
+                CompareValidator1.ValueToCompare = "1/1/1900";
+                CompareValidator1.Type = ValidationDataType.Date;
+                CompareValidator1.ErrorMessage = "Invalid date";
+                CompareValidator1.EnableClientScript = true;
+                CompareValidator1.CssClass = "error";
+            }
+            else
+            {
+                CompareValidator1.Parent.Controls.Remove(CompareValidator1);
+            }
         }
     }
 }

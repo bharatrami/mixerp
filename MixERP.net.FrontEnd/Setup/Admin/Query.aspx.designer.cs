@@ -67,6 +67,15 @@ namespace MixERP.net.FrontEnd.Setup.Admin {
         protected global::System.Web.UI.WebControls.Button LoadCustomerButton;
         
         /// <summary>
+        /// LoadSampleData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button LoadSampleData;
+        
+        /// <summary>
         /// GoToTopButton control.
         /// </summary>
         /// <remarks>
@@ -74,24 +83,6 @@ namespace MixERP.net.FrontEnd.Setup.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button GoToTopButton;
-        
-        /// <summary>
-        /// SQLGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView SQLGridView;
-        
-        /// <summary>
-        /// MessageLiteral control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal MessageLiteral;
         
         /// <summary>
         /// QueryTextBox control.
@@ -110,5 +101,23 @@ namespace MixERP.net.FrontEnd.Setup.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField QueryHidden;
+        
+        /// <summary>
+        /// SQLGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView SQLGridView;
+        
+        /// <summary>
+        /// MessageLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal MessageLiteral;
     }
 }

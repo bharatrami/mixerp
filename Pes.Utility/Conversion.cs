@@ -34,7 +34,7 @@ namespace Pes.Utility
         {
             if (value != null)
             {
-                short retVal = short.MinValue;
+                short retVal = 0;
 
                 if (short.TryParse(value.ToString(), out retVal))
                 {
@@ -42,14 +42,14 @@ namespace Pes.Utility
                 }
             }
 
-            return short.MinValue;
+            return 0;
         }
 
         public static long TryCastLong(object value)
         {
             if (value != null)
             {
-                long retVal = long.MinValue;
+                long retVal = 0;
 
                 if (long.TryParse(value.ToString(), out retVal))
                 {
@@ -57,28 +57,28 @@ namespace Pes.Utility
                 }
             }
 
-            return long.MinValue;
+            return 0;
         }
 
         public static float TryCastSingle(object value)
         {
             if (value != null)
             {
-                float retVal = Single.MinValue;
+                float retVal = 0;
                 if (float.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return Single.MinValue;
+            return 0;
         }
 
         public static double TryCastDouble(object value)
         {
             if (value != null)
             {
-                double retVal = double.MinValue;
+                double retVal = 0;
 
                 if (double.TryParse(value.ToString(), out retVal))
                 {
@@ -86,7 +86,7 @@ namespace Pes.Utility
                 }
             }
 
-            return double.MinValue;
+            return 0;
         }
 
         public static int TryCastInteger(object value)
@@ -101,28 +101,37 @@ namespace Pes.Utility
                     }
                     else
                     {
-                        return int.MinValue;
+                        return 0;
                     }
                 }
 
-                int retVal = int.MinValue;
+                int retVal = 0;
                 if (int.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return int.MinValue;
+            return 0;
         }
 
         public static DateTime TryCastDate(object value)
         {
-            if (value == DBNull.Value)
+            try
             {
-                return DateTime.MinValue;
+                if(value == DBNull.Value)
+                {
+                    return DateTime.MinValue;
+                }
+
+                return Convert.ToDateTime(value);
+            }
+            catch
+            { 
+                //swallow the exception
             }
 
-            return Convert.ToDateTime(value);
+            return DateTime.MinValue;
         }
 
         public static decimal TryCastDecimal(object value)
@@ -136,7 +145,7 @@ namespace Pes.Utility
                 }
             }
 
-            return decimal.MinValue;
+            return 0;
         }
 
         public static bool TryCastBoolean(object value)
@@ -168,36 +177,45 @@ namespace Pes.Utility
 
         public static string TryCastString(object value)
         {
-            if (value != null)
+            try
             {
-                if (value is bool)
+                if (value != null)
                 {
-                    if (Convert.ToBoolean(value, CultureInfo.InvariantCulture) == true)
+                    if (value is bool)
                     {
-                        return "1";
+                        if (Convert.ToBoolean(value, CultureInfo.InvariantCulture) == true)
+                        {
+                            return "1";
+                        }
+                        else
+                        {
+                            return "0";
+                        }
                     }
                     else
                     {
-                        return "0";
+                        if (value == System.DBNull.Value)
+                        {
+                            return string.Empty;
+                        }
+                        else
+                        {
+                            string retVal = value.ToString();
+                            return retVal;
+                        }
                     }
                 }
                 else
                 {
-                    if (value == System.DBNull.Value)
-                    {
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        string retVal = value.ToString();
-                        return retVal;
-                    }
+                    return string.Empty;
                 }
             }
-            else
-            {
-                return string.Empty;
+            catch
+            { 
+                //swallow the exception
             }
+
+            return string.Empty;
         }
 
         public static string HashSha512(string password, string salt)

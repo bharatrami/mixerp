@@ -13,12 +13,21 @@ namespace MixERP.net.FrontEnd.Sales {
     public partial class DirectSales {
         
         /// <summary>
-        /// Sales control.
+        /// SalesControl2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Products.ProductControl Sales;
+        protected global::MixERP.net.FrontEnd.UserControls.Products.ProductControl SalesControl2;
+        
+        /// <summary>
+        /// ErrorLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ErrorLabel;
     }
 }

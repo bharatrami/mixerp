@@ -8,6 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
+
 <%@ Page Title="" Language="C#" MasterPageFile="~/MenuMaster.Master" AutoEventWireup="true"
     CodeBehind="Query.aspx.cs" Inherits="MixERP.net.FrontEnd.Setup.Admin.Query" %>
 
@@ -43,6 +44,7 @@
 
         <asp:Button ID="RunButton" runat="server" Text="Run" OnClick="RunButton_Click" />
         <asp:Button ID="LoadCustomerButton" runat="server" Text="Load Customers" OnClick="LoadCustomerButton_Click" />
+        <asp:Button ID="LoadSampleData" runat="server" Text="Load Sample Data" OnClick="LoadSampleData_Click" />
 
         <asp:Button ID="GoToTopButton" runat="server" Text="Go to Top" OnClientClick="$('html, body').animate({ scrollTop: 0 }, 'slow');return(false);" />
     </div>
@@ -51,18 +53,19 @@
     <br />
     <br />
 
-
-    <p class="vpad16">
-        <asp:GridView ID="SQLGridView" runat="server" AllowSorting="true">
-        </asp:GridView>
-    </p>
-
-    <asp:Literal ID="MessageLiteral" runat="server" />
-
-
     <asp:TextBox ID="QueryTextBox" runat="server" TextMode="MultiLine" Width="1000">
     </asp:TextBox>
     <asp:HiddenField ID="QueryHidden" runat="server" />
+
+    <br />
+
+    <p class="vpad16">
+        <div style="width: 100%; max-height: 400px; overflow: auto">
+            <asp:GridView ID="SQLGridView" EnableTheming="false" CssClass="grid2" HeaderStyle-CssClass="grid2-header" RowStyle-CssClass="grid2-row" AlternatingRowStyle-CssClass="grid2-row-alt" runat="server" ShowHeaderWhenEmpty="true">
+            </asp:GridView>
+            <asp:Literal ID="MessageLiteral" runat="server" />
+        </div>
+    </p>
 
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder"
@@ -128,7 +131,7 @@
     protected void RunButton_Click(object sender, EventArgs e)
     {
         string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/mixerp.postgresql.bak.sql"));
-        using (System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
+        using(System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
         {
             MessageLiteral.Text = string.Format("<div class='success'>{0} row(s) affected.</div>", table.Rows.Count);
             SQLGridView.DataSource = table;
@@ -139,7 +142,18 @@
     protected void LoadCustomerButton_Click(object sender, EventArgs e)
     {
         string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/customer-sample.sql"));
-        using (System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
+        using(System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
+        {
+            MessageLiteral.Text = string.Format("<div class='success'>{0} row(s) affected.</div>", table.Rows.Count);
+            SQLGridView.DataSource = table;
+            SQLGridView.DataBind();
+        }
+    }
+
+    protected void LoadSampleData_Click(object sender, EventArgs e)
+    {
+        string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/sample-data.sql"));
+        using(System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
         {
             MessageLiteral.Text = string.Format("<div class='success'>{0} row(s) affected.</div>", table.Rows.Count);
             SQLGridView.DataSource = table;
@@ -151,14 +165,14 @@
     {
         try
         {
-            using (System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(QueryTextBox.Text)))
+            using(System.Data.DataTable table = MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(QueryTextBox.Text)))
             {
                 MessageLiteral.Text = string.Format("<div class='success'>{0} row(s) affected.</div>", table.Rows.Count);
                 SQLGridView.DataSource = table;
                 SQLGridView.DataBind();
             }
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             MessageLiteral.Text = "<div class='error'>" + ex.Message + "</div>";
         }
@@ -168,7 +182,7 @@
     {
         string sql = QueryHidden.Value;
 
-        if (!string.IsNullOrWhiteSpace(sql))
+        if(!string.IsNullOrWhiteSpace(sql))
         {
             string path = Server.MapPath("~/db/mixerp.postgresql.bak.sql");
             System.IO.File.Delete(path);

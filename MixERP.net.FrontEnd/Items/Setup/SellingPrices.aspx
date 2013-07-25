@@ -17,7 +17,7 @@
     <pes:Form ID="ItemSellingPriceForm" runat="server" Text="Item Selling Price Maintenance" TableSchema="core" Table="item_selling_prices" KeyColumn="item_selling_price_id"
         ViewSchema="core" View="item_selling_price_view" Width="1000" PageSize="10"
         SelectedValues=""
-        DisplayFields="core.items.item_id-->item_code + ' (' + item_name + ')', core.customer_types.customer_type_id-->customer_type_code + ' (' + customer_type_name + ')', core.price_types.price_type_id-->price_type_code + ' (' + price_type_name + ')' " />
+        DisplayFields="core.items.item_id-->item_code + ' (' + item_name + ')', core.customer_types.customer_type_id-->customer_type_code + ' (' + customer_type_name + ')', core.price_types.price_type_id-->price_type_code + ' (' + price_type_name + ')', core.units.unit_id-->unit_code + ' (' + unit_name + ')' " />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

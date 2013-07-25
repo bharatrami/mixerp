@@ -13,7 +13,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <link href="themes/blue/main.css" rel="stylesheet" type="text/css" />
+    <link href="themes/purple/main.css" rel="stylesheet" type="text/css" />
     <script src="Scripts/jquery.min.js"></script>
     <title>Sign In</title>
 </head>
@@ -21,7 +21,7 @@
     <form id="form1" runat="server">
     <div class="sign-in-logo">
         <a href="/SignIn.aspx">
-            <img src="themes/blue/mixerp-logo.png" />
+            <img src="themes/purple/mixerp-logo.png" />
         </a>    
     </div>
     <div class="sign-in">

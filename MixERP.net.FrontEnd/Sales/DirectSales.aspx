@@ -16,7 +16,24 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <pes:Product runat="server" ID="Sales" />
+    <pes:Product runat="server" ID="SalesControl2"
+       TransactionType="Sales" Text="Direct Sales"
+        ShowTransactionType="true"
+        ShowCashRepository="true"
+        VerifyStock="true"
+        TopPanelWidth="750"
+        OnSaveButtonClick="Sales_SaveButtonClick"
+         />
+
+    <asp:Label ID="ErrorLabel" runat="server" CssClass="error">
+    </asp:Label>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>
+
+<script runat="server">
+    protected void Sales_SaveButtonClick(object sender, EventArgs e)
+    {
+        ErrorLabel.Text = "Save event handled.";
+    }
+</script>

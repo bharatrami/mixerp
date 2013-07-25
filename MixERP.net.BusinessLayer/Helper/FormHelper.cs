@@ -31,7 +31,7 @@ namespace MixERP.net.BusinessLayer.Helper
 
             return null;
         }
-
+        
         public static DataTable GetTable(string tableSchema, string tableName)
         {
             try

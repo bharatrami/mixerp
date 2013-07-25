@@ -14,6 +14,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <pes:Product runat="server" ID="DirectPurchaseControl"
+       TransactionType="Purchase" Text="Direct Purchase"
+        ShowTransactionType="true"
+        ShowCashRepository="true"
+         />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

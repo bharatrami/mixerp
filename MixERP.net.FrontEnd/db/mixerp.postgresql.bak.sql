@@ -75,14 +75,6 @@ CHECK
 	VALUE > 0
 );
 
-DROP DOMAIN IF EXISTS float_strict;
-CREATE DOMAIN float_strict
-AS float
-CHECK
-(
-	VALUE > 0
-);
-
 DROP VIEW IF EXISTS db_stat;
 CREATE VIEW db_stat
 AS
@@ -183,9 +175,6 @@ ON office.offices(UPPER(office_name));
 
 CREATE UNIQUE INDEX offices_nick_name_uix
 ON office.offices(UPPER(nick_name));
-
-CREATE INDEX offices_parent_office_id_inx
-ON office.offices(parent_office_id);
 
 
 /*******************************************************************
@@ -314,13 +303,6 @@ CREATE TABLE office.users
 	full_name national character varying(100) NOT NULL,
 	password text NOT NULL
 );
-
-CREATE INDEX users_role_id_inx
-ON office.users(role_id);
-
-CREATE INDEX users_office_id_inx
-ON office.users(office_id);
-
 
 
 CREATE FUNCTION office.get_office_id_by_user_id(user_id integer_strict)
@@ -507,14 +489,26 @@ CREATE TABLE audit.logins
 	remote_user national character varying(50) NOT NULL
 );
 
-CREATE INDEX logins_user_id_inx
-ON audit.logins(user_id);
-
-CREATE INDEX logins_office_id_inx
-ON audit.logins(office_id);
-
-
-
+CREATE FUNCTION office.get_logged_in_office_id(_user_id integer)
+RETURNS integer
+AS
+$$
+BEGIN
+	RETURN
+    (
+        SELECT office_id
+        FROM audit.logins
+        WHERE user_id=$1
+        AND login_date_time = 
+        (
+            SELECT MAX(login_date_time)
+            FROM audit.logins
+            WHERE user_id=$1
+        )
+	);
+END
+$$
+LANGUAGE plpgsql;
 
 CREATE TABLE audit.failed_logins
 (
@@ -529,13 +523,6 @@ CREATE TABLE audit.failed_logins
 	details national character varying(250) NULL
 );
 
-CREATE INDEX failed_logins_user_id_inx
-ON audit.failed_logins(user_id);
-
-CREATE INDEX failed_logins_office_id_inx
-ON audit.failed_logins(office_id);
-
-
 
 CREATE TABLE policy.lock_outs
 (
@@ -544,11 +531,6 @@ CREATE TABLE policy.lock_outs
 	lock_out_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW()),
 	lock_out_till TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW() + '5 minutes'::interval)
 );
-
-CREATE INDEX lock_outs_user_id_inx
-ON policy.lock_outs(user_id);
-
-
 
 CREATE FUNCTION policy.perform_lock_out()
 RETURNS TRIGGER
@@ -654,9 +636,6 @@ CREATE TABLE core.menus
 	parent_menu_id integer NULL REFERENCES core.menus(menu_id)
 );
 
-CREATE INDEX menus_parent_menu_id_inx
-ON core.menus(parent_menu_id);
-
 CREATE UNIQUE INDEX menus_menu_code_uix
 ON core.menus(UPPER(menu_code));
 
@@ -678,10 +657,10 @@ LANGUAGE plpgsql;
 
 
 CREATE FUNCTION core.get_root_parent_menu_id(text)
-RETURNS int
+RETURNS integer
 AS
 $$
-	DECLARE retVal int;
+	DECLARE retVal integer;
 BEGIN
 	WITH RECURSIVE find_parent(menu_id_group, parent, parent_menu_id, recentness) AS
 	(
@@ -782,8 +761,6 @@ UNION ALL SELECT 'Budgets & Targets', '/Finance/Setup/BudgetAndTarget.aspx', 'BT
 UNION ALL SELECT 'Ageing Slabs', '/Finance/Setup/AgeingSlabs.aspx', 'AGS', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Tax Types', '/Finance/Setup/TaxTypes.aspx', 'TTY', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Tax Setup', '/Finance/Setup/TaxSetup.aspx', 'TS', 2, core.get_menu_id('FSM')
-UNION ALL SELECT 'Tax Form', '/Finance/Setup/TaxForms.aspx', 'TF', 2, core.get_menu_id('FSM')
-UNION ALL SELECT 'Tax Form Details', '/Finance/Setup/TaxFormDetails.aspx', 'TFD', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Cost Centers', '/Finance/Setup/CostCenters.aspx', 'CC', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'CRM Main', NULL, 'CRMM', 1, core.get_menu_id('CRM')
 UNION ALL SELECT 'Add a New Lead', '/CRM/Lead.aspx', 'CRML', 2, core.get_menu_id('CRMM')
@@ -800,7 +777,8 @@ UNION ALL SELECT 'Office & Branch Setups', '/Setup/Offices.aspx', 'SOB', 2, core
 UNION ALL SELECT 'Department Setup', '/Setup/Departments.aspx', 'SDS', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'Role Management', '/Setup/Roles.aspx', 'SRM', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'User Management', '/Setup/Users.aspx', 'SUM', 2, core.get_menu_id('SOS')
-UNION ALL SELECT 'Frequency & Fiscal Year Management', '/Setup/Frequency.aspx', 'SFY', 2, core.get_menu_id('SOS')
+UNION ALL SELECT 'Fiscal Year Information', '/Setup/FiscalYear.aspx', 'SFY', 2, core.get_menu_id('SOS')
+UNION ALL SELECT 'Frequency & Fiscal Year Management', '/Setup/Frequency.aspx', 'SFR', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'Policy Management', NULL, 'SPM', 1, core.get_menu_id('SE')
 UNION ALL SELECT 'Voucher Verification Policy', '/Setup/Policy/VoucherVerification.aspx', 'SVV', 2, core.get_menu_id('SPM')
 UNION ALL SELECT 'Automatic Verification Policy', '/Setup/Policy/AutoVerification.aspx', 'SAV', 2, core.get_menu_id('SPM')
@@ -824,22 +802,32 @@ UNION ALL SELECT 'Compose', '/Account/Messaging/Compose.aspx', 'COMP', 2, core.g
 
 
 
+
 CREATE VIEW office.user_view
 AS
 SELECT 
-  users.user_id, 
-  roles.role_code || ' (' || roles.role_name || ')' AS role, 
+	users.user_id, 
+	roles.role_code || ' (' || roles.role_name || ')' AS role, 
 	office.offices.office_id,
-  offices.office_code || ' (' || offices.office_name || ')' AS office, 
-  users.user_name, 
-  users.full_name
+	offices.office_code || ' (' || offices.office_name || ')' AS office, 
+	users.user_name, 
+	users.full_name,
+	office.get_logged_in_office_id(office.users.user_id) AS logged_in_office_id,
+	logged_in_office.office_code || ' (' || logged_in_office.office_name || ')' AS logged_in_office
 FROM 
-  office.users, 
-  office.roles, 
-  office.offices
-WHERE 
-  users.role_id = roles.role_id AND
-  users.office_id = offices.office_id;
+	office.users
+INNER JOIN
+	office.roles
+ON
+	users.role_id = roles.role_id 
+INNER JOIN
+	office.offices
+ON
+	users.office_id = offices.office_id
+LEFT JOIN
+    office.offices AS logged_in_office
+ON
+	logged_in_office.office_id = office.get_logged_in_office_id(office.users.user_id);
 
 
 CREATE OR REPLACE VIEW office.role_view
@@ -931,17 +919,34 @@ CREATE UNIQUE INDEX frequencies_frequency_name_uix
 ON core.frequencies(UPPER(frequency_name));
 
 INSERT INTO core.frequencies
---SELECT 1, 'EOD', 'End of Day' UNION ALL
---End of day is not required.
 SELECT 2, 'EOM', 'End of Month' UNION ALL
 SELECT 3, 'EOQ', 'End of Quarter' UNION ALL
 SELECT 4, 'EOH', 'End of Half' UNION ALL
 SELECT 5, 'EOY', 'End of Year';
 
 
+CREATE TABLE core.fiscal_year
+(
+	fiscal_year_code national character varying(12) NOT NULL PRIMARY KEY,
+	fiscal_year_name national character varying(50) NOT NULL,
+	starts_from date NOT NULL,
+	ends_on date NOT NULL
+);
+
+CREATE UNIQUE INDEX fiscal_year_fiscal_year_name_uix
+ON core.fiscal_year(fiscal_year_name);
+
+CREATE UNIQUE INDEX fiscal_year_starts_from_uix
+ON core.fiscal_year(starts_from);
+
+CREATE UNIQUE INDEX fiscal_year_ends_on_uix
+ON core.fiscal_year(ends_on);
+
+
 CREATE TABLE core.frequency_setups
 (
 	frequency_setup_id SERIAL NOT NULL PRIMARY KEY,
+	fiscal_year_code national character varying(12) NOT NULL REFERENCES core.fiscal_year(fiscal_year_code),
 	value_date date NOT NULL UNIQUE,
 	frequency_id integer NOT NULL REFERENCES core.frequencies(frequency_id)
 );
@@ -968,20 +973,247 @@ SELECT 'MTR', 'Meter' UNION ALL
 SELECT 'LTR', 'Liter' UNION ALL
 SELECT 'GM', 'Gram' UNION ALL
 SELECT 'KG', 'Kilogram' UNION ALL
-SELECT 'DZ', 'Dozen';
+SELECT 'DZ', 'Dozen' UNION ALL
+SELECT 'BX', 'Box';
 
+CREATE FUNCTION core.get_unit_id(text)
+RETURNS smallint
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT
+			core.units.unit_id
+		FROM
+			core.units
+		WHERE
+			core.units.unit_code=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
 
 CREATE TABLE core.compound_units
 (
 	compound_unit_id SERIAL NOT NULL PRIMARY KEY,
 	base_unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	compare_unit_id integer NOT NULL REFERENCES core.units(unit_id),
 	value smallint NOT NULL,
+	compare_unit_id integer NOT NULL REFERENCES core.units(unit_id),
 	CONSTRAINT compound_units_check CHECK(base_unit_id != compare_unit_id)
 );
 
 CREATE UNIQUE INDEX compound_units_info_uix
 ON core.compound_units(base_unit_id, compare_unit_id);
+
+INSERT INTO core.compound_units(base_unit_id, compare_unit_id, value)
+SELECT core.get_unit_id('PC'), core.get_unit_id('DZ'), 12 UNION ALL
+SELECT core.get_unit_id('DZ'), core.get_unit_id('BX'), 100 UNION ALL
+SELECT core.get_unit_id('GM'), core.get_unit_id('KG'), 1000;
+
+CREATE FUNCTION core.get_root_unit_id(integer)
+RETURNS integer
+AS
+$$
+	DECLARE root_unit_id integer;
+BEGIN
+	SELECT base_unit_id INTO root_unit_id
+	FROM core.compound_units
+	WHERE compare_unit_id=$1;
+
+	IF(root_unit_id IS NULL) THEN
+		RETURN $1;
+	ELSE
+		RETURN core.get_root_unit_id(root_unit_id);
+	END IF;	
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE FUNCTION core.is_parent_unit(parent integer, child integer)
+RETURNS boolean
+AS
+$$		
+BEGIN
+	IF $1!=$2 THEN
+		IF EXISTS
+		(
+			WITH RECURSIVE unit_cte(unit_id) AS 
+			(
+			 SELECT tn.compare_unit_id
+				FROM core.compound_units AS tn WHERE tn.base_unit_id = $1
+			UNION ALL
+			 SELECT
+				c.compare_unit_id
+				FROM unit_cte AS p, 
+			  core.compound_units AS c 
+				WHERE base_unit_id = p.unit_id
+			)
+
+			SELECT * FROM unit_cte
+			WHERE unit_id=$2
+		) THEN
+			RETURN TRUE;
+		END IF;
+	END IF;
+	RETURN false;
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE FUNCTION core.convert_unit(integer, integer)
+RETURNS decimal
+AS
+$$
+	DECLARE _factor decimal;
+BEGIN
+	IF(core.get_root_unit_id($1) != core.get_root_unit_id($2)) THEN
+		RETURN 0;
+	END IF;
+
+	IF($1 = $2) THEN
+		RETURN 1.00;
+	END IF;
+	
+	IF(core.is_parent_unit($1, $2)) THEN
+			WITH RECURSIVE unit_cte(unit_id, value) AS 
+			(
+				SELECT tn.compare_unit_id, tn.value
+				FROM core.compound_units AS tn WHERE tn.base_unit_id = $1
+
+				UNION ALL
+
+				SELECT 
+				c.compare_unit_id, c.value * p.value
+				FROM unit_cte AS p, 
+				core.compound_units AS c 
+				WHERE base_unit_id = p.unit_id
+			)
+		SELECT 1.00/value INTO _factor
+		FROM unit_cte
+		WHERE unit_id=$2;
+	ELSE
+			WITH RECURSIVE unit_cte(unit_id, value) AS 
+			(
+			 SELECT tn.compare_unit_id, tn.value
+				FROM core.compound_units AS tn WHERE tn.base_unit_id = $2
+			UNION ALL
+			 SELECT 
+				c.compare_unit_id, c.value * p.value
+				FROM unit_cte AS p, 
+			  core.compound_units AS c 
+				WHERE base_unit_id = p.unit_id
+			)
+
+		SELECT value INTO _factor
+		FROM unit_cte
+		WHERE unit_id=$1;
+	END IF;
+
+	RETURN _factor;
+END
+$$
+LANGUAGE plpgsql;
+
+
+CREATE FUNCTION core.get_associated_units(integer)
+RETURNS TABLE(unit_id integer, unit_code text, unit_name text)
+AS
+$$
+	DECLARE root_unit_id integer;
+BEGIN
+	CREATE TEMPORARY TABLE IF NOT EXISTS temp_unit(unit_id integer) ON COMMIT DROP;	
+	
+	SELECT core.get_root_unit_id($1) INTO root_unit_id;
+	
+	INSERT INTO temp_unit(unit_id) 
+	SELECT root_unit_id
+	WHERE NOT EXISTS
+	(
+		SELECT * FROM temp_unit
+		WHERE temp_unit.unit_id=root_unit_id
+	);
+	
+	WITH RECURSIVE cte(unit_id)
+	AS
+	(
+		 SELECT 
+			compare_unit_id
+		 FROM 
+			core.compound_units
+		 WHERE 
+			base_unit_id = root_unit_id
+
+		UNION ALL
+
+		 SELECT
+			units.compare_unit_id
+		 FROM 
+			core.compound_units units
+		 INNER JOIN cte 
+		 ON cte.unit_id = units.base_unit_id
+	)
+	
+	INSERT INTO temp_unit(unit_id)
+	SELECT cte.unit_id FROM cte;
+	
+	DELETE FROM temp_unit
+	WHERE temp_unit.unit_id IS NULL;
+	
+	RETURN QUERY 
+	SELECT 
+		core.units.unit_id,
+		core.units.unit_code::text,
+		core.units.unit_name::text
+	FROM
+		core.units
+	WHERE
+		core.units.unit_id 
+	IN
+	(
+		SELECT temp_unit.unit_id FROM temp_unit
+	);
+END
+$$
+LANGUAGE plpgsql;
+
+
+CREATE FUNCTION core.get_associated_units_from_item_id(integer)
+RETURNS TABLE(unit_id integer, unit_code text, unit_name text)
+AS
+$$
+DECLARE _unit_id integer;
+BEGIN
+	SELECT core.items.unit_id INTO _unit_id
+    FROM core.items
+    WHERE core.items.item_id=$1;
+
+	RETURN QUERY
+    SELECT ret.unit_id, ret.unit_code, ret.unit_name
+    FROM core.get_associated_units(_unit_id) AS ret;
+
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE FUNCTION core.get_associated_units_from_item_code(text)
+RETURNS TABLE(unit_id integer, unit_code text, unit_name text)
+AS
+$$
+DECLARE _unit_id integer;
+BEGIN
+	SELECT core.items.unit_id INTO _unit_id
+    FROM core.items
+    WHERE core.items.item_code=$1;
+
+	RETURN QUERY
+    SELECT ret.unit_id, ret.unit_code, ret.unit_name
+    FROM core.get_associated_units(_unit_id) AS ret;
+
+END
+$$
+LANGUAGE plpgsql;
+
 
 CREATE VIEW core.compound_unit_view
 AS
@@ -1034,12 +1266,6 @@ ON core.accounts(UPPER(account_code));
 CREATE UNIQUE INDEX accounts_Name_uix
 ON core.accounts(UPPER(account_name));
 
-CREATE INDEX accounts_parent_inx
-ON core.accounts(parent_account_id);
-
-CREATE INDEX accountsMasterId_inx
-ON core.accounts(account_master_id);
-
 
 DELETE FROM core.accounts;DELETE FROM core.account_masters;
 INSERT INTO core.account_masters(account_master_code, account_master_name) SELECT 'BSA', 'Balance Sheet A/C';
@@ -1051,7 +1277,7 @@ INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type,
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10130', 'Savings Account', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash at Bank A/C');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10140', 'Special Account', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash at Bank A/C');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10200', 'Cash in Hand A/C', TRUE, (SELECT account_id FROM core.accounts WHERE account_name='Current Assets');
-INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10210', 'Cash Float', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash in Hand A/C');
+INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10210', 'Cash decimal', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash in Hand A/C');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10220', 'Petty Cash A/C', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash in Hand A/C');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10300', 'Investments', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Current Assets');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10310', 'Short Term Investment', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Investments');
@@ -1317,7 +1543,7 @@ CREATE TABLE core.agents
 	agent_name national character varying(100) NOT NULL,
 	address national character varying(100) NOT NULL,
 	contact_number national character varying(50) NOT NULL,
-	commission_rate float_strict NOT NULL DEFAULT(0),
+	commission_rate decimal_strict NOT NULL DEFAULT(0),
 	account_id integer NOT NULL REFERENCES core.accounts(account_id)
 );
 
@@ -1377,7 +1603,7 @@ CREATE TABLE core.bonus_slab_details
 	bonus_slab_id integer NOT NULL REFERENCES core.bonus_slabs(bonus_slab_id),
 	amount_from money_strict NOT NULL,
 	amount_to money_strict NOT NULL,
-	bonus_rate float_strict NOT NULL,
+	bonus_rate decimal_strict NOT NULL,
 	CONSTRAINT bonus_slab_details_amounts_chk CHECK(amount_to>amount_from)
 );
 
@@ -1489,7 +1715,7 @@ CREATE TABLE core.customers
 	maximum_credit_period smallint NULL,
 	maximum_credit_amount money NULL,
 	charge_interest boolean NULL,
-	interest_rate float NULL,
+	interest_rate decimal NULL,
 	interest_compounding_frequency_id smallint NULL REFERENCES core.frequencies(frequency_id),
 	account_id bigint NOT NULL REFERENCES core.accounts(account_id)
 );
@@ -1583,6 +1809,43 @@ AFTER INSERT
 ON core.customers
 FOR EACH ROW EXECUTE PROCEDURE core.update_customer_code();
 
+
+CREATE FUNCTION core.get_customer_type_id_by_customer_code(text)
+RETURNS smallint
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT
+			customer_type_id
+		FROM
+			core.customers
+		WHERE 
+			core.customers.customer_code=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
+
+
+CREATE FUNCTION core.get_customer_id_by_customer_code(text)
+RETURNS smallint
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT
+			customer_id
+		FROM
+			core.customers
+		WHERE 
+			core.customers.customer_code=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
 
 
 CREATE TABLE core.brands
@@ -1840,7 +2103,7 @@ CREATE TABLE core.taxes
 	tax_type_id smallint NOT NULL REFERENCES core.tax_types(tax_type_id),
 	tax_code national character varying(12) NOT NULL,
 	tax_name national character varying(50) NOT NULL,
-	rate float NOT NULL,
+	rate decimal NOT NULL,
 	account_id integer NOT NULL REFERENCES core.accounts(account_id)
 );
 
@@ -1876,83 +2139,13 @@ WHERE
 AND
 	core.taxes.tax_type_id = core.tax_types.tax_type_id;
 
-
-/*******************************************************************
-	TAX FORMS SIMPLIFY LENGHTY TAX CALCULATION FORMULA BY SAVING
-	THE FORMULA FOR FUTURE USE. THE SAVED TAX CALCULATION FORMULA
-	CAN BE REFERRED TO AS TAX FORM.
-*******************************************************************/
-
-CREATE TABLE core.tax_forms
-(
-	tax_form_id SERIAL NOT NULL PRIMARY KEY,
-	tax_form_code national character varying(12) NOT NULL,
-	tax_form_name national character varying(50) NOT NULL,
-	allow_edit boolean NOT NULL DEFAULT(true)
-);
-
-
-CREATE UNIQUE INDEX tax_forms_tax_form_code_uix
-ON core.tax_forms(UPPER(tax_form_code));
-
-CREATE UNIQUE INDEX tax_forms_tax_form_name_uix
-ON core.tax_forms(UPPER(tax_form_name));
-
-INSERT INTO core.tax_forms(tax_form_code, tax_form_name, allow_edit)
-SELECT 'VAT', 'Value Added Tax', false UNION ALL
-SELECT 'VAT2', 'Value Added Tax2', true;
-
-CREATE TABLE core.tax_form_details
-(
-	tax_form_detail_id SERIAL NOT NULL PRIMARY KEY,
-	tax_form_id integer NOT NULL REFERENCES core.tax_forms(tax_form_id),
-	ordinal_position smallint NOT NULL,
-	tax_id integer NOT NULL REFERENCES core.taxes(tax_id),
-	tax_on_total boolean NOT NULL DEFAULT(false)
-);
-
-INSERT INTO core.tax_form_details(tax_form_id, ordinal_position, tax_id, tax_on_total)
-SELECT 1, 0, 1, false;
-
-INSERT INTO core.tax_form_details(tax_form_id, ordinal_position, tax_id, tax_on_total)
-SELECT 2, 0, 1, false UNION ALL
-SELECT 2, 1, 2, true;
-
-
-CREATE UNIQUE INDEX tax_form_details_tax_form_id_ordinal_position_uix
-ON core.tax_form_details(tax_form_id,ordinal_position);
-
-
-CREATE UNIQUE INDEX tax_form_details_tax_form_id_tax_on_total_uix
-ON core.tax_form_details(tax_form_id, tax_on_total);
-
-
-CREATE VIEW core.tax_form_detail_view
-AS
-SELECT
-	tax_form_detail_id,
-	tax_form_code,
-	tax_form_name,
-	tax_code,
-	tax_name,
-	ordinal_position,
-	tax_on_total
-FROM
-	core.tax_form_details,
-	core.tax_forms,
-	core.taxes
-WHERE
-	core.tax_form_details.tax_form_id = core.tax_forms.tax_form_id
-AND
-	core.tax_form_details.tax_id = core.taxes.tax_id;
-
-
 CREATE TABLE core.item_groups
 (
 	item_group_id SERIAL NOT NULL PRIMARY KEY,
 	item_group_code national character varying(12) NOT NULL,
 	item_group_name national character varying(50) NOT NULL,
-	parent_item_group_id integer NULL REFERENCES core.item_groups(item_group_id),
+	exclude_from_purchase boolean NOT NULL CONSTRAINT item_groups_exclude_from_purchase_df DEFAULT('No'),
+	exclude_from_sales boolean NOT NULL CONSTRAINT item_groups_exclude_from_sales_df DEFAULT('No'),
 	tax_id smallint NOT NULL REFERENCES core.taxes(tax_id)
 );
 
@@ -1978,7 +2171,9 @@ CREATE TABLE core.items
 	unit_id integer NOT NULL REFERENCES core.units(unit_id),
 	hot_item boolean NOT NULL,
 	cost_price money_strict NOT NULL,
+	cost_price_includes_tax boolean NOT NULL CONSTRAINT items_cost_price_includes_tax_df DEFAULT('No'),
 	selling_price money_strict NOT NULL,
+	selling_price_includes_tax boolean NOT NULL CONSTRAINT items_selling_price_includes_tax_df DEFAULT('No'),
 	tax_id integer NOT NULL REFERENCES core.taxes(tax_id),
 	reorder_level integer NOT NULL,
 	item_image bytea NULL,
@@ -1988,6 +2183,40 @@ CREATE TABLE core.items
 CREATE UNIQUE INDEX items_item_name_uix
 ON core.items(UPPER(item_name));
 
+CREATE FUNCTION core.get_item_id_by_item_code(text)
+RETURNS integer
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT
+			item_id
+		FROM
+			core.items
+		WHERE 
+			core.items.item_code=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE FUNCTION core.get_item_tax_rate(integer)
+RETURNS decimal
+AS
+$$
+BEGIN
+	RETURN
+	COALESCE((
+		SELECT core.taxes.rate
+		FROM core.taxes
+		INNER JOIN core.items
+		ON core.taxes.tax_id = core.items.tax_id
+		WHERE core.items.item_id=$1
+	), 0);
+END
+$$
+LANGUAGE plpgsql;
 
 /*******************************************************************
 	PLEASE NOTE :
@@ -2010,10 +2239,12 @@ CREATE TABLE core.item_selling_prices
 (	
 	item_selling_price_id BIGSERIAL NOT NULL PRIMARY KEY,
 	item_id bigint NOT NULL REFERENCES core.items(item_id),
-	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	customer_type_id smallint NOT NULL REFERENCES core.customer_types(customer_type_id), 
-	price_type_id smallint NOT NULL REFERENCES core.price_types(price_type_id),
-	price money_strict NOT NULL
+	unit_id integer NOT NULL REFERENCES core.units(unit_id),
+	customer_type_id smallint NULL REFERENCES core.customer_types(customer_type_id), 
+	price_type_id smallint NULL REFERENCES core.price_types(price_type_id),
+	includes_tax boolean NOT NULL CONSTRAINT item_selling_prices_includes_tax_df DEFAULT('No'),
+	price money_strict NOT NULL,
+	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now())
 );
 
 
@@ -2027,16 +2258,93 @@ SELECT
     core.customer_types.customer_type_name,
     price
 FROM
-	core.item_selling_prices,
-	core.price_types,
-	core.items,
-    core.customer_types
-WHERE 
+	core.item_selling_prices
+INNER JOIN 	core.items
+ON 
 	core.item_selling_prices.item_id = core.items.item_id
-AND 
-	core.item_selling_prices.customer_type_id = core.customer_types.customer_type_id
-AND 
-	core.item_selling_prices.price_type_id = core.price_types.price_type_id;
+LEFT JOIN
+	core.price_types
+ON
+	core.item_selling_prices.price_type_id = core.price_types.price_type_id
+LEFT JOIN
+    core.customer_types
+ON	core.item_selling_prices.customer_type_id = core.customer_types.customer_type_id;
+
+
+CREATE FUNCTION core.get_item_selling_price(item_id_ integer, customer_type_id_ integer, price_type_id_ integer, unit_id_ integer)
+RETURNS money
+AS
+$$
+	DECLARE _price money;
+	DECLARE _unit_id integer;
+	DECLARE _factor decimal;
+	DECLARE _tax_rate decimal;
+	DECLARE _includes_tax boolean;
+	DECLARE _tax money;
+BEGIN
+
+	--Fist pick the catalog price which matches all these fields:
+	--Item, Customer Type, Price Type, and Unit.
+	--This is the most effective price.
+	SELECT 
+		item_selling_prices.price, 
+		item_selling_prices.unit_id,
+		item_selling_prices.includes_tax
+	INTO 
+		_price, 
+		_unit_id,
+		_includes_tax		
+	FROM core.item_selling_prices
+	WHERE item_selling_prices.item_id=$1
+	AND item_selling_prices.customer_type_id=$2
+	AND item_selling_prices.price_type_id =$3
+	AND item_selling_prices.unit_id = $4;
+
+	IF(_unit_id IS NULL) THEN
+		--We do not have a selling price of this item for the unit supplied.
+		--Let's see if this item has a price for other units.
+		SELECT 
+			item_selling_prices.price, 
+			item_selling_prices.unit_id,
+			item_selling_prices.includes_tax
+		INTO 
+			_price, 
+			_unit_id,
+			_includes_tax
+		FROM core.item_selling_prices
+		WHERE item_selling_prices.item_id=$1
+		AND item_selling_prices.customer_type_id=$2
+		AND item_selling_prices.price_type_id =$3;
+	END IF;
+
+	
+	IF(_price IS NULL) THEN
+		--This item does not have selling price defined in the catalog.
+		--Therefore, getting the default selling price from the item definition.
+		SELECT 
+			selling_price, 
+			unit_id,
+			selling_price_includes_tax
+		INTO 
+			_price, 
+			_unit_id,
+			_includes_tax
+		FROM core.items
+		WHERE core.items.item_id = $1;
+	END IF;
+
+	IF(_includes_tax) THEN
+		_tax_rate := core.get_item_tax_rate($1);
+		_price := _price / ((100 + _tax_rate)/ 100);
+	END IF;
+
+	--Get the unitary conversion factor if the requested unit does not match with the price defition.
+	_factor := core.convert_unit($4, _unit_id);
+
+	RETURN _price * _factor;
+END
+$$
+LANGUAGE plpgsql;
 
 
 CREATE TABLE core.item_cost_prices
@@ -2044,7 +2352,9 @@ CREATE TABLE core.item_cost_prices
 	item_cost_price_id BIGSERIAL NOT NULL PRIMARY KEY,
 	item_id bigint NOT NULL REFERENCES core.items(item_id),
 	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	supplier_id bigint NULL REFERENCES core.suppliers(supplier_id), 
+	unit_id integer NOT NULL REFERENCES core.units(unit_id),
+	supplier_id bigint NULL REFERENCES core.suppliers(supplier_id),
+	includes_tax boolean NOT NULL CONSTRAINT item_cost_prices_includes_tax_df DEFAULT('No'),
 	price money_strict NOT NULL
 );
 
@@ -2066,6 +2376,78 @@ ON core.item_cost_prices.item_id = core.items.item_id
 LEFT JOIN
 core.suppliers
 ON core.item_cost_prices.supplier_id = core.suppliers.supplier_id;
+
+CREATE FUNCTION core.get_item_cost_price(item_id_ integer, unit_id_ integer, supplier_id_ bigint)
+RETURNS money
+AS
+$$
+	DECLARE _price money;
+	DECLARE _unit_id integer;
+	DECLARE _factor decimal;
+	DECLARE _tax_rate decimal;
+	DECLARE _includes_tax boolean;
+	DECLARE _tax money;
+BEGIN
+	--Fist pick the catalog price which matches all these fields:
+	--Item, Unit, and Supplier.
+	--This is the most effective price.
+	SELECT 
+		item_cost_prices.price, 
+		item_cost_prices.unit_id,
+		item_cost_prices.includes_tax
+	INTO 
+		_price, 
+		_unit_id,
+		_includes_tax		
+	FROM core.item_cost_prices
+	WHERE item_cost_prices.item_id = $1
+	AND item_cost_prices.unit_id = $2
+	AND item_cost_prices.supplier_id =$3;
+
+	IF(_unit_id IS NULL) THEN
+		--We do not have a cost price of this item for the unit supplied.
+		--Let's see if this item has a price for other units.
+		SELECT 
+			item_cost_prices.price, 
+			item_cost_prices.unit_id,
+			item_cost_prices.includes_tax
+		INTO 
+			_price, 
+			_unit_id,
+			_includes_tax
+		FROM core.item_cost_prices
+		WHERE item_cost_prices.item_id=$1
+		AND item_cost_prices.supplier_id =$3;
+	END IF;
+
+	
+	IF(_price IS NULL) THEN
+		--This item does not have cost price defined in the catalog.
+		--Therefore, getting the default cost price from the item definition.
+		SELECT 
+			cost_price, 
+			unit_id,
+			cost_price_includes_tax
+		INTO 
+			_price, 
+			_unit_id,
+			_includes_tax
+		FROM core.items
+		WHERE core.items.item_id = $1;
+	END IF;
+
+	IF(_includes_tax) THEN
+		_tax_rate := core.get_item_tax_rate($1);
+		_price := _price / ((100 + _tax_rate)/ 100);
+	END IF;
+
+	--Get the unitary conversion factor if the requested unit does not match with the price defition.
+	_factor := core.convert_unit($2, _unit_id);
+
+	RETURN _price * _factor;
+END
+$$
+LANGUAGE plpgsql;
 
 
 CREATE TABLE office.store_types
@@ -2111,6 +2493,7 @@ ON office.stores(UPPER(store_name));
 CREATE TABLE office.cash_repositories
 (
 	cash_repository_id BIGSERIAL NOT NULL PRIMARY KEY,
+	office_id integer NOT NULL REFERENCES office.offices(office_id),
 	cash_repository_code national character varying(12) NOT NULL,
 	cash_repository_name national character varying(50) NOT NULL,
 	parent_cash_repository_id integer NULL REFERENCES office.cash_repositories(cash_repository_id),
@@ -2162,8 +2545,7 @@ CREATE TABLE office.cost_centers
 (
 	cost_center_id SERIAL NOT NULL PRIMARY KEY,
 	cost_center_code national character varying(24) NOT NULL,
-	cost_center_name national character varying(50) NOT NULL,
-	parent_cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id)
+	cost_center_name national character varying(50) NOT NULL
 );
 
 CREATE UNIQUE INDEX cost_centers_cost_center_code_uix
@@ -2187,15 +2569,9 @@ AS
 SELECT
 	office.cost_centers.cost_center_id,
 	office.cost_centers.cost_center_code,
-	office.cost_centers.cost_center_name,
-	parent_cost_centers.cost_center_code AS parent_cc_code,
-	parent_cost_centers.cost_center_name AS parent_cc_name
+	office.cost_centers.cost_center_name
 FROM
-	office.cost_centers
-LEFT OUTER JOIN
-	office.cost_centers AS parent_cost_centers
-ON
-	office.cost_centers.parent_cost_center_id = parent_cost_centers.cost_center_id;
+	office.cost_centers;
 
 
 CREATE TABLE office.cashiers
@@ -2457,3 +2833,14 @@ SELECT 'VER', 'Verbal' UNION ALL
 SELECT 'CLW', 'Closed Won' UNION ALL
 SELECT 'CLL', 'Closed Lost';
 
+
+CREATE FUNCTION core.count_item_in_stock(item_id_ integer, unit_id_ integer, store_id_ integer)
+RETURNS integer
+AS
+$$
+BEGIN
+	--TODO
+	RETURN 5;
+END
+$$
+LANGUAGE plpgsql;

@@ -1,4 +1,4 @@
-﻿html, body, table, tr, td, h1, h2, h3, h4, h5, input, select, p
+﻿html, body, table, tr, td, h1, h2, h3, h4, h5, input, select, p, textarea
 {
     margin: 0px;
     padding: 0px;
@@ -20,7 +20,7 @@ p
     padding: 3px 0px 3px 0px;
 }
 
-html, body, input, select
+html, body, input, select, textarea
 {
     font-size: 12px;
 }
@@ -45,7 +45,7 @@ body
 
 input, select
 {
-    font-weight: bold;
+    /*font-weight: bold;*/
     padding: 2px;
     color: #333399;
 }
@@ -235,7 +235,6 @@ h5
 
 .grid
 {
-    width: 100%;
     background-color: #fff;
     border-collapse: collapse;
     cursor: pointer;
@@ -376,7 +375,7 @@ table.grid th[scope=col]
 
 .form input
 {
-    padding:3px;
+    padding: 3px;
 }
 
 .form table tr td
@@ -550,20 +549,19 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 
 .grid2
 {
-    width: 100%;
-    color: #8A38AD;
-    font-weight:bold;
+    border-collapse: collapse;
+    color: #000000;
 }
 
-.grid2 td
-{
-    border: 1px solid #E9DCF1;
-}
+    .grid2 td
+    {
+        border: 1px solid #E9DCF1;
+    }
 
-.grid2 td, .grid2 th
-{
-    vertical-align: middle !important;
-}
+    .grid2 td, .grid2 th
+    {
+        vertical-align: middle !important;
+    }
 
 .grid2-header
 {
@@ -572,19 +570,29 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
     color: #FFFFFF;
 }
 
-
-.grid2 input[type="text"], .grid2 input[type="number"], .grid2 select
+.grid3
 {
-    margin: 2px;
-    padding: 2px;
-    border: 1px solid transparent;
-    height: 18px;
+    border-collapse: collapse;
 }
 
-.grid2 select
-{
-    height: 24px;
-}
+    .grid3 td
+    {
+        border: 1px solid transparent;
+    }
+
+    .grid3 input[type="text"], .grid3 input[type="number"], .grid3 select
+    {
+        padding: 2px;
+        border: 1px solid #E9DCF1;
+        height: 18px;
+    }
+
+    .grid3 select
+    {
+        height: 24px;
+    }
+
+
 
 .grid2-footer
 {
@@ -593,7 +601,7 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 .grid2-row td, .grid2-row-alt td
 {
     padding: 4px!important;
-    padding-left:8px!important;
+    padding-left: 8px!important;
 }
 
 .grid2-row-alt
@@ -602,9 +610,9 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 }
 
     .grid2-row:hover, .grid2-row-alt:hover
-{
-    background-color: #EEE9F8;
-}
+    {
+        background-color: #EEE9F8;
+    }
 
 .right
 {
@@ -621,4 +629,51 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 {
     margin-left: 2px;
     padding: 2px;
+}
+
+.title
+{
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #8C2BCE;
+    cursor: pointer;
+}
+
+.center
+{
+    display: table;
+    margin: 0 auto;
+}
+
+#FormTable
+{
+    margin-top: 4px;
+    border-collapse: collapse!important;
+    border: none!important;
+}
+
+#FormTable td
+{
+    padding:0px 1px 0px 1px;
+    vertical-align:middle;
+}
+
+.grid4
+{
+    border-collapse: collapse;
+}
+
+.grid4 tr td
+{
+    border: 1px solid #CCCCCC;
+    padding: 4px !important;
+    vertical-align: middle !important;
+}
+
+textarea
+{
+    margin-left:0px;
+    padding:4px;
 }

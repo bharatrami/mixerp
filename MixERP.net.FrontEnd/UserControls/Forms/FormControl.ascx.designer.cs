@@ -49,6 +49,15 @@ namespace MixERP.net.FrontEnd.UserControls.Forms {
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
+        /// AddNewLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal AddNewLiteral;
+        
+        /// <summary>
         /// EditLinkButton control.
         /// </summary>
         /// <remarks>
@@ -67,13 +76,22 @@ namespace MixERP.net.FrontEnd.UserControls.Forms {
         protected global::System.Web.UI.WebControls.LinkButton DeleteLinkButton;
         
         /// <summary>
-        /// FormLiteral control.
+        /// PrintLiteral control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal FormLiteral;
+        protected global::System.Web.UI.WebControls.Literal PrintLiteral;
+        
+        /// <summary>
+        /// FormLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label FormLabel;
         
         /// <summary>
         /// GridPanel control.
@@ -110,6 +128,24 @@ namespace MixERP.net.FrontEnd.UserControls.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel FormPanel;
+        
+        /// <summary>
+        /// AddNewEntryLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal AddNewEntryLiteral;
+        
+        /// <summary>
+        /// RequiredFieldDetailsLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal RequiredFieldDetailsLiteral;
         
         /// <summary>
         /// FormContainer control.
@@ -157,6 +193,15 @@ namespace MixERP.net.FrontEnd.UserControls.Forms {
         protected global::System.Web.UI.WebControls.LinkButton ShowAll2;
         
         /// <summary>
+        /// AddNewLiteral2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal AddNewLiteral2;
+        
+        /// <summary>
         /// EditLinkButton2 control.
         /// </summary>
         /// <remarks>
@@ -173,6 +218,15 @@ namespace MixERP.net.FrontEnd.UserControls.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton DeleteLinkButton2;
+        
+        /// <summary>
+        /// PrintLiteral2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal PrintLiteral2;
         
         /// <summary>
         /// UserIdHidden control.

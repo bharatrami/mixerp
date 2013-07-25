@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>GlobalizationRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -104,6 +105,36 @@
     </Compile>
     <Compile Include="Account\SignOut.aspx.designer.cs">
       <DependentUpon>SignOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FormResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FormResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Labels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Labels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Questions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Questions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Setup.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Setup.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Warnings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Warnings.resx</DependentUpon>
     </Compile>
     <Compile Include="ContentMaster.Master.cs">
       <DependentUpon>ContentMaster.Master</DependentUpon>
@@ -245,20 +276,6 @@
     <Compile Include="Finance\Setup\ProductGLMapping.aspx.designer.cs">
       <DependentUpon>ProductGLMapping.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Finance\Setup\TaxFormDetails.aspx.cs">
-      <DependentUpon>TaxFormDetails.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Finance\Setup\TaxFormDetails.aspx.designer.cs">
-      <DependentUpon>TaxFormDetails.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Finance\Setup\TaxForms.aspx.cs">
-      <DependentUpon>TaxForms.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Finance\Setup\TaxForms.aspx.designer.cs">
-      <DependentUpon>TaxForms.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Finance\Setup\TaxSetup.aspx.cs">
       <DependentUpon>TaxSetup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -334,6 +351,7 @@
     </Compile>
     <Compile Include="Items\Setup\CostPrices.aspx.cs">
       <DependentUpon>CostPrices.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Items\Setup\CostPrices.aspx.designer.cs">
       <DependentUpon>CostPrices.aspx</DependentUpon>
@@ -598,6 +616,10 @@
     <Compile Include="Sales\Setup\CustomerTypes.aspx.designer.cs">
       <DependentUpon>CustomerTypes.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Services\ItemData.asmx.cs">
+      <DependentUpon>ItemData.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Setup\Admin\Backup.aspx.cs">
       <DependentUpon>Backup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -660,6 +682,13 @@
     </Compile>
     <Compile Include="Setup\Departments.aspx.designer.cs">
       <DependentUpon>Departments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\FiscalYear.aspx.cs">
+      <DependentUpon>FiscalYear.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\FiscalYear.aspx.designer.cs">
+      <DependentUpon>FiscalYear.aspx</DependentUpon>
     </Compile>
     <Compile Include="Setup\Frequency.aspx.cs">
       <DependentUpon>Frequency.aspx</DependentUpon>
@@ -779,6 +808,7 @@
     <Content Include="db\customer-sample.sql" />
     <Content Include="db\mixerp.postgresql.bak.sql" />
     <Content Include="db\mixerp.postgresql.sql" />
+    <Content Include="db\sample-data.sql" />
     <Content Include="Dependencies\AspNetPager.dll" />
     <Content Include="Dependencies\Mono.Security.dll" />
     <Content Include="Dependencies\Npgsql.dll" />
@@ -792,8 +822,6 @@
     <Content Include="Finance\Setup\CostCenters.aspx" />
     <Content Include="Finance\Setup\Currencies.aspx" />
     <Content Include="Finance\Setup\ProductGLMapping.aspx" />
-    <Content Include="Finance\Setup\TaxFormDetails.aspx" />
-    <Content Include="Finance\Setup\TaxForms.aspx" />
     <Content Include="Finance\Setup\TaxSetup.aspx" />
     <Content Include="Finance\Setup\TaxTypes.aspx" />
     <Content Include="Finance\StandingInstructions.aspx" />
@@ -1123,6 +1151,8 @@
     <Content Include="Scripts\CodeMirror\theme\xq-light.css" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\mixerp.js" />
+    <Content Include="Scripts\shortcut.js" />
+    <Content Include="Services\ItemData.asmx" />
     <Content Include="Setup\Admin\Backup.aspx" />
     <Content Include="Setup\Admin\ChangePassword.aspx" />
     <Content Include="Setup\Admin\DatabaseStatistics.aspx" />
@@ -1132,6 +1162,7 @@
     <Content Include="Setup\CashRepositories.aspx" />
     <Content Include="Setup\Counters.aspx" />
     <Content Include="Setup\Departments.aspx" />
+    <Content Include="Setup\FiscalYear.aspx" />
     <Content Include="Setup\Frequency.aspx" />
     <Content Include="Setup\Index.aspx" />
     <Content Include="Setup\Offices.aspx" />
@@ -1145,9 +1176,10 @@
     <Content Include="SignIn.aspx" />
     <Content Include="spinner.gif" />
     <Content Include="Templates\Print.html" />
-    <Content Include="Themes\blue\main.css" />
-    <Content Include="Themes\blue\padding.css" />
-    <Content Include="Themes\blue\mixerp-logo.png" />
+    <Content Include="Res\Icons\delete-16.png" />
+    <Content Include="Themes\purple\main.css" />
+    <Content Include="Themes\purple\padding.css" />
+    <Content Include="Themes\purple\mixerp-logo.png" />
     <Content Include="UserControls\DateTextBox.ascx" />
     <Content Include="UserControls\Forms\FormControl.ascx" />
   </ItemGroup>
@@ -1187,10 +1219,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_GlobalResources\" />
     <Folder Include="Media\Temp\" />
-    <Folder Include="Resources\DatabaseBackups\" />
-    <Folder Include="Resources\Logo\" />
+    <Folder Include="Res\DatabaseBackups\" />
+    <Folder Include="Res\Logo\" />
     <Folder Include="Setup\General\" />
   </ItemGroup>
   <ItemGroup>
@@ -1206,6 +1237,42 @@
       <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>
       <Name>MixERP.net.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\FormResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>FormResource.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Labels.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Labels.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Questions.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Questions.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Titles.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Warnings.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Warnings.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Setup.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Setup.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -17,7 +17,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.net.FrontEnd.Account.Messaging
 {
-    public partial class Inbox : System.Web.UI.Page
+    public partial class Inbox : MixERP.net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

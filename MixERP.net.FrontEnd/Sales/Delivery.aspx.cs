@@ -19,6 +19,7 @@ namespace MixERP.net.FrontEnd.Sales
 {
     public partial class Delivery : MixERP.net.BusinessLayer.BasePageClass
     {
+ 
         protected void Page_Load(object sender, EventArgs e)
         {
 

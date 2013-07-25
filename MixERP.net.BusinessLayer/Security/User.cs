@@ -28,12 +28,11 @@ namespace MixERP.net.BusinessLayer.Security
                 {
                     if (table.Rows.Count.Equals(1))
                     {
-                        int officeId = Pes.Utility.Conversion.TryCastInteger(table.Rows[0]["office_id"]);
-                        string officeName = Pes.Utility.Conversion.TryCastString(table.Rows[0]["office"]);
-
+                        page.Session["UserId"] = table.Rows[0]["user_id"];
                         page.Session["UserName"] = user;
-                        page.Session["OfficeId"] = officeId;
-                        page.Session["OfficeName"] = officeName;
+
+                        page.Session["OfficeId"] = table.Rows[0]["logged_in_office_id"];
+                        page.Session["OfficeName"] = table.Rows[0]["logged_in_office"];
                     }
                 }
             }
