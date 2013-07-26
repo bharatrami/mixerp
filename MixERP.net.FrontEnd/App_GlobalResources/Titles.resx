@@ -129,6 +129,9 @@
   <data name="AddNewEntry" xml:space="preserve">
     <value>Add a New Entry</value>
   </data>
+  <data name="AgeingSlabSetup" xml:space="preserve">
+    <value>Ageing Slab Setup</value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>Amount</value>
   </data>

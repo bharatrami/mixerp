@@ -86,7 +86,7 @@ namespace MixERP.net.FrontEnd.UserControls
                 CompareValidator1.ControlToValidate = this.ID;
                 CompareValidator1.ValueToCompare = "1/1/1900";
                 CompareValidator1.Type = ValidationDataType.Date;
-                CompareValidator1.ErrorMessage = "Invalid date";
+                CompareValidator1.ErrorMessage = Resources.Warnings.InvalidDate;
                 CompareValidator1.EnableClientScript = true;
                 CompareValidator1.CssClass = "error";
             }

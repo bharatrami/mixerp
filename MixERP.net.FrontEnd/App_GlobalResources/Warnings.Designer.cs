@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning!!! Only {Qty} {Unit} of {ItemName} left in stock..
+        ///   Looks up a localized string similar to Warning!!! Only {0} {1} of {2} left in stock..
         /// </summary>
         internal static string InsufficientStockWarning {
             get {

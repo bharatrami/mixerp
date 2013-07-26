@@ -37,7 +37,7 @@ namespace MixERP.net.FrontEnd
                     {
                         string menuText = Pes.Utility.Conversion.TryCastString(row["menu_text"]);
                         string url = Pes.Utility.Conversion.TryCastString(row["url"]);
-                        menu += string.Format("<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
+                        menu += string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
                     }
                 }
             }

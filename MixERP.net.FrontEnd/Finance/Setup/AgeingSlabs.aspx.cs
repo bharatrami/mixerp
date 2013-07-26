@@ -29,7 +29,7 @@ namespace MixERP.net.FrontEnd.Finance.Setup
             form.PageSize = 10;
 
 
-            form.Text = "Ageing Slab Setup";
+            form.Text = Resources.Titles.AgeingSlabSetup;
 
             form.TableSchema = "core";
             form.Table = "ageing_slabs";
@@ -41,7 +41,6 @@ namespace MixERP.net.FrontEnd.Finance.Setup
 
             form.DisplayFields = "";
             form.SelectedValues = "";
-
 
             FormPlaceHolder.Controls.Add(form);
         }

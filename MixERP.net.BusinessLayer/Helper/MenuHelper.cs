@@ -34,7 +34,7 @@ namespace MixERP.net.BusinessLayer.Helper
 
                             string menuText = Pes.Utility.Conversion.TryCastString(row["menu_text"]);
 
-                            menu += string.Format("<div class='sub-menu'><div class='menu-title'>{0}</div>", menuText);
+                            menu += string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<div class='sub-menu'><div class='menu-title'>{0}</div>", menuText);
 
                             using (DataTable childTable = MixERP.net.BusinessLayer.Core.Menu.GetMenuTable(menuId, 2))
                             {
@@ -45,7 +45,7 @@ namespace MixERP.net.BusinessLayer.Helper
                                         string url = Pes.Utility.Conversion.TryCastString(childTableRow["url"]);
                                         string childMenuText = Pes.Utility.Conversion.TryCastString(childTableRow["menu_text"]);
 
-                                        menu += string.Format("<a href='{0}' title='{1}' class='sub-menu-anchor'>{1}</a>", page.ResolveUrl(url), childMenuText);
+                                        menu += string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<a href='{0}' title='{1}' class='sub-menu-anchor'>{1}</a>", page.ResolveUrl(url), childMenuText);
                                     }
                                 }
                             }
@@ -81,7 +81,7 @@ namespace MixERP.net.BusinessLayer.Helper
 
                             string menuText = Pes.Utility.Conversion.TryCastString(row["menu_text"]);
 
-                            menu += string.Format("<div class='menu-panel'><div class='menu-header'>{0}</div><ul>", menuText);
+                            menu += string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<div class='menu-panel'><div class='menu-header'>{0}</div><ul>", menuText);
 
                             using (DataTable childTable = MixERP.net.BusinessLayer.Core.Menu.GetMenuTable(menuId, 2))
                             {
@@ -92,7 +92,7 @@ namespace MixERP.net.BusinessLayer.Helper
                                         string url = Pes.Utility.Conversion.TryCastString(childTableRow["url"]);
                                         string childMenuText = Pes.Utility.Conversion.TryCastString(childTableRow["menu_text"]);
 
-                                        menu += string.Format("<li><a href='{0}' title='{1}'>{1}</a></li>", page.ResolveUrl(url), childMenuText);
+                                        menu += string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<li><a href='{0}' title='{1}'>{1}</a></li>", page.ResolveUrl(url), childMenuText);
                                     }
                                 }
                             }

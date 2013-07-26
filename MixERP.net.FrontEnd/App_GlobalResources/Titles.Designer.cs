@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ageing Slab Setup.
+        /// </summary>
+        internal static string AgeingSlabSetup {
+            get {
+                return ResourceManager.GetString("AgeingSlabSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amount.
         /// </summary>
         internal static string Amount {

@@ -26,7 +26,7 @@ namespace MixERP.net.BusinessLayer.Helper
             }
             try
             {
-                return System.Web.HttpContext.GetGlobalResourceObject(className, key).ToString();
+                return System.Web.HttpContext.GetGlobalResourceObject(className, key, MixERP.net.BusinessLayer.Helper.SessionHelper.Culture()).ToString();
             }
             catch
             {

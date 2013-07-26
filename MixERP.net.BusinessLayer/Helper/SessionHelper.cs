@@ -10,6 +10,7 @@
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -36,6 +37,13 @@ namespace MixERP.net.BusinessLayer.Helper
         public static string OfficeName()
         {
             return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["OfficeName"]);
+        }
+
+        public static CultureInfo Culture()
+        {
+            //Todo
+            CultureInfo culture = new CultureInfo(CultureInfo.InvariantCulture.Name);
+            return culture;
         }
     }
 }

@@ -45,7 +45,11 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             TitleLabel.Text = this.Text;
             this.LoadGrid();
-            this.LoadForm(this.FormContainer, new System.Data.DataTable());
+            using(System.Data.DataTable table = new System.Data.DataTable())
+            {
+                table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+                this.LoadForm(this.FormContainer, table);
+            }
         }
 
         protected void FormGridView_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -82,7 +86,11 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             this.ClearSelectedValue();
 
             //Load the form again.
-            this.LoadForm(this.FormContainer, new System.Data.DataTable());
+            using(System.Data.DataTable table = new System.Data.DataTable())
+            {
+                table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+                this.LoadForm(this.FormContainer, table);
+            }
         }
 
         protected void EditLinkButton_Click(object sender, EventArgs e)
@@ -186,7 +194,12 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         FormContainer.Controls.Clear();
 
                         //Load the form again.
-                        this.LoadForm(this.FormContainer, new System.Data.DataTable());
+                        using(System.Data.DataTable table = new System.Data.DataTable())
+                        {
+                            table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+
+                            this.LoadForm(this.FormContainer, table);
+                        }
 
                         //Refresh the grid.
                         this.BindGridView();
@@ -297,7 +310,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                     {
                         string columnName = Pes.Utility.Conversion.TryCastString(row["column_name"]);
                         string defaultValue = Pes.Utility.Conversion.TryCastString(row["column_default"]); //nextval('core.menus_menu_id_seq'::regclass)
-                        bool isSerial = defaultValue.StartsWith("nextval");
+                        bool isSerial = defaultValue.StartsWith("nextval", StringComparison.OrdinalIgnoreCase);
                         bool isNullable = Pes.Utility.Conversion.TryCastBoolean(row["is_nullable"]);
                         string dataType = Pes.Utility.Conversion.TryCastString(row["data_type"]);
                         string domain = Pes.Utility.Conversion.TryCastString(row["domain_name"]);
@@ -348,7 +361,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                     {
                         string columnName = Pes.Utility.Conversion.TryCastString(row["column_name"]);
                         string defaultValue = Pes.Utility.Conversion.TryCastString(row["column_default"]);
-                        bool isSerial = defaultValue.StartsWith("nextval");
+                        bool isSerial = defaultValue.StartsWith("nextval", StringComparison.OrdinalIgnoreCase);
                         string parentTableColumn = Pes.Utility.Conversion.TryCastString(row["references_field"]);
                         string dataType = Pes.Utility.Conversion.TryCastString(row["data_type"]);
 
@@ -445,7 +458,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             HtmlTableCell controlCell = new HtmlTableCell();
             Literal labelLiteral = new Literal();
 
-            labelLiteral.Text = string.Format("<label for='{0}'>{1}</label>", controls[0].ID, label);
+            labelLiteral.Text = string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<label for='{0}'>{1}</label>", controls[0].ID, label);
             labelCell.Attributes.Add("class", "label-cell");
 
             labelCell.Controls.Add(labelLiteral);
@@ -539,7 +552,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         relation = tableSchema + "." + tableName + "." + tableColumn;
 
                         //Check whether this field matches exactly with this column.
-                        if(field.StartsWith(relation))
+                        if(field.StartsWith(relation, StringComparison.OrdinalIgnoreCase))
                         {
                             //This field in this loop contained the column name we were looking for.
                             //Now, get the mapped column (display field) to show on the drop down list.
@@ -596,7 +609,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         relation = tableSchema + "." + tableName + "." + tableColumn;
 
                         //Checking again whether this field matches exactly with this column.
-                        if(selected.StartsWith(relation))
+                        if(selected.StartsWith(relation, StringComparison.OrdinalIgnoreCase))
                         {
                             //This field in this loop contained the column name we were looking for.
                             //Now, get the mapped column (display field) to show on the drop down list.
@@ -607,7 +620,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
                             //Check the type of the value.
                             //If the value starts with single inverted comma, the value is a text.
-                            if(value.StartsWith("'"))
+                            if(value.StartsWith("'", StringComparison.OrdinalIgnoreCase))
                             {
                                 //The selected item value from the drop down list text fields.
                                 ListItem item = dropDownList.Items.FindByText(value.Replace("'", ""));
@@ -718,7 +731,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             TextBox textBox = this.GetNumberTextBox(columnName + "_textbox", maxLength);
             string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
 
-            if(!defaultValue.StartsWith("nextVal"))
+            if(!defaultValue.StartsWith("nextVal", StringComparison.OrdinalIgnoreCase))
             {
                 textBox.Text = defaultValue;
             }

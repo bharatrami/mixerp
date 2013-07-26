@@ -15,6 +15,7 @@ using System.Text;
 using Npgsql;
 using System.Data;
 using System.IO;
+using System.Data.Common;
 
 namespace MixERP.net.DatabaseLayer.Helper
 {
@@ -22,37 +23,63 @@ namespace MixERP.net.DatabaseLayer.Helper
     {
         public static DataTable GetView(string tableSchema, string tableName, string orderBy, int limit, int offset)
         {
-            string sql = string.Format("SELECT * FROM {0}.{1} ORDER BY {2} LIMIT {3} OFFSET {4};", tableSchema, tableName, orderBy, limit, offset);
-            using (NpgsqlCommand command = new NpgsqlCommand(sql))
+            string sql = "SELECT * FROM @TableSchema.@TableName ORDER BY @OrderBy LIMIT @Limit OFFSET @Offset;";
+
+            using(NpgsqlCommand command = new NpgsqlCommand())
             {
+                //We are 100% sure that the following paramters do not come from user input.
+                //Having said that, it is nice to sanitize the objects before sending it to the database server.
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+                sql = sql.Replace("@OrderBy", DBFactory.Sanitizer.SanitizeIdentifierName(orderBy));
+                sql = sql.Replace("@Limit", Pes.Utility.Conversion.TryCastString(limit));
+                sql = sql.Replace("@Offset", Pes.Utility.Conversion.TryCastString(offset));
+                command.CommandText = sql;
+
                 return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
         public static DataTable GetTable(string tableSchema, string tableName)
         {
-            string sql = string.Format("SELECT * FROM {0}.{1};", tableSchema, tableName);
-            using (NpgsqlCommand command = new NpgsqlCommand(sql))
+            string sql = "SELECT * FROM @TableSchema.@TableName;";
+            using(NpgsqlCommand command = new NpgsqlCommand())
             {
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+                command.CommandText = sql;
+
                 return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
         public static DataTable GetTable(string tableSchema, string tableName, string columnName, string columnValue)
         {
-            string sql = string.Format("SELECT * FROM {0}.{1} WHERE {2}=@{2};", tableSchema, tableName, columnName);
-            using (NpgsqlCommand command = new NpgsqlCommand(sql))
+            string sql = "SELECT * FROM @TableSchema.@TableName WHERE @ColumnName=@ColumnValue;";
+
+            using(NpgsqlCommand command = new NpgsqlCommand())
             {
-                command.Parameters.AddWithValue("@" + columnName, columnValue);
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+                sql = sql.Replace("@ColumnName", DBFactory.Sanitizer.SanitizeIdentifierName(columnName));
+
+                command.CommandText = sql;
+
+                command.Parameters.AddWithValue("@ColumnValue", columnValue);
                 return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
         public static int GetTotalRecords(string tableSchema, string tableName)
         {
-            string sql = string.Format("SELECT COUNT(*) FROM {0}.{1}", tableSchema, tableName);
-            using (NpgsqlCommand command = new NpgsqlCommand(sql))
+            string sql = "SELECT COUNT(*) FROM @TableSchema.@TableName";
+            using(NpgsqlCommand command = new NpgsqlCommand())
             {
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+
+                command.CommandText = sql;
+
                 return Pes.Utility.Conversion.TryCastInteger(MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
@@ -64,38 +91,43 @@ namespace MixERP.net.DatabaseLayer.Helper
 
             int counter = 0;
 
-            foreach (KeyValuePair<string, string> pair in data)
+            foreach(KeyValuePair<string, string> pair in data)
             {
                 counter++;
 
-                if (counter.Equals(1))
+                if(counter.Equals(1))
                 {
-                    columns += pair.Key;
+                    columns += DBFactory.Sanitizer.SanitizeIdentifierName(pair.Key);
                     columnParamters += "@" + pair.Key;
                 }
                 else
                 {
-                    columns += ", " + pair.Key;
+                    columns += ", " + DBFactory.Sanitizer.SanitizeIdentifierName(pair.Key);
                     columnParamters += ", @" + pair.Key;
                 }
             }
 
-            string sql = string.Format("INSERT INTO {0}.{1}({2}) SELECT {3};", tableSchema, tableName, columns, columnParamters);
-            using (NpgsqlCommand command = new NpgsqlCommand(sql))
+            string sql = string.Format("INSERT INTO @TableSchema.@TableName({0}) SELECT {1};", columns, columnParamters);
+            using(NpgsqlCommand command = new NpgsqlCommand())
             {
-                foreach (KeyValuePair<string, string> pair in data)
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+
+                command.CommandText = sql;
+
+                foreach(KeyValuePair<string, string> pair in data)
                 {
-                    if (string.IsNullOrWhiteSpace(pair.Value))
+                    if(string.IsNullOrWhiteSpace(pair.Value))
                     {
                         command.Parameters.AddWithValue("@" + pair.Key, DBNull.Value);
                     }
                     else
                     {
-                        if (pair.Key.Equals(imageColumn))
+                        if(pair.Key.Equals(imageColumn))
                         {
-                            using (FileStream stream = new FileStream(pair.Value, FileMode.Open, FileAccess.Read))
+                            using(FileStream stream = new FileStream(pair.Value, FileMode.Open, FileAccess.Read))
                             {
-                                using (BinaryReader reader = new BinaryReader(new BufferedStream(stream)))
+                                using(BinaryReader reader = new BinaryReader(new BufferedStream(stream)))
                                 {
                                     byte[] byteArray = reader.ReadBytes(Convert.ToInt32(stream.Length));
                                     command.Parameters.AddWithValue("@" + pair.Key, byteArray);
@@ -119,36 +151,43 @@ namespace MixERP.net.DatabaseLayer.Helper
 
             int counter = 0;
 
-            foreach (KeyValuePair<string, string> pair in data)
+            foreach(KeyValuePair<string, string> pair in data)
             {
                 counter++;
 
-                if (counter.Equals(1))
+                if(counter.Equals(1))
                 {
-                    columns += pair.Key + "=@" + pair.Key;
+                    columns += DBFactory.Sanitizer.SanitizeIdentifierName(pair.Key) + "=@" + pair.Key;
                 }
                 else
                 {
-                    columns += ", " + pair.Key + "=@" + pair.Key;
+                    columns += ", " + DBFactory.Sanitizer.SanitizeIdentifierName(pair.Key) + "=@" + pair.Key;
                 }
             }
 
-            string sql = string.Format("UPDATE {0}.{1} SET {2} WHERE {3}=@{3};", tableSchema, tableName, columns, keyColumn);
-            using (NpgsqlCommand command = new NpgsqlCommand(sql))
+            string sql = string.Format("UPDATE @TableSchema.@TableName SET {0} WHERE @KeyColumn=@KeyValue;", columns);
+
+            using(NpgsqlCommand command = new NpgsqlCommand())
             {
-                foreach (KeyValuePair<string, string> pair in data)
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+                sql = sql.Replace("@KeyColumn", DBFactory.Sanitizer.SanitizeIdentifierName(keyColumn));
+
+                command.CommandText = sql;
+
+                foreach(KeyValuePair<string, string> pair in data)
                 {
-                    if (string.IsNullOrWhiteSpace(pair.Value))
+                    if(string.IsNullOrWhiteSpace(pair.Value))
                     {
                         command.Parameters.AddWithValue("@" + pair.Key, DBNull.Value);
                     }
                     else
                     {
-                        if (pair.Key.Equals(imageColumn))
+                        if(pair.Key.Equals(imageColumn))
                         {
-                            using (FileStream stream = new FileStream(pair.Value, FileMode.Open, FileAccess.Read))
+                            using(FileStream stream = new FileStream(pair.Value, FileMode.Open, FileAccess.Read))
                             {
-                                using (BinaryReader reader = new BinaryReader(new BufferedStream(stream)))
+                                using(BinaryReader reader = new BinaryReader(new BufferedStream(stream)))
                                 {
                                     byte[] byteArray = reader.ReadBytes(Convert.ToInt32(stream.Length));
                                     command.Parameters.AddWithValue("@" + pair.Key, byteArray);
@@ -162,7 +201,7 @@ namespace MixERP.net.DatabaseLayer.Helper
                     }
                 }
 
-                command.Parameters.AddWithValue("@" + keyColumn, keyColumnValue);
+                command.Parameters.AddWithValue("@KeyValue", keyColumnValue);
 
                 return MixERP.net.DatabaseLayer.DBFactory.DBOperations.ExecuteNonQuery(command);
             }
@@ -170,10 +209,16 @@ namespace MixERP.net.DatabaseLayer.Helper
 
         public static bool DeleteRecord(string tableSchema, string tableName, string keyColumn, string keyColumnValue)
         {
-            string sql = string.Format("DELETE FROM {0}.{1} WHERE {2}=@{2}", tableSchema, tableName, keyColumn);
-            using (NpgsqlCommand command = new NpgsqlCommand(sql))
+            string sql = "DELETE FROM @TableSchema.@TableName WHERE @KeyColumn=@KeyValue";
+
+            using(NpgsqlCommand command = new NpgsqlCommand())
             {
-                command.Parameters.AddWithValue("@" + keyColumn, keyColumnValue);
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+                sql = sql.Replace("@KeyColumn", DBFactory.Sanitizer.SanitizeIdentifierName(keyColumn));
+                command.CommandText = sql;
+
+                command.Parameters.AddWithValue("@KeyValue", keyColumnValue);
 
                 return MixERP.net.DatabaseLayer.DBFactory.DBOperations.ExecuteNonQuery(command);
             }

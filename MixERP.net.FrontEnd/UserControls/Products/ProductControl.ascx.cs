@@ -163,7 +163,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
 
             ItemDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "items");
             ItemDropDownList.DataBind();
-            ItemDropDownList.Items.Insert(0, new ListItem("Select", ""));
+            ItemDropDownList.Items.Insert(0, new ListItem(Resources.Titles.Select, ""));
 
             if(this.ShowCashRepository)
             {
@@ -266,9 +266,9 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                 {
                     if(table.Rows.Count > 0)
                     {
-                        RunningTotalTextBox.Text = this.GetRunningTotal(table, "SubTotal").ToString();
-                        TaxTotalTextBox.Text = this.GetRunningTotal(table, "Tax").ToString();
-                        GrandTotalTextBox.Text = this.GetRunningTotal(table, "Total").ToString();
+                        RunningTotalTextBox.Text = this.GetRunningTotal(table, "SubTotal").ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
+                        TaxTotalTextBox.Text = this.GetRunningTotal(table, "Tax").ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
+                        GrandTotalTextBox.Text = this.GetRunningTotal(table, "Total").ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
                     }
                 }
                 catch
@@ -314,7 +314,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             {
                 if(CashRepositoryDropDownList.SelectedItem != null)
                 {
-                    CashRepositoryBalanceTextBox.Text = MixERP.net.BusinessLayer.Office.CashRepositories.GetBalance(Pes.Utility.Conversion.TryCastInteger(CashRepositoryDropDownList.SelectedItem.Value)).ToString();
+                    CashRepositoryBalanceTextBox.Text = MixERP.net.BusinessLayer.Office.CashRepositories.GetBalance(Pes.Utility.Conversion.TryCastInteger(CashRepositoryDropDownList.SelectedItem.Value)).ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
                 }
             }
         }
@@ -423,7 +423,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                     if(quantity > itemInStock)
                     {
                         this.MakeDirty(QuantityTextBox);
-                        ErrorLabel.Text = String.Format(Resources.Warnings.InsufficientStockWarning.Replace("{ItemName}", "{0}").Replace("{Qty}", "{1}").Replace("{Unit}", "{2}"), ItemDropDownList.SelectedItem.Text, itemInStock.ToString(), UnitDropDownList.SelectedItem.Text);
+                        ErrorLabel.Text = String.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), Resources.Warnings.InsufficientStockWarning, itemInStock.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture()), UnitDropDownList.SelectedItem.Text, ItemDropDownList.SelectedItem.Text);
                         return;
                     }
                 }
@@ -477,6 +477,8 @@ namespace MixERP.net.FrontEnd.UserControls.Products
 
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
+                table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+
                 table.Columns.Add("ItemCode");
                 table.Columns.Add("ItemName");
                 table.Columns.Add("Quantity");
@@ -525,14 +527,14 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             decimal taxRate = MixERP.net.BusinessLayer.Core.Items.GetTaxRate(itemCode);
 
 
-            PriceTextBox.Text = price.ToString();
+            PriceTextBox.Text = price.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
 
-            TaxRateTextBox.Text = taxRate.ToString();
-            TaxTextBox.Text = (((price - discount) * taxRate) / 100.00m).ToString("#.##");
+            TaxRateTextBox.Text = taxRate.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
+            TaxTextBox.Text = (((price - discount) * taxRate) / 100.00m).ToString("#.##", MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
 
             decimal amount = price * Pes.Utility.Conversion.TryCastInteger(QuantityTextBox.Text);
 
-            AmountTextBox.Text = amount.ToString();
+            AmountTextBox.Text = amount.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
         }
 
         protected void OKButton_Click(object sender, EventArgs e)
