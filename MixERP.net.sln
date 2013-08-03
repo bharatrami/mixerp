@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.net.BusinessLayer", "MixERP.net.BusinessLayer\MixERP.net.BusinessLayer.csproj", "{81DE04CF-7DE9-42FF-8339-D05E2586DCBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.BusinessLayer", "MixERP.net.BusinessLayer\MixERP.Net.BusinessLayer.csproj", "{81DE04CF-7DE9-42FF-8339-D05E2586DCBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.net.Common", "MixERP.net.Common\MixERP.net.Common.csproj", "{D5A09C22-8F48-4FB2-A14D-C62C8C8FCEC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Common", "MixERP.net.Common\MixERP.Net.Common.csproj", "{D5A09C22-8F48-4FB2-A14D-C62C8C8FCEC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.net.DatabaseLayer", "MixERP.net.DatabaseLayer\MixERP.net.DatabaseLayer.csproj", "{F1F6FB95-5D7E-4E4C-9CC4-AC58DBD8F09F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.DatabaseLayer", "MixERP.net.DatabaseLayer\MixERP.Net.DatabaseLayer.csproj", "{F1F6FB95-5D7E-4E4C-9CC4-AC58DBD8F09F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pes.Utility", "Pes.Utility\Pes.Utility.csproj", "{D5F5C51D-250D-4775-8E63-AE792A9A04A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.net.FrontEnd", "MixERP.net.FrontEnd\MixERP.net.FrontEnd.csproj", "{ACE1017D-71BC-4417-A906-72C4B9C55823}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.FrontEnd", "MixERP.net.FrontEnd\MixERP.Net.FrontEnd.csproj", "{ACE1017D-71BC-4417-A906-72C4B9C55823}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,16 +10,18 @@
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Npgsql;
-using System.Data;
 
-namespace MixERP.net.DatabaseLayer.Security
+namespace MixERP.Net.DatabaseLayer.Security
 {
     public static class User
     {
-        public static bool SignIn(int officeId, string userName, string password, string browser, string ipAddress, string remoteUser)
+
+        public static long SignIn(int officeId, string userName, string password, string browser, string ipAddress, string remoteUser)
         {
             string sql = "SELECT * FROM office.sign_in(@OfficeId, @UserName, @Password, @Browser, @IPAddress, @RemoteUser);";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
@@ -31,20 +33,18 @@ namespace MixERP.net.DatabaseLayer.Security
                 command.Parameters.AddWithValue("@IPAddress", ipAddress);
                 command.Parameters.AddWithValue("@RemoteUser", remoteUser);
 
-                int result = Pes.Utility.Conversion.TryCastInteger(MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
-
-                return (result > 0);
+                return Pes.Utility.Conversion.TryCastLong(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 
         public static DataTable GetUserTable(string userName)
         {
-            string sql = "SELECT * FROM office.user_view WHERE user_name=@UserName;";
+            string sql = "SELECT * FROM office.login_view WHERE user_name=@UserName;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@UserName", userName);
 
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
     }

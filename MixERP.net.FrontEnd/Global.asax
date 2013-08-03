@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="MixERP.net.FrontEnd.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="MixERP.Net.FrontEnd.Global" Language="C#" %>

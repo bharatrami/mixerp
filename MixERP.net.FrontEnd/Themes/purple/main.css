@@ -259,6 +259,7 @@ h5
         padding-left: 12px !important;
     }
 
+
 table.grid th[scope=col]
 {
     text-align: left;
@@ -449,7 +450,7 @@ label
 
 .menu-title
 {
-    color: #666699;
+    color: #9900CC;
     font-size: 16px;
     padding: 8px 0px 2px 0px;
     padding: 12px;
@@ -466,10 +467,10 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 }
 
     a.sub-menu-anchor:hover
-    {
-        background-color: #666699;
-        color: White;
-    }
+{
+    background-color: #7D58A7;
+    color: White;
+}
 
 .success
 {
@@ -489,42 +490,50 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 
 .vpad2
 {
+    display: block;
     padding: 2px 0px 2px 0px;
 }
 
 .vpad4
 {
+    display: block;
     padding: 4px 0px 4px 0px;
 }
 
 .vpad6
 {
+    display: block;
     padding: 6px 0px 6px 0px;
 }
 
 .vpad8
 {
+    display: block;
     padding: 8px 0px 8px 0px;
 }
 
 .vpad10
 {
+    display: block;
     padding: 10px 0px 10px 0px;
 }
 
 .vpad12
 {
+    display: block;
     padding: 12px 0px 12px 0px;
 }
 
 .vpad14
 {
+    display: block;
     padding: 14px 0px 14px 0px;
 }
 
 
 .vpad16
 {
+    display: block;
     padding: 16px 0px 16px 0px;
 }
 
@@ -654,26 +663,92 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
     border: none!important;
 }
 
-#FormTable td
-{
-    padding:0px 1px 0px 1px;
-    vertical-align:middle;
-}
+    #FormTable td
+    {
+        padding: 0px 1px 0px 1px;
+        vertical-align: middle;
+    }
 
 .grid4
 {
     border-collapse: collapse;
 }
 
-.grid4 tr td
-{
-    border: 1px solid #CCCCCC;
-    padding: 4px !important;
-    vertical-align: middle !important;
-}
+    .grid4 tr td
+    {
+        border: 1px solid #CCCCCC;
+        padding: 4px !important;
+        vertical-align: middle !important;
+    }
 
 textarea
 {
-    margin-left:0px;
-    padding:4px;
+    margin-left: 0px;
+    padding: 4px;
+}
+
+.info
+{
+    cursor: pointer;
+    display: block;
+}
+
+.pink
+{
+    border: 1px solid #FF97FF;
+    padding: 6px;
+    background-color: #FFBBFF;
+}
+
+.red
+{
+    border: 1px solid #FF7D7D;
+    padding: 6px;
+    background-color: #FFB7B7;
+}
+
+.yellow
+{
+    border: 1px solid #FAD91F;
+    padding: 6px;
+    background-color: #FCEA81;
+}
+
+.purple
+{
+    border: 1px solid #E0B3FF;
+    padding: 6px;
+    background-color: #EFD7FF;
+}
+
+.green
+{
+    border: 1px solid #A3FF46;
+    padding: 6px;
+    background-color: #CCFF99;
+}
+
+.linkblock
+{
+    padding: 4px;
+    border-color: #E1E1E1;
+    border-style: none none dotted none;
+    border-width: 1px;
+    display: block;
+}
+
+.transaction-confirmation
+{
+    width: 250px;
+    border: 1px solid #EEEEEE;
+    padding: 12px;
+    background-color: #F8F8F8;
+}
+
+input.date
+{
+    background: white url(/Resource/Icons/calendar-16.png) no-repeat scroll;
+    background-position: 95% 50%;
+    padding-right: 16px;
+    cursor:pointer;
 }

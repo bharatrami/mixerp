@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using Npgsql;
 
-namespace MixERP.net.DatabaseLayer.Core
+namespace MixERP.Net.DatabaseLayer.Core
 {
     public static class Customers
     {
@@ -26,7 +26,7 @@ namespace MixERP.net.DatabaseLayer.Core
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@CustomerCode", customerCode);
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command).Rows.Count.Equals(1);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command).Rows.Count.Equals(1);
             }
         }
     }

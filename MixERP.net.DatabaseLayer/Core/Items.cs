@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using Npgsql;
 
-namespace MixERP.net.DatabaseLayer.Core
+namespace MixERP.Net.DatabaseLayer.Core
 {
     public static class Items
     {
@@ -25,7 +25,7 @@ namespace MixERP.net.DatabaseLayer.Core
             {
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
 
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command).ToString().Equals("1");
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command).ToString().Equals("1");
             }
         }
 
@@ -39,12 +39,13 @@ namespace MixERP.net.DatabaseLayer.Core
                 command.Parameters.AddWithValue("@PriceTypeId", priceTypeId);
                 command.Parameters.AddWithValue("@UnitId", unitId);
 
-                return Pes.Utility.Conversion.TryCastDecimal(MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 
         public static decimal GetItemCostPrice(string itemCode, string supplierCode, int unitId)
         {
+            //Todo
             return 100m;
         }
 
@@ -54,7 +55,7 @@ namespace MixERP.net.DatabaseLayer.Core
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
-                return Pes.Utility.Conversion.TryCastDecimal(MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 
@@ -66,7 +67,7 @@ namespace MixERP.net.DatabaseLayer.Core
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
                 command.Parameters.AddWithValue("@UnitId", unitId);
                 command.Parameters.AddWithValue("@StoreId", storeId);
-                return Pes.Utility.Conversion.TryCastInteger(MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return Pes.Utility.Conversion.TryCastInteger(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }        
         }
 

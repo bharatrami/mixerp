@@ -45,9 +45,9 @@ namespace Pes.Utility
             return ip.Trim();
         }
 
-        public static void ExecuteJavaScript(string key, string javascript, Page page)
+        public static void ExecuteJavaScript(string key, string javaScript, Page page)
         {
-            ScriptManager.RegisterStartupScript(page, typeof(System.Web.UI.Page), key, javascript, true);
+            ScriptManager.RegisterStartupScript(page, typeof(System.Web.UI.Page), key, javaScript, true);
         }
 
         public static string ResolveUrl(string relativeUrl)
@@ -139,6 +139,11 @@ namespace Pes.Utility
         /// <returns>Returns input if it's a valid url. If the input is not a valid url, returns empty string.</returns>
         public static string CleanUrl(string url)
         {
+            if(string.IsNullOrWhiteSpace(url))
+            {
+                return string.Empty;
+            }
+            
             string prefix = "http";
 
             if (url.Substring(0, prefix.Length) != prefix)
@@ -151,9 +156,9 @@ namespace Pes.Utility
                 client.HeadOnly = true;
                 try
                 {
-                    string s1 = client.DownloadString(url);
+                    client.DownloadString(url);
                 }
-                catch
+                catch(WebException)
                 {
                     url = string.Empty;
                 }

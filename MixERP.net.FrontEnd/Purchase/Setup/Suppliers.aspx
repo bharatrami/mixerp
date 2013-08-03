@@ -8,7 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Suppliers.aspx.cs" Inherits="MixERP.net.FrontEnd.Purchase.Setup.Suppliers" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Suppliers.aspx.cs" Inherits="MixERP.Net.FrontEnd.Purchase.Setup.Suppliers" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">

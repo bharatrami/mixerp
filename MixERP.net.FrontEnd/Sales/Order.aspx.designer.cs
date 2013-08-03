@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Sales {
+namespace MixERP.Net.FrontEnd.Sales {
     
     
     public partial class Order {
@@ -19,6 +19,6 @@ namespace MixERP.net.FrontEnd.Sales {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Products.ProductControl SalesOrder;
+        protected global::MixERP.Net.FrontEnd.UserControls.Products.ProductControl SalesOrder;
     }
 }

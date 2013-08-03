@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Setup.Policy
+namespace MixERP.Net.FrontEnd.Setup.Policy
 {
-    public partial class Store : MixERP.net.BusinessLayer.BasePageClass
+    public partial class Store : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Purchase.Setup {
+namespace MixERP.Net.FrontEnd.Purchase.Setup {
     
     
     public partial class Suppliers {
@@ -19,6 +19,6 @@ namespace MixERP.net.FrontEnd.Purchase.Setup {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl SupplierForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl SupplierForm;
     }
 }

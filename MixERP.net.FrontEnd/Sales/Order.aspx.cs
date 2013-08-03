@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Sales
+namespace MixERP.Net.FrontEnd.Sales
 {
-    public partial class Order : MixERP.net.BusinessLayer.BasePageClass
+    public partial class Order : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

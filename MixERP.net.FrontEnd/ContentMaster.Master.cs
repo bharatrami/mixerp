@@ -15,13 +15,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd
+namespace MixERP.Net.FrontEnd
 {
     public partial class ContentMaster : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string menu = MixERP.net.BusinessLayer.Helper.MenuHelper.GetContentPageMenu(this.Page);
+            string menu = MixERP.Net.BusinessLayer.Helpers.MenuHelper.GetContentPageMenu(this.Page);
             MenuLiteral.Text = menu;
         }
     }

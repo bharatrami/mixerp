@@ -8,7 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Shipper.aspx.cs" Inherits="MixERP.net.FrontEnd.Items.Setup.Shipper" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Shipper.aspx.cs" Inherits="MixERP.Net.FrontEnd.Items.Setup.Shipper" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
@@ -17,7 +17,7 @@
     <pes:Form ID="ShipperForm" runat="server" Text="Shipper Maintenance" TableSchema="core" Table="shippers" KeyColumn="shipper_id"
         ViewSchema="core" View="shippers" Width="5000" PageSize="10"
         Exclude="shipper_code, shipper_name"
-        SelectedValues="core.accounts.account_id-->'20100 (Accounts Payable)'"
+        SelectedValues="core.accounts.account_id-->'20110 (Shipping Charge Payable)'"
         DisplayFields="core.accounts.account_id-->account_code + ' (' + account_name + ')'" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

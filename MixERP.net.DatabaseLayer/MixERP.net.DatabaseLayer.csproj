@@ -8,8 +8,8 @@
     <ProjectGuid>{F1F6FB95-5D7E-4E4C-9CC4-AC58DBD8F09F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MixERP.net.DatabaseLayer</RootNamespace>
-    <AssemblyName>MixERP.net.DatabaseLayer</AssemblyName>
+    <RootNamespace>MixERP.Net.DatabaseLayer</RootNamespace>
+    <AssemblyName>MixERP.Net.DatabaseLayer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>..\MixERP.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PES Technologies.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -46,7 +53,6 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -60,23 +66,31 @@
     <Compile Include="DBFactory\DBOperations.cs" />
     <Compile Include="DBFactory\Sanitizer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Helper\FormHelper.cs" />
-    <Compile Include="Helper\Maintenance.cs" />
-    <Compile Include="Helper\TableHelper.cs" />
+    <Compile Include="Helpers\FormHelper.cs" />
+    <Compile Include="Helpers\Maintenance.cs" />
+    <Compile Include="Helpers\ReportHelper.cs" />
+    <Compile Include="Helpers\TableHelper.cs" />
     <Compile Include="Office\CashRepositories.cs" />
     <Compile Include="Office\Offices.cs" />
     <Compile Include="Office\Stores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\User.cs" />
+    <Compile Include="Transactions\DirectSales.cs" />
+    <Compile Include="Transactions\Models\StockMasterDetailModel.cs" />
+    <Compile Include="Transactions\Models\StockMasterModel.cs" />
+    <Compile Include="Transactions\Models\TranactionMasterModel.cs" />
+    <Compile Include="Transactions\Models\TransactionDetailModel.cs" />
+    <Compile Include="Transactions\Models\TransactionTypeDomain.cs" />
+    <Compile Include="Transactions\Models\VerificationDomain.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pes.Utility\Pes.Utility.csproj">
       <Project>{D5F5C51D-250D-4775-8E63-AE792A9A04A0}</Project>
       <Name>Pes.Utility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MixERP.net.Common\MixERP.net.Common.csproj">
+    <ProjectReference Include="..\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{D5A09C22-8F48-4FB2-A14D-C62C8C8FCEC0}</Project>
-      <Name>MixERP.net.Common</Name>
+      <Name>MixERP.Net.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MixERP.net.DatabaseLayer.licenseheader" />
+    <None Include="PES Technologies.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\Dictionary.xml">
+      <Link>Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.UserControls.Forms {
+namespace MixERP.Net.FrontEnd.UserControls.Forms {
     
     
     public partial class FormControl {

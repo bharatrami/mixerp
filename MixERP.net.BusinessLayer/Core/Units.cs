@@ -14,18 +14,18 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.net.BusinessLayer.Core
+namespace MixERP.Net.BusinessLayer.Core
 {
     public static class Units
     {
         public static DataTable GetUnitViewByItemCode(string itemCode)
         {
-            return MixERP.net.DatabaseLayer.Core.Units.GetUnitViewByItemCode(itemCode);
+            return MixERP.Net.DatabaseLayer.Core.Units.GetUnitViewByItemCode(itemCode);
         }
 
         public static bool UnitExistsByName(string unitName)
         {
-            return MixERP.net.DatabaseLayer.Core.Units.UnitExistsByName(unitName);
+            return MixERP.Net.DatabaseLayer.Core.Units.UnitExistsByName(unitName);
         }
     }
 }

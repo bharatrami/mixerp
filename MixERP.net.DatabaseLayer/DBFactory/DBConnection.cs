@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.net.DatabaseLayer.DBFactory
+namespace MixERP.Net.DatabaseLayer.DBFactory
 {
     public static class DBConnection
     {

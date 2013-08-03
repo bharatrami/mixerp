@@ -15,7 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd
+namespace MixERP.Net.FrontEnd
 {
     public partial class SignIn : System.Web.UI.Page
     {

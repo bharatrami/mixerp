@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.UserControls {
+namespace MixERP.Net.FrontEnd.UserControls {
     
     
     public partial class DateTextBox {

@@ -10,7 +10,7 @@
 --%>
 
 <%@ Page Title="" Language="C#" MasterPageFile="~/MenuMaster.Master" AutoEventWireup="true"
-    CodeBehind="Index.aspx.cs" Inherits="MixERP.net.FrontEnd.Account.Index" %>
+    CodeBehind="Index.aspx.cs" Inherits="MixERP.Net.FrontEnd.Account.Index" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>

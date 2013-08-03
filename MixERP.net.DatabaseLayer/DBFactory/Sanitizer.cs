@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace MixERP.net.DatabaseLayer.DBFactory
+namespace MixERP.Net.DatabaseLayer.DBFactory
 {
     public static class Sanitizer
     {
@@ -32,6 +32,10 @@ namespace MixERP.net.DatabaseLayer.DBFactory
         /// </returns>
         public static string SanitizeIdentifierName(string identifier)
         {
+            if(string.IsNullOrWhiteSpace(identifier))
+            {
+                return null;
+            }
             //No comment.
             if(identifier.Contains("--")){return string.Empty;}
             if(identifier.Contains("/*")){return string.Empty;}

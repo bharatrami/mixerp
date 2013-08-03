@@ -15,7 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.UserControls
+namespace MixERP.Net.FrontEnd.UserControls
 {
     public partial class DateTextBox : System.Web.UI.UserControl
     {

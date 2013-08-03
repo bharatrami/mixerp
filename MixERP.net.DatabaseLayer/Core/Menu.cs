@@ -15,29 +15,29 @@ using System.Text;
 using System.Data;
 using Npgsql;
 
-namespace MixERP.net.DatabaseLayer.Core
+namespace MixERP.Net.DatabaseLayer.Core
 {
     public static class Menu
     {
-        public static DataTable GetMenuTable(string url, short level)
+        public static DataTable GetMenuTable(string path, short level)
         {
             string sql = "SELECT * FROM core.menus WHERE parent_menu_id=(SELECT menu_id FROM core.menus WHERE url=@url) AND level=@Level ORDER BY menu_id;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
-                command.Parameters.AddWithValue("@Url", url);
+                command.Parameters.AddWithValue("@Url", path);
                 command.Parameters.AddWithValue("@Level", level);
 
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
-        public static DataTable GetRootMenuTable(string url)
+        public static DataTable GetRootMenuTable(string path)
         {
             string sql = "SELECT * FROM core.menus WHERE parent_menu_id=core.get_root_parent_menu_id(@url) ORDER BY menu_id;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
-                command.Parameters.AddWithValue("@Url", url);
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+                command.Parameters.AddWithValue("@Url", path);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
@@ -58,7 +58,7 @@ namespace MixERP.net.DatabaseLayer.Core
                     command.Parameters.AddWithValue("@Level", level);
                 }
 
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
     }

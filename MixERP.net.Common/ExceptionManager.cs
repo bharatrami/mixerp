@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace MixERP.net.Common
+namespace MixERP.Net.Common
 {
     public static class ExceptionManager
     {

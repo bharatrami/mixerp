@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.POS.Setup {
+namespace MixERP.Net.FrontEnd.POS.Setup {
     
     
     public partial class Stores {
@@ -19,6 +19,6 @@ namespace MixERP.net.FrontEnd.POS.Setup {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl StoreForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl StoreForm;
     }
 }

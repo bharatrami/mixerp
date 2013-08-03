@@ -16,15 +16,15 @@ using System.Globalization;
 using System.Data;
 using Npgsql;
 
-namespace MixERP.net.DatabaseLayer.DBFactory
+namespace MixERP.Net.DatabaseLayer.DBFactory
 {
     public static class DBOperations
     {
         public static bool ExecuteNonQuery(Npgsql.NpgsqlCommand command)
         {
-            if (command != null)
+            if(command != null)
             {
-                using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
+                using(Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.Net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     try
                     {
@@ -47,9 +47,9 @@ namespace MixERP.net.DatabaseLayer.DBFactory
 
         public static object GetScalarValue(Npgsql.NpgsqlCommand command)
         {
-            if (command != null)
+            if(command != null)
             {
-                using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
+                using(Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.Net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
                     command.CommandTimeout = 300;
@@ -63,16 +63,16 @@ namespace MixERP.net.DatabaseLayer.DBFactory
 
         public static DataTable GetDataTable(Npgsql.NpgsqlCommand command)
         {
-            if (command != null)
+            if(command != null)
             {
-                using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
+                using(Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.Net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
                     command.CommandTimeout = 300;
 
-                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
+                    using(NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
                     {
-                        using (DataTable dataTable = new DataTable())
+                        using(DataTable dataTable = new DataTable())
                         {
                             dataTable.Locale = CultureInfo.InvariantCulture;
                             adapter.Fill(dataTable);
@@ -87,10 +87,10 @@ namespace MixERP.net.DatabaseLayer.DBFactory
 
         public static Npgsql.NpgsqlDataReader GetDataReader(Npgsql.NpgsqlCommand command)
         {
-            if (command != null)
+            if(command != null)
             {
                 Npgsql.NpgsqlDataReader reader = default(Npgsql.NpgsqlDataReader);
-                using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
+                using(Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.Net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
                     command.CommandTimeout = 300;
@@ -106,9 +106,9 @@ namespace MixERP.net.DatabaseLayer.DBFactory
 
         public static DataView GetDataView(Npgsql.NpgsqlCommand command)
         {
-            if (command != null)
+            if(command != null)
             {
-                using (DataView view = new DataView(GetDataTable(command)))
+                using(DataView view = new DataView(GetDataTable(command)))
                 {
                     return view;
                 }
@@ -119,14 +119,14 @@ namespace MixERP.net.DatabaseLayer.DBFactory
 
         public static Npgsql.NpgsqlDataAdapter GetDataAdapter(Npgsql.NpgsqlCommand command)
         {
-            if (command != null)
+            if(command != null)
             {
-                using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
+                using(Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.Net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
                 {
                     command.Connection = connection;
                     command.CommandTimeout = 300;
 
-                    using (Npgsql.NpgsqlDataAdapter adapter = new Npgsql.NpgsqlDataAdapter(command))
+                    using(Npgsql.NpgsqlDataAdapter adapter = new Npgsql.NpgsqlDataAdapter(command))
                     {
                         return adapter;
                     }
@@ -138,18 +138,15 @@ namespace MixERP.net.DatabaseLayer.DBFactory
 
         public static DataSet GetDataSet(Npgsql.NpgsqlCommand command)
         {
-            if (command != null)
+            if(command != null)
             {
-                using (Npgsql.NpgsqlConnection connection = new Npgsql.NpgsqlConnection(MixERP.net.DatabaseLayer.DBFactory.DBConnection.ConnectionString()))
+                using(Npgsql.NpgsqlDataAdapter adapter = GetDataAdapter(command))
                 {
-                    using (Npgsql.NpgsqlDataAdapter adapter = GetDataAdapter(command))
+                    using(DataSet set = new DataSet())
                     {
-                        using (DataSet set = new DataSet())
-                        {
-                            adapter.Fill(set);
-                            set.Locale = CultureInfo.CurrentUICulture;
-                            return set;
-                        }
+                        adapter.Fill(set);
+                        set.Locale = CultureInfo.CurrentUICulture;
+                        return set;
                     }
                 }
             }

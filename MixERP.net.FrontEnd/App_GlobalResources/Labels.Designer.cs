@@ -95,5 +95,59 @@ namespace Resources {
                 return ResourceManager.GetString("TaskCompletedSuccessfully", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The transaction was withdrawn successfully. Moreover, this action will affect the all the reports produced on and after &quot;{0}&quot;..
+        /// </summary>
+        internal static string TransactionWithdrawnMessage {
+            get {
+                return ResourceManager.GetString("TransactionWithdrawnMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This transaction was approved by {0} on {1}..
+        /// </summary>
+        internal static string VerificationApprovedMessage {
+            get {
+                return ResourceManager.GetString("VerificationApprovedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This transaction is awaiting verification from an administrator..
+        /// </summary>
+        internal static string VerificationAwaitingMessage {
+            get {
+                return ResourceManager.GetString("VerificationAwaitingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This transaction was closed by {0} on {1}. Reason: &quot;{2}&quot;..
+        /// </summary>
+        internal static string VerificationClosedMessage {
+            get {
+                return ResourceManager.GetString("VerificationClosedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This transaction was rejected by {0} on {1}. Reason: &quot;{2}&quot;..
+        /// </summary>
+        internal static string VerificationRejectedMessage {
+            get {
+                return ResourceManager.GetString("VerificationRejectedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This transaction was withdrawn by {0} on {1}. Reason: &quot;{2}&quot;..
+        /// </summary>
+        internal static string VerificationWithdrawnMessage {
+            get {
+                return ResourceManager.GetString("VerificationWithdrawnMessage", resourceCulture);
+            }
+        }
     }
 }

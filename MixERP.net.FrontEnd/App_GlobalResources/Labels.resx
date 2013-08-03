@@ -129,4 +129,27 @@
   <data name="TaskCompletedSuccessfully" xml:space="preserve">
     <value>The task was completed successfully.</value>
   </data>
+  <data name="TransactionWithdrawnMessage" xml:space="preserve">
+    <value>The transaction was withdrawn successfully. Moreover, this action will affect the all the reports produced on and after "{0}".</value>
+    <comment>The transaction was withdrawn successfully. Moreover, this action will affect the all the reports produced on and after "1/1/2013".</comment>
+  </data>
+  <data name="VerificationApprovedMessage" xml:space="preserve">
+    <value>This transaction was approved by {0} on {1}.</value>
+    <comment>This transaction was approved by administrator on 1/1/2013.</comment>
+  </data>
+  <data name="VerificationAwaitingMessage" xml:space="preserve">
+    <value>This transaction is awaiting verification from an administrator.</value>
+  </data>
+  <data name="VerificationClosedMessage" xml:space="preserve">
+    <value>This transaction was closed by {0} on {1}. Reason: "{2}".</value>
+    <comment>This transaction was closed by administrator on 1/1/2013. Reason: "Mistake entry.".</comment>
+  </data>
+  <data name="VerificationRejectedMessage" xml:space="preserve">
+    <value>This transaction was rejected by {0} on {1}. Reason: "{2}".</value>
+    <comment>This transaction was rejected by administrator on 1/1/2013. Reason: "Mistake entry.".</comment>
+  </data>
+  <data name="VerificationWithdrawnMessage" xml:space="preserve">
+    <value>This transaction was withdrawn by {0} on {1}. Reason: "{2}".</value>
+    <comment>This transaction was withdrawn by administrator on 1/1/2013. Reason: "Mistake entry.".</comment>
+  </data>
 </root>

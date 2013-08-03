@@ -18,7 +18,7 @@ using System.ComponentModel;
 using AjaxControlToolkit;
 using System.Collections.Specialized;
 
-namespace MixERP.net.FrontEnd.Services
+namespace MixERP.Net.FrontEnd.Services
 {
     /// <summary>
     /// Summary description for ItemData
@@ -34,9 +34,9 @@ namespace MixERP.net.FrontEnd.Services
         [WebMethod]
         public CascadingDropDownNameValue[] GetItems(string knownCategoryValues, string category)
         {
-            List<CascadingDropDownNameValue> values = new List<CascadingDropDownNameValue>();
+            System.Collections.ObjectModel.Collection<CascadingDropDownNameValue> values = new System.Collections.ObjectModel.Collection<CascadingDropDownNameValue>();
 
-            using (System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "items"))
+            using (System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items"))
             {
                 foreach (System.Data.DataRow dr in table.Rows)
                 {
@@ -53,9 +53,9 @@ namespace MixERP.net.FrontEnd.Services
             StringDictionary kv = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues);            
             string itemCode = kv["Item"];
 
-            List<CascadingDropDownNameValue> values = new List<CascadingDropDownNameValue>();
+            System.Collections.ObjectModel.Collection<CascadingDropDownNameValue> values = new System.Collections.ObjectModel.Collection<CascadingDropDownNameValue>();
 
-            using (System.Data.DataTable table = MixERP.net.BusinessLayer.Core.Units.GetUnitViewByItemCode(itemCode))
+            using (System.Data.DataTable table = MixERP.Net.BusinessLayer.Core.Units.GetUnitViewByItemCode(itemCode))
             {
                 foreach (System.Data.DataRow dr in table.Rows)
                 {

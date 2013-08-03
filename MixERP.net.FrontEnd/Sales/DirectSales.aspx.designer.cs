@@ -7,19 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Sales {
+namespace MixERP.Net.FrontEnd.Sales {
     
     
     public partial class DirectSales {
         
         /// <summary>
-        /// SalesControl2 control.
+        /// DirectSalesControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Products.ProductControl SalesControl2;
+        protected global::MixERP.Net.FrontEnd.UserControls.Products.ProductControl DirectSalesControl;
         
         /// <summary>
         /// ErrorLabel control.

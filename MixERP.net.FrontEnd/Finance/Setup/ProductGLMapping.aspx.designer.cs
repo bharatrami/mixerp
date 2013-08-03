@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Finance.Setup
+namespace MixERP.Net.FrontEnd.Finance.Setup
 {
 
 

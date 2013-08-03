@@ -11,10 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.net.BusinessLayer.Office
+namespace MixERP.Net.BusinessLayer.Office
 {
     public static class Offices
     {
@@ -22,11 +23,11 @@ namespace MixERP.net.BusinessLayer.Office
         {
             try
             {
-                return MixERP.net.DatabaseLayer.Office.Offices.GetOffices();
+                return MixERP.Net.DatabaseLayer.Office.Offices.GetOffices();
             }
-            catch (Exception ex)
+            catch(DbException ex)
             {
-                MixERP.net.Common.ExceptionManager.HandleException(ex);
+                MixERP.Net.Common.ExceptionManager.HandleException(ex);
             }
 
             return null;

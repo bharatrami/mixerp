@@ -13,13 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.net.BusinessLayer.Office
+namespace MixERP.Net.BusinessLayer.Office
 {
     public static class Stores
     {
         public static bool IsSalesAllowed(int storeId)
         {
-            return MixERP.net.DatabaseLayer.Office.Stores.IsSalesAllowed(storeId);
+            return MixERP.Net.DatabaseLayer.Office.Stores.IsSalesAllowed(storeId);
         }        
     }
 }

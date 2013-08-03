@@ -9,14 +9,14 @@
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
 
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="DirectSales.aspx.cs" Inherits="MixERP.net.FrontEnd.Sales.DirectSales" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="DirectSales.aspx.cs" Inherits="MixERP.Net.FrontEnd.Sales.DirectSales" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <pes:Product runat="server" ID="SalesControl2"
+    <pes:Product runat="server" ID="DirectSalesControl"
        TransactionType="Sales" Text="Direct Sales"
         ShowTransactionType="true"
         ShowCashRepository="true"
@@ -34,6 +34,23 @@
 <script runat="server">
     protected void Sales_SaveButtonClick(object sender, EventArgs e)
     {
-        ErrorLabel.Text = "Save event handled.";
+        DateTime valueDate = Pes.Utility.Conversion.TryCastDate(DirectSalesControl.GetForm.DateTextBox.Text);
+        int storeId = Pes.Utility.Conversion.TryCastInteger(DirectSalesControl.GetForm.StoreDropDownList.SelectedItem.Value);
+        bool isCredit = DirectSalesControl.GetForm.TransactionTypeRadioButtonList.SelectedItem.Value.Equals(Resources.Titles.Credit); ;
+        string customerCode = DirectSalesControl.GetForm.CustomerDropDownList.SelectedItem.Value;
+        int priceTypeId = Pes.Utility.Conversion.TryCastInteger(DirectSalesControl.GetForm.PriceTypeDropDownList.SelectedItem.Value);
+        GridView grid = DirectSalesControl.GetForm.Grid;
+        int cashRepositoryId = Pes.Utility.Conversion.TryCastInteger(DirectSalesControl.GetForm.CashRepositoryDropDownList.SelectedItem.Value);
+        int shipperId = Pes.Utility.Conversion.TryCastInteger(DirectSalesControl.GetForm.ShippingCompanyDropDownList.SelectedItem.Value);
+        decimal shippingCharge = Pes.Utility.Conversion.TryCastDecimal(DirectSalesControl.GetForm.ShippingChargeTextBox.Text);
+        
+        int costCenterId = Pes.Utility.Conversion.TryCastInteger(DirectSalesControl.GetForm.CostCenterDropDownList.SelectedItem.Value);
+        string statementReference = DirectSalesControl.GetForm.StatementReferenceTextBox.Text;
+            
+        long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectSales.Add(valueDate, storeId, isCredit, customerCode, priceTypeId, grid, shipperId, shippingCharge, cashRepositoryId, costCenterId, statementReference);
+        if(transactionMasterId > 0)
+        {
+            Response.Redirect("~/Sales/Confirmation/DirectSales.aspx?TranId=" + transactionMasterId, true);
+        }
     }
 </script>

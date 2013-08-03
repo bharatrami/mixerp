@@ -168,11 +168,20 @@
   <data name="EditSelected" xml:space="preserve">
     <value>Edit Selected</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
   <data name="GrandTotal" xml:space="preserve">
     <value>Grand Total</value>
   </data>
   <data name="ItemName" xml:space="preserve">
     <value>Item Name</value>
+  </data>
+  <data name="OfficeCode" xml:space="preserve">
+    <value>Office Code</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
@@ -185,6 +194,9 @@
   </data>
   <data name="Print" xml:space="preserve">
     <value>Print</value>
+  </data>
+  <data name="PrintedOn" xml:space="preserve">
+    <value>Printed On</value>
   </data>
   <data name="QuantityAbbreviated" xml:space="preserve">
     <value>Qty</value>
@@ -231,6 +243,9 @@
   <data name="TaxTotal" xml:space="preserve">
     <value>Tax Total</value>
   </data>
+  <data name="Tel" xml:space="preserve">
+    <value>Tel</value>
+  </data>
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
@@ -240,10 +255,61 @@
   <data name="Unit" xml:space="preserve">
     <value>Unit</value>
   </data>
+  <data name="Url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
   <data name="ValueDate" xml:space="preserve">
     <value>Value Date</value>
   </data>
   <data name="YesNo" xml:space="preserve">
     <value>Yes, No</value>
+  </data>
+  <data name="ShippingCharge" xml:space="preserve">
+    <value>Shipping Charge</value>
+  </data>
+  <data name="ShippingCompany" xml:space="preserve">
+    <value>Shipping Company</value>
+  </data>
+  <data name="SalesInvoice" xml:space="preserve">
+    <value>Sales Invoice</value>
+  </data>
+  <data name="CustomerName" xml:space="preserve">
+    <value>Customer Name</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Office" xml:space="preserve">
+    <value>Office</value>
+  </data>
+  <data name="SalesType" xml:space="preserve">
+    <value>Sales Type</value>
+  </data>
+  <data name="TranCode" xml:space="preserve">
+    <value>Tran Code</value>
+  </data>
+  <data name="InvoiceDetails" xml:space="preserve">
+    <value>Invoice Details</value>
+  </data>
+  <data name="OtherDetails" xml:space="preserve">
+    <value>Other Details</value>
+  </data>
+  <data name="Shipper" xml:space="preserve">
+    <value>Shipper</value>
+  </data>
+  <data name="PanNumber" xml:space="preserve">
+    <value>Pan Number</value>
+  </data>
+  <data name="ReportNotFound" xml:space="preserve">
+    <value>Report Not Found</value>
+  </data>
+  <data name="PreparedOn" xml:space="preserve">
+    <value>Prepared On</value>
+  </data>
+  <data name="LoginView" xml:space="preserve">
+    <value>Login View</value>
   </data>
 </root>

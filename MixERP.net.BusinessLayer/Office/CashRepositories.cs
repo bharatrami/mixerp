@@ -14,23 +14,23 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.net.BusinessLayer.Office
+namespace MixERP.Net.BusinessLayer.Office
 {
     public static class CashRepositories
     {
         public static DataTable GetCashRepositories()
         {
-            return MixERP.net.DatabaseLayer.Office.CashRepositories.GetCashRepositories();
+            return MixERP.Net.DatabaseLayer.Office.CashRepositories.GetCashRepositories();
         }
 
         public static DataTable GetCashRepositories(int officeId)
         {
-            return MixERP.net.DatabaseLayer.Office.CashRepositories.GetCashRepositories(officeId);
+            return MixERP.Net.DatabaseLayer.Office.CashRepositories.GetCashRepositories(officeId);
         }
 
         public static decimal GetBalance(int cashRepositoryId)
         {
-            return MixERP.net.DatabaseLayer.Office.CashRepositories.GetBalance(cashRepositoryId);
+            return MixERP.Net.DatabaseLayer.Office.CashRepositories.GetBalance(cashRepositoryId);
         }
     }
 }

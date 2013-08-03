@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MixERP.net.FrontEnd</RootNamespace>
-    <AssemblyName>MixERP.net.FrontEnd</AssemblyName>
+    <RootNamespace>MixERP.Net.FrontEnd</RootNamespace>
+    <AssemblyName>MixERP.Net.FrontEnd</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -52,15 +52,21 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\SanitizerProviders\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\iTextSharp.5.4.3\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Npgsql, Version=2.0.12.91, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="SanitizerProviders">
       <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\SanitizerProviders\SanitizerProviders.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -69,7 +75,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
@@ -514,12 +519,47 @@
     <Compile Include="MixERPMaster.Master.designer.cs">
       <DependentUpon>MixERPMaster.Master</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Assets\Header.aspx.cs">
+      <DependentUpon>Header.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Assets\Header.aspx.designer.cs">
+      <DependentUpon>Header.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportMaster.aspx.cs">
+      <DependentUpon>ReportMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportMaster.aspx.designer.cs">
+      <DependentUpon>ReportMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViewer.aspx.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViewer.aspx.designer.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+    </Compile>
     <Compile Include="RuntimeError.aspx.cs">
       <DependentUpon>RuntimeError.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RuntimeError.aspx.designer.cs">
       <DependentUpon>RuntimeError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\Confirmation\DirectSales.aspx.cs">
+      <DependentUpon>DirectSales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\Confirmation\DirectSales.aspx.designer.cs">
+      <DependentUpon>DirectSales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\Confirmation\DirectSalesInovice.aspx.cs">
+      <DependentUpon>DirectSalesInovice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\Confirmation\DirectSalesInovice.aspx.designer.cs">
+      <DependentUpon>DirectSalesInovice.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sales\Delivery.aspx.cs">
       <DependentUpon>Delivery.aspx</DependentUpon>
@@ -791,8 +831,25 @@
     <Compile Include="UserControls\Products\ProductControl.ascx.designer.cs">
       <DependentUpon>ProductControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ReportControl.ascx.cs">
+      <DependentUpon>ReportControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ReportControl.ascx.designer.cs">
+      <DependentUpon>ReportControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Reporting\Header.ascx.cs">
+      <DependentUpon>Header.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Reporting\Header.ascx.designer.cs">
+      <DependentUpon>Header.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <CodeAnalysisDictionary Include="..\Dictionary.xml">
+      <Link>Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
     <Content Include="Account\ChangePassword.aspx" />
     <Content Include="Account\Index.aspx" />
     <Content Include="Account\Messaging\Inbox.aspx" />
@@ -808,10 +865,10 @@
     <Content Include="CRM\Setup\LeadSources.aspx" />
     <Content Include="CRM\Setup\LeadStatuses.aspx" />
     <Content Include="CRM\Setup\OpportunityStages.aspx" />
-    <Content Include="db\customer-sample.sql" />
-    <Content Include="db\mixerp.postgresql.bak.sql" />
-    <Content Include="db\mixerp.postgresql.sql" />
-    <Content Include="db\sample-data.sql" />
+    <Content Include="db\en-US\customer-sample.sql" />
+    <Content Include="db\en-US\mixerp.bak.sql" />
+    <Content Include="db\en-US\mixerp..sql" />
+    <Content Include="db\en-US\sample-data.sql" />
     <Content Include="Dependencies\AspNetPager.dll" />
     <Content Include="Dependencies\Mono.Security.dll" />
     <Content Include="Dependencies\Npgsql.dll" />
@@ -858,7 +915,27 @@
     <Content Include="Purchase\Payment.aspx" />
     <Content Include="Purchase\Return.aspx" />
     <Content Include="Purchase\Setup\Suppliers.aspx" />
+    <Content Include="Reports\Assets\Header.aspx" />
+    <Content Include="Reports\Assets\Header.html" />
+    <Content Include="Reports\ReportMaster.aspx" />
+    <Content Include="Reports\ReportViewer.aspx" />
+    <Content Include="Reports\Sources\Office.Login.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Reports\Sources\Sales.View.Sales.Invoice.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Resource\Icons\bottom-16.png" />
+    <Content Include="Resource\Icons\calendar-16.png" />
+    <Content Include="Resource\Icons\email-16.png" />
+    <Content Include="Resource\Icons\excel-16.png" />
+    <Content Include="Resource\Icons\filter-16.png" />
+    <Content Include="Resource\Icons\pdf-16.png" />
+    <Content Include="Resource\Icons\print-16.png" />
+    <Content Include="Resource\Icons\top-16.png" />
     <Content Include="RuntimeError.aspx" />
+    <Content Include="Sales\Confirmation\DirectSales.aspx" />
+    <Content Include="Sales\Confirmation\DirectSalesInovice.aspx" />
     <Content Include="Sales\Delivery.aspx" />
     <Content Include="Sales\DirectSales.aspx" />
     <Content Include="Sales\Index.aspx" />
@@ -1178,9 +1255,10 @@
     <Content Include="Setup\Users.aspx" />
     <Content Include="SignIn.aspx" />
     <Content Include="spinner.gif" />
-    <Content Include="Templates\Print.html" />
-    <Content Include="Res\Icons\delete-16.png" />
+    <Content Include="Reports\Print.html" />
+    <Content Include="Resource\Icons\delete-16.png" />
     <Content Include="Themes\purple\main.css" />
+    <Content Include="Themes\purple\mixnp-logo-light.png" />
     <Content Include="Themes\purple\padding.css" />
     <Content Include="Themes\purple\mixerp-logo.png" />
     <Content Include="UserControls\DateTextBox.ascx" />
@@ -1211,9 +1289,13 @@
     <Content Include="Scripts\CodeMirror\package.json" />
     <Content Include="Scripts\CodeMirror\README.md" />
     <Content Include="UserControls\Products\ProductControl.ascx" />
+    <Content Include="UserControls\ReportControl.ascx" />
+    <Content Include="UserControls\Reporting\Header.ascx" />
     <Content Include="Web.config" />
-    <Content Include="MixERP.net.FrontEnd.licenseheader" />
+    <Content Include="MixERP.Net.FrontEnd.licenseheader" />
+    <Content Include="PES Technologies.snk" />
     <None Include="Properties\PublishProfiles\MixERP.pubxml" />
+    <Content Include="Reports\Assets\ReadMe.txt" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1223,8 +1305,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Media\Temp\" />
-    <Folder Include="Res\DatabaseBackups\" />
-    <Folder Include="Res\Logo\" />
+    <Folder Include="Resource\DatabaseBackups\" />
+    <Folder Include="Resource\Logo\" />
     <Folder Include="Setup\General\" />
   </ItemGroup>
   <ItemGroup>
@@ -1232,19 +1314,20 @@
       <Project>{d5f5c51d-250d-4775-8e63-ae792a9a04a0}</Project>
       <Name>Pes.Utility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MixERP.net.BusinessLayer\MixERP.net.BusinessLayer.csproj">
+    <ProjectReference Include="..\MixERP.Net.BusinessLayer\MixERP.Net.BusinessLayer.csproj">
       <Project>{81de04cf-7de9-42ff-8339-d05e2586dcba}</Project>
-      <Name>MixERP.net.BusinessLayer</Name>
+      <Name>MixERP.Net.BusinessLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MixERP.net.Common\MixERP.net.Common.csproj">
+    <ProjectReference Include="..\MixERP.Net.Common\MixERP.Net.Common.csproj">
       <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>
-      <Name>MixERP.net.Common</Name>
+      <Name>MixERP.Net.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\FormResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>FormResource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1280,6 +1363,12 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PES Technologies.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

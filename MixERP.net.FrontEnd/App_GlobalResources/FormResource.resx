@@ -903,4 +903,49 @@
   <data name="numeric_precision_radix" xml:space="preserve">
     <value>Numeric Precision Radix</value>
   </data>
+  <data name="analyze_count" xml:space="preserve">
+    <value>Analyze Count</value>
+  </data>
+  <data name="autoanalyze_count" xml:space="preserve">
+    <value>Autoanalyze Count</value>
+  </data>
+  <data name="autovacuum_count" xml:space="preserve">
+    <value>Autovacuum Count</value>
+  </data>
+  <data name="last_analyze" xml:space="preserve">
+    <value>Last Analaze</value>
+  </data>
+  <data name="last_autoanalyze" xml:space="preserve">
+    <value>Last Autoanalyze</value>
+  </data>
+  <data name="last_autovacuum" xml:space="preserve">
+    <value>Last Autovacuum</value>
+  </data>
+  <data name="last_vacuum" xml:space="preserve">
+    <value>Last Vacuum</value>
+  </data>
+  <data name="relname" xml:space="preserve">
+    <value>Relation Name</value>
+  </data>
+  <data name="vacuum_count" xml:space="preserve">
+    <value>Vacuum Count</value>
+  </data>
+  <data name="discount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="sub_total" xml:space="preserve">
+    <value>Sub Total</value>
+  </data>
+  <data name="tax" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="statement_reference" xml:space="preserve">
+    <value>Statement Reference</value>
+  </data>
+  <data name="office_address" xml:space="preserve">
+    <value>Office Address</value>
+  </data>
 </root>

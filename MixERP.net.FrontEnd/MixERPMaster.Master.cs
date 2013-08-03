@@ -16,9 +16,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd
+namespace MixERP.Net.FrontEnd
 {
-    public partial class MixERPMaster : System.Web.UI.MasterPage
+    public partial class MixErpMaster : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,7 +29,7 @@ namespace MixERP.net.FrontEnd
         {
             string menu = string.Empty;
 
-            using (DataTable table = MixERP.net.BusinessLayer.Core.Menu.GetMenuTable(0, 0))
+            using (DataTable table = MixERP.Net.BusinessLayer.Core.Menu.GetMenuTable(0, 0))
             {
                 if (table.Rows.Count > 0)
                 {
@@ -37,7 +37,7 @@ namespace MixERP.net.FrontEnd
                     {
                         string menuText = Pes.Utility.Conversion.TryCastString(row["menu_text"]);
                         string url = Pes.Utility.Conversion.TryCastString(row["url"]);
-                        menu += string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
+                        menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
                     }
                 }
             }

@@ -9,7 +9,7 @@
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
 
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Items.aspx.cs" Inherits="MixERP.net.FrontEnd.Items.Setup.Items" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Items.aspx.cs" Inherits="MixERP.Net.FrontEnd.Items.Setup.Items" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>

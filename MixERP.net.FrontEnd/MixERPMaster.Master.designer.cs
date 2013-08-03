@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd {
+namespace MixERP.Net.FrontEnd {
     
     
-    public partial class MixERPMaster {
+    public partial class MixErpMaster {
         
         /// <summary>
         /// ScriptContentPlaceHolder control.

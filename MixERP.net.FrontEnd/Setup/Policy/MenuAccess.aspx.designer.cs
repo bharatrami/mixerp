@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Setup.Policy
+namespace MixERP.Net.FrontEnd.Setup.Policy
 {
 
 

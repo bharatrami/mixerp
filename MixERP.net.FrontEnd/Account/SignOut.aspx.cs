@@ -16,9 +16,9 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Account
+namespace MixERP.Net.FrontEnd.Account
 {
-    public partial class SignOut : MixERP.net.BusinessLayer.BasePageClass
+    public partial class SignOut : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

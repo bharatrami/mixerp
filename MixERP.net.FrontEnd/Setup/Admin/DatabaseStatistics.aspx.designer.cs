@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Setup.Admin {
+namespace MixERP.Net.FrontEnd.Setup.Admin {
     
     
     public partial class DatabaseStatistics {
@@ -55,6 +55,6 @@ namespace MixERP.net.FrontEnd.Setup.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl DBStatisticsForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl DBStatisticsForm;
     }
 }

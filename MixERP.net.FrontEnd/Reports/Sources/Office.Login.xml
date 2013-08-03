@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
+	Released under the terms of the GNU General Public License, GPL, 
+	as published by the Free Software Foundation, either version 3 
+	of the License, or (at your option) any later version.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
+-->
+
+<PesReport>
+    <Title>{Resources.Titles.LoginView}</Title>
+    <TopSection>
+    </TopSection>
+    <Body>
+        <Content>
+            <h2>{Resources.Titles.LoginView}</h2>
+        </Content>
+        <GridViews>
+            <GridView>
+                <GridViewDataSource>
+                    0
+                </GridViewDataSource>
+            </GridView>
+        </GridViews>
+    </Body>
+    <BottomSection>
+    </BottomSection>
+    <DataSources>
+        <DataSource>
+            <Query>
+                select * from office.login_view;
+            </Query>
+        </DataSource>
+    </DataSources>
+    <Install>
+        <Query>
+            DO
+            $$
+            BEGIN
+            IF NOT EXISTS(SELECT * FROM core.menus WHERE menu_code='SAR-SVSI') THEN
+            INSERT INTO core.menus(menu_text, url, menu_code, level, parent_menu_id)
+            SELECT 'View Sales Inovice', '/Reports/Sales.View.Sales.Invoice.xml', 'SAR-SVSI', 2, core.get_menu_id('SAR');
+            END IF;
+            END
+            $$
+            LANGUAGE plpgsql;
+        </Query>
+    </Install>
+</PesReport>

@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="ItemData.asmx.cs" Class="MixERP.net.FrontEnd.Services.ItemData" %>
+﻿<%@ WebService Language="C#" CodeBehind="ItemData.asmx.cs" Class="MixERP.Net.FrontEnd.Services.ItemData" %>

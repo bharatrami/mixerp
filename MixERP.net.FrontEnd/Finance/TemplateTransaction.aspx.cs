@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Finance
+namespace MixERP.Net.FrontEnd.Finance
 {
-    public partial class TemplateTransaction : MixERP.net.BusinessLayer.BasePageClass
+    public partial class TemplateTransaction : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

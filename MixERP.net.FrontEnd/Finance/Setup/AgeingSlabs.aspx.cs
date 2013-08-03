@@ -15,13 +15,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Finance.Setup
+namespace MixERP.Net.FrontEnd.Finance.Setup
 {
-    public partial class AgeingSlabs : MixERP.net.BusinessLayer.BasePageClass
+    public partial class AgeingSlabs : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            MixERP.net.FrontEnd.UserControls.Forms.FormControl form = (MixERP.net.FrontEnd.UserControls.Forms.FormControl)this.LoadControl("~/UserControls/Forms/FormControl.ascx");
+            MixERP.Net.FrontEnd.UserControls.Forms.FormControl form = (MixERP.Net.FrontEnd.UserControls.Forms.FormControl)this.LoadControl("~/UserControls/Forms/FormControl.ascx");
             form.DenyAdd = false;
             form.DenyEdit = false;
             form.DenyDelete = false;

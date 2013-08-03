@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using Npgsql;
 
-namespace MixERP.net.DatabaseLayer.Core
+namespace MixERP.Net.DatabaseLayer.Core
 {
     public static class Units
     {
@@ -26,7 +26,7 @@ namespace MixERP.net.DatabaseLayer.Core
             {
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
 
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
@@ -37,7 +37,7 @@ namespace MixERP.net.DatabaseLayer.Core
             {
                 command.Parameters.AddWithValue("@UnitName", unitName);
 
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command).ToString().Equals("1");
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command).ToString().Equals("1");
             }        
         }
     }

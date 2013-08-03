@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using Npgsql;
 
-namespace MixERP.net.DatabaseLayer.Office
+namespace MixERP.Net.DatabaseLayer.Office
 {
     public static class CashRepositories
     {
@@ -24,7 +24,7 @@ namespace MixERP.net.DatabaseLayer.Office
             string sql = "SELECT * FROM office.cash_repositories;";
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
             {
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
@@ -34,7 +34,7 @@ namespace MixERP.net.DatabaseLayer.Office
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@OfficeId", officeId);
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
             }
         }
 
@@ -45,7 +45,7 @@ namespace MixERP.net.DatabaseLayer.Office
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@CashRepositoryId", cashRepositoryId);
-                return Pes.Utility.Conversion.TryCastDecimal(MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Items.Setup {
+namespace MixERP.Net.FrontEnd.Items.Setup {
     
     
     public partial class SellingPrices {
@@ -19,6 +19,6 @@ namespace MixERP.net.FrontEnd.Items.Setup {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl ItemSellingPriceForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl ItemSellingPriceForm;
     }
 }

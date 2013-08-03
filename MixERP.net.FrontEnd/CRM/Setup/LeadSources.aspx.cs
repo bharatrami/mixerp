@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.CRM.Setup
+namespace MixERP.Net.FrontEnd.CRM.Setup
 {
-    public partial class LeadSources : MixERP.net.BusinessLayer.BasePageClass
+    public partial class LeadSources : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

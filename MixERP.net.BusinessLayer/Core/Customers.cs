@@ -13,13 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.net.BusinessLayer.Core
+namespace MixERP.Net.BusinessLayer.Core
 {
     public static class Customers
     {
         public static bool IsCreditAllowed(string customerCode)
         {
-            return MixERP.net.DatabaseLayer.Core.Customers.IsCreditAllowed(customerCode);
+            return MixERP.Net.DatabaseLayer.Core.Customers.IsCreditAllowed(customerCode);
         }
     }
 }

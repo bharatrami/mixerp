@@ -120,6 +120,12 @@
   <data name="AccessDenied" xml:space="preserve">
     <value>Access is denied.</value>
   </data>
+  <data name="CannotWithdrawElsesTransaction" xml:space="preserve">
+    <value>You may not withdraw else's transaction.</value>
+  </data>
+  <data name="CannotWithdrawTransaction" xml:space="preserve">
+    <value>You cannot withdraw this transaction at this stage. Consult an administrator if this transaction could be rejected.</value>
+  </data>
   <data name="CreditNotAllowed" xml:space="preserve">
     <value>Warning!!! Credit is not allowed to this customer.</value>
   </data>
@@ -132,6 +138,9 @@
   </data>
   <data name="InvalidImage" xml:space="preserve">
     <value>This is not a valid image.</value>
+  </data>
+  <data name="InvalidLocation" xml:space="preserve">
+    <value>"{0}" is not a valid path or location.</value>
   </data>
   <data name="NoItemFound" xml:space="preserve">
     <value>Warning!!! No item found.</value>
@@ -147,5 +156,8 @@
   </data>
   <data name="UnknownError" xml:space="preserve">
     <value>Operation failed due to an unknown error.</value>
+  </data>
+  <data name="UnknownTransactionType" xml:space="preserve">
+    <value>Unknown transaction type.</value>
   </data>
 </root>

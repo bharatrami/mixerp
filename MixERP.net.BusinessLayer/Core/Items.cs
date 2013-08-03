@@ -13,33 +13,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.net.BusinessLayer.Core
+namespace MixERP.Net.BusinessLayer.Core
 {
     public static class Items
     {
         public static bool ItemExistsByCode(string itemCode)
         {
-            return MixERP.net.DatabaseLayer.Core.Items.ItemExistsByCode(itemCode);
+            return MixERP.Net.DatabaseLayer.Core.Items.ItemExistsByCode(itemCode);
         }
 
         public static decimal GetItemSellingPrice(string itemCode, string customerCode, int priceTypeId, int unitId)
         {
-            return MixERP.net.DatabaseLayer.Core.Items.GetItemSellingPrice(itemCode, customerCode, priceTypeId, unitId);
+            return MixERP.Net.DatabaseLayer.Core.Items.GetItemSellingPrice(itemCode, customerCode, priceTypeId, unitId);
         }
 
         public static decimal GetItemCostPrice(string itemCode, string supplierCode, int unitId)
         {
-            return MixERP.net.DatabaseLayer.Core.Items.GetItemCostPrice(itemCode, supplierCode, unitId);
+            return MixERP.Net.DatabaseLayer.Core.Items.GetItemCostPrice(itemCode, supplierCode, unitId);
         }
 
         public static decimal GetTaxRate(string itemCode)
         {
-            return MixERP.net.DatabaseLayer.Core.Items.GetTaxRate(itemCode);
+            return MixERP.Net.DatabaseLayer.Core.Items.GetTaxRate(itemCode);
         }
 
         public static int CountItemInStock(string itemCode, int unitId, int storeId)
         {
-            return MixERP.net.DatabaseLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
+            return MixERP.Net.DatabaseLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
         }
     }
 }

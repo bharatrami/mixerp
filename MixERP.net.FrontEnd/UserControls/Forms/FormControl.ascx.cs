@@ -17,7 +17,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.UserControls.Forms
+namespace MixERP.Net.FrontEnd.UserControls.Forms
 {
     public partial class FormControl : System.Web.UI.UserControl
     {
@@ -47,7 +47,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             this.LoadGrid();
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
-                table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+                table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
                 this.LoadForm(this.FormContainer, table);
             }
         }
@@ -71,7 +71,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 {
                     string cellText = e.Row.Cells[i].Text;
 
-                    cellText = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", cellText);
+                    cellText = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
                     e.Row.Cells[i].Text = cellText;
                 }
             }
@@ -88,7 +88,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             //Load the form again.
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
-                table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+                table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
                 this.LoadForm(this.FormContainer, table);
             }
         }
@@ -101,7 +101,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 return;
             }
 
-            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable(this.TableSchema, this.Table, this.KeyColumn, id))
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable(this.TableSchema, this.Table, this.KeyColumn, id))
             {
                 if(table.Rows.Count.Equals(1))
                 {
@@ -132,7 +132,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 return;
             }
 
-            if(MixERP.net.BusinessLayer.Helper.FormHelper.DeleteRecord(this.TableSchema, this.Table, this.KeyColumn, id))
+            if(MixERP.Net.BusinessLayer.Helpers.FormHelper.DeleteRecord(this.TableSchema, this.Table, this.KeyColumn, id))
             {
                 //Refresh the grid.
                 this.BindGridView();
@@ -151,7 +151,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 return;
             }
 
-            List<KeyValuePair<string, string>> list = this.GetFormCollection(true);
+            System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> list = this.GetFormCollection(true);
             string id = this.GetSelectedValue();
 
             if(string.IsNullOrWhiteSpace(id))
@@ -163,7 +163,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 }
                 else
                 {
-                    if(MixERP.net.BusinessLayer.Helper.FormHelper.InsertRecord(this.TableSchema, this.Table, list, this.imageColumn))
+                    if(MixERP.Net.BusinessLayer.Helpers.FormHelper.InsertRecord(this.TableSchema, this.Table, list, this.imageColumn))
                     {
                         //Clear the form container.
                         FormContainer.Controls.Clear();
@@ -188,7 +188,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                 }
                 else
                 {
-                    if(MixERP.net.BusinessLayer.Helper.FormHelper.UpdateRecord(this.TableSchema, this.Table, list, this.KeyColumn, id, this.imageColumn))
+                    if(MixERP.Net.BusinessLayer.Helpers.FormHelper.UpdateRecord(this.TableSchema, this.Table, list, this.KeyColumn, id, this.imageColumn))
                     {
                         //Clear the form container.
                         FormContainer.Controls.Clear();
@@ -196,7 +196,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
                         //Load the form again.
                         using(System.Data.DataTable table = new System.Data.DataTable())
                         {
-                            table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+                            table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
 
                             this.LoadForm(this.FormContainer, table);
                         }
@@ -249,7 +249,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
             this.BindGridView();
             this.FormGridView.Width = this.Width;
-            this.Pager.RecordCount = MixERP.net.BusinessLayer.Helper.FormHelper.GetTotalRecords(this.ViewSchema, this.View);
+            this.Pager.RecordCount = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTotalRecords(this.ViewSchema, this.View);
             this.Pager.PageSize = 10;
 
 
@@ -264,8 +264,8 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             }
 
 
-            this.UserIdHidden.Value = MixERP.net.BusinessLayer.Helper.SessionHelper.UserName();
-            this.OfficeCodeHidden.Value = MixERP.net.BusinessLayer.Helper.SessionHelper.OfficeName();
+            this.UserIdHidden.Value = MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserName();
+            this.OfficeCodeHidden.Value = MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeName();
         }
 
         private void BindGridView()
@@ -291,7 +291,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             }
 
 
-            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetView(this.ViewSchema, this.View, this.KeyColumn, limit, offset))
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetView(this.ViewSchema, this.View, this.KeyColumn, limit, offset))
             {
                 this.FormGridView.DataSource = table;
                 this.FormGridView.DataBind();
@@ -302,7 +302,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         {
             HtmlTable t = new HtmlTable();
 
-            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
             {
                 if(table.Rows.Count > 0)
                 {
@@ -349,11 +349,11 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         /// </summary>
         /// <param name="skipSerial">Skip the PostgreSQL serial column. There is no need to explicity set the value for the serial column. This value should be <strong>true</strong> if you are obtaining the form to insert the record. Set this paramter to <b>false</b> if you want to update the form based on the serial's columns value.</param>
         /// <returns>Returns a list of column and values mapped as KeyValuePair&lt;column_name, value&gt;</returns>
-        private List<KeyValuePair<string, string>> GetFormCollection(bool skipSerial)
+        private System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> GetFormCollection(bool skipSerial)
         {
-            List<KeyValuePair<string, string>> list = new List<KeyValuePair<string, string>>();
+            System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> list = new System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>();
 
-            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
             {
                 if(table.Rows.Count > 0)
                 {
@@ -458,7 +458,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             HtmlTableCell controlCell = new HtmlTableCell();
             Literal labelLiteral = new Literal();
 
-            labelLiteral.Text = string.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), "<label for='{0}'>{1}</label>", controls[0].ID, label);
+            labelLiteral.Text = string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<label for='{0}'>{1}</label>", controls[0].ID, label);
             labelCell.Attributes.Add("class", "label-cell");
 
             labelCell.Controls.Add(labelLiteral);
@@ -532,12 +532,12 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
             string relation = string.Empty;
             string field = string.Empty;
             string selected = string.Empty;
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             DropDownList dropDownList = this.GetDropDownList(columnName + "_dropdownlist");
 
 
-            using(System.Data.DataTable table = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable(tableSchema, tableName))
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable(tableSchema, tableName))
             {
                 if(table.Rows.Count > 0)
                 {
@@ -662,7 +662,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private void AddRadioButtonList(HtmlTable t, string columnName, bool isNullable, string keys, string values, string selectedValue)
         {
             RadioButtonList radioButtonList = this.GetRadioButtonList(columnName + "_radiobuttonlist", keys, values, selectedValue);
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             if(!isNullable)
             {
@@ -677,7 +677,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private void AddCheckBoxList(HtmlTable t, string columnName, bool isNullable, string keys, string values, string selectedValues)
         {
             CheckBoxList checkBoxList = this.GetCheckBoxList(columnName + "_radiobuttonlist", keys, values, selectedValues);
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             if(!isNullable)
             {
@@ -729,7 +729,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private void AddNumberTextBox(HtmlTable t, string columnName, string defaultValue, bool isSerial, bool isNullable, int maxLength, string domain)
         {
             TextBox textBox = this.GetNumberTextBox(columnName + "_textbox", maxLength);
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             if(!defaultValue.StartsWith("nextVal", StringComparison.OrdinalIgnoreCase))
             {
@@ -758,7 +758,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private void AddDecimalTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength, string domain)
         {
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             CompareValidator validator = this.GetDecimalValidator(textBox, domain);
             textBox.Text = defaultValue;
@@ -775,14 +775,16 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
         private void AddDateTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength)
         {
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
+            textBox.CssClass = "date";
+
             CompareValidator validator = this.GetDateValidator(textBox);
             AjaxControlToolkit.CalendarExtender extender = new AjaxControlToolkit.CalendarExtender();
 
             textBox.Width = 70;
-            extender.ID = textBox.ID + "_calendar_extender";
+            extender.ID = textBox.ID + "_calendar_extender";            
             extender.TargetControlID = textBox.ID;
             extender.PopupButtonID = textBox.ID;
 
@@ -805,7 +807,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
         private void AddTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength)
         {
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             textBox.Text = defaultValue;
 
@@ -821,7 +823,7 @@ namespace MixERP.net.FrontEnd.UserControls.Forms
 
         private void AddFileUpload(HtmlTable t, string columnName, bool isNullable)
         {
-            string label = MixERP.net.BusinessLayer.Helper.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
             FileUpload fileUpload = this.GetFileUpload(columnName + "_fileupload");
             RegularExpressionValidator validator = this.GetImageValidator(fileUpload);
 

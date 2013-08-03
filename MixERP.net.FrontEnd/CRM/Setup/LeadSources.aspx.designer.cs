@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.CRM.Setup {
+namespace MixERP.Net.FrontEnd.CRM.Setup {
     
     
     public partial class LeadSources {
@@ -19,6 +19,6 @@ namespace MixERP.net.FrontEnd.CRM.Setup {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl LeadSourceForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl LeadSourceForm;
     }
 }

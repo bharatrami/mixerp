@@ -22,29 +22,29 @@ namespace Pes.Utility
             r = RandomNumberGenerator.Create();
         }
 
-        public override void GetBytes(byte[] buffer)
+        public override void GetBytes(byte[] data)
         {
-            r.GetBytes(buffer);
+            r.GetBytes(data);
         }
 
-        public double NextDouble()
+        public static double NextDouble()
         {
             byte[] b = new byte[4];
             r.GetBytes(b);
             return (double)BitConverter.ToUInt32(b, 0) / UInt32.MaxValue;
         }
 
-        public int Next(int minValue, int maxValue)
+        public static int Next(int minValue, int maxValue)
         {
             return (int)Math.Round(NextDouble() * (maxValue - minValue - 1)) + minValue;
         }
 
-        public int Next()
+        public static int Next()
         {
             return Next(0, Int32.MaxValue);
         }
 
-        public int Next(int maxValue)
+        public static int Next(int maxValue)
         {
             return Next(0, maxValue);
         }

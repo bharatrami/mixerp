@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd {
+namespace MixERP.Net.FrontEnd {
     
     
     public partial class SignIn {

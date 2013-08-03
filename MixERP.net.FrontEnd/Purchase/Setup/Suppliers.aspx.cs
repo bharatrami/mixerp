@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Purchase.Setup
+namespace MixERP.Net.FrontEnd.Purchase.Setup
 {
-    public partial class Suppliers : MixERP.net.BusinessLayer.BasePageClass
+    public partial class Suppliers : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

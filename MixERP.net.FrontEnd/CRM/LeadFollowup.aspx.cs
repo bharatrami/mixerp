@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.CRM
+namespace MixERP.Net.FrontEnd.CRM
 {
-    public partial class LeadFollowup : MixERP.net.BusinessLayer.BasePageClass
+    public partial class LeadFollowup : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

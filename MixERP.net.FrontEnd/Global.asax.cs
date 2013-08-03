@@ -12,15 +12,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
-namespace MixERP.net.FrontEnd
+namespace MixERP.Net.FrontEnd
 {
     public class Global : System.Web.HttpApplication
     {
 
         void Application_Start(object sender, EventArgs e)
         {
+            RegisterRoutes(RouteTable.Routes);
+        }
+
+        protected static void RegisterRoutes(RouteCollection routes)
+        {
+            if(routes != null)
+            {
+                routes.MapPageRoute("DefaultRoute", "", "~/Account/Index.aspx");
+                routes.MapPageRoute("Reporting", "Reports/{path}", "~/Reports/ReportMaster.aspx");
+            }
         }
 
         void Application_End(object sender, EventArgs e)

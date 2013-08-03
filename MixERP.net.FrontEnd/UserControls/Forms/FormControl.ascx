@@ -9,7 +9,7 @@
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FormControl.ascx.cs"
-    Inherits="MixERP.net.FrontEnd.UserControls.Forms.FormControl" %>
+    Inherits="MixERP.Net.FrontEnd.UserControls.Forms.FormControl" %>
 <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
 <asp:UpdateProgress ID="updProgress" runat="server">
@@ -51,7 +51,15 @@
         <asp:Label ID="FormLabel" runat="server" />
 
         <asp:Panel ID="GridPanel" runat="server" ScrollBars="Auto" Width="600">
-            <asp:GridView ID="FormGridView" runat="server" AutoGenerateColumns="true" OnRowDataBound="FormGridView_RowDataBound">
+            <asp:GridView ID="FormGridView"
+                runat="server"
+                GridLines="None"
+                CssClass="grid"
+                PagerStyle-CssClass="gridpager"
+                RowStyle-CssClass="row"
+                AlternatingRowStyle-CssClass="alt"
+                AutoGenerateColumns="true"
+                OnRowDataBound="FormGridView_RowDataBound">
                 <Columns>
                     <asp:TemplateField HeaderText="<%$Resources:Titles, Select %>" ItemStyle-Width="20px">
                         <HeaderTemplate>
@@ -153,38 +161,34 @@
 
 
     var printThis = function () {
+        var report = $.get("/Reports/Print.html", function () { }).done(function (data) {
+            var report = $.get("/Reports/Assets/Header.aspx", function () { }).done(function (header) {
+                var table = $("#FormGridView").clone();
 
-        // Assign handlers immediately after making the request,
-        // and remember the jqxhr object for this request
+                var user = $("#UserIdHidden").val();
+                var office = $("#OfficeCodeHidden").val();
+                var date = '<%= System.DateTime.Now.ToString() %>';
 
-        var jqxhr = $.get("/Templates/Print.html", function () {
-        })
-        .done(function (data) {
-            var table = $("#FormGridView").clone();
+                $(table).find("tr.tableFloatingHeader").remove();
 
-            var user = $("#UserIdHidden").val();
-            var office = $("#OfficeCodeHidden").val();
-            var date = '<%= System.DateTime.Now.ToString() %>';
+                $(table).find("th:first").remove();
+                $(table).find("td:first-child").remove();
 
-            $(table).find("tr.tableFloatingHeader").remove();
+                table = "<table border='1' class='preview'>" + table.html() + "</table>";
 
-            $(table).find("th:first").remove();
-            $(table).find("td:first-child").remove();
+                data = data.replace("{ReportHeading}", $("#TitleLabel").html());
+                data = data.replace("{PrintDate}", date);
+                data = data.replace("{UserName}", user);
+                data = data.replace("{OfficeCode}", office);
+                data = data.replace("{Table}", table);
+                data = data.replace("{Header}", header);
+                var w = window.open();
+                w.moveTo(0, 0);
+                w.resizeTo(screen.width, screen.height);
 
-            table = "<table border='1' class='preview'>" + table.html() + "</table>";
+                w.document.writeln(data);
 
-            data = data.replace("{ReportHeading}", $("#TitleLabel").html());
-            data = data.replace("{PrintDate}", date);
-            data = data.replace("{UserName}", user);
-            data = data.replace("{OfficeCode}", office);
-            data = data.replace("{Table}", table);
-
-            var w = window.open();
-            w.moveTo(0, 0);
-            w.resizeTo(screen.width, screen.height);
-
-            w.document.writeln(data);
-
+            });
         });
     }
 

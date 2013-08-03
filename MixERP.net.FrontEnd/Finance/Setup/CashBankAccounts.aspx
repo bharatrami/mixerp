@@ -8,7 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="CashBankAccounts.aspx.cs" Inherits="MixERP.net.FrontEnd.Finance.Setup.CashBankAccounts" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="CashBankAccounts.aspx.cs" Inherits="MixERP.Net.FrontEnd.Finance.Setup.CashBankAccounts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
     <style>
     </style>
@@ -64,7 +64,7 @@
 <script runat="server">
     protected void Page_Load(object sender, EventArgs e)
     {
-        MixERP.net.FrontEnd.UserControls.Forms.FormControl form = (MixERP.net.FrontEnd.UserControls.Forms.FormControl)this.LoadControl("~/UserControls/Forms/FormControl.ascx");
+        MixERP.Net.FrontEnd.UserControls.Forms.FormControl form = (MixERP.Net.FrontEnd.UserControls.Forms.FormControl)this.LoadControl("~/UserControls/Forms/FormControl.ascx");
         form.DenyAdd = false;
         form.DenyEdit = false;
         form.DenyDelete = false;

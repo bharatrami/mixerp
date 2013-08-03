@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Account
+namespace MixERP.Net.FrontEnd.Account
 {
-    public partial class ChangePassword : MixERP.net.BusinessLayer.BasePageClass
+    public partial class ChangePassword : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

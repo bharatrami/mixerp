@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using Npgsql;
 
-namespace MixERP.net.DatabaseLayer.Office
+namespace MixERP.Net.DatabaseLayer.Office
 {
     public static class Stores
     {
@@ -26,7 +26,7 @@ namespace MixERP.net.DatabaseLayer.Office
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@StoreId", storeId);
-                return MixERP.net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command).Rows.Count.Equals(1);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command).Rows.Count.Equals(1);
             }
         }
     }

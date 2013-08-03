@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Sales.Setup
+namespace MixERP.Net.FrontEnd.Sales.Setup
 {
-    public partial class AgentBonusSlabDetails : MixERP.net.BusinessLayer.BasePageClass
+    public partial class AgentBonusSlabDetails : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

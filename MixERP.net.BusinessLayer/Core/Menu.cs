@@ -13,34 +13,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using System.Data.Common;
 
-namespace MixERP.net.BusinessLayer.Core
+namespace MixERP.Net.BusinessLayer.Core
 {
     public static class Menu
     {
-        public static DataTable GetMenuTable(string url, short level)
+        public static DataTable GetMenuTable(string path, short level)
         {
             try
             {
-                return MixERP.net.DatabaseLayer.Core.Menu.GetMenuTable(url, level);
+                return MixERP.Net.DatabaseLayer.Core.Menu.GetMenuTable(path, level);
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
-                MixERP.net.Common.ExceptionManager.HandleException(ex);
+                MixERP.Net.Common.ExceptionManager.HandleException(ex);
             }
 
             return null;
         }
 
-        public static DataTable GetRootMenuTable(string url)
+        public static DataTable GetRootMenuTable(string path)
         {
             try
             {
-                return MixERP.net.DatabaseLayer.Core.Menu.GetRootMenuTable(url);
+                return MixERP.Net.DatabaseLayer.Core.Menu.GetRootMenuTable(path);
             }
-            catch (Exception ex)
+            catch(DbException ex)
             {
-                MixERP.net.Common.ExceptionManager.HandleException(ex);
+                MixERP.Net.Common.ExceptionManager.HandleException(ex);
             }
 
             return null;
@@ -50,11 +51,11 @@ namespace MixERP.net.BusinessLayer.Core
         {
             try
             {
-                return MixERP.net.DatabaseLayer.Core.Menu.GetMenuTable(parentMenuId, level);
+                return MixERP.Net.DatabaseLayer.Core.Menu.GetMenuTable(parentMenuId, level);
             }
-            catch (Exception ex)
+            catch(DbException ex)
             {
-                MixERP.net.Common.ExceptionManager.HandleException(ex);
+                MixERP.Net.Common.ExceptionManager.HandleException(ex);
             }
 
             return null;

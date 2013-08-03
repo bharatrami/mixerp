@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Sales
+namespace MixERP.Net.FrontEnd.Sales
 {
-    public partial class Receipt : MixERP.net.BusinessLayer.BasePageClass
+    public partial class Receipt : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

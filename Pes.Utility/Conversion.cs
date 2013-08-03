@@ -27,16 +27,21 @@ namespace Pes.Utility
 
         public static string MapPathReverse(string fullServerPath)
         {
+            if(fullServerPath == null)
+            {
+                return null;
+            }
+
             return @"~\" + fullServerPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty);
         }
 
         public static short TryCastShort(object value)
         {
-            if (value != null)
+            if(value != null)
             {
                 short retVal = 0;
 
-                if (short.TryParse(value.ToString(), out retVal))
+                if(short.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
@@ -47,11 +52,11 @@ namespace Pes.Utility
 
         public static long TryCastLong(object value)
         {
-            if (value != null)
+            if(value != null)
             {
                 long retVal = 0;
 
-                if (long.TryParse(value.ToString(), out retVal))
+                if(long.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
@@ -62,10 +67,10 @@ namespace Pes.Utility
 
         public static float TryCastSingle(object value)
         {
-            if (value != null)
+            if(value != null)
             {
                 float retVal = 0;
-                if (float.TryParse(value.ToString(), out retVal))
+                if(float.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
@@ -76,11 +81,11 @@ namespace Pes.Utility
 
         public static double TryCastDouble(object value)
         {
-            if (value != null)
+            if(value != null)
             {
                 double retVal = 0;
 
-                if (double.TryParse(value.ToString(), out retVal))
+                if(double.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
@@ -91,11 +96,11 @@ namespace Pes.Utility
 
         public static int TryCastInteger(object value)
         {
-            if (value != null)
+            if(value != null)
             {
-                if (value is bool)
+                if(value is bool)
                 {
-                    if (Convert.ToBoolean(value, CultureInfo.InvariantCulture))
+                    if(Convert.ToBoolean(value, CultureInfo.InvariantCulture))
                     {
                         return 1;
                     }
@@ -106,7 +111,7 @@ namespace Pes.Utility
                 }
 
                 int retVal = 0;
-                if (int.TryParse(value.ToString(), out retVal))
+                if(int.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
@@ -126,8 +131,12 @@ namespace Pes.Utility
 
                 return Convert.ToDateTime(value);
             }
-            catch
-            { 
+            catch(FormatException)
+            {
+                //swallow the exception
+            }
+            catch(InvalidCastException)
+            {
                 //swallow the exception
             }
 
@@ -136,10 +145,10 @@ namespace Pes.Utility
 
         public static decimal TryCastDecimal(object value)
         {
-            if (value != null)
+            if(value != null)
             {
                 decimal retVal = default(decimal);
-                if (decimal.TryParse(value.ToString(), out retVal))
+                if(decimal.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
@@ -150,23 +159,11 @@ namespace Pes.Utility
 
         public static bool TryCastBoolean(object value)
         {
-            if (value != null)
+            if(value != null)
             {
                 bool retVal = false;
 
-                if (value is string)
-                {
-                    if ((value as string).ToLower(CultureInfo.InvariantCulture) == "yes")
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-
-                if (bool.TryParse(value.ToString(), out retVal))
+                if(bool.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
@@ -179,11 +176,11 @@ namespace Pes.Utility
         {
             try
             {
-                if (value != null)
+                if(value != null)
                 {
-                    if (value is bool)
+                    if(value is bool)
                     {
-                        if (Convert.ToBoolean(value, CultureInfo.InvariantCulture) == true)
+                        if(Convert.ToBoolean(value, CultureInfo.InvariantCulture) == true)
                         {
                             return "1";
                         }
@@ -194,7 +191,7 @@ namespace Pes.Utility
                     }
                     else
                     {
-                        if (value == System.DBNull.Value)
+                        if(value == System.DBNull.Value)
                         {
                             return string.Empty;
                         }
@@ -210,9 +207,13 @@ namespace Pes.Utility
                     return string.Empty;
                 }
             }
-            catch
-            { 
+            catch(FormatException)
+            {
                 //swallow the exception
+            }
+            catch(InvalidCastException)
+            {
+                //swallow the exception            
             }
 
             return string.Empty;
@@ -220,13 +221,18 @@ namespace Pes.Utility
 
         public static string HashSha512(string password, string salt)
         {
-            if (password == null)
+            if(password == null)
+            {
+                return null;
+            }
+
+            if(salt == null)
             {
                 return null;
             }
 
             byte[] bytes = Encoding.Unicode.GetBytes(password + salt);
-            using (SHA512CryptoServiceProvider hash = new SHA512CryptoServiceProvider())
+            using(SHA512CryptoServiceProvider hash = new SHA512CryptoServiceProvider())
             {
                 byte[] inArray = hash.ComputeHash(bytes);
                 return Convert.ToBase64String(inArray);
@@ -239,11 +245,11 @@ namespace Pes.Utility
             string lang = string.Empty;
             string administrationDirectoryName = System.Web.Configuration.WebConfigurationManager.AppSettings["AdministrationDirectoryName"];
 
-            if (context != null)
+            if(context != null)
             {
-                if (!string.IsNullOrWhiteSpace(administrationDirectoryName))
+                if(!string.IsNullOrWhiteSpace(administrationDirectoryName))
                 {
-                    if ((context.Session == null) || (context.Session["lang"] == null || string.IsNullOrWhiteSpace(context.Session["lang"] as string)))
+                    if((context.Session == null) || (context.Session["lang"] == null || string.IsNullOrWhiteSpace(context.Session["lang"] as string)))
                     {
                         lang = "en-US";
                     }
@@ -253,7 +259,7 @@ namespace Pes.Utility
                     }
 
                     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo(lang);
-                    if (culture.TwoLetterISOLanguageName == "iv")
+                    if(culture.TwoLetterISOLanguageName == "iv")
                     {
                         culture = new System.Globalization.CultureInfo("en-US");
                     }
@@ -264,16 +270,16 @@ namespace Pes.Utility
                     int port = context.Request.Url.Port;
                     string path = string.Empty;
 
-                    if (virtualDirectory == "/")
+                    if(virtualDirectory == "/")
                     {
-                        path = string.Format(CultureInfo.InvariantCulture, "{0}:{1}/{2}/{3}/{4}/", domain, port.ToString(), administrationDirectoryName, culture.TwoLetterISOLanguageName, relativePath);
+                        path = string.Format(CultureInfo.InvariantCulture, "{0}:{1}/{2}/{3}/{4}/", domain, port.ToString(CultureInfo.InvariantCulture), administrationDirectoryName, culture.TwoLetterISOLanguageName, relativePath);
                     }
                     else
                     {
-                        path = string.Format(CultureInfo.InvariantCulture, "{0}:{1}{2}/{3}/{4}/{5}/", domain, port.ToString(), virtualDirectory, administrationDirectoryName, culture.TwoLetterISOLanguageName, relativePath);
+                        path = string.Format(CultureInfo.InvariantCulture, "{0}:{1}{2}/{3}/{4}/{5}/", domain, port.ToString(CultureInfo.InvariantCulture), virtualDirectory, administrationDirectoryName, culture.TwoLetterISOLanguageName, relativePath);
                     }
 
-                    if (isSecure)
+                    if(isSecure)
                     {
                         path = "https://" + path;
                     }
@@ -286,162 +292,6 @@ namespace Pes.Utility
                 }
             }
             return new Uri("", UriKind.Relative);
-        }
-
-
-
-        public static string GetAlias(string title)
-        {
-            if (title == null) return "";
-
-            const int maxlen = 80;
-            int len = title.Length;
-            bool prevdash = false;
-            var sb = new StringBuilder(len);
-            char c;
-
-            for (int i = 0; i < len; i++)
-            {
-                c = title[i];
-                if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
-                {
-                    sb.Append(c);
-                    prevdash = false;
-                }
-                else if (c >= 'A' && c <= 'Z')
-                {
-                    // tricky way to convert to lowercase
-                    sb.Append((char)(c | 32));
-                    prevdash = false;
-                }
-                else if (c == ' ' || c == ',' || c == '.' || c == '/' ||
-                    c == '\\' || c == '-' || c == '_' || c == '=')
-                {
-                    if (!prevdash && sb.Length > 0)
-                    {
-                        sb.Append('-');
-                        prevdash = true;
-                    }
-                }
-                else if ((int)c >= 128)
-                {
-                    int prevlen = sb.Length;
-                    sb.Append(RemapInternationalCharToAscii(c));
-                    if (prevlen != sb.Length) prevdash = false;
-                }
-                if (i == maxlen) break;
-            }
-
-            if (prevdash)
-                return sb.ToString().Substring(0, sb.Length - 1);
-            else
-                return sb.ToString();
-        }
-
-        public static string RemapInternationalCharToAscii(char c)
-        {
-            string s = c.ToString().ToLowerInvariant();
-            if ("àåáâäãåą".Contains(s))
-            {
-                return "a";
-            }
-            else if ("èéêëę".Contains(s))
-            {
-                return "e";
-            }
-            else if ("ìíîïı".Contains(s))
-            {
-                return "i";
-            }
-            else if ("òóôõöøőð".Contains(s))
-            {
-                return "o";
-            }
-            else if ("ùúûüŭů".Contains(s))
-            {
-                return "u";
-            }
-            else if ("çćčĉ".Contains(s))
-            {
-                return "c";
-            }
-            else if ("żźž".Contains(s))
-            {
-                return "z";
-            }
-            else if ("śşšŝ".Contains(s))
-            {
-                return "s";
-            }
-            else if ("ñń".Contains(s))
-            {
-                return "n";
-            }
-            else if ("ýÿ".Contains(s))
-            {
-                return "y";
-            }
-            else if ("ğĝ".Contains(s))
-            {
-                return "g";
-            }
-            else if (c == 'ř')
-            {
-                return "r";
-            }
-            else if (c == 'ł')
-            {
-                return "l";
-            }
-            else if (c == 'đ')
-            {
-                return "d";
-            }
-            else if (c == 'ß')
-            {
-                return "ss";
-            }
-            else if (c == 'Þ')
-            {
-                return "th";
-            }
-            else if (c == 'ĥ')
-            {
-                return "h";
-            }
-            else if (c == 'ĵ')
-            {
-                return "j";
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        public static string GetSearchAlias(string title)
-        {
-            int maxLength = int.MaxValue;
-            var match = Regex.Match(title.ToLower(), "[\\w]+");
-            StringBuilder result = new StringBuilder("");
-            bool maxLengthHit = false;
-            while (match.Success && !maxLengthHit)
-            {
-                if (result.Length + match.Value.Length <= maxLength)
-                {
-                    result.Append(match.Value + "+");
-                }
-                else
-                {
-                    maxLengthHit = true;
-                    // Handle a situation where there is only one word and it is greater than the max length.
-                    if (result.Length == 0) result.Append(match.Value.Substring(0, maxLength));
-                }
-                match = match.NextMatch();
-            }
-            // Remove trailing '-'
-            if (result[result.Length - 1] == '+') result.Remove(result.Length - 1, 1);
-            return result.ToString();
         }
 
         public static DateTime GetLocalDateTime(string timeZone, DateTime utc)
@@ -471,29 +321,41 @@ namespace Pes.Utility
 
         public static System.Data.DataTable ConvertListToDataTable<T>(System.Collections.Generic.IList<T> list)
         {
-            System.ComponentModel.PropertyDescriptorCollection props =
-                System.ComponentModel.TypeDescriptor.GetProperties(typeof(T));
-            System.Data.DataTable table = new System.Data.DataTable();
-            for (int i = 0; i < props.Count; i++)
+            if(list == null)
             {
-                System.ComponentModel.PropertyDescriptor prop = props[i];
-                table.Columns.Add(prop.Name, prop.PropertyType);
+                return null;
             }
-            object[] values = new object[props.Count];
-            foreach (T item in list)
+
+            System.ComponentModel.PropertyDescriptorCollection props = System.ComponentModel.TypeDescriptor.GetProperties(typeof(T));
+
+            using(System.Data.DataTable table = new System.Data.DataTable())
             {
-                for (int i = 0; i < values.Length; i++)
+                for(int i = 0; i < props.Count; i++)
                 {
-                    values[i] = props[i].GetValue(item);
+                    System.ComponentModel.PropertyDescriptor prop = props[i];
+                    table.Columns.Add(prop.Name, prop.PropertyType);
                 }
-                table.Rows.Add(values);
+                object[] values = new object[props.Count];
+                foreach(T item in list)
+                {
+                    for(int i = 0; i < values.Length; i++)
+                    {
+                        values[i] = props[i].GetValue(item);
+                    }
+                    table.Rows.Add(values);
+                }
+                return table;
             }
-            return table;
         }
 
         public static byte[] ConvertImageToByteArray(System.Drawing.Image imageToConvert, System.Drawing.Imaging.ImageFormat formatOfImage)
         {
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            if(imageToConvert == null)
+            {
+                return null;
+            }
+
+            using(System.IO.MemoryStream ms = new System.IO.MemoryStream())
             {
                 imageToConvert.Save(ms, formatOfImage);
                 return ms.ToArray();

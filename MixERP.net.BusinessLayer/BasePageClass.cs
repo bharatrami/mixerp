@@ -15,41 +15,35 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 
-namespace MixERP.net.BusinessLayer
+namespace MixERP.Net.BusinessLayer
 {
     public class BasePageClass : System.Web.UI.Page
     {
-        public bool NoLogin { get; set; }
+        public bool NoLogOn { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
-            if (!IsPostBack)
+            if(!IsPostBack)
             {
-                if (Request.IsAuthenticated)
+                if(Request.IsAuthenticated)
                 {
-                    if(Context.Session["OfficeId"] == null)
+                    if(Context.Session == null)
                     {
-                        MixERP.net.BusinessLayer.BasePageClass.RequestLoginPage();
-                        return;
+                        SetSession();
                     }
-
-                    if (Context.Session != null)
+                    else
                     {
-                        if (Context.Session.IsNewSession)
+                        if(Context.Session["UserId"] == null)
                         {
                             SetSession();
                         }
                     }
-                    else
-                    {
-                        SetSession();
-                    }
                 }
                 else
                 {
-                    if (!this.NoLogin)
+                    if(!this.NoLogOn)
                     {
-                        RequestLoginPage();
+                        RequestLogOnPage();
                     }
                 }
             }
@@ -58,15 +52,15 @@ namespace MixERP.net.BusinessLayer
 
         private void SetSession()
         {
-            MixERP.net.BusinessLayer.Security.User.SetSession(this.Page, User.Identity.Name);
+            MixERP.Net.BusinessLayer.Security.User.SetSession(this.Page, User.Identity.Name);
         }
 
-        public static void RequestLoginPage()
+        public static void RequestLogOnPage()
         {
             FormsAuthentication.SignOut();
             string currentUrl = HttpContext.Current.Request.RawUrl;
             string loginPageUrl = FormsAuthentication.LoginUrl;
-            HttpContext.Current.Response.Redirect(String.Format("{0}?ReturnUrl={1}", loginPageUrl, currentUrl));
+            HttpContext.Current.Response.Redirect(String.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "{0}?ReturnUrl={1}", loginPageUrl, currentUrl));
         }
     }
 }

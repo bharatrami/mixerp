@@ -8,7 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProductControl.ascx.cs" Inherits="MixERP.net.FrontEnd.UserControls.Products.ProductControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProductControl.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.Products.ProductControl" %>
 <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
 <div style="width: 1000px; overflow: hidden; margin: 0 auto;">
@@ -30,6 +30,7 @@
             <asp:AsyncPostBackTrigger ControlID="CancelButton" />
             <asp:AsyncPostBackTrigger ControlID="ItemDropDownList" />
             <asp:AsyncPostBackTrigger ControlID="UnitDropDownList" />
+            <asp:AsyncPostBackTrigger ControlID="ShippingChargeTextBox" />            
             <asp:PostBackTrigger ControlID="SaveButton" />
         </Triggers>
         <ContentTemplate>
@@ -59,7 +60,7 @@
                     </tr>
                     <tr style="vertical-align: middle;">
                         <td>
-                            <pes:DateTextBox ID="DateTextBox" runat="server" Width="70" />
+                            <pes:DateTextBox ID="DateTextBox" runat="server" Width="70" CssClass="date" />
                         </td>
                         <td>
                             <asp:DropDownList ID="StoreDropDownList" runat="server" Width="80">
@@ -119,7 +120,7 @@
                                 <asp:ImageButton ID="DeleteImageButton" ClientIDMode="Predictable" runat="server"
                                     CausesValidation="false"
                                     OnClientClick="return(confirmAction());"
-                                    ImageUrl="~/Resources/Icons/delete-16.png" />
+                                    ImageUrl="~/Resource/Icons/delete-16.png" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -206,6 +207,25 @@
                 </asp:Panel>
                 <div class="vpad8"></div>
                 <asp:Table runat="server" CssClass="grid3 grid4">
+                    <asp:TableRow>
+                        <asp:TableCell>
+                            <asp:Literal ID="ShippingCompanyDropDownListLabelLiteral" runat="server" />
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:DropDownList ID="ShippingCompanyDropDownList" runat="server">
+                            </asp:DropDownList>
+                        </asp:TableCell>
+                    </asp:TableRow>
+                    <asp:TableRow>
+                        <asp:TableCell>
+                            <asp:Literal ID="ShippingChargeTextBoxLabelLiteral" runat="server" />
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:TextBox ID="ShippingChargeTextBox" runat="server" AutoPostBack="true" OnTextChanged="ShippingChargeTextBox_TextChanged">
+                            </asp:TextBox>
+                        </asp:TableCell>
+
+                    </asp:TableRow>
                     <asp:TableRow>
                         <asp:TableCell>
                             <asp:Literal ID="TotalsLiteral" runat="server" Text="<%$Resources:Titles, Totals %>">

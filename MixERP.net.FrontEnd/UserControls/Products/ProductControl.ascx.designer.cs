@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.UserControls.Products {
+namespace MixERP.Net.FrontEnd.UserControls.Products {
     
     
     public partial class ProductControl {
@@ -127,7 +127,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.DateTextBox DateTextBox;
+        protected global::MixERP.Net.FrontEnd.UserControls.DateTextBox DateTextBox;
         
         /// <summary>
         /// StoreDropDownList control.
@@ -380,6 +380,42 @@ namespace MixERP.net.FrontEnd.UserControls.Products {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ErrorLabel;
+        
+        /// <summary>
+        /// ShippingCompanyDropDownListLabelLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ShippingCompanyDropDownListLabelLiteral;
+        
+        /// <summary>
+        /// ShippingCompanyDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ShippingCompanyDropDownList;
+        
+        /// <summary>
+        /// ShippingChargeTextBoxLabelLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ShippingChargeTextBoxLabelLiteral;
+        
+        /// <summary>
+        /// ShippingChargeTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ShippingChargeTextBox;
         
         /// <summary>
         /// TotalsLiteral control.

@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Account.Messaging
+namespace MixERP.Net.FrontEnd.Account.Messaging
 {
-    public partial class SentItems : MixERP.net.BusinessLayer.BasePageClass
+    public partial class SentItems : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

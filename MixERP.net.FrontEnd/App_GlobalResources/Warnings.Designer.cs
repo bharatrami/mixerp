@@ -70,6 +70,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You may not withdraw else&apos;s transaction..
+        /// </summary>
+        internal static string CannotWithdrawElsesTransaction {
+            get {
+                return ResourceManager.GetString("CannotWithdrawElsesTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot withdraw this transaction at this stage. Consult an administrator if this transaction could be rejected..
+        /// </summary>
+        internal static string CannotWithdrawTransaction {
+            get {
+                return ResourceManager.GetString("CannotWithdrawTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warning!!! Credit is not allowed to this customer..
         /// </summary>
         internal static string CreditNotAllowed {
@@ -102,6 +120,15 @@ namespace Resources {
         internal static string InvalidImage {
             get {
                 return ResourceManager.GetString("InvalidImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;{0}&quot; is not a valid path or location..
+        /// </summary>
+        internal static string InvalidLocation {
+            get {
+                return ResourceManager.GetString("InvalidLocation", resourceCulture);
             }
         }
         
@@ -147,6 +174,15 @@ namespace Resources {
         internal static string UnknownError {
             get {
                 return ResourceManager.GetString("UnknownError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown transaction type..
+        /// </summary>
+        internal static string UnknownTransactionType {
+            get {
+                return ResourceManager.GetString("UnknownTransactionType", resourceCulture);
             }
         }
     }

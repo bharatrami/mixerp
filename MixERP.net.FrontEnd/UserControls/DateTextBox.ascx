@@ -8,7 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DateTextBox.ascx.cs" Inherits="MixERP.net.FrontEnd.UserControls.DateTextBox" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DateTextBox.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.DateTextBox" %>
 <asp:TextBox ID="TextBox1" runat="server" Width="100">
 </asp:TextBox>
 <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" />

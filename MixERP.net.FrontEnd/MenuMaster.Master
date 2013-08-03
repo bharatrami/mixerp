@@ -1,5 +1,5 @@
-﻿<%@ Master Language="C#" MasterPageFile="~/MixERPMaster.Master" AutoEventWireup="true"
-    CodeBehind="MenuMaster.Master.cs" Inherits="MixERP.net.FrontEnd.MenuMaster" %>
+﻿<%@ Master Language="C#" MasterPageFile="~/MixErpMaster.Master" AutoEventWireup="true"
+    CodeBehind="MenuMaster.Master.cs" Inherits="MixERP.Net.FrontEnd.MenuMaster" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
     <asp:ContentPlaceHolder ID="ScriptContentPlaceHolder" runat="server">

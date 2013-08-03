@@ -15,13 +15,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Setup
+namespace MixERP.Net.FrontEnd.Setup
 {
-    public partial class Index : MixERP.net.BusinessLayer.BasePageClass
+    public partial class Index : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string menu = MixERP.net.BusinessLayer.Helper.MenuHelper.GetPageMenu(this.Page);
+            string menu = MixERP.Net.BusinessLayer.Helpers.MenuHelper.GetPageMenu(this.Page);
             MenuLiteral.Text = menu;
         }
     }

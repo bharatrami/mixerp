@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Setup {
+namespace MixERP.Net.FrontEnd.Setup {
     
     
     public partial class Frequency {
@@ -19,6 +19,6 @@ namespace MixERP.net.FrontEnd.Setup {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Forms.FormControl FrequencySetupForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl FrequencySetupForm;
     }
 }

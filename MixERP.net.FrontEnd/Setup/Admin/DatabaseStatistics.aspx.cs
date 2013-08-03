@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.net.FrontEnd.Setup.Admin
+namespace MixERP.Net.FrontEnd.Setup.Admin
 {
-    public partial class DatabaseStatistics : MixERP.net.BusinessLayer.BasePageClass
+    public partial class DatabaseStatistics : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,19 +26,19 @@ namespace MixERP.net.FrontEnd.Setup.Admin
 
         protected void VacuumButton_Click(object sender, EventArgs e)
         {
-            MixERP.net.BusinessLayer.Helper.Maintenance.Vacuum();
+            MixERP.Net.BusinessLayer.Helpers.Maintenance.Vacuum();
             this.DisplaySuccess();
         }
 
         protected void FullVacuumButton_Click(object sender, EventArgs e)
         {
-            MixERP.net.BusinessLayer.Helper.Maintenance.VacuumFull();
+            MixERP.Net.BusinessLayer.Helpers.Maintenance.VacuumFull();
             this.DisplaySuccess();
         }
 
         protected void AnalyzeButton_Click(object sender, EventArgs e)
         {
-            MixERP.net.BusinessLayer.Helper.Maintenance.Analyze();
+            MixERP.Net.BusinessLayer.Helpers.Maintenance.Analyze();
             this.DisplaySuccess();
         }
 

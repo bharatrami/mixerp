@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>..\MixERP.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PES Technologies.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,12 +56,20 @@
   <ItemGroup>
     <Compile Include="Conversion.cs" />
     <Compile Include="ExpressionHelper.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="PageUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticRandom.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PES Technologies.snk" />
     <None Include="Pes.Utility.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\Dictionary.xml">
+      <Link>Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

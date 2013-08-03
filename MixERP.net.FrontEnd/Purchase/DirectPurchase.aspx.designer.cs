@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Purchase {
+namespace MixERP.Net.FrontEnd.Purchase {
     
     
     public partial class DirectPurchase {
@@ -19,6 +19,6 @@ namespace MixERP.net.FrontEnd.Purchase {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.net.FrontEnd.UserControls.Products.ProductControl DirectPurchaseControl;
+        protected global::MixERP.Net.FrontEnd.UserControls.Products.ProductControl DirectPurchaseControl;
     }
 }

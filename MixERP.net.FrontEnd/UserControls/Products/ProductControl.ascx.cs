@@ -14,8 +14,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.VisualBasic;
 
-namespace MixERP.net.FrontEnd.UserControls.Products
+namespace MixERP.Net.FrontEnd.UserControls.Products
 {
     public partial class ProductControl : System.Web.UI.UserControl
     {
@@ -37,7 +38,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
 
         public class ControlCollection
         {
-            public MixERP.net.FrontEnd.UserControls.DateTextBox DateTextBox { get; set; }
+            public MixERP.Net.FrontEnd.UserControls.DateTextBox DateTextBox { get; set; }
             public DropDownList StoreDropDownList { get; set; }
             public RadioButtonList TransactionTypeRadioButtonList { get; set; }
             public TextBox CustomerCodeTextBox { get; set; }
@@ -49,6 +50,8 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             public TextBox RunningTotalTextBox { get; set; }
             public TextBox TaxTotalTextBox { get; set; }
             public TextBox GrandTotalTextBox { get; set; }
+            public DropDownList ShippingCompanyDropDownList { get; set; }
+            public TextBox ShippingChargeTextBox { get; set; }
             public DropDownList CashRepositoryDropDownList { get; set; }
             public TextBox CashRepositoryBalanceTextBox { get; set; }
             public DropDownList CostCenterDropDownList { get; set; }
@@ -70,6 +73,8 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             collection.RunningTotalTextBox = this.RunningTotalTextBox;
             collection.TaxTotalTextBox = this.TaxTotalTextBox;
             collection.GrandTotalTextBox = this.GrandTotalTextBox;
+            collection.ShippingCompanyDropDownList = this.ShippingCompanyDropDownList;
+            collection.ShippingChargeTextBox = this.ShippingChargeTextBox;
             collection.CashRepositoryDropDownList = this.CashRepositoryDropDownList;
             collection.CashRepositoryBalanceTextBox = this.CashRepositoryBalanceTextBox;
             collection.CostCenterDropDownList = this.CostCenterDropDownList;
@@ -109,6 +114,17 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                 ErrorLabel.Text = Resources.Warnings.NoItemFound;
                 return;
             }
+
+            if(!string.IsNullOrWhiteSpace(ShippingChargeTextBox.Text))
+            {
+                if(!Information.IsNumeric(ShippingChargeTextBox.Text))
+                {
+                    this.MakeDirty(ShippingChargeTextBox);
+                    return;
+                }
+            }
+
+
             //Validation Check End
 
             //Now exposing the button click event.
@@ -150,24 +166,30 @@ namespace MixERP.net.FrontEnd.UserControls.Products
 
             this.InitializeControls();
 
-            CostCenterDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("office", "cost_centers");
+            ShippingCompanyDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "shippers");
+            ShippingCompanyDropDownList.DataValueField = "shipper_id";
+            ShippingCompanyDropDownList.DataTextField = "company_name";
+            ShippingCompanyDropDownList.DataBind();
+
+
+            CostCenterDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "cost_centers");
             CostCenterDropDownList.DataValueField = "cost_center_id";
             CostCenterDropDownList.DataTextField = "cost_center_name";
             CostCenterDropDownList.DataBind();
 
-            StoreDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("office", "stores");
+            StoreDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "stores");
             StoreDropDownList.DataValueField = "store_id";
             StoreDropDownList.DataTextField = "store_name";
             StoreDropDownList.DataBind();
 
 
-            ItemDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "items");
+            ItemDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items");
             ItemDropDownList.DataBind();
             ItemDropDownList.Items.Insert(0, new ListItem(Resources.Titles.Select, ""));
 
             if(this.ShowCashRepository)
             {
-                CashRepositoryDropDownList.DataSource = MixERP.net.BusinessLayer.Office.CashRepositories.GetCashRepositories(MixERP.net.BusinessLayer.Helper.SessionHelper.OfficeId());
+                CashRepositoryDropDownList.DataSource = MixERP.Net.BusinessLayer.Office.CashRepositories.GetCashRepositories(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId());
                 CashRepositoryDropDownList.DataBind();
                 this.UpdateRepositoryBalance();
             }
@@ -211,6 +233,8 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             RunningTotalTextBoxLabelLiteral.Text = "<label for ='RunningTotalTextBox'>" + Resources.Titles.RunningTotal + "</label>";
             TaxTotalTextBoxLabelLiteral.Text = "<label for='TaxTotalTextBox'>" + Resources.Titles.TaxTotal + "</label>";
             GrandTotalTextBoxLabelLiteral.Text = "<label for='GrandTotalTextBox'>" + Resources.Titles.GrandTotal + "</label>";
+            ShippingCompanyDropDownListLabelLiteral.Text = "<label for='ShippingCompanyDropDownList'>" + Resources.Titles.ShippingCompany + "</label>";
+            ShippingChargeTextBoxLabelLiteral.Text = "<label for='ShippingChargeTextBox'>" + Resources.Titles.ShippingCharge + "</label>";
             CashRepositoryDropDownListLabelLiteral.Text = "<label for='CashRepositoryDropDownList'>" + Resources.Titles.CashRepository + "</label>";
             CashRepositoryBalanceTextBoxLabelLiteral.Text = "<label for='CashRepositoryBalanceTextBox'>" + Resources.Titles.CashRepositoryBalance + "</label>";
             CostCenterDropDownListLabelLiteral.Text = "<label for='CostCenterDropDownList'>" + Resources.Titles.CostCenter + "</label>";
@@ -224,12 +248,12 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                 SupplierCodeTextBox.Visible = false;
                 SupplierDropDownList.Visible = false;
 
-                PriceTypeDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "price_types");
+                PriceTypeDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "price_types");
                 PriceTypeDropDownList.DataValueField = "price_type_id";
                 PriceTypeDropDownList.DataTextField = "price_type_name";
                 PriceTypeDropDownList.DataBind();
 
-                CustomerDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "customers");
+                CustomerDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "customers");
                 CustomerDropDownList.DataValueField = "customer_code";
                 CustomerDropDownList.DataTextField = "customer_name";
                 CustomerDropDownList.DataBind();
@@ -243,7 +267,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                 PriceTypeLiteral.Visible = false;
                 PriceTypeDropDownList.Visible = false;
 
-                SupplierDropDownList.DataSource = MixERP.net.BusinessLayer.Helper.FormHelper.GetTable("core", "suppliers");
+                SupplierDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "suppliers");
                 SupplierDropDownList.DataValueField = "supplier_code";
                 SupplierDropDownList.DataTextField = "supplier_name";
                 SupplierDropDownList.DataBind();
@@ -261,21 +285,24 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             {
                 ProductGridView.DataSource = table;
                 ProductGridView.DataBind();
-
-                try
-                {
-                    if(table.Rows.Count > 0)
-                    {
-                        RunningTotalTextBox.Text = this.GetRunningTotal(table, "SubTotal").ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
-                        TaxTotalTextBox.Text = this.GetRunningTotal(table, "Tax").ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
-                        GrandTotalTextBox.Text = this.GetRunningTotal(table, "Total").ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
-                    }
-                }
-                catch
-                {
-                }
             }
 
+            this.ShowTotals();
+        }
+
+        protected void ShippingChargeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.ShowTotals();
+        }
+
+        private void ShowTotals()
+        {
+            using(System.Data.DataTable table = this.GetTable())
+            {
+                RunningTotalTextBox.Text = (this.GetRunningTotal(table, "SubTotal") + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+                TaxTotalTextBox.Text = this.GetRunningTotal(table, "Tax").ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+                GrandTotalTextBox.Text = (this.GetRunningTotal(table, "Total") + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+            }
         }
 
         private decimal GetRunningTotal(System.Data.DataTable table, string columnName)
@@ -314,7 +341,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             {
                 if(CashRepositoryDropDownList.SelectedItem != null)
                 {
-                    CashRepositoryBalanceTextBox.Text = MixERP.net.BusinessLayer.Office.CashRepositories.GetBalance(Pes.Utility.Conversion.TryCastInteger(CashRepositoryDropDownList.SelectedItem.Value)).ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
+                    CashRepositoryBalanceTextBox.Text = MixERP.Net.BusinessLayer.Office.CashRepositories.GetBalance(Pes.Utility.Conversion.TryCastInteger(CashRepositoryDropDownList.SelectedItem.Value)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
                 }
             }
         }
@@ -345,7 +372,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                 this.RemoveDirty(ItemCodeTextBox);
             }
 
-            if(!MixERP.net.BusinessLayer.Core.Items.ItemExistsByCode(itemCode))
+            if(!MixERP.Net.BusinessLayer.Core.Items.ItemExistsByCode(itemCode))
             {
                 this.MakeDirty(ItemCodeTextBox);
                 return;
@@ -365,7 +392,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                 this.RemoveDirty(QuantityTextBox);
             }
 
-            if(!MixERP.net.BusinessLayer.Core.Units.UnitExistsByName(unit))
+            if(!MixERP.Net.BusinessLayer.Core.Units.UnitExistsByName(unit))
             {
                 this.MakeDirty(UnitDropDownList);
                 return;
@@ -419,11 +446,11 @@ namespace MixERP.net.FrontEnd.UserControls.Products
                 if(this.TransactionType == TranType.Sales)
                 {
 
-                    itemInStock = MixERP.net.BusinessLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
+                    itemInStock = MixERP.Net.BusinessLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
                     if(quantity > itemInStock)
                     {
                         this.MakeDirty(QuantityTextBox);
-                        ErrorLabel.Text = String.Format(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture(), Resources.Warnings.InsufficientStockWarning, itemInStock.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture()), UnitDropDownList.SelectedItem.Text, ItemDropDownList.SelectedItem.Text);
+                        ErrorLabel.Text = String.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), Resources.Warnings.InsufficientStockWarning, itemInStock.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture()), UnitDropDownList.SelectedItem.Text, ItemDropDownList.SelectedItem.Text);
                         return;
                     }
                 }
@@ -477,7 +504,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
 
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
-                table.Locale = MixERP.net.BusinessLayer.Helper.SessionHelper.Culture();
+                table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
 
                 table.Columns.Add("ItemCode");
                 table.Columns.Add("ItemName");
@@ -515,26 +542,26 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             {
                 customer = CustomerDropDownList.SelectedItem.Value;
                 short priceTypeId = Pes.Utility.Conversion.TryCastShort(PriceTypeDropDownList.SelectedItem.Value);
-                price = MixERP.net.BusinessLayer.Core.Items.GetItemSellingPrice(itemCode, customer, priceTypeId, unitId);
+                price = MixERP.Net.BusinessLayer.Core.Items.GetItemSellingPrice(itemCode, customer, priceTypeId, unitId);
             }
             else
             {
                 supplier = SupplierDropDownList.SelectedItem.Value;
-                price = MixERP.net.BusinessLayer.Core.Items.GetItemCostPrice(itemCode, supplier, unitId);
+                price = MixERP.Net.BusinessLayer.Core.Items.GetItemCostPrice(itemCode, supplier, unitId);
             }
 
             decimal discount = Pes.Utility.Conversion.TryCastDecimal(DiscountTextBox.Text);
-            decimal taxRate = MixERP.net.BusinessLayer.Core.Items.GetTaxRate(itemCode);
+            decimal taxRate = MixERP.Net.BusinessLayer.Core.Items.GetTaxRate(itemCode);
 
 
-            PriceTextBox.Text = price.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
+            PriceTextBox.Text = price.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
 
-            TaxRateTextBox.Text = taxRate.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
-            TaxTextBox.Text = (((price - discount) * taxRate) / 100.00m).ToString("#.##", MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
+            TaxRateTextBox.Text = taxRate.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+            TaxTextBox.Text = (((price - discount) * taxRate) / 100.00m).ToString("#.##", MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
 
             decimal amount = price * Pes.Utility.Conversion.TryCastInteger(QuantityTextBox.Text);
 
-            AmountTextBox.Text = amount.ToString(MixERP.net.BusinessLayer.Helper.SessionHelper.Culture());
+            AmountTextBox.Text = amount.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
         }
 
         protected void OKButton_Click(object sender, EventArgs e)
@@ -558,7 +585,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
             {
                 customerCode = CustomerDropDownList.SelectedItem.Value;
 
-                if(!MixERP.net.BusinessLayer.Office.Stores.IsSalesAllowed(storeId))
+                if(!MixERP.Net.BusinessLayer.Office.Stores.IsSalesAllowed(storeId))
                 {
                     ErrorLabelTop.Text = Resources.Warnings.SalesNotAllowedHere;
                     this.MakeDirty(StoreDropDownList);
@@ -567,7 +594,7 @@ namespace MixERP.net.FrontEnd.UserControls.Products
 
                 if(transactionType.Equals(Resources.Titles.Credit))
                 {
-                    if(!MixERP.net.BusinessLayer.Core.Customers.IsCreditAllowed(customerCode))
+                    if(!MixERP.Net.BusinessLayer.Core.Customers.IsCreditAllowed(customerCode))
                     {
                         ErrorLabelTop.Text = Resources.Warnings.CreditNotAllowed;
                         return;

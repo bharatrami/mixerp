@@ -8,8 +8,8 @@
     <ProjectGuid>{81DE04CF-7DE9-42FF-8339-D05E2586DCBA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MixERP.net.BusinessLayer</RootNamespace>
-    <AssemblyName>MixERP.net.BusinessLayer</AssemblyName>
+    <RootNamespace>MixERP.Net.BusinessLayer</RootNamespace>
+    <AssemblyName>MixERP.Net.BusinessLayer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>GlobalizationRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\MixERP.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -34,10 +34,27 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PES Technologies.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\packages\AjaxControlToolkit.7.0725\lib\40\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="AjaxMin">
+      <HintPath>..\packages\AjaxMin.4.97.4951.28483\lib\net40\AjaxMin.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,34 +70,44 @@
     <Compile Include="Core\Menu.cs" />
     <Compile Include="Core\Units.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Helper\FormHelper.cs" />
-    <Compile Include="Helper\LocalizationHelper.cs" />
-    <Compile Include="Helper\Maintenance.cs" />
-    <Compile Include="Helper\MenuHelper.cs" />
-    <Compile Include="Helper\SessionHelper.cs" />
-    <Compile Include="Helper\TableHelper.cs" />
+    <Compile Include="Helpers\FormHelper.cs" />
+    <Compile Include="Helpers\Maintenance.cs" />
+    <Compile Include="Helpers\MenuHelper.cs" />
+    <Compile Include="Helpers\ReportHelper.cs" />
+    <Compile Include="Helpers\SessionHelper.cs" />
+    <Compile Include="Helpers\TableHelper.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Office\CashRepositories.cs" />
     <Compile Include="Office\Offices.cs" />
     <Compile Include="Office\Stores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\User.cs" />
+    <Compile Include="Transactions\DirectSales.cs" />
+    <Compile Include="Transactions\Models\VerificationModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pes.Utility\Pes.Utility.csproj">
       <Project>{D5F5C51D-250D-4775-8E63-AE792A9A04A0}</Project>
       <Name>Pes.Utility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MixERP.net.Common\MixERP.net.Common.csproj">
+    <ProjectReference Include="..\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{D5A09C22-8F48-4FB2-A14D-C62C8C8FCEC0}</Project>
-      <Name>MixERP.net.Common</Name>
+      <Name>MixERP.Net.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MixERP.net.DatabaseLayer\MixERP.net.DatabaseLayer.csproj">
+    <ProjectReference Include="..\MixERP.net.DatabaseLayer\MixERP.Net.DatabaseLayer.csproj">
       <Project>{F1F6FB95-5D7E-4E4C-9CC4-AC58DBD8F09F}</Project>
-      <Name>MixERP.net.DatabaseLayer</Name>
+      <Name>MixERP.Net.DatabaseLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="MixERP.net.BusinessLayer.licenseheader" />
+    <None Include="packages.config" />
+    <None Include="PES Technologies.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\Dictionary.xml">
+      <Link>Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

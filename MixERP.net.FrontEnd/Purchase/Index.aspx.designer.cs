@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Purchase {
+namespace MixERP.Net.FrontEnd.Purchase {
     
     
     public partial class Index {

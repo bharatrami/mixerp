@@ -8,7 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SignIn.aspx.cs" Inherits="MixERP.net.FrontEnd.SignIn" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SignIn.aspx.cs" Inherits="MixERP.Net.FrontEnd.SignIn" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -59,7 +59,7 @@
                         DataTextField="office_name" DataValueField="office_id">
                     </asp:DropDownList>
                     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetOffices"
-                        TypeName="MixERP.net.BusinessLayer.Office.Offices"></asp:ObjectDataSource>
+                        TypeName="MixERP.Net.BusinessLayer.Office.Offices"></asp:ObjectDataSource>
                 </td>
             </tr>
             <tr>
@@ -122,7 +122,7 @@
 
                     if (string.IsNullOrWhiteSpace(sessionUser))
                     {
-                        MixERP.net.BusinessLayer.Security.User.SetSession(this.Page, user);
+                        MixERP.Net.BusinessLayer.Security.User.SetSession(this.Page, user);
                     }
 
                     Response.Redirect("~/Account/Index.aspx", true);                    
@@ -135,7 +135,7 @@
     protected void SignInButton_Click(object sender, EventArgs e)
     {
         int officeId = Pes.Utility.Conversion.TryCastInteger(BranchDropDownList.SelectedItem.Value);
-        bool results = MixERP.net.BusinessLayer.Security.User.SignIn(officeId, UserIdTextBox.Text, PasswordTextBox.Text, RememberMe.Checked, this.Page);
+        bool results = MixERP.Net.BusinessLayer.Security.User.SignIn(officeId, UserIdTextBox.Text, PasswordTextBox.Text, RememberMe.Checked, this.Page);
 
         if (!results)
         {

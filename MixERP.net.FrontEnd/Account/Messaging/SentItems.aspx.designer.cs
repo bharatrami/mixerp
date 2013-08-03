@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.net.FrontEnd.Account.Messaging
+namespace MixERP.Net.FrontEnd.Account.Messaging
 {
 
 
