@@ -151,7 +151,7 @@
     <value>Code</value>
   </data>
   <data name="CostCenter" xml:space="preserve">
-    <value>CostCenter</value>
+    <value>Cost Center</value>
   </data>
   <data name="Credit" xml:space="preserve">
     <value>Credit</value>
@@ -311,5 +311,50 @@
   </data>
   <data name="LoginView" xml:space="preserve">
     <value>Login View</value>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Customer Code</value>
+  </data>
+  <data name="CustomerPanNumber" xml:space="preserve">
+    <value>Customer PAN Number</value>
+  </data>
+  <data name="DeliverTo" xml:space="preserve">
+    <value>Deliver To</value>
+  </data>
+  <data name="DueDate" xml:space="preserve">
+    <value>Due Date</value>
+  </data>
+  <data name="TransactionDate" xml:space="preserve">
+    <value>Transaction Date</value>
+  </data>
+  <data name="InvoiceAmount" xml:space="preserve">
+    <value>Invoice Amount</value>
+  </data>
+  <data name="EnteredBy" xml:space="preserve">
+    <value>Entered By</value>
+  </data>
+  <data name="TransactionStatus" xml:space="preserve">
+    <value>Transaction Status</value>
+  </data>
+  <data name="VerifiedBy" xml:space="preserve">
+    <value>Verified By</value>
+  </data>
+  <data name="VerificationReason" xml:space="preserve">
+    <value>Verification Reason</value>
+  </data>
+  <data name="Book" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="GLAdvice" xml:space="preserve">
+    <value>GL Advice</value>
+  </data>
+  <data name="ReferenceNumber" xml:space="preserve">
+    <value>Reference Number</value>
+  </data>
+  <data name="TransactionDetails" xml:space="preserve">
+    <value>Transaction Details</value>
+  </data>
+  <data name="GLDetails" xml:space="preserve">
+    <value>GL Details</value>
   </data>
 </root>

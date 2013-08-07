@@ -220,6 +220,13 @@
     <Compile Include="Finance\BankReconcilation.aspx.designer.cs">
       <DependentUpon>BankReconcilation.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Finance\Confirmation\GLAdvice.aspx.cs">
+      <DependentUpon>GLAdvice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Finance\Confirmation\GLAdvice.aspx.designer.cs">
+      <DependentUpon>GLAdvice.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Finance\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -547,6 +554,13 @@
     <Compile Include="RuntimeError.aspx.designer.cs">
       <DependentUpon>RuntimeError.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Sales\Confirmation\CustomerInvoice.aspx.cs">
+      <DependentUpon>CustomerInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\Confirmation\CustomerInvoice.aspx.designer.cs">
+      <DependentUpon>CustomerInvoice.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Sales\Confirmation\DirectSales.aspx.cs">
       <DependentUpon>DirectSales.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -873,6 +887,7 @@
     <Content Include="Dependencies\Mono.Security.dll" />
     <Content Include="Dependencies\Npgsql.dll" />
     <Content Include="Finance\BankReconcilation.aspx" />
+    <Content Include="Finance\Confirmation\GLAdvice.aspx" />
     <Content Include="Finance\Index.aspx" />
     <Content Include="Finance\JournalVoucher.aspx" />
     <Content Include="Finance\Setup\AgeingSlabs.aspx" />
@@ -919,6 +934,12 @@
     <Content Include="Reports\Assets\Header.html" />
     <Content Include="Reports\ReportMaster.aspx" />
     <Content Include="Reports\ReportViewer.aspx" />
+    <Content Include="Reports\Sources\Transactions.GLEntry.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Reports\Sources\Sales.View.Sales.CustomerInvoice.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Reports\Sources\Office.Login.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -927,6 +948,7 @@
     </Content>
     <Content Include="Resource\Icons\bottom-16.png" />
     <Content Include="Resource\Icons\calendar-16.png" />
+    <Content Include="Resource\Icons\close-16.png" />
     <Content Include="Resource\Icons\email-16.png" />
     <Content Include="Resource\Icons\excel-16.png" />
     <Content Include="Resource\Icons\filter-16.png" />
@@ -934,6 +956,7 @@
     <Content Include="Resource\Icons\print-16.png" />
     <Content Include="Resource\Icons\top-16.png" />
     <Content Include="RuntimeError.aspx" />
+    <Content Include="Sales\Confirmation\CustomerInvoice.aspx" />
     <Content Include="Sales\Confirmation\DirectSales.aspx" />
     <Content Include="Sales\Confirmation\DirectSalesInovice.aspx" />
     <Content Include="Sales\Delivery.aspx" />

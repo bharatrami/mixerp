@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning!!! Credit is not allowed to this customer..
+        ///   Looks up a localized string similar to Credit is not allowed to this customer..
         /// </summary>
         internal static string CreditNotAllowed {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning!!! Only {0} {1} of {2} left in stock..
+        ///   Looks up a localized string similar to Only {0} {1} of {2} left in stock..
         /// </summary>
         internal static string InsufficientStockWarning {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning!!! No item found..
+        ///   Looks up a localized string similar to No item found..
         /// </summary>
         internal static string NoItemFound {
             get {
@@ -160,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning!!! Sales is not allowed here..
+        ///   Looks up a localized string similar to Sales is not allowed here..
         /// </summary>
         internal static string SalesNotAllowedHere {
             get {

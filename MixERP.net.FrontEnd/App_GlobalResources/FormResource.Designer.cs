@@ -745,6 +745,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credit.
+        /// </summary>
+        internal static string credit {
+            get {
+                return ResourceManager.GetString("credit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CST Number.
         /// </summary>
         internal static string cst_number {
@@ -858,6 +867,15 @@ namespace Resources {
         internal static string date_of_birth {
             get {
                 return ResourceManager.GetString("date_of_birth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debit.
+        /// </summary>
+        internal static string debit {
+            get {
+                return ResourceManager.GetString("debit", resourceCulture);
             }
         }
         
@@ -1938,6 +1956,15 @@ namespace Resources {
         internal static string reorder_level {
             get {
                 return ResourceManager.GetString("reorder_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository.
+        /// </summary>
+        internal static string repository {
+            get {
+                return ResourceManager.GetString("repository", resourceCulture);
             }
         }
         

@@ -127,11 +127,11 @@
     <value>You cannot withdraw this transaction at this stage. Consult an administrator if this transaction could be rejected.</value>
   </data>
   <data name="CreditNotAllowed" xml:space="preserve">
-    <value>Warning!!! Credit is not allowed to this customer.</value>
+    <value>Credit is not allowed to this customer.</value>
   </data>
   <data name="InsufficientStockWarning" xml:space="preserve">
-    <value>Warning!!! Only {0} {1} of {2} left in stock.</value>
-    <comment>Warning!!! Only {Qty} {Unit} of {ItemName} left in stock.</comment>
+    <value>Only {0} {1} of {2} left in stock.</value>
+    <comment>Only {Qty} {Unit} of {ItemName} left in stock.</comment>
   </data>
   <data name="InvalidDate" xml:space="preserve">
     <value>This is not a valid date.</value>
@@ -143,7 +143,7 @@
     <value>"{0}" is not a valid path or location.</value>
   </data>
   <data name="NoItemFound" xml:space="preserve">
-    <value>Warning!!! No item found.</value>
+    <value>No item found.</value>
   </data>
   <data name="OnlyNumbersAllowed" xml:space="preserve">
     <value>Only numbers are allowed.</value>
@@ -152,7 +152,7 @@
     <value>This is a required field.</value>
   </data>
   <data name="SalesNotAllowedHere" xml:space="preserve">
-    <value>Warning!!! Sales is not allowed here.</value>
+    <value>Sales is not allowed here.</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
     <value>Operation failed due to an unknown error.</value>

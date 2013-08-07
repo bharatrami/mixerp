@@ -948,4 +948,13 @@
   <data name="office_address" xml:space="preserve">
     <value>Office Address</value>
   </data>
+  <data name="credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="debit" xml:space="preserve">
+    <value>Debit</value>
+  </data>
+  <data name="repository" xml:space="preserve">
+    <value>Repository</value>
+  </data>
 </root>

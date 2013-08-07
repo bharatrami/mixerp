@@ -13,20 +13,22 @@ CREATE SCHEMA transactions;
 CREATE SCHEMA crm;
 
 
-DROP DOMAIN IF EXISTS verification;
-CREATE DOMAIN verification AS smallint
-CHECK
+CREATE TABLE core.verification_statuses
 (
-	VALUE IN
-	(
-		-3,	--Rejected
-		-2,	--Closed
-		-1,	--Withdrawn
-		 0,	--Awaiting Approval
-		 1,	--Automatically Approved by Workflow
-		 2	--Approved
-	)
+	verification_status_id		smallint NOT NULL PRIMARY KEY,
+	verification_status_name	national character varying(128) NOT NULL
 );
+
+CREATE UNIQUE INDEX verification_statuses_verification_status_name_uix
+ON core.verification_statuses(verification_status_name);
+
+INSERT INTO core.verification_statuses
+SELECT -3, 'Rejected' UNION ALL
+SELECT -2, 'Closed' UNION ALL
+SELECT -1, 'Withdrawn' UNION ALL
+SELECT 0, 'Unapproved' UNION ALL
+SELECT 1, 'Automatically Approved by Workflow' UNION ALL
+SELECT 2, 'Approved';
 
 DROP DOMAIN IF EXISTS transaction_type;
 CREATE DOMAIN transaction_type
@@ -2905,13 +2907,15 @@ CREATE TABLE transactions.transaction_master
 	value_date date NOT NULL,
 	transaction_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
 	login_id bigint NOT NULL REFERENCES audit.logins(login_id),
+	user_id integer NOT NULL REFERENCES office.users(user_id),
 	sys_user_id integer NULL REFERENCES office.users(user_id)
 		CONSTRAINT transaction_master_sys_user_id_chk CHECK(sys_user_id IS NULL OR office.is_sys_user(sys_user_id)=true),
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
 	cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id),
 	ref_no national character varying(24) NULL,
 	statement_reference text NULL,
-	verification verification NOT NULL DEFAULT(0/*Awaiting verification*/),
+	verified_by_user_id integer NULL REFERENCES office.users(user_id),
+	verification_status_id smallint NOT NULL REFERENCES core.verification_statuses(verification_status_id) DEFAULT(0/*Awaiting verification*/),
 	verification_reason national character varying(128) NOT NULL CONSTRAINT transaction_master_verification_reason_df DEFAULT(''),
 	CONSTRAINT transaction_master_login_id_sys_user_id_chk
 		CHECK
@@ -3053,6 +3057,31 @@ SELECT 'CLW', 'Closed Won' UNION ALL
 SELECT 'CLL', 'Closed Lost';
 
 
+DROP FUNCTION IF EXISTS transactions.get_invoice_amount(transaction_master_id_ bigint);
+CREATE FUNCTION transactions.get_invoice_amount(transaction_master_id_ bigint)
+RETURNS money
+AS
+$$
+DECLARE _shipping_charge money;
+DECLARE _stock_total money;
+BEGIN
+	SELECT SUM((quantity * price) + tax - discount) INTO _stock_total
+	FROM transactions.stock_details
+	WHERE transactions.stock_details.stock_master_id =
+	(
+		SELECT transactions.stock_master.stock_master_id
+		FROM transactions.stock_master WHERE transactions.stock_master.transaction_master_id= $1
+	);
+
+	SELECT shipping_charge INTO _shipping_charge
+	FROM transactions.stock_master
+	WHERE transactions.stock_master.transaction_master_id=$1;
+
+	RETURN COALESCE(_stock_total + _shipping_charge, 0::money);	
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE FUNCTION core.count_item_in_stock(item_id_ integer, unit_id_ integer, store_id_ integer)
 RETURNS integer
 AS
@@ -3063,3 +3092,5 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+

@@ -44,10 +44,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        $("#page").width($(document).width() - 100);
-        $("#content").width($("#page").width());
-        $("#menu").width($("#page").width());
-        $("#footer").width($("#page").width());
+
+
+        $(document).ready(function () {
+            $("#page").width($(document).width() - 100);
+        });
 
         jQuery(document).bind("keyup keydown", function (e) {
             if (e.ctrlKey && e.keyCode == 80) {

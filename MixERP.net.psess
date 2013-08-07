@@ -3,7 +3,8 @@
   <Options>
     <Solution>MixERP.Net.sln</Solution>
     <CollectionMethod>Sampling</CollectionMethod>
-    <AllocationMethod>None</AllocationMethod>
+    <AllocationMethod>Life</AllocationMethod>
+    <Reportname>Performance Explorer Reports\MixERP.net.FrontEnd.vsp</Reportname>
     <AddReport>true</AddReport>
     <ResourceBasedAnalysisSelected>true</ResourceBasedAnalysisSelected>
     <UniqueReport>Timestamp</UniqueReport>
@@ -36,7 +37,7 @@
   </PostinstrumentEvent>
   <Binaries>
     <ProjBinary>
-      <Path>MixERP.Net.FrontEnd\\bin\MixERP.Net.FrontEnd.dll</Path>
+      <Path>MixERP.net.FrontEnd\\bin\MixERP.Net.FrontEnd.dll</Path>
       <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
@@ -50,7 +51,7 @@
       <LaunchMethod>Browser</LaunchMethod>
       <LaunchUrl>http://localhost:0/</LaunchUrl>
       <SiteUrl>http://localhost:0/</SiteUrl>
-      <LocalPath>D:\Development\Big Projects\MixErp\MixERP.Net.FrontEnd\</LocalPath>
+      <LocalPath>D:\Development\Big Projects\MixERP\MixERP.net.FrontEnd\</LocalPath>
       <VRoot>/</VRoot>
       <NetAppHost>VWD</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -63,7 +64,7 @@
         <InstrEventExclude>false</InstrEventExclude>
       </PostinstrumentEvent>
       <ProjRef>{ACE1017D-71BC-4417-A906-72C4B9C55823}|MixERP.Net.FrontEnd\MixERP.Net.FrontEnd.csproj</ProjRef>
-      <ProjPath>MixERP.Net.FrontEnd\MixERP.Net.FrontEnd.csproj</ProjPath>
+      <ProjPath>MixERP.net.FrontEnd\MixERP.Net.FrontEnd.csproj</ProjPath>
       <ProjName>MixERP.Net.FrontEnd</ProjName>
     </ProjBinary>
   </Binaries>

@@ -28,6 +28,9 @@
     <a onclick="$('.report-parameter').toggle(500);" href="#">
         <img src="/Resource/Icons/filter-16.png" />
     </a>
+    <a onclick="window.close();" href="#">
+        <img src="/Resource/Icons/close-16.png" />
+    </a>
 </div>
 
 <div id="report">

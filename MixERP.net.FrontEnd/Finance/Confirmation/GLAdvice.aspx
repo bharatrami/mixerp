@@ -8,8 +8,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DirectSalesInovice.aspx.cs" Inherits="MixERP.Net.FrontEnd.Sales.Confirmation.DirectSalesInovice" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GLAdvice.aspx.cs" Inherits="MixERP.Net.FrontEnd.Finance.Confirmation.GLAdvice" %>
 
 <!DOCTYPE html>
 
@@ -19,13 +18,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        
-    <pes:Report ID="DirectSalesInvoiceReport" runat="server" 
-        ReportPath="~/Reports/Sources/Sales.View.Sales.Invoice.xml" AutoInitialize="true" />
+    <pes:Report ID="GLAdviceReport" runat="server" 
+        ReportPath="~/Reports/Sources/Transactions.GLEntry.xml" AutoInitialize="true" />
     </form>
 </body>
 </html>
-
 <script runat="server">
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -37,6 +34,6 @@
         parameters.Add(list);
         parameters.Add(list);
 
-        DirectSalesInvoiceReport.Parameters = parameters;
+        GLAdviceReport.Parameters = parameters;
     }
 </script>

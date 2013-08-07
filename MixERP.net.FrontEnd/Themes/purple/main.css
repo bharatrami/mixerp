@@ -184,13 +184,13 @@ h5
     cursor: pointer;
     height: 400px;
     overflow: auto;
-    border: 1px solid #E9E3EE;
+    border: 1px solid #EFD8FA;
 }
 
     .menu-panel:hover
-    {
-        background-color: #FCFBFD;
-    }
+{
+    background-color: #F8ECFD;
+}
 
 .menu-header
 {
@@ -198,8 +198,8 @@ h5
     padding: 12px;
     font-size: 16px;
     font-weight: bold;
-    color: #81659E;
-    background-color: #E9E3EE;
+    color: #7120A6;
+    background-color: #EFD8FA;
 }
 
 .menu-panel ul
@@ -221,10 +221,10 @@ h5
 }
 
     .menu-panel a:hover
-    {
-        color: #FFFFFF;
-        background-color: #81659E;
-    }
+{
+    color: #FFFFFF;
+    background-color: #7B1296;
+}
 
 
 #GridPanel
@@ -450,7 +450,7 @@ label
 
 .menu-title
 {
-    color: #9900CC;
+    color: #7710BC;
     font-size: 16px;
     padding: 8px 0px 2px 0px;
     padding: 12px;
@@ -468,7 +468,7 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 
     a.sub-menu-anchor:hover
 {
-    background-color: #7D58A7;
+    background-color: #7710BC;
     color: White;
 }
 
