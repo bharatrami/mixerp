@@ -15,7 +15,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <h1>
-        Purchases & Suppliers
+        Purchases
     </h1>
     <hr class="hr" />
     <asp:Literal ID="MenuLiteral" runat="server" />

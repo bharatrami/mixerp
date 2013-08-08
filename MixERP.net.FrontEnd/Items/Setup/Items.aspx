@@ -19,7 +19,7 @@
     <pes:Form ID="ItemForm" runat="server" Text="Item Maintenance" TableSchema="core" Table="items" KeyColumn="item_id"
         ViewSchema="core" View="items" Width="2000" PageSize="10"
         SelectedValues=""
-        DisplayFields="core.item_groups.item_group_id-->item_group_code + ' (' + item_group_name + ')', core.brands.brand_id-->brand_code + ' (' + brand_name + ')', core.suppliers.supplier_id-->supplier_code + ' (' + company_name + ')', core.units.unit_id-->unit_code + ' (' + unit_name + ')', core.taxes.tax_id-->tax_code + ' (' + tax_name + ')'" />
+        DisplayFields="core.item_groups.item_group_id-->item_group_code + ' (' + item_group_name + ')', core.brands.brand_id-->brand_code + ' (' + brand_name + ')', core.parties.party_id-->party_code + ' (' + company_name + ')', core.units.unit_id-->unit_code + ' (' + unit_name + ')', core.taxes.tax_id-->tax_code + ' (' + tax_name + ')'" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

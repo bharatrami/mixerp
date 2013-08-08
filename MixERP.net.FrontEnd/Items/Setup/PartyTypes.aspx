@@ -8,17 +8,24 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Suppliers.aspx.cs" Inherits="MixERP.Net.FrontEnd.Purchase.Setup.Suppliers" %>
+
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="PartyTypes.aspx.cs" Inherits="MixERP.Net.FrontEnd.Items.Setup.PartyTypes" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <pes:Form ID="SupplierForm" runat="server" Text="Supplier Maintenance" TableSchema="core" Table="suppliers" KeyColumn="supplier_id"
-        ViewSchema="core" View="suppliers" Width="5000" PageSize="10"
-        Exclude="supplier_code, supplier_name"
-        SelectedValues="core.accounts.account_id-->'20100 (Accounts Payable)'"
-        DisplayFields="core.accounts.account_id-->account_code + ' (' + account_name + ')'" />
+    <pes:Form ID="PartyTypeForm" runat="server"
+        PageSize="10"
+        TableSchema="core" Table="party_types"
+        KeyColumn="party_type_id"
+        ViewSchema="core" View="party_types"
+        Exclude=""
+        DisplayFields=""
+        SelectedValues=""
+        Text="<%$Resources: Titles, PartyTypes %>"
+        Width="1000" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

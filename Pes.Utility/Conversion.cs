@@ -161,8 +161,15 @@ namespace Pes.Utility
         {
             if(value != null)
             {
-                bool retVal = false;
+                if(value is string)
+                {
+                    if(value.ToString().ToLower().Equals("yes"))
+                    {
+                        return true;
+                    }
+                }
 
+                bool retVal = false;
                 if(bool.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;

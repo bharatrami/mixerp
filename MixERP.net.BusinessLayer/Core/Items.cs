@@ -22,14 +22,14 @@ namespace MixERP.Net.BusinessLayer.Core
             return MixERP.Net.DatabaseLayer.Core.Items.ItemExistsByCode(itemCode);
         }
 
-        public static decimal GetItemSellingPrice(string itemCode, string customerCode, int priceTypeId, int unitId)
+        public static decimal GetItemSellingPrice(string itemCode, string partyCode, int priceTypeId, int unitId)
         {
-            return MixERP.Net.DatabaseLayer.Core.Items.GetItemSellingPrice(itemCode, customerCode, priceTypeId, unitId);
+            return MixERP.Net.DatabaseLayer.Core.Items.GetItemSellingPrice(itemCode, partyCode, priceTypeId, unitId);
         }
 
-        public static decimal GetItemCostPrice(string itemCode, string supplierCode, int unitId)
+        public static decimal GetItemCostPrice(string itemCode, string partyCode, int unitId)
         {
-            return MixERP.Net.DatabaseLayer.Core.Items.GetItemCostPrice(itemCode, supplierCode, unitId);
+            return MixERP.Net.DatabaseLayer.Core.Items.GetItemCostPrice(itemCode, partyCode, unitId);
         }
 
         public static decimal GetTaxRate(string itemCode)

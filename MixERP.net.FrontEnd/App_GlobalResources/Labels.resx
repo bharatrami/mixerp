@@ -123,6 +123,9 @@
   <data name="NothingSelected" xml:space="preserve">
     <value>Nothing selected.</value>
   </data>
+  <data name="PartyDescription" xml:space="preserve">
+    <value>Parties collectively refer to suppliers, customers, agents, and dealers.</value>
+  </data>
   <data name="RequiredFieldDetails" xml:space="preserve">
     <value>The fields marked with asterisk (*) are required.</value>
   </data>

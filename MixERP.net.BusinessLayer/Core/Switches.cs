@@ -13,16 +13,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.DatabaseLayer.Transactions.Models
+namespace MixERP.Net.BusinessLayer.Core
 {
-    public class StockMasterModel
+    public static class Switches
     {
-        public long StockMasterId { get; set; }
-        public long TransactionMasterId { get; set; }
-        public string PartyCode { get; set; }
-        public int PriceTypeId { get; set; }
-        public bool IsCredit { get; set; }
-        public int ShipperId { get; set; }
-        public decimal ShippingCharge { get; set; }
+        public static bool AllowNonSupplierInPurchase()
+        {
+            return MixERP.Net.DatabaseLayer.Core.Switches.AllowSupplierInSales();
+        }
+
+        public static bool AllowSupplierInSales()
+        {
+            return MixERP.Net.DatabaseLayer.Core.Switches.AllowNonSupplierInPurchase();
+        }
+
     }
 }

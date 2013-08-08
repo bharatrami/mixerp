@@ -1,7 +1,4 @@
-﻿INSERT INTO core.suppliers(supplier_code, company_name, first_name, middle_name, last_name, account_id)
-SELECT 'PES-0001', 'PES Technologies', 'Binod', '', 'Upadhyaya', (SELECT account_id FROM core.accounts WHERE account_name='Accounts Payable');
- 
-INSERT INTO core.items(item_code, item_name, item_group_id, brand_id, preferred_supplier_id, unit_id, hot_item, tax_id, reorder_level, maintain_stock, cost_price, selling_price)
+﻿INSERT INTO core.items(item_code, item_name, item_group_id, brand_id, preferred_supplier_id, unit_id, hot_item, tax_id, reorder_level, maintain_stock, cost_price, selling_price)
 SELECT 'ITP', 'IBM Thinkpadd II Laptop', 1, 1, 1, 1, 'No', 1, 10, 'Yes', 80000, 125000;
 
 INSERT INTO core.items(item_code, item_name, item_group_id, brand_id, preferred_supplier_id, unit_id, hot_item, tax_id, reorder_level, maintain_stock, cost_price, selling_price)

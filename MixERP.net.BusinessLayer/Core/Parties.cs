@@ -10,24 +10,16 @@
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
-using Npgsql;
 
-namespace MixERP.Net.DatabaseLayer.Core
+namespace MixERP.Net.BusinessLayer.Core
 {
-    public static class Customers
+    public static class Parties
     {
-        public static bool IsCreditAllowed(string customerCode)
+        public static bool IsCreditAllowed(string partyCode)
         {
-            string sql = "SELECT 1 FROM core.customers WHERE customer_code=@CustomerCode and allow_credit='yes';";
-
-            using(NpgsqlCommand command = new NpgsqlCommand(sql))
-            {
-                command.Parameters.AddWithValue("@CustomerCode", customerCode);
-                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command).Rows.Count.Equals(1);
-            }
+            return MixERP.Net.DatabaseLayer.Core.Parties.IsCreditAllowed(partyCode);
         }
     }
 }

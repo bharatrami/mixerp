@@ -817,33 +817,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Customer Type Code.
-        /// </summary>
-        internal static string customer_type_code {
-            get {
-                return ResourceManager.GetString("customer_type_code", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Customer Type Id.
-        /// </summary>
-        internal static string customer_type_id {
-            get {
-                return ResourceManager.GetString("customer_type_id", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Customer Type Name.
-        /// </summary>
-        internal static string customer_type_name {
-            get {
-                return ResourceManager.GetString("customer_type_name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Data Type.
         /// </summary>
         internal static string data_type {
@@ -1186,6 +1159,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Supplier.
+        /// </summary>
+        internal static string is_supplier {
+            get {
+                return ResourceManager.GetString("is_supplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Code.
         /// </summary>
         internal static string item_code {
@@ -1375,6 +1357,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lead Time (In Days).
+        /// </summary>
+        internal static string lead_time_in_days {
+            get {
+                return ResourceManager.GetString("lead_time_in_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level.
         /// </summary>
         internal static string level {
@@ -1524,6 +1515,15 @@ namespace Resources {
         internal static string middle_name {
             get {
                 return ResourceManager.GetString("middle_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Credit.
+        /// </summary>
+        internal static string mimimum_credit_amount {
+            get {
+                return ResourceManager.GetString("mimimum_credit_amount", resourceCulture);
             }
         }
         
@@ -1740,6 +1740,69 @@ namespace Resources {
         internal static string parent_office_id {
             get {
                 return ResourceManager.GetString("parent_office_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Code.
+        /// </summary>
+        internal static string party_code {
+            get {
+                return ResourceManager.GetString("party_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Id.
+        /// </summary>
+        internal static string party_id {
+            get {
+                return ResourceManager.GetString("party_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Name.
+        /// </summary>
+        internal static string party_name {
+            get {
+                return ResourceManager.GetString("party_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Type.
+        /// </summary>
+        internal static string party_type {
+            get {
+                return ResourceManager.GetString("party_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Type Code.
+        /// </summary>
+        internal static string party_type_code {
+            get {
+                return ResourceManager.GetString("party_type_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Type Id.
+        /// </summary>
+        internal static string party_type_id {
+            get {
+                return ResourceManager.GetString("party_type_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Type Name.
+        /// </summary>
+        internal static string party_type_name {
+            get {
+                return ResourceManager.GetString("party_type_name", resourceCulture);
             }
         }
         
@@ -2559,6 +2622,33 @@ namespace Resources {
         internal static string verification {
             get {
                 return ResourceManager.GetString("verification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workcenter Code.
+        /// </summary>
+        internal static string work_center_code {
+            get {
+                return ResourceManager.GetString("work_center_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workcenter Id.
+        /// </summary>
+        internal static string work_center_id {
+            get {
+                return ResourceManager.GetString("work_center_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workcenter Name.
+        /// </summary>
+        internal static string work_center_name {
+            get {
+                return ResourceManager.GetString("work_center_name", resourceCulture);
             }
         }
         

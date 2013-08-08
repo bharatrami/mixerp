@@ -27,6 +27,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         public bool DenyEdit { get; set; }
         public bool DenyDelete { get; set; }
         public bool DenyAdd { get; set; }
+        public string Description { get; set; }
         public string DisplayFields { get; set; }
         public string Exclude { get; set; }
         public string KeyColumn { get; set; }
@@ -44,6 +45,12 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         protected void Page_Load(object sender, EventArgs e)
         {
             TitleLabel.Text = this.Text;
+            if(!string.IsNullOrWhiteSpace(this.Description))
+            {
+                DescriptionLabel.CssClass = "description";
+                DescriptionLabel.Text = this.Description;
+            }
+
             this.LoadGrid();
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
@@ -953,7 +960,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             validator.Display = ValidatorDisplay.Dynamic;
             validator.Type = ValidationDataType.Double;
 
-            //MixNP strict data type
+            //MixERP strict data type
             if(domain.Contains("strict"))
             {
                 validator.Operator = ValidationCompareOperator.GreaterThan;
@@ -980,7 +987,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             validator.Display = ValidatorDisplay.Dynamic;
             validator.Type = ValidationDataType.Integer;
 
-            //MixNP strict data type
+            //MixERP strict data type
             if(domain.Contains("strict"))
             {
                 validator.Operator = ValidationCompareOperator.GreaterThan;

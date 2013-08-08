@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parties collectively refer to suppliers, customers, agents, and dealers..
+        /// </summary>
+        internal static string PartyDescription {
+            get {
+                return ResourceManager.GetString("PartyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The fields marked with asterisk (*) are required..
         /// </summary>
         internal static string RequiredFieldDetails {

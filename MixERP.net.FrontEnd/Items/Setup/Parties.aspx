@@ -8,17 +8,24 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
     See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="CustomerTypes.aspx.cs" Inherits="MixERP.Net.FrontEnd.Sales.Setup.CustomerTypes" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="Parties.aspx.cs" Inherits="MixERP.Net.FrontEnd.Items.Setup.Parties" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <pes:Form ID="CustomerTypeForm" runat="server" Text="Customer Type Maintenance" TableSchema="core" Table="customer_types" KeyColumn="customer_type_id"
-        ViewSchema="core" View="customer_types" Width="1000" PageSize="10"
+    <pes:Form ID="PartyForm" runat="server"
+        PageSize="10"
+        TableSchema="core" Table="parties"
+        KeyColumn="party_id"
+        ViewSchema="core" View="party_view"
         Exclude=""
-        SelectedValues=""
-        DisplayFields="" />
+        DisplayFields="core.party_types.party_type_id-->party_type_code + ' (' + party_type_name + ')', core.frequencies.frequency_id-->frequency_code, core.accounts.account_id-->account_code + ' (' + account_name + ')' "
+        SelectedValues="core.accounts.account_id-->'10400 (Accounts Receivable)'"
+        Text="<%$Resources: Titles, PartyMaintenance %>"
+        Width="4000"
+        Description="<%$Resources:Labels, PartyDescription %>"
+         />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

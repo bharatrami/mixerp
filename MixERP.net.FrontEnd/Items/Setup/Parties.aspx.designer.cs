@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.FrontEnd.Sales.Setup {
+namespace MixERP.Net.FrontEnd.Items.Setup {
     
     
-    public partial class Customers {
+    public partial class Parties {
         
         /// <summary>
-        /// CustomerForm control.
+        /// PartyForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl CustomerForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl PartyForm;
     }
 }

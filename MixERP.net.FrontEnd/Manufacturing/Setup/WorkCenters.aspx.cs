@@ -15,9 +15,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.Net.FrontEnd.Sales.Setup
+namespace MixERP.Net.FrontEnd.Manufacturing.Setup
 {
-    public partial class Customers : MixERP.Net.BusinessLayer.BasePageClass
+    public partial class WorkCenters : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.FrontEnd.Sales.Setup {
+namespace MixERP.Net.FrontEnd.Manufacturing.Setup {
     
     
-    public partial class CustomerTypes {
+    public partial class WorkCenters {
         
         /// <summary>
-        /// CustomerTypeForm control.
+        /// WorkCenterForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl CustomerTypeForm;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl WorkCenterForm;
     }
 }

@@ -19,12 +19,12 @@ namespace MixERP.Net.BusinessLayer.Transactions
 {
     public static class DirectSales
     {
-        public static long Add(DateTime valueDate, int storeId, bool isCredit, string customerCode, int priceTypeId, GridView grid, int shipperId, decimal shippingCharge, int cashRepositoryId, int costCenterId, string statementReference)
+        public static long Add(DateTime valueDate, int storeId, bool isCredit, string partyCode, int priceTypeId, GridView grid, int shipperId, decimal shippingCharge, int cashRepositoryId, int costCenterId, string statementReference)
         {
             MixERP.Net.DatabaseLayer.Transactions.Models.StockMasterModel stockMaster = new DatabaseLayer.Transactions.Models.StockMasterModel();
             Collection<MixERP.Net.DatabaseLayer.Transactions.Models.StockMasterDetailModel> details = new Collection<DatabaseLayer.Transactions.Models.StockMasterDetailModel>();
 
-            stockMaster.CustomerCode = customerCode;
+            stockMaster.PartyCode = partyCode;
             stockMaster.IsCredit = isCredit;
             stockMaster.PriceTypeId = priceTypeId;
             stockMaster.ShipperId = shipperId;

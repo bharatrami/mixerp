@@ -41,11 +41,11 @@
             </tr>
             <tr>
                 <td>{Resources.Titles.CustomerCode}</td>
-                <td>{DataSource[0].customer_code}</td>
+                <td>{DataSource[0].party_code}</td>
             </tr>
             <tr>
                 <td>{Resources.Titles.CustomerName}</td>
-                <td>{DataSource[0].customer_name}</td>
+                <td>{DataSource[0].party_name}</td>
             </tr>
             <tr>
                 <td>{Resources.Titles.DeliverTo}</td>
@@ -102,13 +102,13 @@
                 CASE is_credit
                 WHEN false THEN NULL
                 ELSE
-                transactions.transaction_master.value_date + core.customers.maximum_credit_period
+                transactions.transaction_master.value_date + core.parties.maximum_credit_period
                 END AS due_date,
                 transactions.transaction_master.statement_reference,
-                core.customers.customer_code,
-                core.customers.customer_name,
-                core.customers.pan_number,
-                core.customers.shipping_address,
+                core.parties.party_code,
+                core.parties.party_name,
+                core.parties.pan_number,
+                core.parties.shipping_address,
                 core.shippers.shipper_name,
                 transactions.stock_master.shipping_charge,
                 transactions.get_invoice_amount(transactions.transaction_master.transaction_master_id) AS invoice_amount
@@ -119,8 +119,8 @@
                 ON transactions.transaction_master.user_id = office.users.user_id
                 INNER JOIN core.verification_statuses
                 ON transactions.transaction_master.verification_status_id = core.verification_statuses.verification_status_id
-                INNER JOIN core.customers
-                ON transactions.stock_master.customer_id=core.customers.customer_id
+                INNER JOIN core.parties
+                ON transactions.stock_master.party_id=core.parties.party_id
                 LEFT JOIN core.shippers
                 ON transactions.stock_master.shipper_id = core.shippers.shipper_id
                 WHERE transactions.transaction_master.transaction_master_id=@transaction_master_id;

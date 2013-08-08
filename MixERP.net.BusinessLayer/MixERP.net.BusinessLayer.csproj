@@ -65,9 +65,10 @@
     <Compile Include="BasePageClass.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Core\Customers.cs" />
+    <Compile Include="Core\Parties.cs" />
     <Compile Include="Core\Items.cs" />
     <Compile Include="Core\Menu.cs" />
+    <Compile Include="Core\Switches.cs" />
     <Compile Include="Core\Units.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\FormHelper.cs" />

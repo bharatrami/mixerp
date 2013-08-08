@@ -392,6 +392,20 @@
     <Compile Include="Items\Setup\Items.aspx.designer.cs">
       <DependentUpon>Items.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Items\Setup\Parties.aspx.cs">
+      <DependentUpon>Parties.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Items\Setup\Parties.aspx.designer.cs">
+      <DependentUpon>Parties.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Items\Setup\PartyTypes.aspx.cs">
+      <DependentUpon>PartyTypes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Items\Setup\PartyTypes.aspx.designer.cs">
+      <DependentUpon>PartyTypes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Items\Setup\SellingPrices.aspx.cs">
       <DependentUpon>SellingPrices.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -426,6 +440,13 @@
     </Compile>
     <Compile Include="Manufacturing\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Manufacturing\Setup\WorkCenters.aspx.cs">
+      <DependentUpon>WorkCenters.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Manufacturing\Setup\WorkCenters.aspx.designer.cs">
+      <DependentUpon>WorkCenters.aspx</DependentUpon>
     </Compile>
     <Compile Include="MenuMaster.Master.cs">
       <DependentUpon>MenuMaster.Master</DependentUpon>
@@ -511,13 +532,6 @@
     </Compile>
     <Compile Include="Purchase\Return.aspx.designer.cs">
       <DependentUpon>Return.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Purchase\Setup\Suppliers.aspx.cs">
-      <DependentUpon>Suppliers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Purchase\Setup\Suppliers.aspx.designer.cs">
-      <DependentUpon>Suppliers.aspx</DependentUpon>
     </Compile>
     <Compile Include="MixERPMaster.Master.cs">
       <DependentUpon>MixERPMaster.Master</DependentUpon>
@@ -658,20 +672,6 @@
     </Compile>
     <Compile Include="Sales\Setup\BonusSlabAssignment.aspx.designer.cs">
       <DependentUpon>BonusSlabAssignment.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Sales\Setup\Customers.aspx.cs">
-      <DependentUpon>Customers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Sales\Setup\Customers.aspx.designer.cs">
-      <DependentUpon>Customers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Sales\Setup\CustomerTypes.aspx.cs">
-      <DependentUpon>CustomerTypes.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Sales\Setup\CustomerTypes.aspx.designer.cs">
-      <DependentUpon>CustomerTypes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Services\ItemData.asmx.cs">
       <DependentUpon>ItemData.asmx</DependentUpon>
@@ -913,11 +913,14 @@
     <Content Include="Items\Setup\CUOM.aspx" />
     <Content Include="Items\Setup\ItemGroups.aspx" />
     <Content Include="Items\Setup\Items.aspx" />
+    <Content Include="Items\Setup\Parties.aspx" />
+    <Content Include="Items\Setup\PartyTypes.aspx" />
     <Content Include="Items\Setup\SellingPrices.aspx" />
     <Content Include="Items\Setup\Shipper.aspx" />
     <Content Include="Items\Setup\UOM.aspx" />
     <Content Include="Items\Transfer.aspx" />
     <Content Include="Manufacturing\Index.aspx" />
+    <Content Include="Manufacturing\Setup\WorkCenters.aspx" />
     <Content Include="POS\AssignCashier.aspx" />
     <Content Include="POS\Index.aspx" />
     <Content Include="POS\Setup\Stores.aspx" />
@@ -929,7 +932,6 @@
     <Content Include="Purchase\Order.aspx" />
     <Content Include="Purchase\Payment.aspx" />
     <Content Include="Purchase\Return.aspx" />
-    <Content Include="Purchase\Setup\Suppliers.aspx" />
     <Content Include="Reports\Assets\Header.aspx" />
     <Content Include="Reports\Assets\Header.html" />
     <Content Include="Reports\ReportMaster.aspx" />
@@ -971,8 +973,6 @@
     <Content Include="Sales\Setup\AgentBonusSlabs.aspx" />
     <Content Include="Sales\Setup\Agents.aspx" />
     <Content Include="Sales\Setup\BonusSlabAssignment.aspx" />
-    <Content Include="Sales\Setup\Customers.aspx" />
-    <Content Include="Sales\Setup\CustomerTypes.aspx" />
     <Content Include="Scripts\CodeMirror\.gitattributes" />
     <Content Include="Scripts\CodeMirror\.gitignore" />
     <Content Include="Scripts\CodeMirror\addon\comment\comment.js" />
@@ -1281,7 +1281,7 @@
     <Content Include="Reports\Print.html" />
     <Content Include="Resource\Icons\delete-16.png" />
     <Content Include="Themes\purple\main.css" />
-    <Content Include="Themes\purple\mixnp-logo-light.png" />
+    <Content Include="Themes\purple\mixerp-logo-light.png" />
     <Content Include="Themes\purple\padding.css" />
     <Content Include="Themes\purple\mixerp-logo.png" />
     <Content Include="UserControls\DateTextBox.ascx" />
@@ -1357,6 +1357,7 @@
     <Content Include="App_GlobalResources\Labels.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Labels.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1369,12 +1370,14 @@
     <Content Include="App_GlobalResources\Titles.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Warnings.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Warnings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

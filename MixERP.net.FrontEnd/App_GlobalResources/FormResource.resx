@@ -357,15 +357,6 @@
   <data name="customer_name" xml:space="preserve">
     <value>Customer Name</value>
   </data>
-  <data name="customer_type_code" xml:space="preserve">
-    <value>Customer Type Code</value>
-  </data>
-  <data name="customer_type_id" xml:space="preserve">
-    <value>Customer Type Id</value>
-  </data>
-  <data name="customer_type_name" xml:space="preserve">
-    <value>Customer Type Name</value>
-  </data>
   <data name="data_type" xml:space="preserve">
     <value>Data Type</value>
   </data>
@@ -956,5 +947,44 @@
   </data>
   <data name="repository" xml:space="preserve">
     <value>Repository</value>
+  </data>
+  <data name="party_code" xml:space="preserve">
+    <value>Party Code</value>
+  </data>
+  <data name="party_id" xml:space="preserve">
+    <value>Party Id</value>
+  </data>
+  <data name="party_name" xml:space="preserve">
+    <value>Party Name</value>
+  </data>
+  <data name="party_type_id" xml:space="preserve">
+    <value>Party Type Id</value>
+  </data>
+  <data name="party_type" xml:space="preserve">
+    <value>Party Type</value>
+  </data>
+  <data name="mimimum_credit_amount" xml:space="preserve">
+    <value>Minimum Credit</value>
+  </data>
+  <data name="party_type_code" xml:space="preserve">
+    <value>Party Type Code</value>
+  </data>
+  <data name="party_type_name" xml:space="preserve">
+    <value>Party Type Name</value>
+  </data>
+  <data name="is_supplier" xml:space="preserve">
+    <value>Is Supplier</value>
+  </data>
+  <data name="work_center_code" xml:space="preserve">
+    <value>Workcenter Code</value>
+  </data>
+  <data name="work_center_id" xml:space="preserve">
+    <value>Workcenter Id</value>
+  </data>
+  <data name="work_center_name" xml:space="preserve">
+    <value>Workcenter Name</value>
+  </data>
+  <data name="lead_time_in_days" xml:space="preserve">
+    <value>Lead Time (In Days)</value>
   </data>
 </root>

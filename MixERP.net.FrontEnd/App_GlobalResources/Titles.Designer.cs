@@ -412,6 +412,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Party Maintenance.
+        /// </summary>
+        internal static string PartyMaintenance {
+            get {
+                return ResourceManager.GetString("PartyMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party Types.
+        /// </summary>
+        internal static string PartyTypes {
+            get {
+                return ResourceManager.GetString("PartyTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prepared On.
         /// </summary>
         internal static string PreparedOn {
@@ -547,11 +565,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Customer.
+        ///   Looks up a localized string similar to Select Party.
         /// </summary>
-        internal static string SelectCustomer {
+        internal static string SelectParty {
             get {
-                return ResourceManager.GetString("SelectCustomer", resourceCulture);
+                return ResourceManager.GetString("SelectParty", resourceCulture);
             }
         }
         

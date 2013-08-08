@@ -35,7 +35,7 @@ namespace MixERP.Net.BusinessLayer.Helpers
                 return string.Empty;
             }
             
-            expression = expression.Replace("{LogoPath}", Pes.Utility.PageUtility.GetCurrentDomainName() + Pes.Utility.PageUtility.ResolveUrl("~/Themes/purple/mixnp-logo-light.png"));
+            expression = expression.Replace("{LogoPath}", Pes.Utility.PageUtility.GetCurrentDomainName() + Pes.Utility.PageUtility.ResolveUrl("~/Themes/purple/mixerp-logo-light.png"));
             expression = expression.Replace("{PrintDate}", System.DateTime.Now.ToString());
 
             foreach(var match in Regex.Matches(expression, "{.*?}"))

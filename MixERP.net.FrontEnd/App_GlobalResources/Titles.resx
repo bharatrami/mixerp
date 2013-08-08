@@ -216,8 +216,8 @@
   <data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>
-  <data name="SelectCustomer" xml:space="preserve">
-    <value>Select Customer</value>
+  <data name="SelectParty" xml:space="preserve">
+    <value>Select Party</value>
   </data>
   <data name="SelectStore" xml:space="preserve">
     <value>Select Store</value>
@@ -356,5 +356,11 @@
   </data>
   <data name="GLDetails" xml:space="preserve">
     <value>GL Details</value>
+  </data>
+  <data name="PartyMaintenance" xml:space="preserve">
+    <value>Party Maintenance</value>
+  </data>
+  <data name="PartyTypes" xml:space="preserve">
+    <value>Party Types</value>
   </data>
 </root>

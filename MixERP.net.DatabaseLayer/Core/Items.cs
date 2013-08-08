@@ -29,13 +29,13 @@ namespace MixERP.Net.DatabaseLayer.Core
             }
         }
 
-        public static decimal GetItemSellingPrice(string itemCode, string customerCode, int priceTypeId, int unitId)
+        public static decimal GetItemSellingPrice(string itemCode, string partyCode, int priceTypeId, int unitId)
         {
-            string sql = "SELECT core.get_item_selling_price(core.get_item_id_by_item_code(@ItemCode), core.get_customer_type_id_by_customer_code(@CustomerCode), @PriceTypeId, @UnitId);";
+            string sql = "SELECT core.get_item_selling_price(core.get_item_id_by_item_code(@ItemCode), core.get_party_type_id_by_party_code(@PartyCode), @PriceTypeId, @UnitId);";
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
-                command.Parameters.AddWithValue("@CustomerCode", customerCode);
+                command.Parameters.AddWithValue("@PartyCode", partyCode);
                 command.Parameters.AddWithValue("@PriceTypeId", priceTypeId);
                 command.Parameters.AddWithValue("@UnitId", unitId);
 
@@ -43,7 +43,7 @@ namespace MixERP.Net.DatabaseLayer.Core
             }
         }
 
-        public static decimal GetItemCostPrice(string itemCode, string supplierCode, int unitId)
+        public static decimal GetItemCostPrice(string itemCode, string partyCode, int unitId)
         {
             //Todo
             return 100m;

@@ -10,18 +10,24 @@
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Text;
+using Npgsql;
 
-namespace MixERP.Net.FrontEnd.Purchase.Setup
+namespace MixERP.Net.DatabaseLayer.Core
 {
-    public partial class Suppliers : MixERP.Net.BusinessLayer.BasePageClass
+    public static class Parties
     {
-        protected void Page_Load(object sender, EventArgs e)
+        public static bool IsCreditAllowed(string partyCode)
         {
+            string sql = "SELECT 1 FROM core.parties WHERE party_code=@PartyCode and allow_credit=true;";
 
+            using(NpgsqlCommand command = new NpgsqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("@PartyCode", partyCode);
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command).Rows.Count.Equals(1);
+            }
         }
     }
 }

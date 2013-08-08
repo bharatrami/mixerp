@@ -94,22 +94,13 @@ namespace MixERP.Net.FrontEnd.UserControls.Products {
         protected global::System.Web.UI.WebControls.Literal TransactionTypeLiteral;
         
         /// <summary>
-        /// CustomerLiteral control.
+        /// PartyLiteral control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal CustomerLiteral;
-        
-        /// <summary>
-        /// SupplierLiteral control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal SupplierLiteral;
+        protected global::System.Web.UI.WebControls.Literal PartyLiteral;
         
         /// <summary>
         /// PriceTypeLiteral control.
@@ -148,40 +139,22 @@ namespace MixERP.Net.FrontEnd.UserControls.Products {
         protected global::System.Web.UI.WebControls.RadioButtonList TransactionTypeRadioButtonList;
         
         /// <summary>
-        /// CustomerCodeTextBox control.
+        /// PartyCodeTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox CustomerCodeTextBox;
+        protected global::System.Web.UI.WebControls.TextBox PartyCodeTextBox;
         
         /// <summary>
-        /// CustomerDropDownList control.
+        /// PartyDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList CustomerDropDownList;
-        
-        /// <summary>
-        /// SupplierCodeTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SupplierCodeTextBox;
-        
-        /// <summary>
-        /// SupplierDropDownList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList SupplierDropDownList;
+        protected global::System.Web.UI.WebControls.DropDownList PartyDropDownList;
         
         /// <summary>
         /// PriceTypeDropDownList control.

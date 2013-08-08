@@ -24,6 +24,9 @@
     <asp:Label ID="TitleLabel" runat="server" />
 </h1>
 <hr class="hr" />
+
+<asp:Label ID="DescriptionLabel" runat="server" />    
+
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
     <Triggers>
         <asp:AsyncPostBackTrigger ControlID="SaveButton" />

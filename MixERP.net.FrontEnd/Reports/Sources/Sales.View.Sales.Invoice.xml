@@ -52,7 +52,7 @@
             </tr>
             <tr>
                 <td>{Resources.Titles.CustomerName}</td>
-                <td>{DataSource[0].customer_name}</td>
+                <td>{DataSource[0].party_name}</td>
             </tr>
         </table>
         <br />
@@ -114,7 +114,7 @@
                 office.offices.office_name,
                 office.cost_centers.cost_center_name,
                 transactions.transaction_master.statement_reference,
-                core.customers.customer_name,
+                core.parties.party_name,
                 CASE transactions.stock_master.is_credit
                 WHEN true THEN 'Credit' ELSE 'Cash'
                 END AS sales_type,
@@ -132,8 +132,8 @@
                 ON transactions.transaction_master.transaction_master_id = transactions.stock_master.transaction_master_id
                 INNER JOIN office.users
                 ON transactions.transaction_master.user_id = office.users.user_id
-                INNER JOIN core.customers
-                ON transactions.stock_master.customer_id = core.customers.customer_id
+                INNER JOIN core.parties
+                ON transactions.stock_master.party_id = core.parties.party_id
                 INNER JOIN core.verification_statuses
                 ON transactions.transaction_master.verification_status_id = core.verification_statuses.verification_status_id
                 INNER JOIN core.price_types

@@ -13,20 +13,22 @@ CREATE SCHEMA transactions;
 CREATE SCHEMA crm;
 
 
-DROP DOMAIN IF EXISTS verification;
-CREATE DOMAIN verification AS smallint
-CHECK
+CREATE TABLE core.verification_statuses
 (
-	VALUE IN
-	(
-		-3,	--Rejected
-		-2,	--Closed
-		-1,	--Withdrawn
-		 0,	--Awaiting Approval
-		 1,	--Automatically Approved by Workflow
-		 2	--Approved
-	)
+	verification_status_id		smallint NOT NULL PRIMARY KEY,
+	verification_status_name	national character varying(128) NOT NULL
 );
+
+CREATE UNIQUE INDEX verification_statuses_verification_status_name_uix
+ON core.verification_statuses(verification_status_name);
+
+INSERT INTO core.verification_statuses
+SELECT -3, 'Rejected' UNION ALL
+SELECT -2, 'Closed' UNION ALL
+SELECT -1, 'Withdrawn' UNION ALL
+SELECT 0, 'Unapproved' UNION ALL
+SELECT 1, 'Automatically Approved by Workflow' UNION ALL
+SELECT 2, 'Approved';
 
 DROP DOMAIN IF EXISTS transaction_type;
 CREATE DOMAIN transaction_type
@@ -80,15 +82,15 @@ DROP VIEW IF EXISTS db_stat;
 CREATE VIEW db_stat
 AS
 select
-    relname,
-    last_vacuum,
-    last_autovacuum,
-    last_analyze,
-    last_autoanalyze,
-    vacuum_count,
-    autovacuum_count,
-    analyze_count,
-    autoanalyze_count
+	relname,
+	last_vacuum,
+	last_autovacuum,
+	last_analyze,
+	last_autoanalyze,
+	vacuum_count,
+	autovacuum_count,
+	analyze_count,
+	autoanalyze_count
 from
    pg_stat_user_tables;
 
@@ -560,19 +562,25 @@ RETURNS TRIGGER
 AS
 $$
 BEGIN
-IF(
-	SELECT COUNT(*) FROM audit.failed_logins
-	WHERE audit.failed_logins.user_id=NEW.user_id
-	AND audit.failed_logins.failed_date_time 
-	BETWEEN NOW()-'5minutes'::interval 
-	AND NOW()
-	)::integer>8 THEN
+	IF(
+		SELECT COUNT(*) FROM audit.failed_logins
+		WHERE audit.failed_logins.user_id=NEW.user_id
+		AND audit.failed_logins.failed_date_time 
+		BETWEEN NOW()-'5minutes'::interval 
+		AND NOW()
+	)::integer>5 THEN
+
 	INSERT INTO policy.lock_outs(user_id)SELECT NEW.user_id;
 END IF;
 RETURN NEW;
 END
 $$
 LANGUAGE plpgsql;
+
+CREATE TRIGGER lockout_user
+AFTER INSERT
+ON audit.failed_logins
+FOR EACH ROW EXECUTE PROCEDURE policy.perform_lock_out();
 
 CREATE FUNCTION policy.is_locked_out_till(user_id integer_strict)
 RETURNS TIMESTAMP
@@ -719,13 +727,14 @@ SELECT 'Sales', '/Sales/Index.aspx', 'SA', 0 UNION ALL
 SELECT 'Purchase', '/Purchase/Index.aspx', 'PU', 0 UNION ALL
 SELECT 'Products & Items', '/Items/Index.aspx', 'ITM', 0 UNION ALL
 SELECT 'Finance', '/Finance/Index.aspx', 'FI', 0 UNION ALL
+SELECT 'Manufacturing', '/Manufacturing/Index.aspx', 'MF', 0 UNION ALL
 SELECT 'CRM', '/CRM/Index.aspx', 'CRM', 0 UNION ALL
 SELECT 'Setup Paramters', '/Setup/Index.aspx', 'SE', 0 UNION ALL
 SELECT 'POS', '/POS/Index.aspx', 'POS', 0;
 
 
 INSERT INTO core.menus(menu_text, url, menu_code, level, parent_menu_id)
-          SELECT 'Sales & Quotation', NULL, 'SAQ', 1, core.get_menu_id('SA')
+		  SELECT 'Sales & Quotation', NULL, 'SAQ', 1, core.get_menu_id('SA')
 UNION ALL SELECT 'Direct Sales', '/Sales/DirectSales.aspx', 'DRS', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Quotation', '/Sales/Quotation.aspx', 'SQ', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Order', '/Sales/Order.aspx', 'SO', 2, core.get_menu_id('SAQ')
@@ -734,8 +743,6 @@ UNION ALL SELECT 'Invoice for Sales Delivery', '/Sales/Invoice.aspx', 'ISD', 2, 
 UNION ALL SELECT 'Receipt from Customer', '/Sales/Receipt.aspx', 'RFC', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Return', '/Sales/Return.aspx', 'SR', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Setup & Maintenance', NULL, 'SSM', 1, core.get_menu_id('SA')
-UNION ALL SELECT 'Customer Accounts', '/Sales/Setup/Customers.aspx', 'CA', 2, core.get_menu_id('SSM')
-UNION ALL SELECT 'Customer Types', '/Sales/Setup/CustomerTypes.aspx', 'CT', 2, core.get_menu_id('SSM')
 UNION ALL SELECT 'Bonus Slab for Agents', '/Sales/Setup/AgentBonusSlabs.aspx', 'ABS', 2, core.get_menu_id('SSM')
 UNION ALL SELECT 'Bonus Slab Details', '/Sales/Setup/AgentBonusSlabDetails.aspx', 'BSD', 2, core.get_menu_id('SSM')
 UNION ALL SELECT 'Sales Agents', '/Sales/Setup/Agents.aspx', 'SSA', 2, core.get_menu_id('SSM')
@@ -756,13 +763,14 @@ UNION ALL SELECT 'GRN against PO', '/Purchase/GRN.aspx', 'GRN', 2, core.get_menu
 UNION ALL SELECT 'Purchase Invoice Against GRN', '/Purchase/Invoice.aspx', 'PAY', 2, core.get_menu_id('PUQ')
 UNION ALL SELECT 'Payment to Supplier', '/Purchase/Payment.aspx', 'PAS', 2, core.get_menu_id('PUQ')
 UNION ALL SELECT 'Purchase Return', '/Purchase/Return.aspx', 'PR', 2, core.get_menu_id('PUQ')
-UNION ALL SELECT 'Setup & Maintenance', NULL, 'PSM', 1, core.get_menu_id('PU')
-UNION ALL SELECT 'Supplier Accounts', '/Purchase/Setup/Suppliers.aspx', 'SUA', 2, core.get_menu_id('PSM')
+UNION ALL SELECT 'Purchase Reports', NULL, 'PUR', 1, core.get_menu_id('PU')
 UNION ALL SELECT 'Inventory Movements', NULL, 'IIM', 1, core.get_menu_id('ITM')
 UNION ALL SELECT 'Stock Transfer Journal', '/Items/Transfer.aspx', 'STJ', 2, core.get_menu_id('IIM')
 UNION ALL SELECT 'Stock Adjustments', '/Items/Adjustment.aspx', 'STA', 2, core.get_menu_id('IIM')
 UNION ALL SELECT 'Setup & Maintenance', NULL, 'ISM', 1, core.get_menu_id('ITM')
-UNION ALL SELECT 'Stock Items', '/Items/Setup/Items.aspx', 'SSI', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Party Types', '/Items/Setup/PartyTypes.aspx', 'PT', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Party Accounts', '/Items/Setup/Parties.aspx', 'CA', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Products & Items', '/Items/Setup/Items.aspx', 'SSI', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Cost Prices', '/Items/Setup/CostPrices.aspx', 'ICP', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Selling Prices', '/Items/Setup/SellingPrices.aspx', 'ISP', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Item Groups', '/Items/Setup/ItemGroups.aspx', 'SSG', 2, core.get_menu_id('ISM')
@@ -788,6 +796,9 @@ UNION ALL SELECT 'Ageing Slabs', '/Finance/Setup/AgeingSlabs.aspx', 'AGS', 2, co
 UNION ALL SELECT 'Tax Types', '/Finance/Setup/TaxTypes.aspx', 'TTY', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Tax Setup', '/Finance/Setup/TaxSetup.aspx', 'TS', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Cost Centers', '/Finance/Setup/CostCenters.aspx', 'CC', 2, core.get_menu_id('FSM')
+UNION ALL SELECT 'Manufacturing Workflow', NULL, 'MFW', 1, core.get_menu_id('MF')
+UNION ALL SELECT 'Manufacturing Setup', NULL, 'MFS', 1, core.get_menu_id('MF')
+UNION ALL SELECT 'Manufacturing Reports', NULL, 'MFR', 1, core.get_menu_id('MF')
 UNION ALL SELECT 'CRM Main', NULL, 'CRMM', 1, core.get_menu_id('CRM')
 UNION ALL SELECT 'Add a New Lead', '/CRM/Lead.aspx', 'CRML', 2, core.get_menu_id('CRMM')
 UNION ALL SELECT 'Add a New Opportunity', '/CRM/Opportunity.aspx', 'CRMO', 2, core.get_menu_id('CRMM')
@@ -811,6 +822,7 @@ UNION ALL SELECT 'Automatic Verification Policy', '/Setup/Policy/AutoVerificatio
 UNION ALL SELECT 'Menu Access Policy', '/Setup/Policy/MenuAccess.aspx', 'SMA', 2, core.get_menu_id('SPM')
 UNION ALL SELECT 'GL Access Policy', '/Setup/Policy/GLAccess.aspx', 'SAP', 2, core.get_menu_id('SPM')
 UNION ALL SELECT 'Store Policy', '/Setup/Policy/Store.aspx', 'SSP', 2, core.get_menu_id('SPM')
+UNION ALL SELECT 'Switches', '/Setup/Policy/Switches.aspx', 'SWI', 2, core.get_menu_id('SPM')
 UNION ALL SELECT 'Admin Tools', NULL, 'SAT', 1, core.get_menu_id('SE')
 UNION ALL SELECT 'SQL Query Tool', '/Setup/Admin/Query.aspx', 'SQL', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'Database Statistics', '/Setup/Admin/DatabaseStatistics.aspx', 'DBSTAT', 2, core.get_menu_id('SAT')
@@ -864,7 +876,7 @@ INNER JOIN
 ON
 	users.office_id = offices.office_id
 LEFT JOIN
-    office.offices AS logged_in_office
+	office.offices AS logged_in_office
 ON
 	logged_in_office.office_id = office.get_logged_in_office_id(office.users.user_id);
 
@@ -899,7 +911,7 @@ LEFT JOIN
 	information_schema.referential_constraints rc  
 		ON tc.constraint_catalog = rc.constraint_catalog  
 		AND tc.constraint_schema = rc.constraint_schema  
-		AND tc.constraint_name = rc.constraint_name    
+		AND tc.constraint_name = rc.constraint_name	
 LEFT JOIN
 	information_schema.constraint_column_usage ccu  
 		ON rc.unique_constraint_catalog = ccu.constraint_catalog  
@@ -911,38 +923,38 @@ WHERE
 CREATE VIEW core.mixerp_table_view
 AS
 SELECT information_schema.columns.table_schema, 
-       information_schema.columns.table_name, 
-       information_schema.columns.column_name, 
-       references_schema, 
-       references_table, 
-       references_field, 
-       ordinal_position,
+	   information_schema.columns.table_name, 
+	   information_schema.columns.column_name, 
+	   references_schema, 
+	   references_table, 
+	   references_field, 
+	   ordinal_position,
 	   is_nullable,
-       column_default, 
-       data_type, 
+	   column_default, 
+	   data_type, 
 	   domain_name,
-       character_maximum_length, 
-       character_octet_length, 
-       numeric_precision, 
-       numeric_precision_radix, 
-       numeric_scale, 
-       datetime_precision, 
-       udt_name 
+	   character_maximum_length, 
+	   character_octet_length, 
+	   numeric_precision, 
+	   numeric_precision_radix, 
+	   numeric_scale, 
+	   datetime_precision, 
+	   udt_name 
 FROM   information_schema.columns 
-       LEFT JOIN core.relationship_view 
-              ON information_schema.columns.table_schema = 
-                 core.relationship_view.table_schema 
-                 AND information_schema.columns.table_name = 
-                     core.relationship_view.table_name 
-                 AND information_schema.columns.column_name = 
-                     core.relationship_view.column_name 
+	   LEFT JOIN core.relationship_view 
+			  ON information_schema.columns.table_schema = 
+				 core.relationship_view.table_schema 
+				 AND information_schema.columns.table_name = 
+					 core.relationship_view.table_name 
+				 AND information_schema.columns.column_name = 
+					 core.relationship_view.column_name 
 WHERE  information_schema.columns.table_schema 
 NOT IN 
 	( 
 		'pg_catalog', 'information_schema'
 	);
-    
-    
+	
+	
 CREATE TABLE core.frequencies
 (
 	frequency_id SERIAL NOT NULL PRIMARY KEY,
@@ -1242,12 +1254,12 @@ $$
 DECLARE _unit_id integer;
 BEGIN
 	SELECT core.items.unit_id INTO _unit_id
-    FROM core.items
-    WHERE core.items.item_id=$1;
+	FROM core.items
+	WHERE core.items.item_id=$1;
 
 	RETURN QUERY
-    SELECT ret.unit_id, ret.unit_code, ret.unit_name
-    FROM core.get_associated_units(_unit_id) AS ret;
+	SELECT ret.unit_id, ret.unit_code, ret.unit_name
+	FROM core.get_associated_units(_unit_id) AS ret;
 
 END
 $$
@@ -1260,12 +1272,12 @@ $$
 DECLARE _unit_id integer;
 BEGIN
 	SELECT core.items.unit_id INTO _unit_id
-    FROM core.items
-    WHERE core.items.item_code=$1;
+	FROM core.items
+	WHERE core.items.item_code=$1;
 
 	RETURN QUERY
-    SELECT ret.unit_id, ret.unit_code, ret.unit_name
-    FROM core.get_associated_units(_unit_id) AS ret;
+	SELECT ret.unit_id, ret.unit_code, ret.unit_name
+	FROM core.get_associated_units(_unit_id) AS ret;
 
 END
 $$
@@ -1325,9 +1337,9 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.account_masters
 (
-    account_master_id SERIAL NOT NULL PRIMARY KEY,
-    account_master_code national character varying(3) NOT NULL,
-    account_master_name national character varying(40) NOT NULL	
+	account_master_id SERIAL NOT NULL PRIMARY KEY,
+	account_master_code national character varying(3) NOT NULL,
+	account_master_name national character varying(40) NOT NULL	
 );
 
 CREATE UNIQUE INDEX account_master_code_uix
@@ -1340,13 +1352,13 @@ ON core.account_masters(UPPER(account_master_name));
 
 CREATE TABLE core.accounts
 (
-    account_id    SERIAL NOT NULL PRIMARY KEY,
-    account_master_id  INTEGER NOT NULL REFERENCES core.account_masters(account_master_id),
-    account_code  national character varying(12) NOT NULL,
-    account_name  national character varying(100) NOT NULL,
-    description      national character varying(200) NULL,
-    sys_type BOOLEAN NOT NULL DEFAULT(FALSE),
-    parent_account_id INTEGER NULL REFERENCES core.accounts(account_id)
+	account_id	SERIAL NOT NULL PRIMARY KEY,
+	account_master_id  INTEGER NOT NULL REFERENCES core.account_masters(account_master_id),
+	account_code  national character varying(12) NOT NULL,
+	account_name  national character varying(100) NOT NULL,
+	description	  national character varying(200) NULL,
+	sys_type BOOLEAN NOT NULL DEFAULT(FALSE),
+	parent_account_id INTEGER NULL REFERENCES core.accounts(account_id)
 );
 
 
@@ -1355,6 +1367,57 @@ ON core.accounts(UPPER(account_code));
 
 CREATE UNIQUE INDEX accounts_Name_uix
 ON core.accounts(UPPER(account_name));
+
+
+CREATE FUNCTION core.disable_editing_sys_type()
+RETURNS TRIGGER
+AS
+$$
+BEGIN
+	IF TG_OP='UPDATE' OR TG_OP='DELETE' THEN
+		IF EXISTS
+		(
+			SELECT *
+			FROM core.accounts
+			WHERE sys_type=true
+			AND account_id=OLD.account_id
+		) THEN
+			RAISE EXCEPTION 'You are not allowed to change system accounts.';
+		END IF;
+		RETURN OLD;
+	END IF;
+	
+	IF TG_OP='INSERT' THEN
+		IF EXISTS
+		(
+			SELECT *
+			FROM core.accounts
+			WHERE sys_type=true
+			AND account_id=NEW.account_id
+		) THEN
+			RAISE EXCEPTION 'You are not allowed to add system accounts.';
+		END IF;
+		RETURN NEW;
+	END IF;
+
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER restrict_delete_sys_type_trigger
+BEFORE DELETE
+ON core.accounts
+FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
+
+CREATE TRIGGER restrict_update_sys_type_trigger
+BEFORE UPDATE
+ON core.accounts
+FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
+
+CREATE TRIGGER restrict_insert_sys_type_trigger
+BEFORE INSERT
+ON core.accounts
+FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
 
 DELETE FROM core.accounts;DELETE FROM core.account_masters;
 INSERT INTO core.account_masters(account_master_code, account_master_name) SELECT 'BSA', 'Balance Sheet A/C';
@@ -1836,27 +1899,28 @@ SELECT 'SLAB 4',91, 365 UNION ALL
 SELECT 'SLAB 5',366, 999999;
 
 
-CREATE TABLE core.customer_types
+CREATE TABLE core.party_types
 (
-	customer_type_id serial NOT NULL PRIMARY KEY,
-	customer_type_code national character varying(12) NOT NULL, 
-	customer_type_name national character varying(50) NOT NULL
+	party_type_id serial NOT NULL PRIMARY KEY,
+	party_type_code national character varying(12) NOT NULL, 
+	party_type_name national character varying(50) NOT NULL,
+	is_supplier boolean NOT NULL CONSTRAINT party_types_is_supplier_df DEFAULT(false)
 );
 
-INSERT INTO core.customer_types(customer_type_code, customer_type_name) SELECT 'A', 'Agent';
-INSERT INTO core.customer_types(customer_type_code, customer_type_name) SELECT 'C', 'Customer';
-INSERT INTO core.customer_types(customer_type_code, customer_type_name) SELECT 'D', 'Dealer';
+INSERT INTO core.party_types(party_type_code, party_type_name) SELECT 'A', 'Agent';
+INSERT INTO core.party_types(party_type_code, party_type_name) SELECT 'C', 'Customer';
+INSERT INTO core.party_types(party_type_code, party_type_name) SELECT 'D', 'Dealer';
+INSERT INTO core.party_types(party_type_code, party_type_name, is_supplier) SELECT 'S', 'Supplier', true;
 
-
-CREATE TABLE core.customers
+CREATE TABLE core.parties
 (
-	customer_id BIGSERIAL NOT NULL PRIMARY KEY,
-	customer_type_id smallint NOT NULL REFERENCES core.customer_types(customer_type_id),
-	customer_code national character varying(12) NULL,
+	party_id BIGSERIAL NOT NULL PRIMARY KEY,
+	party_type_id smallint NOT NULL REFERENCES core.party_types(party_type_id),
+	party_code national character varying(12) NULL,
 	first_name national character varying(50) NOT NULL,
 	middle_name national character varying(50) NULL,
 	last_name national character varying(50) NOT NULL,
-	customer_name text NULL,
+	party_name text NULL,
 	date_of_birth date NULL,
 	street national character varying(50) NULL,
 	city national character varying(50) NULL,
@@ -1880,6 +1944,7 @@ CREATE TABLE core.customers
 	sst_number national character varying(50) NULL,
 	cst_number national character varying(50) NULL,
 	allow_credit boolean NULL,
+	mimimum_credit_amount money NULL,
 	maximum_credit_period smallint NULL,
 	maximum_credit_amount money NULL,
 	charge_interest boolean NULL,
@@ -1889,8 +1954,8 @@ CREATE TABLE core.customers
 );
 
 
-CREATE UNIQUE INDEX customers_customer_code_uix
-ON core.customers(UPPER(customer_code));
+CREATE UNIQUE INDEX parties_party_code_uix
+ON core.parties(UPPER(party_code));
 
 /*******************************************************************
 	GET UNIQUE EIGHT-TO-TEN DIGIT CUSTOMER CODE
@@ -1902,7 +1967,7 @@ ON core.customers(UPPER(customer_code));
 		4. CUSTOMER NUMBER
 *******************************************************************/
 
-CREATE OR REPLACE FUNCTION core.get_customer_code
+CREATE OR REPLACE FUNCTION core.get_party_code
 (
 	text, --first_name
 	text, --Middle Name
@@ -1910,15 +1975,15 @@ CREATE OR REPLACE FUNCTION core.get_customer_code
 )
 RETURNS text AS
 $$
-	DECLARE __customer_code TEXT;
+	DECLARE __party_code TEXT;
 BEGIN
 	SELECT INTO 
-		__customer_code 
-			customer_code
+		__party_code 
+			party_code
 	FROM
-		core.customers
+		core.parties
 	WHERE
-		customer_code LIKE 
+		party_code LIKE 
 			UPPER(left($1,2) ||
 			CASE
 				WHEN $2 IS NULL or $2 = '' 
@@ -1927,10 +1992,10 @@ BEGIN
 				left($2,1) || left($3,2)
 			END 
 			|| '%')
-	ORDER BY customer_code desc
+	ORDER BY party_code desc
 	LIMIT 1;
 
-	__customer_code :=
+	__party_code :=
 					UPPER
 					(
 						left($1,2)||
@@ -1943,42 +2008,42 @@ BEGIN
 					) 
 					|| '-' ||
 					CASE
-						WHEN __customer_code IS NULL 
+						WHEN __party_code IS NULL 
 						THEN '0001'
 					ELSE 
-						to_char(CAST(right(__customer_code,4) AS integer)+1,'FM0000')
+						to_char(CAST(right(__party_code,4) AS integer)+1,'FM0000')
 					END;
-	RETURN __customer_code;
+	RETURN __party_code;
 END;
 $$
 LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION core.update_customer_code()
+CREATE FUNCTION core.update_party_code()
 RETURNS trigger
 AS
 $$
 BEGIN
-	UPDATE core.customers
-    SET 
-		customer_code=core.get_customer_code(NEW.first_name, NEW.middle_name, NEW.last_name),
-		customer_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
-    WHERE core.customers.customer_id=NEW.customer_id;
-    
-    RETURN NEW;
+	UPDATE core.parties
+	SET 
+		party_code=core.get_party_code(NEW.first_name, NEW.middle_name, NEW.last_name),
+		party_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
+	WHERE core.parties.party_id=NEW.party_id;
+	
+	RETURN NEW;
 END
 $$
 LANGUAGE plpgsql;
 
 
 
-CREATE TRIGGER update_customer_code
+CREATE TRIGGER update_party_code
 AFTER INSERT
-ON core.customers
-FOR EACH ROW EXECUTE PROCEDURE core.update_customer_code();
+ON core.parties
+FOR EACH ROW EXECUTE PROCEDURE core.update_party_code();
 
 
-CREATE FUNCTION core.get_customer_type_id_by_customer_code(text)
+CREATE FUNCTION core.get_party_type_id_by_party_code(text)
 RETURNS smallint
 AS
 $$
@@ -1986,18 +2051,18 @@ BEGIN
 	RETURN
 	(
 		SELECT
-			customer_type_id
+			party_type_id
 		FROM
-			core.customers
+			core.parties
 		WHERE 
-			core.customers.customer_code=$1
+			core.parties.party_code=$1
 	);
 END
 $$
 LANGUAGE plpgsql;
 
 
-CREATE FUNCTION core.get_customer_id_by_customer_code(text)
+CREATE FUNCTION core.get_party_id_by_party_code(text)
 RETURNS smallint
 AS
 $$
@@ -2005,16 +2070,78 @@ BEGIN
 	RETURN
 	(
 		SELECT
-			customer_id
+			party_id
 		FROM
-			core.customers
+			core.parties
 		WHERE 
-			core.customers.customer_code=$1
+			core.parties.party_code=$1
 	);
 END
 $$
 LANGUAGE plpgsql;
 
+CREATE VIEW core.party_view
+AS
+SELECT
+	core.parties.party_id,
+	core.party_types.party_type_code || ' (' || core.party_types.party_type_name || ')' AS party_type,
+	core.parties.party_code,
+	core.parties.first_name,
+	core.parties.middle_name,
+	core.parties.last_name,
+	core.parties.party_name,
+	core.parties.street,
+	core.parties.city,
+	core.parties.state,
+	core.parties.country,
+	core.parties.shipping_address,
+	core.parties.allow_credit,
+	core.parties.maximum_credit_period,
+	core.parties.maximum_credit_amount,
+	core.parties.charge_interest,
+	core.parties.interest_rate,
+	core.parties.pan_number,
+	core.parties.sst_number,
+	core.parties.cst_number,
+	core.parties.phone,
+	core.parties.fax,
+	core.parties.cell,
+	core.parties.email,
+	core.parties.url,	
+	core.parties.contact_person,
+	core.parties.contact_street,
+	core.parties.contact_city,
+	core.parties.contact_state,
+	core.parties.contact_country,
+	core.parties.contact_email,
+	core.parties.contact_phone,
+	core.parties.contact_cell
+FROM
+core.parties
+INNER JOIN
+core.party_types
+ON core.parties.party_type_id = core.party_types.party_type_id;
+
+CREATE FUNCTION core.is_supplier(int)
+RETURNS boolean
+AS
+$$
+BEGIN
+	IF EXISTS
+	(
+		SELECT 1 FROM core.parties 
+		INNER JOIN core.party_types 
+		ON core.parties.party_type_id=core.party_types.party_type_id
+		WHERE core.parties.party_id=$1
+		AND core.party_types.is_supplier=true
+	) THEN
+		RETURN true;
+	END IF;
+	
+	RETURN false;
+END
+$$
+LANGUAGE plpgsql;
 
 CREATE TABLE core.brands
 (
@@ -2031,114 +2158,6 @@ ON core.brands(UPPER(brand_name));
 
 INSERT INTO core.brands(brand_code, brand_name)
 SELECT 'DEF', 'Default';
-
-
-CREATE TABLE core.suppliers
-(
-	supplier_id BIGSERIAL NOT NULL PRIMARY KEY,
-	supplier_code national character varying(12) NULL,
-	company_name national character varying(128) NOT NULL,
-	first_name national character varying(50) NOT NULL,
-	middle_name national character varying(50) NULL,
-	last_name national character varying(50) NOT NULL,
-	supplier_name national character varying(150) NULL,
-	street national character varying(50) NULL,
-	city national character varying(50) NULL,
-	state national character varying(50) NULL,
-	country national character varying(50) NULL,
-	phone national character varying(50) NULL,
-	fax national character varying(50) NULL,
-	cell national character varying(50) NULL,
-	email national character varying(128) NULL,
-	url national character varying(50) NULL,
-	contact_person national character varying(50) NULL,
-	contact_street national character varying(50) NULL,
-	contact_city national character varying(50) NULL,
-	contact_state national character varying(50) NULL,
-	contact_country national character varying(50) NULL,
-	contact_email national character varying(128) NULL,
-	contact_phone national character varying(50) NULL,
-	contact_cell national character varying(50) NULL,
-	factory_address national character varying(250) NULL,
-	pan_number national character varying(50) NULL,
-	sst_number national character varying(50) NULL,
-	cst_number national character varying(50) NULL,
-	account_id integer NOT NULL REFERENCES core.accounts(account_id)
-);
-
-
-CREATE UNIQUE INDEX suppliers_supplier_code_uix
-ON core.suppliers(UPPER(supplier_code));
-
-
-
-/*******************************************************************
-	GET UNIQUE EIGHT-TO-TEN DIGIT SUPPLIER CODE
-	TO IDENTIFY A SUPPLIER.
-	BASIC FORMULA:
-		1. FIRST TWO LETTERS OF FIRST NAME
-		2. FIRST LETTER OF MIDDLE NAME (IF AVAILABLE)
-		3. FIRST TWO LETTERS OF LAST NAME
-		4. SUPPLIER NUMBER
-*******************************************************************/
-
-CREATE OR REPLACE FUNCTION core.get_supplier_code
-(
-	text --company name
-)
-RETURNS text AS
-$$
-	DECLARE __supplier_code TEXT;
-BEGIN
-	SELECT INTO 
-		__supplier_code 
-			supplier_code
-	FROM
-		core.suppliers
-	WHERE
-		supplier_code LIKE 
-			UPPER(left($1, 3) || '%')
-	ORDER BY supplier_code desc
-	LIMIT 1;
-
-	__supplier_code :=
-					UPPER
-					(
-						left($1,3)
-					) 
-					|| '-' ||
-					CASE
-						WHEN __supplier_code IS NULL 
-						THEN '0001'
-					ELSE 
-						to_char(CAST(right(__supplier_code, 4) AS integer)+1,'FM0000')
-					END;
-	RETURN __supplier_code;
-END;
-$$
-LANGUAGE 'plpgsql';
-
-CREATE FUNCTION core.update_supplier_code()
-RETURNS trigger
-AS
-$$
-BEGIN
-	UPDATE core.suppliers
-    SET 
-		supplier_code=core.get_supplier_code(NEW.company_name),
-		supplier_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
-    WHERE core.suppliers.supplier_id=NEW.supplier_id;
-    
-    RETURN NEW;
-END
-$$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_supplier_code
-AFTER INSERT
-ON core.suppliers
-FOR EACH ROW EXECUTE PROCEDURE core.update_supplier_code();
-
 
 
 CREATE TABLE core.shippers
@@ -2232,12 +2251,12 @@ AS
 $$
 BEGIN
 	UPDATE core.shippers
-    SET 
+	SET 
 		shipper_code=core.get_shipper_code(NEW.company_name),
 		shipper_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
-    WHERE core.shippers.shipper_id=NEW.shipper_id;
-    
-    RETURN NEW;
+	WHERE core.shippers.shipper_id=NEW.shipper_id;
+	
+	RETURN NEW;
 END
 $$
 LANGUAGE plpgsql;
@@ -2348,12 +2367,13 @@ SELECT 'DEF', 'Default', 1;
 
 CREATE TABLE core.items
 (
-	item_Id SERIAL NOT NULL PRIMARY KEY,
+	item_id SERIAL NOT NULL PRIMARY KEY,
 	item_code national character varying(12) NOT NULL,
 	item_name national character varying(150) NOT NULL,
 	item_group_id integer NOT NULL REFERENCES core.item_groups(item_group_id),
 	brand_id integer NOT NULL REFERENCES core.brands(brand_id),
-	preferred_supplier_id integer NULL REFERENCES core.suppliers(supplier_id),
+	preferred_supplier_id integer NULL REFERENCES core.parties(party_id) 
+	CONSTRAINT items_preferred_supplier_id_chk CHECK(core.is_supplier(preferred_supplier_id) = true) ,
 	unit_id integer NOT NULL REFERENCES core.units(unit_id),
 	hot_item boolean NOT NULL,
 	cost_price money_strict NOT NULL,
@@ -2426,7 +2446,7 @@ CREATE TABLE core.item_selling_prices
 	item_selling_price_id BIGSERIAL NOT NULL PRIMARY KEY,
 	item_id integer NOT NULL REFERENCES core.items(item_id),
 	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	customer_type_id smallint NULL REFERENCES core.customer_types(customer_type_id), 
+	party_type_id smallint NULL REFERENCES core.party_types(party_type_id), 
 	price_type_id smallint NULL REFERENCES core.price_types(price_type_id),
 	includes_tax boolean NOT NULL CONSTRAINT item_selling_prices_includes_tax_df DEFAULT('No'),
 	price money_strict NOT NULL,
@@ -2438,11 +2458,11 @@ CREATE VIEW core.item_selling_price_view
 AS
 SELECT
 	core.item_selling_prices.item_selling_price_id,
-    core.items.item_code,
-    core.items.item_name,
-    core.customer_types.customer_type_code,
-    core.customer_types.customer_type_name,
-    price
+	core.items.item_code,
+	core.items.item_name,
+	core.party_types.party_type_code,
+	core.party_types.party_type_name,
+	price
 FROM
 	core.item_selling_prices
 INNER JOIN 	core.items
@@ -2453,11 +2473,11 @@ LEFT JOIN
 ON
 	core.item_selling_prices.price_type_id = core.price_types.price_type_id
 LEFT JOIN
-    core.customer_types
-ON	core.item_selling_prices.customer_type_id = core.customer_types.customer_type_id;
+	core.party_types
+ON	core.item_selling_prices.party_type_id = core.party_types.party_type_id;
 
 
-CREATE FUNCTION core.get_item_selling_price(item_id_ integer, customer_type_id_ integer, price_type_id_ integer, unit_id_ integer)
+CREATE FUNCTION core.get_item_selling_price(item_id_ integer, party_type_id_ integer, price_type_id_ integer, unit_id_ integer)
 RETURNS money
 AS
 $$
@@ -2482,7 +2502,7 @@ BEGIN
 		_includes_tax		
 	FROM core.item_selling_prices
 	WHERE item_selling_prices.item_id=$1
-	AND item_selling_prices.customer_type_id=$2
+	AND item_selling_prices.party_type_id=$2
 	AND item_selling_prices.price_type_id =$3
 	AND item_selling_prices.unit_id = $4;
 
@@ -2499,7 +2519,7 @@ BEGIN
 			_includes_tax
 		FROM core.item_selling_prices
 		WHERE item_selling_prices.item_id=$1
-		AND item_selling_prices.customer_type_id=$2
+		AND item_selling_prices.party_type_id=$2
 		AND item_selling_prices.price_type_id =$3;
 	END IF;
 
@@ -2539,7 +2559,7 @@ CREATE TABLE core.item_cost_prices
 	item_id integer NOT NULL REFERENCES core.items(item_id),
 	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
 	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	supplier_id bigint NULL REFERENCES core.suppliers(supplier_id),
+	party_id bigint NULL REFERENCES core.parties(party_id),
 	includes_tax boolean NOT NULL CONSTRAINT item_cost_prices_includes_tax_df DEFAULT('No'),
 	price money_strict NOT NULL
 );
@@ -2549,21 +2569,21 @@ CREATE VIEW core.item_cost_price_view
 AS
 SELECT
 	core.item_cost_prices.item_cost_price_id,
-    core.items.item_code,
-    core.items.item_name,
-    core.suppliers.supplier_code,
-    core.suppliers.supplier_name,
-    core.item_cost_prices.price
+	core.items.item_code,
+	core.items.item_name,
+	core.parties.party_code,
+	core.parties.party_name,
+	core.item_cost_prices.price
 FROM 
 core.item_cost_prices
 INNER JOIN
 core.items
 ON core.item_cost_prices.item_id = core.items.item_id
 LEFT JOIN
-core.suppliers
-ON core.item_cost_prices.supplier_id = core.suppliers.supplier_id;
+core.parties
+ON core.item_cost_prices.party_id = core.parties.party_id;
 
-CREATE FUNCTION core.get_item_cost_price(item_id_ integer, unit_id_ integer, supplier_id_ bigint)
+CREATE FUNCTION core.get_item_cost_price(item_id_ integer, unit_id_ integer, party_id_ bigint)
 RETURNS money
 AS
 $$
@@ -2588,7 +2608,7 @@ BEGIN
 	FROM core.item_cost_prices
 	WHERE item_cost_prices.item_id = $1
 	AND item_cost_prices.unit_id = $2
-	AND item_cost_prices.supplier_id =$3;
+	AND item_cost_prices.party_id =$3;
 
 	IF(_unit_id IS NULL) THEN
 		--We do not have a cost price of this item for the unit supplied.
@@ -2603,7 +2623,7 @@ BEGIN
 			_includes_tax
 		FROM core.item_cost_prices
 		WHERE item_cost_prices.item_id=$1
-		AND item_cost_prices.supplier_id =$3;
+		AND item_cost_prices.party_id =$3;
 	END IF;
 
 	
@@ -2905,13 +2925,15 @@ CREATE TABLE transactions.transaction_master
 	value_date date NOT NULL,
 	transaction_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
 	login_id bigint NOT NULL REFERENCES audit.logins(login_id),
+	user_id integer NOT NULL REFERENCES office.users(user_id),
 	sys_user_id integer NULL REFERENCES office.users(user_id)
 		CONSTRAINT transaction_master_sys_user_id_chk CHECK(sys_user_id IS NULL OR office.is_sys_user(sys_user_id)=true),
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
 	cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id),
 	ref_no national character varying(24) NULL,
 	statement_reference text NULL,
-	verification verification NOT NULL DEFAULT(0/*Awaiting verification*/),
+	verified_by_user_id integer NULL REFERENCES office.users(user_id),
+	verification_status_id smallint NOT NULL REFERENCES core.verification_statuses(verification_status_id) DEFAULT(0/*Awaiting verification*/),
 	verification_reason national character varying(128) NOT NULL CONSTRAINT transaction_master_verification_reason_df DEFAULT(''),
 	CONSTRAINT transaction_master_login_id_sys_user_id_chk
 		CHECK
@@ -2948,8 +2970,7 @@ CREATE TABLE transactions.stock_master
 (
 	stock_master_id BIGSERIAL NOT NULL PRIMARY KEY,
 	transaction_master_id bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
-	customer_id bigint NULL REFERENCES core.customers(customer_id),
-	supplier_id bigint NULL REFERENCES core.suppliers(supplier_id),
+	party_id bigint NULL REFERENCES core.parties(party_id),
 	price_type_id integer NULL REFERENCES core.price_types(price_type_id),
 	is_credit boolean NOT NULL CONSTRAINT stock_master_is_credit_df DEFAULT(false),
 	shipper_id integer NULL REFERENCES core.shippers(shipper_id),
@@ -2988,7 +3009,7 @@ GROUP BY account_id;
 
 CREATE TABLE crm.lead_sources
 (
-	lead_source_id    SERIAL NOT NULL PRIMARY KEY,
+	lead_source_id	SERIAL NOT NULL PRIMARY KEY,
 	lead_source_code national character varying(12) NOT NULL,
 	lead_source_name national character varying(128) NOT NULL
 );
@@ -3010,7 +3031,7 @@ SELECT 'PR', 'Partner';
 
 CREATE TABLE crm.lead_statuses
 (
-	lead_status_id    SERIAL NOT NULL PRIMARY KEY,
+	lead_status_id	SERIAL NOT NULL PRIMARY KEY,
 	lead_status_code national character varying(12) NOT NULL,
 	lead_status_name national character varying(128) NOT NULL
 );
@@ -3052,14 +3073,122 @@ SELECT 'VER', 'Verbal' UNION ALL
 SELECT 'CLW', 'Closed Won' UNION ALL
 SELECT 'CLL', 'Closed Lost';
 
+CREATE FUNCTION transactions.get_invoice_amount(transaction_master_id_ bigint)
+RETURNS money
+AS
+$$
+DECLARE _shipping_charge money;
+DECLARE _stock_total money;
+BEGIN
+	SELECT SUM((quantity * price) + tax - discount) INTO _stock_total
+	FROM transactions.stock_details
+	WHERE transactions.stock_details.stock_master_id =
+	(
+		SELECT transactions.stock_master.stock_master_id
+		FROM transactions.stock_master WHERE transactions.stock_master.transaction_master_id= $1
+	);
+
+	SELECT shipping_charge INTO _shipping_charge
+	FROM transactions.stock_master
+	WHERE transactions.stock_master.transaction_master_id=$1;
+
+	RETURN COALESCE(_stock_total + _shipping_charge, 0::money);	
+END
+$$
+LANGUAGE plpgsql;
 
 CREATE FUNCTION core.count_item_in_stock(item_id_ integer, unit_id_ integer, store_id_ integer)
+RETURNS decimal
+AS
+$$
+DECLARE _base_unit_id integer;
+DECLARE _debit integer;
+DECLARE _credit integer;
+DECLARE _balance integer;
+DECLARE _factor decimal;
+BEGIN
+
+	--Get the base item unit
+	SELECT 
+		core.get_root_unit_id(core.items.unit_id) 
+	INTO _base_unit_id
+	FROM core.items
+	WHERE core.items.item_id=$1;
+
+	--Get the sum of debit stock quantity from approved transactions
+	SELECT 
+		COALESCE(SUM(base_quantity), 0)
+	INTO _debit
+	FROM transactions.stock_details
+	INNER JOIN transactions.stock_master
+	ON transactions.stock_master.stock_master_id = transactions.stock_details.stock_master_id
+	INNER JOIN transactions.transaction_master
+	ON transactions.stock_master.transaction_master_id = transactions.transaction_master.transaction_master_id
+	WHERE transactions.transaction_master.verification_status_id > 0
+	AND transactions.stock_details.item_id=$1
+	AND transactions.stock_details.store_id=$3
+	AND transactions.stock_details.tran_type='Dr';
+	
+	--Get the sum of credit stock quantity from approved transactions
+	SELECT 
+		COALESCE(SUM(base_quantity), 0)
+	INTO _credit
+	FROM transactions.stock_details
+	INNER JOIN transactions.stock_master
+	ON transactions.stock_master.stock_master_id = transactions.stock_details.stock_master_id
+	INNER JOIN transactions.transaction_master
+	ON transactions.stock_master.transaction_master_id = transactions.transaction_master.transaction_master_id
+	WHERE transactions.transaction_master.verification_status_id > 0
+	AND transactions.stock_details.item_id=$1
+	AND transactions.stock_details.store_id=$3
+	AND transactions.stock_details.tran_type='Cr';
+	
+	_balance:= _debit - _credit;
+
+	
+	_factor = core.convert_unit($2, _base_unit_id);
+
+	return _balance / _factor;	
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE TABLE core.switch_categories
+(
+	switch_category_id 	SERIAL NOT NULL PRIMARY KEY,
+	switch_category_name	national character varying(128) NOT NULL
+);
+
+CREATE UNIQUE INDEX switch_categories_switch_category_name_uix
+ON core.switch_categories(switch_category_name);
+
+INSERT INTO core.switch_categories(switch_category_name)
+SELECT 'General';
+
+CREATE FUNCTION core.get_switch_category_id_by_name(text)
 RETURNS integer
 AS
 $$
 BEGIN
-	--TODO
-	RETURN 5;
+	RETURN
+	(
+		SELECT switch_category_id
+		FROM core.switch_categories
+		WHERE core.switch_categories.switch_category_name=$1
+	);
 END
 $$
 LANGUAGE plpgsql;
+
+CREATE TABLE core.switches
+(
+	switch_id		SERIAL NOT NULL PRIMARY KEY,
+	switch_category_id	integer NOT NULL REFERENCES core.switch_categories(switch_category_id),
+	switch			text,
+	value			boolean
+);
+
+INSERT INTO core.switches(switch_category_id, switch, value)
+SELECT core.get_switch_category_id_by_name('General'), 'Allow Supplier in Sales', true UNION ALL
+SELECT core.get_switch_category_id_by_name('General'), 'Allow Non Supplier in Purchase', true;
+

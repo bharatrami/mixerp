@@ -752,3 +752,20 @@ input.date
     padding-right: 16px;
     cursor:pointer;
 }
+
+.description, .info
+{
+    display: block;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px;
+    background-color: #E8D9FF;
+    color: #333333;
+}
+
+.description:hover, .info:hover
+{
+    background-color: #E1CEFF;
+    color: #4A1689;
+}
+

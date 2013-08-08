@@ -11,15 +11,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-namespace MixERP.Net.BusinessLayer.Core
+namespace MixERP.Net.FrontEnd.Items.Setup
 {
-    public static class Customers
+    public partial class PartyTypes : System.Web.UI.Page
     {
-        public static bool IsCreditAllowed(string customerCode)
+        protected void Page_Load(object sender, EventArgs e)
         {
-            return MixERP.Net.DatabaseLayer.Core.Customers.IsCreditAllowed(customerCode);
+
         }
     }
 }

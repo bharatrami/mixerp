@@ -49,8 +49,7 @@
                             <asp:Literal ID="TransactionTypeLiteral" runat="server" />
                         </td>
                         <td>
-                            <asp:Literal ID="CustomerLiteral" runat="server" />
-                            <asp:Literal ID="SupplierLiteral" runat="server" />
+                            <asp:Literal ID="PartyLiteral" runat="server" />
                         </td>
                         <td>
                             <asp:Literal ID="PriceTypeLiteral" runat="server" />
@@ -73,12 +72,8 @@
                             </asp:RadioButtonList>
                         </td>
                         <td>
-                            <asp:TextBox ID="CustomerCodeTextBox" runat="server" Width="80" onblur="selectItem(this.id, 'CustomerDropDownList');" />
-                            <asp:DropDownList ID="CustomerDropDownList" runat="server" Width="150">
-                            </asp:DropDownList>
-
-                            <asp:TextBox ID="SupplierCodeTextBox" runat="server" Width="80" onblur="selectItem(this.id, 'SupplierDropDownList');" />
-                            <asp:DropDownList ID="SupplierDropDownList" runat="server" Width="150">
+                            <asp:TextBox ID="PartyCodeTextBox" runat="server" Width="80" onblur="selectItem(this.id, 'PartyDropDownList');" />
+                            <asp:DropDownList ID="PartyDropDownList" runat="server" Width="150">
                             </asp:DropDownList>
                         </td>
                         <td>
