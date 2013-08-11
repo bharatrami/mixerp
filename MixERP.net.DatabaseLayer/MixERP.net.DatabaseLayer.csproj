@@ -38,7 +38,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PES Technologies.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Mix Open Foundation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -58,10 +58,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Accounts.cs" />
     <Compile Include="Core\Parties.cs" />
     <Compile Include="Core\Items.cs" />
     <Compile Include="Core\Menu.cs" />
-    <Compile Include="Core\Switches.cs" />
     <Compile Include="Core\Units.cs" />
     <Compile Include="DBFactory\DBConnection.cs" />
     <Compile Include="DBFactory\DBOperations.cs" />
@@ -83,6 +83,7 @@
     <Compile Include="Transactions\Models\TransactionDetailModel.cs" />
     <Compile Include="Transactions\Models\TransactionTypeDomain.cs" />
     <Compile Include="Transactions\Models\VerificationDomain.cs" />
+    <Compile Include="Transactions\Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pes.Utility\Pes.Utility.csproj">
@@ -98,8 +99,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Mix Open Foundation.snk" />
     <None Include="MixERP.net.DatabaseLayer.licenseheader" />
-    <None Include="PES Technologies.snk" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\Dictionary.xml">

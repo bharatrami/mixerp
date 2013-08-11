@@ -1,4 +1,12 @@
-﻿INSERT INTO core.items(item_code, item_name, item_group_id, brand_id, preferred_supplier_id, unit_id, hot_item, tax_id, reorder_level, maintain_stock, cost_price, selling_price)
+﻿/********************************************************************************
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
+***********************************************************************************/
+
+INSERT INTO core.items(item_code, item_name, item_group_id, brand_id, preferred_supplier_id, unit_id, hot_item, tax_id, reorder_level, maintain_stock, cost_price, selling_price)
 SELECT 'ITP', 'IBM Thinkpadd II Laptop', 1, 1, 1, 1, 'No', 1, 10, 'Yes', 80000, 125000;
 
 INSERT INTO core.items(item_code, item_name, item_group_id, brand_id, preferred_supplier_id, unit_id, hot_item, tax_id, reorder_level, maintain_stock, cost_price, selling_price)
@@ -31,5 +39,5 @@ SELECT 2, 'VLT', 'Vault', 'Vault';
 
 
 INSERT INTO core.shippers(company_name, first_name, middle_name, last_name, account_id)
-SELECT 'Default', '', '', '', core.get_account_id('20110');
+SELECT 'Default', '', '', '', core.get_account_id_by_account_code('20110');
 

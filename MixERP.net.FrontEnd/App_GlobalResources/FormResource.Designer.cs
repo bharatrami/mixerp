@@ -583,6 +583,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confidential.
+        /// </summary>
+        internal static string confidential {
+            get {
+                return ResourceManager.GetString("confidential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact Cell.
         /// </summary>
         internal static string contact_cell {
@@ -966,6 +975,15 @@ namespace Resources {
         internal static string exclude_from_sales {
             get {
                 return ResourceManager.GetString("exclude_from_sales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Code.
+        /// </summary>
+        internal static string external_code {
+            get {
+                return ResourceManager.GetString("external_code", resourceCulture);
             }
         }
         

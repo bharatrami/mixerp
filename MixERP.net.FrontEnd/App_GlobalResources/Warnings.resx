@@ -120,6 +120,9 @@
   <data name="AccessDenied" xml:space="preserve">
     <value>Access is denied.</value>
   </data>
+  <data name="BothSidesHaveValue" xml:space="preserve">
+    <value>Both debit and credit side have values.</value>
+  </data>
   <data name="CannotWithdrawElsesTransaction" xml:space="preserve">
     <value>You may not withdraw else's transaction.</value>
   </data>

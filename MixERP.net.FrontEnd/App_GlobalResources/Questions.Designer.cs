@@ -68,5 +68,41 @@ namespace Resources {
                 return ResourceManager.GetString("AreYouSure", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will lock client database access during execution. Are you sure you want to execute this action right now?.
+        /// </summary>
+        internal static string ConfirmAnalyze {
+            get {
+                return ResourceManager.GetString("ConfirmAnalyze", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will lock client database access during execution. Are you sure you want to execute this action right now?.
+        /// </summary>
+        internal static string ConfirmVacuum {
+            get {
+                return ResourceManager.GetString("ConfirmVacuum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will lock client database access during execution. Are you sure you want to execute this action right now?.
+        /// </summary>
+        internal static string ConfirmVacuumFull {
+            get {
+                return ResourceManager.GetString("ConfirmVacuumFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update tax?.
+        /// </summary>
+        internal static string UpdateTax {
+            get {
+                return ResourceManager.GetString("UpdateTax", resourceCulture);
+            }
+        }
     }
 }

@@ -1,12 +1,9 @@
 ﻿/********************************************************************************
-    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
-	Released under the terms of the GNU General Public License, GPL, 
-	as published by the Free Software Foundation, either version 3 
-	of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -31,6 +28,17 @@ namespace MixERP.Net.BusinessLayer.Office
         public static decimal GetBalance(int cashRepositoryId)
         {
             return MixERP.Net.DatabaseLayer.Office.CashRepositories.GetBalance(cashRepositoryId);
+        }
+
+        public static string GetDisplayField()
+        {
+            string displayField = Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPParameters", "CashRepositoryDisplayField");
+            if(string.IsNullOrWhiteSpace(displayField))
+            {
+                displayField = "cash_repository_name";
+            }
+
+            return displayField;
         }
     }
 }

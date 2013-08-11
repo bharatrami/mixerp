@@ -38,7 +38,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PES Technologies.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Mix Open Foundation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -58,8 +58,8 @@
     <Folder Include="Helper\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Mix Open Foundation.snk" />
     <None Include="MixERP.net.Common.licenseheader" />
-    <None Include="PES Technologies.snk" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\Dictionary.xml">

@@ -1,9 +1,23 @@
-﻿DROP SCHEMA IF EXISTS audit CASCADE;
+﻿/********************************************************************************
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
+***********************************************************************************/
+
+/********************************************************************************
+	NOTE: ALL RANDOM INDEXES ARE REMOVED FROM THE SCRIPT.
+	TODO LIST : NEED TO CREATE INDEXES.
+***********************************************************************************/
+
+DROP SCHEMA IF EXISTS audit CASCADE;
 DROP SCHEMA IF EXISTS core CASCADE;
 DROP SCHEMA IF EXISTS office CASCADE;
 DROP SCHEMA IF EXISTS policy CASCADE;
 DROP SCHEMA IF EXISTS transactions CASCADE;
 DROP SCHEMA IF EXISTS crm CASCADE;
+DROP SCHEMA IF EXISTS mrp CASCADE;
 
 CREATE SCHEMA audit;
 CREATE SCHEMA core;
@@ -11,6 +25,7 @@ CREATE SCHEMA office;
 CREATE SCHEMA policy;
 CREATE SCHEMA transactions;
 CREATE SCHEMA crm;
+CREATE SCHEMA mrp;
 
 
 CREATE TABLE core.verification_statuses
@@ -20,7 +35,7 @@ CREATE TABLE core.verification_statuses
 );
 
 CREATE UNIQUE INDEX verification_statuses_verification_status_name_uix
-ON core.verification_statuses(verification_status_name);
+ON core.verification_statuses(UPPER(verification_status_name));
 
 INSERT INTO core.verification_statuses
 SELECT -3, 'Rejected' UNION ALL
@@ -442,19 +457,12 @@ $$
 LANGUAGE plpgsql;
 
 
+SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='SYST'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'sys','','System');
 
 /*******************************************************************
 	TODO: REMOVE THIS USER ON DEPLOYMENT
 *******************************************************************/
 SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='ADMN'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'binod','+qJ9AMyGgrX/AOF4GmwmBa4SrA3+InlErVkJYmAopVZh+WFJD7k2ZO9dxox6XiqT38dSoM72jLoXNzwvY7JAQA==','Binod Nepal');
-
-
-/*******************************************************************
-	TODO: CREATE A TRIGGER IN OFFICE.OFFICES TO AUTOMATICALLY
-	INSERT SYS USER AT THE PARENT LEVEL
-*******************************************************************/
-SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='SYST'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'sys','','System');
-
 
 CREATE FUNCTION office.validate_login
 (
@@ -797,8 +805,16 @@ UNION ALL SELECT 'Tax Types', '/Finance/Setup/TaxTypes.aspx', 'TTY', 2, core.get
 UNION ALL SELECT 'Tax Setup', '/Finance/Setup/TaxSetup.aspx', 'TS', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Cost Centers', '/Finance/Setup/CostCenters.aspx', 'CC', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Manufacturing Workflow', NULL, 'MFW', 1, core.get_menu_id('MF')
+UNION ALL SELECT 'Sales Forecast', '/Manufacturing/Workflow/SalesForecast.aspx', 'MFWSF', 2, core.get_menu_id('MFW')
+UNION ALL SELECT 'Master Production Schedule', '/Manufacturing/Workflow/MasterProductionSchedule.aspx', 'MFWMPS', 2, core.get_menu_id('MFW')
 UNION ALL SELECT 'Manufacturing Setup', NULL, 'MFS', 1, core.get_menu_id('MF')
+UNION ALL SELECT 'Work Centers', '/Manufacturing/Setup/WorkCenters.aspx', 'MFSWC', 2, core.get_menu_id('MFS')
+UNION ALL SELECT 'Bills of Material', '/Manufacturing/Setup/BillsOfMaterial.aspx', 'MFSBOM', 2, core.get_menu_id('MFS')
 UNION ALL SELECT 'Manufacturing Reports', NULL, 'MFR', 1, core.get_menu_id('MF')
+UNION ALL SELECT 'Gross & Net Requirements', '/Manufacturing/Reports/GrossAndNetRequirements.aspx', 'MFRGNR', 2, core.get_menu_id('MFR')
+UNION ALL SELECT 'Capacity vs Lead', '/Manufacturing/Reports/CapacityVersusLead.aspx', 'MFRCVSL', 2, core.get_menu_id('MFR')
+UNION ALL SELECT 'Shop Floor Planning', '/Manufacturing/Reports/ShopFloorPlanning.aspx', 'MFRSFP', 2, core.get_menu_id('MFR')
+UNION ALL SELECT 'Production Order Status', '/Manufacturing/Reports/ProductionOrderStatus.aspx', 'MFRPOS', 2, core.get_menu_id('MFR')
 UNION ALL SELECT 'CRM Main', NULL, 'CRMM', 1, core.get_menu_id('CRM')
 UNION ALL SELECT 'Add a New Lead', '/CRM/Lead.aspx', 'CRML', 2, core.get_menu_id('CRMM')
 UNION ALL SELECT 'Add a New Opportunity', '/CRM/Opportunity.aspx', 'CRMO', 2, core.get_menu_id('CRMM')
@@ -985,7 +1001,7 @@ CREATE TABLE core.fiscal_year
 );
 
 CREATE UNIQUE INDEX fiscal_year_fiscal_year_name_uix
-ON core.fiscal_year(fiscal_year_name);
+ON core.fiscal_year(UPPER(fiscal_year_name));
 
 CREATE UNIQUE INDEX fiscal_year_starts_from_uix
 ON core.fiscal_year(starts_from);
@@ -1355,6 +1371,8 @@ CREATE TABLE core.accounts
 	account_id	SERIAL NOT NULL PRIMARY KEY,
 	account_master_id  INTEGER NOT NULL REFERENCES core.account_masters(account_master_id),
 	account_code  national character varying(12) NOT NULL,
+	external_code national character varying(12) NULL CONSTRAINT accounts_external_code_df DEFAULT(''),
+	confidential boolean NOT NULL CONSTRAINT accounts_confidential_df DEFAULT(false),
 	account_name  national character varying(100) NOT NULL,
 	description	  national character varying(200) NULL,
 	sys_type BOOLEAN NOT NULL DEFAULT(FALSE),
@@ -1745,7 +1763,6 @@ CREATE TABLE core.cash_bank_accounts
 	relationship_officer_name national character varying(128) NULL
 );
 
---TODO: Index this table.
 
 CREATE VIEW core.cash_bank_account_view
 AS
@@ -1862,7 +1879,7 @@ CREATE TABLE core.agent_bonus_setups
 );
 
 CREATE UNIQUE INDEX agent_bonus_setups_uix
-ON core.agent_bonus_setups(agent_id,bonus_slab_id);
+ON core.agent_bonus_setups(agent_id, bonus_slab_id);
 
 
 CREATE VIEW core.agent_bonus_setup_view
@@ -2373,7 +2390,8 @@ CREATE TABLE core.items
 	item_group_id integer NOT NULL REFERENCES core.item_groups(item_group_id),
 	brand_id integer NOT NULL REFERENCES core.brands(brand_id),
 	preferred_supplier_id integer NULL REFERENCES core.parties(party_id) 
-	CONSTRAINT items_preferred_supplier_id_chk CHECK(core.is_supplier(preferred_supplier_id) = true) ,
+	CONSTRAINT items_preferred_supplier_id_chk CHECK(core.is_supplier(preferred_supplier_id) = true),
+	lead_time_in_days integer NOT NULL DEFAULT(0),
 	unit_id integer NOT NULL REFERENCES core.units(unit_id),
 	hot_item boolean NOT NULL,
 	cost_price money_strict NOT NULL,
@@ -2560,6 +2578,7 @@ CREATE TABLE core.item_cost_prices
 	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
 	unit_id integer NOT NULL REFERENCES core.units(unit_id),
 	party_id bigint NULL REFERENCES core.parties(party_id),
+	lead_time_in_days integer NOT NULL DEFAULT(0),
 	includes_tax boolean NOT NULL CONSTRAINT item_cost_prices_includes_tax_df DEFAULT('No'),
 	price money_strict NOT NULL
 );
@@ -3015,11 +3034,11 @@ CREATE TABLE crm.lead_sources
 );
 
 CREATE UNIQUE INDEX lead_sources_lead_source_code_uix
-ON crm.lead_sources(lead_source_code);
+ON crm.lead_sources(UPPER(lead_source_code));
 
 
 CREATE UNIQUE INDEX lead_sources_lead_source_name_uix
-ON crm.lead_sources(lead_source_name);
+ON crm.lead_sources(UPPER(lead_source_name));
 
 INSERT INTO crm.lead_sources(lead_source_code, lead_source_name)
 SELECT 'AG', 'Agent' UNION ALL
@@ -3037,11 +3056,11 @@ CREATE TABLE crm.lead_statuses
 );
 
 CREATE UNIQUE INDEX lead_statuses_lead_status_code_uix
-ON crm.lead_statuses(lead_status_code);
+ON crm.lead_statuses(UPPER(lead_status_code));
 
 
 CREATE UNIQUE INDEX lead_statuses_lead_status_name_uix
-ON crm.lead_statuses(lead_status_name);
+ON crm.lead_statuses(UPPER(lead_status_name));
 
 INSERT INTO crm.lead_statuses(lead_status_code, lead_status_name)
 SELECT 'CL', 'Cool' UNION ALL
@@ -3160,7 +3179,7 @@ CREATE TABLE core.switch_categories
 );
 
 CREATE UNIQUE INDEX switch_categories_switch_category_name_uix
-ON core.switch_categories(switch_category_name);
+ON core.switch_categories(UPPER(switch_category_name));
 
 INSERT INTO core.switch_categories(switch_category_name)
 SELECT 'General';
@@ -3191,4 +3210,33 @@ CREATE TABLE core.switches
 INSERT INTO core.switches(switch_category_id, switch, value)
 SELECT core.get_switch_category_id_by_name('General'), 'Allow Supplier in Sales', true UNION ALL
 SELECT core.get_switch_category_id_by_name('General'), 'Allow Non Supplier in Purchase', true;
+
+
+CREATE TABLE office.work_centers
+(
+	work_center_id		SERIAL NOT NULL PRIMARY KEY,
+	office_id		integer NOT NULL REFERENCES office.offices(office_id),
+	work_center_code	national character varying(12) NOT NULL,
+	work_center_name	national character varying(128) NOT NULL
+);
+
+CREATE UNIQUE INDEX work_centers_work_center_code_uix
+ON office.work_centers(UPPER(work_center_code));
+
+CREATE UNIQUE INDEX work_centers_work_center_name_uix
+ON office.work_centers(UPPER(work_center_name));
+
+CREATE VIEW office.work_center_view
+AS
+SELECT
+	office.work_centers.work_center_id,
+	office.offices.office_code || ' (' || office.offices.office_name || ')' AS office,
+	office.work_centers.work_center_code,
+	office.work_centers.work_center_name
+FROM office.work_centers
+INNER JOIN office.offices
+ON office.work_centers.office_id = office.offices.office_id;
+
+
+
 

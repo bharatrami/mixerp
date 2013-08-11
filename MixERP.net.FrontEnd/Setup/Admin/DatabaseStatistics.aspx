@@ -1,14 +1,10 @@
 ﻿<%-- 
-    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
-	Released under the terms of the GNU General Public License, GPL, 
-	as published by the Free Software Foundation, either version 3 
-	of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
---%>
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
 
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
+--%>
 <%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="DatabaseStatistics.aspx.cs" Inherits="MixERP.Net.FrontEnd.Setup.Admin.DatabaseStatistics" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
@@ -20,14 +16,14 @@
     <hr class="hr" />
     <asp:Literal ID="MessageLiteral" runat="server" />
 
-    <asp:Button ID="VacuumButton" runat="server" Text="Vacuum Database" OnClick="VacuumButton_Click" OnClientClick="return(confirm('This will lock client database access during execution. Are you sure you want to execute this action right now?'));" />
-    <asp:Button ID="FullVacuumButton" runat="server" Text="Vacuum Database (Full)" OnClick="FullVacuumButton_Click" OnClientClick="return(confirm('This will lock client database access during execution. Are you sure you want to execute this action right now?'));" />
-    <asp:Button ID="AnalyzeButton" runat="server" Text="Analyze Database" OnClick="AnalyzeButton_Click" OnClientClick="return(confirm('This will lock client database access during execution. Are you sure you want to execute this action right now?'));" />
+    <asp:Button ID="VacuumButton" runat="server" Text="Vacuum Database" CssClass="button" OnClick="VacuumButton_Click" />
+    <asp:Button ID="FullVacuumButton" runat="server" Text="Vacuum Database (Full)" CssClass="button" OnClick="FullVacuumButton_Click" />
+    <asp:Button ID="AnalyzeButton" runat="server" Text="Analyze Database" CssClass="button" OnClick="AnalyzeButton_Click" />
 
     <br />
     <br />
 
-    <pes:Form ID="DBStatisticsForm" runat="server" DenyAdd="true" DenyDelete="true" DenyEdit="true" KeyColumn="relname"
+    <mixerp:Form ID="DBStatisticsForm" runat="server" DenyAdd="true" DenyDelete="true" DenyEdit="true" KeyColumn="relname"
         PageSize="500" TableSchema="public" Table="db_stat" ViewSchema="public" View="db_stat" Text="Database Statistics" Width="1800" />
 
 </asp:Content>

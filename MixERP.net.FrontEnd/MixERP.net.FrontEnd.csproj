@@ -227,6 +227,13 @@
     <Compile Include="Finance\Confirmation\GLAdvice.aspx.designer.cs">
       <DependentUpon>GLAdvice.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Finance\Confirmation\JournalVoucher.aspx.cs">
+      <DependentUpon>JournalVoucher.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Finance\Confirmation\JournalVoucher.aspx.designer.cs">
+      <DependentUpon>JournalVoucher.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Finance\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -673,6 +680,10 @@
     <Compile Include="Sales\Setup\BonusSlabAssignment.aspx.designer.cs">
       <DependentUpon>BonusSlabAssignment.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Services\AccountData.asmx.cs">
+      <DependentUpon>AccountData.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Services\ItemData.asmx.cs">
       <DependentUpon>ItemData.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -824,6 +835,13 @@
     <Compile Include="SignIn.aspx.designer.cs">
       <DependentUpon>SignIn.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Core\AccountControl.ascx.cs">
+      <DependentUpon>AccountControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Core\AccountControl.ascx.designer.cs">
+      <DependentUpon>AccountControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DateTextBox.ascx.cs">
       <DependentUpon>DateTextBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -859,6 +877,13 @@
     <Compile Include="UserControls\Reporting\Header.ascx.designer.cs">
       <DependentUpon>Header.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\TransactionChecklistControl.ascx.cs">
+      <DependentUpon>TransactionChecklistControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\TransactionChecklistControl.ascx.designer.cs">
+      <DependentUpon>TransactionChecklistControl.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\Dictionary.xml">
@@ -888,6 +913,7 @@
     <Content Include="Dependencies\Npgsql.dll" />
     <Content Include="Finance\BankReconcilation.aspx" />
     <Content Include="Finance\Confirmation\GLAdvice.aspx" />
+    <Content Include="Finance\Confirmation\JournalVoucher.aspx" />
     <Content Include="Finance\Index.aspx" />
     <Content Include="Finance\JournalVoucher.aspx" />
     <Content Include="Finance\Setup\AgeingSlabs.aspx" />
@@ -1255,6 +1281,7 @@
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\mixerp.js" />
     <Content Include="Scripts\shortcut.js" />
+    <Content Include="Services\AccountData.asmx" />
     <Content Include="Services\ItemData.asmx" />
     <Content Include="Setup\Admin\Backup.aspx" />
     <Content Include="Setup\Admin\ChangePassword.aspx" />
@@ -1284,6 +1311,7 @@
     <Content Include="Themes\purple\mixerp-logo-light.png" />
     <Content Include="Themes\purple\padding.css" />
     <Content Include="Themes\purple\mixerp-logo.png" />
+    <Content Include="UserControls\Core\AccountControl.ascx" />
     <Content Include="UserControls\DateTextBox.ascx" />
     <Content Include="UserControls\Forms\FormControl.ascx" />
   </ItemGroup>
@@ -1314,11 +1342,14 @@
     <Content Include="UserControls\Products\ProductControl.ascx" />
     <Content Include="UserControls\ReportControl.ascx" />
     <Content Include="UserControls\Reporting\Header.ascx" />
+    <Content Include="UserControls\TransactionChecklistControl.ascx" />
     <Content Include="Web.config" />
     <Content Include="MixERP.Net.FrontEnd.licenseheader" />
-    <Content Include="PES Technologies.snk" />
+    <Content Include="Mix Open Foundation.snk" />
     <None Include="Properties\PublishProfiles\MixERP.pubxml" />
     <Content Include="Reports\Assets\ReadMe.txt" />
+    <Content Include="Resource\Configuration\Switches.config" />
+    <Content Include="Resource\Configuration\Parameters.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1394,7 +1425,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PES Technologies.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Mix Open Foundation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

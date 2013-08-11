@@ -1,12 +1,9 @@
 ﻿/********************************************************************************
-    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
-	Released under the terms of the GNU General Public License, GPL, 
-	as published by the Free Software Foundation, either version 3 
-	of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -32,6 +29,21 @@ namespace MixERP.Net.BusinessLayer.Helpers
         public static string UserName()
         {
             return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["UserName"]);
+        }
+
+        public static string Role()
+        {
+            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Role"]);
+        }
+
+        public static bool IsAdmin()
+        {
+            return Pes.Utility.Conversion.TryCastBoolean(HttpContext.Current.Session["IsAdmin"]);
+        }
+
+        public static bool IsSystem()
+        {
+            return Pes.Utility.Conversion.TryCastBoolean(HttpContext.Current.Session["IsSystem"]);
         }
 
         public static int OfficeId()

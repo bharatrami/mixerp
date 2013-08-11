@@ -1,4 +1,17 @@
-﻿DROP SCHEMA IF EXISTS audit CASCADE;
+﻿/********************************************************************************
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
+***********************************************************************************/
+
+/********************************************************************************
+	NOTE: ALL RANDOM INDEXES ARE REMOVED FROM THE SCRIPT.
+	TODO LIST : NEED TO CREATE INDEXES.
+***********************************************************************************/
+
+DROP SCHEMA IF EXISTS audit CASCADE;
 DROP SCHEMA IF EXISTS core CASCADE;
 DROP SCHEMA IF EXISTS office CASCADE;
 DROP SCHEMA IF EXISTS policy CASCADE;
@@ -79,6 +92,11 @@ CHECK
 (
 	VALUE > 0
 );
+
+DROP DOMAIN IF EXISTS image_path;
+CREATE DOMAIN image_path
+AS text;
+
 
 DROP VIEW IF EXISTS db_stat;
 CREATE VIEW db_stat
@@ -275,7 +293,9 @@ CREATE TABLE office.roles
 (
 	role_id SERIAL  NOT NULL PRIMARY KEY,
 	role_code national character varying(12) NOT NULL,
-	role_name national character varying(50) NOT NULL
+	role_name national character varying(50) NOT NULL,
+	is_admin boolean NOT NULL CONSTRAINT roles_is_admin_df DEFAULT(false),
+	is_system boolean NOT NULL CONSTRAINT roles_is_system_df DEFAULT(false)
 );
 
 
@@ -285,9 +305,13 @@ ON office.roles(UPPER(role_code));
 CREATE UNIQUE INDEX roles_role_name_uix
 ON office.roles(UPPER(role_name));
 
+INSERT INTO office.roles(role_code,role_name, is_system)
+SELECT 'SYST', 'System', true;
+
+INSERT INTO office.roles(role_code,role_name, is_admin)
+SELECT 'ADMN', 'Administrators', true;
+
 INSERT INTO office.roles(role_code,role_name)
-SELECT 'SYST', 'System' UNION ALL
-SELECT 'ADMN', 'Administrators' UNION ALL
 SELECT 'USER', 'Users' UNION ALL
 SELECT 'EXEC', 'Executive' UNION ALL
 SELECT 'MNGR', 'Manager' UNION ALL
@@ -444,19 +468,12 @@ $$
 LANGUAGE plpgsql;
 
 
+SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='SYST'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'sys','','System');
 
 /*******************************************************************
 	TODO: REMOVE THIS USER ON DEPLOYMENT
 *******************************************************************/
 SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='ADMN'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'binod','+qJ9AMyGgrX/AOF4GmwmBa4SrA3+InlErVkJYmAopVZh+WFJD7k2ZO9dxox6XiqT38dSoM72jLoXNzwvY7JAQA==','Binod Nepal');
-
-
-/*******************************************************************
-	TODO: CREATE A TRIGGER IN OFFICE.OFFICES TO AUTOMATICALLY
-	INSERT SYS USER AT THE PARENT LEVEL
-*******************************************************************/
-SELECT office.create_user((SELECT role_id FROM office.roles WHERE role_code='SYST'),(SELECT office_id FROM office.offices WHERE office_code='PES'),'sys','','System');
-
 
 CREATE FUNCTION office.validate_login
 (
@@ -855,6 +872,8 @@ AS
 SELECT
 	users.user_id, 
 	roles.role_code || ' (' || roles.role_name || ')' AS role, 
+	roles.is_admin,
+	roles.is_system,
 	users.user_name, 
 	users.full_name,
 	office.get_login_id(office.users.user_id) AS login_id,
@@ -930,6 +949,25 @@ LEFT JOIN
 WHERE
 	lower(tc.constraint_type) in ('foreign key');
 
+
+CREATE FUNCTION core.parse_default(text)
+RETURNS text
+AS
+$$
+DECLARE _sql text;
+DECLARE _val text;
+BEGIN
+	IF($1 LIKE '%::%' AND $1 NOT LIKE 'nextval%') THEN
+		_sql := 'SELECT ' || $1;
+		EXECUTE _sql INTO _val;
+		RETURN _val;
+	END IF;
+
+	RETURN $1;
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE VIEW core.mixerp_table_view
 AS
 SELECT information_schema.columns.table_schema, 
@@ -940,7 +978,7 @@ SELECT information_schema.columns.table_schema,
 	   references_field, 
 	   ordinal_position,
 	   is_nullable,
-	   column_default, 
+	   core.parse_default(column_default) AS column_default, 
 	   data_type, 
 	   domain_name,
 	   character_maximum_length, 
@@ -1363,12 +1401,15 @@ ON core.account_masters(UPPER(account_master_name));
 CREATE TABLE core.accounts
 (
 	account_id	SERIAL NOT NULL PRIMARY KEY,
-	account_master_id  INTEGER NOT NULL REFERENCES core.account_masters(account_master_id),
-	account_code  national character varying(12) NOT NULL,
-	account_name  national character varying(100) NOT NULL,
+	account_master_id integer NOT NULL REFERENCES core.account_masters(account_master_id),
+	account_code      national character varying(12) NOT NULL,
+	external_code     national character varying(12) NULL CONSTRAINT accounts_external_code_df DEFAULT(''),
+	confidential      boolean NOT NULL CONSTRAINT accounts_confidential_df DEFAULT(false),
+	account_name      national character varying(100) NOT NULL,
 	description	  national character varying(200) NULL,
-	sys_type BOOLEAN NOT NULL DEFAULT(FALSE),
-	parent_account_id INTEGER NULL REFERENCES core.accounts(account_id)
+	sys_type 	  boolean NOT NULL CONSTRAINT accounts_sys_type_df DEFAULT(false),
+	is_cash		  boolean NOT NULL CONSTRAINT accounts_is_cash_df DEFAULT(false),
+	parent_account_id integer NULL REFERENCES core.accounts(account_id)
 );
 
 
@@ -1378,58 +1419,36 @@ ON core.accounts(UPPER(account_code));
 CREATE UNIQUE INDEX accounts_Name_uix
 ON core.accounts(UPPER(account_name));
 
-
-CREATE FUNCTION core.disable_editing_sys_type()
-RETURNS TRIGGER
+CREATE FUNCTION core.has_child_accounts(integer)
+RETURNS boolean
 AS
 $$
 BEGIN
-	IF TG_OP='UPDATE' OR TG_OP='DELETE' THEN
-		IF EXISTS
-		(
-			SELECT *
-			FROM core.accounts
-			WHERE sys_type=true
-			AND account_id=OLD.account_id
-		) THEN
-			RAISE EXCEPTION 'You are not allowed to change system accounts.';
-		END IF;
-		RETURN OLD;
-	END IF;
-	
-	IF TG_OP='INSERT' THEN
-		IF EXISTS
-		(
-			SELECT *
-			FROM core.accounts
-			WHERE sys_type=true
-			AND account_id=NEW.account_id
-		) THEN
-			RAISE EXCEPTION 'You are not allowed to add system accounts.';
-		END IF;
-		RETURN NEW;
+	IF EXISTS(SELECT 0 FROM core.accounts WHERE parent_account_id=$1 LIMIT 1) THEN
+		RETURN true;
 	END IF;
 
+	RETURN false;
 END
 $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER restrict_delete_sys_type_trigger
-BEFORE DELETE
-ON core.accounts
-FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
+CREATE VIEW core.account_view
+AS
+SELECT 
+	account_id,
+	account_master_id,
+	account_code,
+	external_code,
+	confidential,
+	account_name,
+	description,
+	sys_type,
+	parent_account_id,
+	core.has_child_accounts(account_id) AS has_child
+FROM core.accounts;
 
-CREATE TRIGGER restrict_update_sys_type_trigger
-BEFORE UPDATE
-ON core.accounts
-FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
 
-CREATE TRIGGER restrict_insert_sys_type_trigger
-BEFORE INSERT
-ON core.accounts
-FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
-
-DELETE FROM core.accounts;DELETE FROM core.account_masters;
 INSERT INTO core.account_masters(account_master_code, account_master_name) SELECT 'BSA', 'Balance Sheet A/C';
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10000', 'Assets', TRUE, (SELECT account_id FROM core.accounts WHERE account_name='Balance Sheet A/C');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10001', 'Current Assets', TRUE, (SELECT account_id FROM core.accounts WHERE account_name='Assets');
@@ -1438,9 +1457,7 @@ INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type,
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10120', 'Payroll Checking Account', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash at Bank A/C');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10130', 'Savings Account', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash at Bank A/C');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10140', 'Special Account', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash at Bank A/C');
-INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10200', 'Cash in Hand A/C', TRUE, (SELECT account_id FROM core.accounts WHERE account_name='Current Assets');
-INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10210', 'Cash Float', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash in Hand A/C');
-INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10220', 'Petty Cash A/C', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Cash in Hand A/C');
+INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id, is_cash) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10200', 'Cash in Hand A/C', TRUE, (SELECT account_id FROM core.accounts WHERE account_name='Current Assets'), true;
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10300', 'Investments', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Current Assets');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10310', 'Short Term Investment', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Investments');
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10320', 'Other Investments', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Investments');
@@ -1640,6 +1657,50 @@ INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type,
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '44100', 'Gain/Loss on Sale of Assets', FALSE, (SELECT account_id FROM core.accounts WHERE account_name='Expenses');
 INSERT INTO core.account_masters(account_master_code, account_master_name) SELECT 'OBS', 'Off Balance Sheet A/C';
 
+CREATE FUNCTION core.disable_editing_sys_type()
+RETURNS TRIGGER
+AS
+$$
+BEGIN
+	IF TG_OP='UPDATE' OR TG_OP='DELETE' THEN
+		IF EXISTS
+		(
+			SELECT *
+			FROM core.accounts
+			WHERE (sys_type=true OR is_cash=true)
+			AND account_id=OLD.account_id
+		) THEN
+			RAISE EXCEPTION 'You are not allowed to change system accounts.';
+		END IF;
+		RETURN OLD;
+	END IF;
+	
+	IF TG_OP='INSERT' THEN
+		IF (NEW.sys_type=true OR NEW.is_cash=true) THEN
+			RAISE EXCEPTION 'You are not allowed to add system accounts.';
+		END IF;
+		RETURN NEW;
+	END IF;
+
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER restrict_delete_sys_type_trigger
+BEFORE DELETE
+ON core.accounts
+FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
+
+CREATE TRIGGER restrict_update_sys_type_trigger
+BEFORE UPDATE
+ON core.accounts
+FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
+
+CREATE TRIGGER restrict_insert_sys_type_trigger
+BEFORE INSERT
+ON core.accounts
+FOR EACH ROW EXECUTE PROCEDURE core.disable_editing_sys_type();
+
 CREATE VIEW core.accounts_view
 AS
 SELECT
@@ -1662,7 +1723,7 @@ FROM
 	ON core.accounts.parent_account_id = parent_accounts.account_id;
 
 
-CREATE FUNCTION core.get_account_id(text)
+CREATE FUNCTION core.get_account_id_by_account_code(text)
 RETURNS integer
 AS
 $$
@@ -1689,17 +1750,17 @@ CREATE UNIQUE INDEX account_parameters_parameter_name_uix
 ON core.account_parameters(UPPER(parameter_name));
 
 INSERT INTO core.account_parameters(parameter_name, account_id)
-SELECT 'Sales', core.get_account_id('30100') UNION ALL
-SELECT 'Sales.Cash', core.get_account_id('10200') UNION ALL
-SELECT 'Sales.Receivables', core.get_account_id('10400') UNION ALL
-SELECT 'Sales.Discount', core.get_account_id('30700') UNION ALL
-SELECT 'Sales.Tax', core.get_account_id('20700') UNION ALL
-SELECT 'Purchase', core.get_account_id('40100') UNION ALL
-SELECT 'Purchase.Payables', core.get_account_id('20100') UNION ALL
-SELECT 'Purchase.Discount', core.get_account_id('40270') UNION ALL
-SELECT 'Purchase.Tax', core.get_account_id('20700') UNION ALL
-SELECT 'Inventory', core.get_account_id('10700') UNION ALL
-SELECT 'COGS', core.get_account_id('40200');
+SELECT 'Sales', core.get_account_id_by_account_code('30100') UNION ALL
+SELECT 'Sales.Cash', core.get_account_id_by_account_code('10200') UNION ALL
+SELECT 'Sales.Receivables', core.get_account_id_by_account_code('10400') UNION ALL
+SELECT 'Sales.Discount', core.get_account_id_by_account_code('30700') UNION ALL
+SELECT 'Sales.Tax', core.get_account_id_by_account_code('20700') UNION ALL
+SELECT 'Purchase', core.get_account_id_by_account_code('40100') UNION ALL
+SELECT 'Purchase.Payables', core.get_account_id_by_account_code('20100') UNION ALL
+SELECT 'Purchase.Discount', core.get_account_id_by_account_code('40270') UNION ALL
+SELECT 'Purchase.Tax', core.get_account_id_by_account_code('20700') UNION ALL
+SELECT 'Inventory', core.get_account_id_by_account_code('10700') UNION ALL
+SELECT 'COGS', core.get_account_id_by_account_code('40200');
 
 CREATE FUNCTION core.get_account_id_by_parameter(text)
 RETURNS integer
@@ -1755,7 +1816,6 @@ CREATE TABLE core.cash_bank_accounts
 	relationship_officer_name national character varying(128) NULL
 );
 
---TODO: Index this table.
 
 CREATE VIEW core.cash_bank_account_view
 AS
@@ -2393,7 +2453,7 @@ CREATE TABLE core.items
 	selling_price_includes_tax boolean NOT NULL CONSTRAINT items_selling_price_includes_tax_df DEFAULT('No'),
 	tax_id integer NOT NULL REFERENCES core.taxes(tax_id),
 	reorder_level integer NOT NULL,
-	item_image bytea NULL,
+	item_image image_path NULL,
 	maintain_stock boolean NOT NULL DEFAULT(true)
 );
 
@@ -2725,6 +2785,37 @@ ON office.cash_repositories(UPPER(cash_repository_code));
 CREATE UNIQUE INDEX cash_repositories_cash_repository_name_uix
 ON office.cash_repositories(UPPER(cash_repository_name));
 
+CREATE FUNCTION office.get_cash_repository_id_by_cash_repository_code(text)
+RETURNS integer
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT cash_repository_id
+		FROM office.cash_repositories
+		WHERE cash_repository_code=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE FUNCTION office.get_cash_repository_id_by_cash_repository_name(text)
+RETURNS integer
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT cash_repository_id
+		FROM office.cash_repositories
+		WHERE cash_repository_name=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
+
+
 
 CREATE VIEW office.cash_repository_view
 AS
@@ -2741,7 +2832,7 @@ LEFT OUTER JOIN
 	office.cash_repositories AS parent_cash_repositories
 ON
 	office.cash_repositories.parent_cash_repository_id=parent_cash_repositories.cash_repository_id;
-
+ 
 CREATE TABLE office.counters
 (
 	counter_id SERIAL NOT NULL PRIMARY KEY,
@@ -3191,19 +3282,6 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-
-CREATE TABLE core.switches
-(
-	switch_id		SERIAL NOT NULL PRIMARY KEY,
-	switch_category_id	integer NOT NULL REFERENCES core.switch_categories(switch_category_id),
-	switch			text,
-	value			boolean
-);
-
-INSERT INTO core.switches(switch_category_id, switch, value)
-SELECT core.get_switch_category_id_by_name('General'), 'Allow Supplier in Sales', true UNION ALL
-SELECT core.get_switch_category_id_by_name('General'), 'Allow Non Supplier in Purchase', true;
-
 
 CREATE TABLE office.work_centers
 (

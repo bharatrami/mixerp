@@ -1,12 +1,9 @@
 ﻿<%-- 
-    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
-	Released under the terms of the GNU General Public License, GPL, 
-	as published by the Free Software Foundation, either version 3 
-	of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProductControl.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.Products.ProductControl" %>
 <asp:ScriptManager ID="ScriptManager1" runat="server" />
@@ -72,8 +69,11 @@
                             </asp:RadioButtonList>
                         </td>
                         <td>
-                            <asp:TextBox ID="PartyCodeTextBox" runat="server" Width="80" onblur="selectItem(this.id, 'PartyDropDownList');" />
-                            <asp:DropDownList ID="PartyDropDownList" runat="server" Width="150">
+                            <asp:TextBox ID="PartyCodeTextBox" runat="server" Width="80" 
+                                onblur="selectItem(this.id, 'PartyDropDownList');" />
+                            <asp:DropDownList ID="PartyDropDownList" runat="server" Width="150"
+                                   onchange="document.getElementById('PartyCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0) { return false };"                                
+                                >
                             </asp:DropDownList>
                         </td>
                         <td>
@@ -95,7 +95,7 @@
                 <asp:GridView ID="ProductGridView" runat="server" EnableTheming="False"
                     CssClass="grid2" ShowHeaderWhenEmpty="true"
                     AlternatingRowStyle-CssClass="grid2-row-alt"
-                    OnRowDataBound="OrderGrid_RowDataBound"
+                    OnRowDataBound="ProductGridView_RowDataBound"
                     OnRowCommand="ProductGridView_RowCommand"
                     AutoGenerateColumns="False">
                     <Columns>
@@ -129,13 +129,15 @@
                     <table id="FormTable" class="grid3" runat="server">
                         <tr>
                             <td>
-                                <asp:TextBox ID="ItemCodeTextBox" runat="server" onblur="selectItem(this.id, 'ItemDropDownList');" ToolTip="ALT + C" Width="58" />
+                                <asp:TextBox ID="ItemCodeTextBox" runat="server" 
+                                    onblur="selectItem(this.id, 'ItemDropDownList');" 
+                                    ToolTip="Alt + C" Width="58" />
                             </td>
                             <td>
                                 <asp:DropDownList ID="ItemDropDownList" runat="server"
                                     onchange="document.getElementById('ItemCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0) { return false };"
                                     onblur="getPrice();"
-                                    ToolTip="ALT + I" Width="300">
+                                    ToolTip="Ctrl + I" Width="300">
                                 </asp:DropDownList>
                                 <ajaxToolkit:CascadingDropDown ID="ItemDropDownListCascadingDropDown" runat="server"
                                     TargetControlID="ItemDropDownList" Category="Item" ServiceMethod="GetItems"
@@ -145,13 +147,15 @@
                                 </ajaxToolkit:CascadingDropDown>
                             </td>
                             <td>
-                                <asp:TextBox ID="QuantityTextBox" runat="server" type="number" onblur="calculateAmount();" CssClass="right"
+                                <asp:TextBox ID="QuantityTextBox" 
+                                    runat="server" type="number" 
+                                    onblur="calculateAmount();" CssClass="right"
                                     Text="1"
-                                    ToolTip="ALT + Q" Width="42" />
+                                    ToolTip="Ctrl + Q" Width="42" />
                             </td>
                             <td>
                                 <asp:DropDownList ID="UnitDropDownList" runat="server" AutoPostBack="true"
-                                    ToolTip="ALT + U" Width="68">
+                                    ToolTip="Ctrl + U" Width="68">
                                 </asp:DropDownList>
                                 <ajaxToolkit:CascadingDropDown ID="UnitDropDownListCascadingDropDown" runat="server"
                                     ParentControlID="ItemDropDownList" TargetControlID="UnitDropDownList"
@@ -163,7 +167,7 @@
                             </td>
                             <td>
                                 <asp:TextBox ID="PriceTextBox" runat="server" CssClass="right" onblur="updateTax();calculateAmount();"
-                                    ToolTip="ALT + P" Width="65">
+                                    ToolTip="Alt + P" Width="65">
                                 </asp:TextBox>
                             </td>
                             <td>
@@ -172,7 +176,7 @@
                             </td>
                             <td>
                                 <asp:TextBox ID="DiscountTextBox" runat="server" CssClass="right" onblur="updateTax();calculateAmount();"
-                                    ToolTip="CTRL + D" Width="50">
+                                    ToolTip="Ctrl + D" Width="50">
                                 </asp:TextBox>
                             </td>
                             <td>
@@ -184,7 +188,7 @@
                                 </asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox ID="TaxTextBox" runat="server" CssClass="right" onblur="calculateAmount();" ToolTip="ALT + T" Width="45">
+                                <asp:TextBox ID="TaxTextBox" runat="server" CssClass="right" onblur="calculateAmount();" ToolTip="Ctrl + T" Width="45">
                                 </asp:TextBox>
                             </td>
                             <td>
@@ -207,7 +211,7 @@
                             <asp:Literal ID="ShippingCompanyDropDownListLabelLiteral" runat="server" />
                         </asp:TableCell>
                         <asp:TableCell>
-                            <asp:DropDownList ID="ShippingCompanyDropDownList" runat="server">
+                            <asp:DropDownList ID="ShippingCompanyDropDownList" runat="server" Width="200">
                             </asp:DropDownList>
                         </asp:TableCell>
                     </asp:TableRow>
@@ -261,7 +265,8 @@
                             <asp:Literal ID="CashRepositoryDropDownListLabelLiteral" runat="server" />
                         </asp:TableCell>
                         <asp:TableCell>
-                            <asp:DropDownList ID="CashRepositoryDropDownList" runat="server" DataValueField="cash_repository_id" DataTextField="cash_repository_name" AutoPostBack="true" OnSelectedIndexChanged="CashRepositoryDropDownList_SelectIndexChanged">
+                            <asp:DropDownList ID="CashRepositoryDropDownList" runat="server" 
+                                AutoPostBack="true" OnSelectedIndexChanged="CashRepositoryDropDownList_SelectIndexChanged">
                             </asp:DropDownList>
                         </asp:TableCell>
                     </asp:TableRow>
@@ -309,49 +314,8 @@
     </asp:UpdatePanel>
 </div>
 <script type="text/javascript">
-
-    var confirmAction = function () {
-        return confirm('<%= Resources.Questions.AreYouSure %>');
-    }
-
-    var selectItem = function (tb, ddl) {
-        var listControl = $("#" + ddl);
-        var textBox = $("#" + tb);
-        var selectedValue = textBox.val();
-        var exists;
-
-        if (listControl.length) {
-            listControl.find('option').each(function () {
-                if (this.value == selectedValue) {
-                    exists = true;
-                }
-            });
-        }
-
-        if (exists) {
-            listControl.val(selectedValue).trigger('change');
-        }
-        else {
-            textBox.val('');
-        }
-
-        triggerChange(ddl);
-    }
-
-    var triggerChange = function (controlId) {
-        var element = document.getElementById(controlId);
-
-        if ('createEvent' in document) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
-            element.dispatchEvent(evt);
-        }
-        else {
-            if ("fireEvent" in element)
-                element.fireEvent("onchange");
-        }
-
-    }
+    areYouSureLocalized = '<%= Resources.Questions.AreYouSure %>';
+    updateTaxLocalized = '<%= Resources.Questions.UpdateTax %>';
 
     var getPrice = function () {
         var itemDropDownList = $('#ItemDropDownList');
@@ -363,9 +327,6 @@
     }
 
 
-    var parseFloat2 = function (arg) {
-        return parseFloat(arg || 0);
-    }
 
     var calculateAmount = function () {
         var quantityTextBox = $("#QuantityTextBox");
@@ -395,7 +356,7 @@
         var tax = (subTotal * parseFloat2(taxRateTextBox.val())) / 100;
 
         if (parseFloat2(tax).toFixed(2) != parseFloat2(taxTextBox.val())) {
-            var question = confirm("Update tax?");
+            var question = confirm(updateTaxLocalized);
             if (question) {
 
                 if (tax.toFixed) {
@@ -417,11 +378,11 @@
             $('#ItemCodeTextBox').focus();
         });
 
-        shortcut.add("ALT+I", function () {
+        shortcut.add("CTRL+I", function () {
             $('#ItemDropDownList').focus();
         });
 
-        shortcut.add("ALT+Q", function () {
+        shortcut.add("CTRL+Q", function () {
             $('#QuantityTextBox').focus();
         });
 
@@ -433,11 +394,11 @@
             $('#DiscountTextBox').focus();
         });
 
-        shortcut.add("ALT+T", function () {
+        shortcut.add("CTRL+T", function () {
             $('#TaxTextBox').focus();
         });
 
-        shortcut.add("ALT+U", function () {
+        shortcut.add("CTRL+U", function () {
             $('#UnitDropDownList').focus();
         });
 

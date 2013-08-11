@@ -987,4 +987,10 @@
   <data name="lead_time_in_days" xml:space="preserve">
     <value>Lead Time (In Days)</value>
   </data>
+  <data name="confidential" xml:space="preserve">
+    <value>Confidential</value>
+  </data>
+  <data name="external_code" xml:space="preserve">
+    <value>External Code</value>
+  </data>
 </root>

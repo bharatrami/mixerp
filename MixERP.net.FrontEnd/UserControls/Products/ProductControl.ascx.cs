@@ -1,12 +1,9 @@
 ﻿/********************************************************************************
-    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
-	Released under the terms of the GNU General Public License, GPL, 
-	as published by the Free Software Foundation, either version 3 
-	of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -115,7 +112,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 if(!Information.IsNumeric(ShippingChargeTextBox.Text))
                 {
-                    this.MakeDirty(ShippingChargeTextBox);
+                    MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(ShippingChargeTextBox);
                     return;
                 }
             }
@@ -141,7 +138,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             }
         }
 
-        protected void OrderGrid_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void ProductGridView_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if(e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -162,32 +159,55 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             this.InitializeControls();
 
-            ShippingCompanyDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "shippers");
-            ShippingCompanyDropDownList.DataValueField = "shipper_id";
-            ShippingCompanyDropDownList.DataTextField = "company_name";
-            ShippingCompanyDropDownList.DataBind();
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "shippers"))
+            {
+                table.Columns.Add("shipper", typeof(string), MixERP.Net.BusinessLayer.Core.Shippers.GetDisplayField());
 
+                ShippingCompanyDropDownList.DataSource = table;
+                ShippingCompanyDropDownList.DataValueField = "shipper_id";
+                ShippingCompanyDropDownList.DataTextField = "shipper";
+                ShippingCompanyDropDownList.DataBind();
+            }
 
-            CostCenterDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "cost_centers");
-            CostCenterDropDownList.DataValueField = "cost_center_id";
-            CostCenterDropDownList.DataTextField = "cost_center_name";
-            CostCenterDropDownList.DataBind();
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "cost_centers"))
+            {
+                table.Columns.Add("cost_center", typeof(string), MixERP.Net.BusinessLayer.Office.CostCenters.GetDisplayField());
 
-            StoreDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "stores");
-            StoreDropDownList.DataValueField = "store_id";
-            StoreDropDownList.DataTextField = "store_name";
-            StoreDropDownList.DataBind();
+                CostCenterDropDownList.DataSource = table;
+                CostCenterDropDownList.DataValueField = "cost_center_id";
+                CostCenterDropDownList.DataTextField = "cost_center";
+                CostCenterDropDownList.DataBind();
+            }
 
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "stores"))
+            {
+                table.Columns.Add("store", typeof(string), MixERP.Net.BusinessLayer.Office.Stores.GetDisplayField());
 
-            ItemDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items");
-            ItemDropDownList.DataBind();
-            ItemDropDownList.Items.Insert(0, new ListItem(Resources.Titles.Select, ""));
+                StoreDropDownList.DataSource = table;
+                StoreDropDownList.DataValueField = "store_id";
+                StoreDropDownList.DataTextField = "store";
+                StoreDropDownList.DataBind();
+            }
+
+            //using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items"))
+            //{
+            //    ItemDropDownList.DataSource = table;
+            //    ItemDropDownList.DataBind();
+            //    ItemDropDownList.Items.Insert(0, new ListItem(Resources.Titles.Select, ""));
+            //}
 
             if(this.ShowCashRepository)
             {
-                CashRepositoryDropDownList.DataSource = MixERP.Net.BusinessLayer.Office.CashRepositories.GetCashRepositories(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId());
-                CashRepositoryDropDownList.DataBind();
-                this.UpdateRepositoryBalance();
+                using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Office.CashRepositories.GetCashRepositories(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId()))
+                {
+                    table.Columns.Add("cash_repository", typeof(string), MixERP.Net.BusinessLayer.Office.CashRepositories.GetDisplayField());
+
+                    CashRepositoryDropDownList.DataSource = table;
+                    CashRepositoryDropDownList.DataValueField = "cash_repository_id";
+                    CashRepositoryDropDownList.DataTextField = "cash_repository"; 
+                    CashRepositoryDropDownList.DataBind();
+                    this.UpdateRepositoryBalance();
+                }
             }
             else
             {
@@ -241,25 +261,41 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 TransactionTypeLiteral.Text = "<label>Sales Type</label>";
 
-                PriceTypeDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "price_types");
-                PriceTypeDropDownList.DataValueField = "price_type_id";
-                PriceTypeDropDownList.DataTextField = "price_type_name";
-                PriceTypeDropDownList.DataBind();
+                using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "price_types"))
+                {
+                    table.Columns.Add("price_type", typeof(string), MixERP.Net.BusinessLayer.Core.PriceTypes.GetDisplayField());
+
+                    PriceTypeDropDownList.DataSource = table;
+                    PriceTypeDropDownList.DataValueField = "price_type_id";
+                    PriceTypeDropDownList.DataTextField = "price_type";
+                    PriceTypeDropDownList.DataBind();
+                }
 
                 if(MixERP.Net.BusinessLayer.Core.Switches.AllowSupplierInSales())
                 {
                     //This indicates that the admin has chosen to perform sales transaction 
                     //with suppliers as well.
-                    PartyDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "parties");
+                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "parties"))
+                    {
+                        PartyDropDownList.DataSource = table;
+                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
+                        PartyDropDownList.DataValueField = "party_code";
+                        PartyDropDownList.DataTextField = "party";
+                        PartyDropDownList.DataBind();
+                    }
                 }
                 else
                 {
-                    PartyDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "customer_view");
+                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "customer_view"))
+                    {
+                        PartyDropDownList.DataSource = table;
+                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
+                        PartyDropDownList.DataValueField = "party_code";
+                        PartyDropDownList.DataTextField = "party";
+                        PartyDropDownList.DataBind();
+                    }
                 }
 
-                PartyDropDownList.DataValueField = "party_code";
-                PartyDropDownList.DataTextField = "party_name";
-                PartyDropDownList.DataBind();
             }
             else
             {
@@ -273,16 +309,28 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                 {
                     //This indicates that the admin has chosen to perform purchase transaction 
                     //with non suppliers or customers.
-                    PartyDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "parties");
+                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "parties"))
+                    {
+                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
+
+                        PartyDropDownList.DataSource = table;
+                        PartyDropDownList.DataValueField = "party_code";
+                        PartyDropDownList.DataTextField = "party";
+                        PartyDropDownList.DataBind();
+                    }
                 }
                 else
                 {
-                    PartyDropDownList.DataSource = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "supplier_view");
-                }
+                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "supplier_view"))
+                    {
+                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
 
-                PartyDropDownList.DataValueField = "party_code";
-                PartyDropDownList.DataTextField = "party_name";
-                PartyDropDownList.DataBind();
+                        PartyDropDownList.DataSource = table;
+                        PartyDropDownList.DataValueField = "party_code";
+                        PartyDropDownList.DataTextField = "party";
+                        PartyDropDownList.DataBind();
+                    }
+                }
             }
 
             this.TitleLabel.Text = this.Text;
@@ -331,16 +379,6 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             return retVal;
         }
-        private void MakeDirty(WebControl c)
-        {
-            c.CssClass = "dirty";
-            c.Focus();
-        }
-
-        private void RemoveDirty(WebControl c)
-        {
-            c.CssClass = "";
-        }
 
         protected void CashRepositoryDropDownList_SelectIndexChanged(object sender, EventArgs e)
         {
@@ -376,81 +414,81 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             if(string.IsNullOrWhiteSpace(itemCode))
             {
-                this.MakeDirty(ItemCodeTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(ItemCodeTextBox);
                 return;
             }
             else
             {
-                this.RemoveDirty(ItemCodeTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.RemoveDirty(ItemCodeTextBox);
             }
 
             if(!MixERP.Net.BusinessLayer.Core.Items.ItemExistsByCode(itemCode))
             {
-                this.MakeDirty(ItemCodeTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(ItemCodeTextBox);
                 return;
             }
             else
             {
-                this.RemoveDirty(ItemCodeTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.RemoveDirty(ItemCodeTextBox);
             }
 
             if(quantity < 1)
             {
-                this.MakeDirty(QuantityTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(QuantityTextBox);
                 return;
             }
             else
             {
-                this.RemoveDirty(QuantityTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.RemoveDirty(QuantityTextBox);
             }
 
             if(!MixERP.Net.BusinessLayer.Core.Units.UnitExistsByName(unit))
             {
-                this.MakeDirty(UnitDropDownList);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(UnitDropDownList);
                 return;
             }
             else
             {
-                this.RemoveDirty(UnitDropDownList);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.RemoveDirty(UnitDropDownList);
             }
 
             if(price <= 0)
             {
-                this.MakeDirty(PriceTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(PriceTextBox);
                 return;
             }
             else
             {
-                this.RemoveDirty(PriceTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.RemoveDirty(PriceTextBox);
             }
 
             if(discount < 0)
             {
-                this.MakeDirty(DiscountTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(DiscountTextBox);
                 return;
             }
             else
             {
                 if(discount > (price * quantity))
                 {
-                    this.MakeDirty(DiscountTextBox);
+                    MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(DiscountTextBox);
                     return;
                 }
                 else
                 {
-                    this.RemoveDirty(DiscountTextBox);
+                    MixERP.Net.BusinessLayer.Helpers.FormHelper.RemoveDirty(DiscountTextBox);
                 }
             }
 
 
             if(tax < 0)
             {
-                this.MakeDirty(TaxTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(TaxTextBox);
                 return;
             }
             else
             {
-                this.RemoveDirty(TaxTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.RemoveDirty(TaxTextBox);
             }
 
             if(this.VerifyStock)
@@ -461,7 +499,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                     itemInStock = MixERP.Net.BusinessLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
                     if(quantity > itemInStock)
                     {
-                        this.MakeDirty(QuantityTextBox);
+                        MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(QuantityTextBox);
                         ErrorLabel.Text = String.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), Resources.Warnings.InsufficientStockWarning, itemInStock.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture()), UnitDropDownList.SelectedItem.Text, ItemDropDownList.SelectedItem.Text);
                         return;
                     }
@@ -598,7 +636,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                 if(!MixERP.Net.BusinessLayer.Office.Stores.IsSalesAllowed(storeId))
                 {
                     ErrorLabelTop.Text = Resources.Warnings.SalesNotAllowedHere;
-                    this.MakeDirty(StoreDropDownList);
+                    MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(StoreDropDownList);
                     return;
                 }
 

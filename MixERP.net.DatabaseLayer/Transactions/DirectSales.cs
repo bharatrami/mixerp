@@ -1,12 +1,9 @@
 ﻿/********************************************************************************
-    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
-	Released under the terms of the GNU General Public License, GPL, 
-	as published by the Free Software Foundation, either version 3 
-	of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -21,43 +18,6 @@ namespace MixERP.Net.DatabaseLayer.Transactions
     public static class DirectSales
     {
 
-        public static DataTable GetStockDetails(long transactionMasterId)
-        {
-            string sql = @"SELECT 
-	                        core.items.item_code,
-	                        core.items.item_name,
-	                        transactions.stock_details.quantity,
-	                        core.units.unit_name,
-	                        transactions.stock_details.price,
-	                        transactions.stock_details.price * transactions.stock_details.quantity AS amount,
-	                        transactions.stock_details.discount,
-	                        (transactions.stock_details.price * transactions.stock_details.quantity) - transactions.stock_details.discount AS sub_total,
-	                        transactions.stock_details.tax,
-	                        (transactions.stock_details.price * transactions.stock_details.quantity) - transactions.stock_details.discount + transactions.stock_details.tax AS total
-                        FROM
-	                        transactions.stock_details
-                        INNER JOIN
-	                        core.items
-	                        ON transactions.stock_details.item_id = core.items.item_id
-                        INNER JOIN
-	                        core.units
-	                        ON transactions.stock_details.unit_id = core.units.unit_id
-                        WHERE
-                        stock_master_id =
-                        (
-	                        select transactions.stock_master.stock_master_id
-	                        FROM transactions.stock_master
-	                        WHERE transactions.stock_master.transaction_master_id=@TransactionMasterId
-                        )
-                        ORDER BY stock_master_detail_id;";
-
-            using(NpgsqlCommand command = new NpgsqlCommand(sql))
-            {
-                command.Parameters.AddWithValue("@TransactionMasterId", transactionMasterId);
-                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
-            }
-        }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int storeId, int cashRepositoryId, int costCenterId, string statementReference, Models.StockMasterModel stockMaster, Collection<Models.StockMasterDetailModel> details)
         {
@@ -67,6 +27,11 @@ namespace MixERP.Net.DatabaseLayer.Transactions
             }
 
             if(details == null)
+            {
+                return 0;
+            }
+
+            if(details.Count.Equals(0))
             {
                 return 0;
             }

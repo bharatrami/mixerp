@@ -1,12 +1,9 @@
 ﻿<%-- 
-    Copyright (C) Binod Nepal, Planet Earth Solutions Pvt. Ltd., Kathmandu.
-	Released under the terms of the GNU General Public License, GPL, 
-	as published by the Free Software Foundation, either version 3 
-	of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the License here <http://www.gnu.org/licenses/gpl-3.0.html>.
+Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+If a copy of the MPL was not distributed  with this file, You can obtain one at 
+http://mozilla.org/MPL/2.0/.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FormControl.ascx.cs"
     Inherits="MixERP.Net.FrontEnd.UserControls.Forms.FormControl" %>
@@ -97,9 +94,9 @@
                         <td class="label-cell">
                         </td>
                         <td>
-                            <asp:Button ID="SaveButton" runat="server" Text="<%$Resources:Titles, Save %>" OnClientClick="adjustSpinnerSize();" OnClick="SaveButton_Click" />
-                            <asp:Button ID="CancelButton" runat="server" Text="<%$Resources:Titles, Cancel %>" CausesValidation="false" OnClientClick="$('#FormPanel').hide(500); $('#GridPanel').show(500);" OnClick="CancelButton_Click" />
-                            <input type="reset" value="<%$Resources:Titles, Reset %>" runat="server" />
+                            <asp:Button ID="SaveButton" runat="server" Text="<%$Resources:Titles, Save %>" OnClientClick="adjustSpinnerSize();" OnClick="SaveButton_Click" CssClass="button" />
+                            <asp:Button ID="CancelButton" runat="server" Text="<%$Resources:Titles, Cancel %>" CausesValidation="false" OnClientClick="$('#FormPanel').hide(500); $('#GridPanel').show(500);" OnClick="CancelButton_Click" CssClass="button" />
+                            <input type="reset" value="<%$Resources:Titles, Reset %>" runat="server" class="button" />
                         </td>
                     </tr>
                 </table>

@@ -363,4 +363,19 @@
   <data name="PartyTypes" xml:space="preserve">
     <value>Party Types</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="AccountCode" xml:space="preserve">
+    <value>Account Code</value>
+  </data>
+  <data name="Debit" xml:space="preserve">
+    <value>Debit</value>
+  </data>
+  <data name="CreditTotal" xml:space="preserve">
+    <value>Credit Total</value>
+  </data>
+  <data name="DebitTotal" xml:space="preserve">
+    <value>Debit Total</value>
+  </data>
 </root>

@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Both debit and credit side have values..
+        /// </summary>
+        internal static string BothSidesHaveValue {
+            get {
+                return ResourceManager.GetString("BothSidesHaveValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You may not withdraw else&apos;s transaction..
         /// </summary>
         internal static string CannotWithdrawElsesTransaction {

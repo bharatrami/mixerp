@@ -61,6 +61,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account.
+        /// </summary>
+        internal static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Code.
+        /// </summary>
+        internal static string AccountCode {
+            get {
+                return ResourceManager.GetString("AccountCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         internal static string Action {
@@ -187,6 +205,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credit Total.
+        /// </summary>
+        internal static string CreditTotal {
+            get {
+                return ResourceManager.GetString("CreditTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer Code.
         /// </summary>
         internal static string CustomerCode {
@@ -219,6 +246,24 @@ namespace Resources {
         internal static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debit.
+        /// </summary>
+        internal static string Debit {
+            get {
+                return ResourceManager.GetString("Debit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debit Total.
+        /// </summary>
+        internal static string DebitTotal {
+            get {
+                return ResourceManager.GetString("DebitTotal", resourceCulture);
             }
         }
         
