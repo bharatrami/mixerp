@@ -14,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Items.Setup
 {
-    public partial class PartyTypes : System.Web.UI.Page
+    public partial class PartyTypes : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

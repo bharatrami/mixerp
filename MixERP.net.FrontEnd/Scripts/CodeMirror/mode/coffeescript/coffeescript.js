@@ -312,7 +312,7 @@ CodeMirror.defineMode('coffeescript', function(conf) {
         startState: function(basecolumn) {
             return {
               tokenize: tokenBase,
-              scopes: [{offset:basecolumn || 0, type:'coffee'}],
+              scomixerp: [{offset:basecolumn || 0, type:'coffee'}],
               lastToken: null,
               lambda: false,
               dedent: 0

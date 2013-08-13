@@ -5550,7 +5550,7 @@ window.CodeMirror = (function() {
   // See http://unicode.org/reports/tr9/tr9-13.html for the algorithm
   // that this (partially) implements.
 
-  // One-char codes used for character types:
+  // One-char codes used for character tymixerp:
   // L (L):   Left-to-Right
   // R (R):   Right-to-Left
   // r (AL):  Right-to-Left Arabic

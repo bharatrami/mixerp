@@ -107,6 +107,65 @@ namespace MixERP.Net.DatabaseLayer.Helpers
             }
         }
 
+
+        public static DataTable GetTable(string tableSchema, string tableName, string columnNames, string columnValuesLike, int limit)
+        {
+            string[] columns = columnNames.Split(',');
+            string[] values = columnValuesLike.Split(',');
+
+            if(!columns.Count().Equals(values.Count()))
+            {
+                return null;
+            }
+
+            int counter = 0;
+            string sql = "SELECT * FROM @TableSchema.@TableName ";
+
+            foreach(string column in columns)
+            {
+                if(!string.IsNullOrWhiteSpace(column))
+                {
+                    if(counter.Equals(0))
+                    {
+                        sql += " WHERE ";
+                    }
+                    else
+                    {
+                        sql += " AND ";
+                    }
+
+                    sql += " lower(" + DBFactory.Sanitizer.SanitizeIdentifierName(column.Trim()) + "::text) LIKE @" + DBFactory.Sanitizer.SanitizeIdentifierName(column.Trim());
+                    counter++;
+                }
+            }
+
+            sql += " LIMIT @Limit;";
+
+            using(NpgsqlCommand command = new NpgsqlCommand())
+            {
+                sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
+                sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
+
+
+                command.CommandText = sql;
+
+                counter = 0;
+                foreach(string column in columns)
+                {
+                    if(!string.IsNullOrWhiteSpace(column))
+                    {
+                        command.Parameters.AddWithValue(DBFactory.Sanitizer.SanitizeIdentifierName(column.Trim()), "%" + values[counter].ToLower() + "%");
+                        counter++;
+                    }
+                }
+
+                command.Parameters.AddWithValue("@Limit", limit);
+
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
+            }
+        }
+
+
         public static int GetTotalRecords(string tableSchema, string tableName)
         {
             string sql = "SELECT COUNT(*) FROM @TableSchema.@TableName";

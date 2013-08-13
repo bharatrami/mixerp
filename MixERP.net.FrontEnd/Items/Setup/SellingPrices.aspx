@@ -11,7 +11,7 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <mixerp:Form ID="ItemSellingPriceForm" runat="server" Text="Item Selling Price Maintenance" TableSchema="core" Table="item_selling_prices" KeyColumn="item_selling_price_id"
+    <mixerp:Form ID="ItemSellingPriceForm" runat="server" Text="<%$Resources:Titles, ItemSellingPrices %>" TableSchema="core" Table="item_selling_prices" KeyColumn="item_selling_price_id"
         ViewSchema="core" View="item_selling_price_view" Width="1000" PageSize="10"
         SelectedValues=""
         DisplayFields="core.items.item_id-->item_code + ' (' + item_name + ')', core.party_types.party_type_id-->party_type_code + ' (' + party_type_name + ')', core.price_types.price_type_id-->price_type_code + ' (' + price_type_name + ')', core.units.unit_id-->unit_code + ' (' + unit_name + ')' " />

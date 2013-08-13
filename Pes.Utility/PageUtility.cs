@@ -20,7 +20,7 @@ namespace Pes.Utility
     {
         public static void RefreshPage(System.Web.UI.Page page)
         {
-            if (page != null)
+            if(page != null)
             {
                 page.Response.Redirect(page.Request.Url.AbsolutePath);
             }
@@ -30,7 +30,7 @@ namespace Pes.Utility
         {
             Page page = HttpContext.Current.Handler as Page;
             string ip = page.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-            if (!string.IsNullOrEmpty(ip))
+            if(!string.IsNullOrEmpty(ip))
             {
                 string[] ipRange = ip.Split(',');
                 ip = ipRange[0];
@@ -49,10 +49,10 @@ namespace Pes.Utility
 
         public static string ResolveUrl(string relativeUrl)
         {
-            if (HttpContext.Current != null)
+            if(HttpContext.Current != null)
             {
                 System.Web.UI.Page p = HttpContext.Current.Handler as System.Web.UI.Page;
-                if (p != null)
+                if(p != null)
                 {
                     return p.ResolveUrl(relativeUrl);
                 }
@@ -62,7 +62,7 @@ namespace Pes.Utility
 
         public static bool IsLocalUrl(Uri url, System.Web.UI.Page page)
         {
-            if (page == null)
+            if(page == null)
             {
                 return false;
             }
@@ -71,12 +71,12 @@ namespace Pes.Utility
             {
                 Uri requested = new Uri(page.Request.Url, url);
 
-                if (requested.Host == page.Request.Url.Host)
+                if(requested.Host == page.Request.Url.Host)
                 {
                     return true;
                 }
             }
-            catch (InvalidOperationException)
+            catch(InvalidOperationException)
             {
                 //
             }
@@ -86,13 +86,13 @@ namespace Pes.Utility
 
         public static int InvalidPasswordAttempts(System.Web.UI.Page page, int increment)
         {
-            if (page == null)
+            if(page == null)
             {
                 return 0;
             }
 
             int retVal = 0;
-            if (page.Session["InvalidPasswordAttempts"] == null)
+            if(page.Session["InvalidPasswordAttempts"] == null)
             {
                 retVal = retVal + increment;
                 page.Session.Add("InvalidPasswordAttempts", retVal);
@@ -108,9 +108,9 @@ namespace Pes.Utility
 
         public static void CheckInvalidAttempts(System.Web.UI.Page page)
         {
-            if (page != null)
+            if(page != null)
             {
-                if (Pes.Utility.PageUtility.InvalidPasswordAttempts(page, 0) >= Pes.Utility.Conversion.TryCastInteger(System.Configuration.ConfigurationManager.AppSettings["MaxInvalidPasswordAttempts"]))
+                if(Pes.Utility.PageUtility.InvalidPasswordAttempts(page, 0) >= Pes.Utility.Conversion.TryCastInteger(System.Configuration.ConfigurationManager.AppSettings["MaxInvalidPasswordAttempts"]))
                 {
                     page.Response.Redirect("~/access-denied");
                 }
@@ -121,12 +121,28 @@ namespace Pes.Utility
         {
             string url = System.Web.HttpContext.Current.Request.Url.Scheme + "://" + System.Web.HttpContext.Current.Request.Url.Host;
 
-            if (System.Web.HttpContext.Current.Request.Url.Port != 80)
+            if(System.Web.HttpContext.Current.Request.Url.Port != 80)
             {
                 url += ":" + System.Web.HttpContext.Current.Request.Url.Port.ToString(CultureInfo.InvariantCulture);
             }
 
             return url;
+        }
+
+        public static Control FindControlIterative(Control root, string id)
+        {
+            if(root == null)
+            {
+                return null;
+            }
+            
+            if(root.ID == id) return root;
+            foreach(Control c in root.Controls)
+            {
+                Control t = FindControlIterative(c, id);
+                if(t != null) return t;
+            }
+            return null;
         }
 
         /// <summary>
@@ -140,15 +156,15 @@ namespace Pes.Utility
             {
                 return string.Empty;
             }
-            
+
             string prefix = "http";
 
-            if (url.Substring(0, prefix.Length) != prefix)
+            if(url.Substring(0, prefix.Length) != prefix)
             {
                 url = prefix + "://" + url;
             }
 
-            using (var client = new MyClient())
+            using(var client = new MyClient())
             {
                 client.HeadOnly = true;
                 try
@@ -172,7 +188,7 @@ namespace Pes.Utility
             protected override WebRequest GetWebRequest(Uri address)
             {
                 WebRequest req = base.GetWebRequest(address);
-                if (HeadOnly && req.Method == "GET")
+                if(HeadOnly && req.Method == "GET")
                 {
                     req.Method = "HEAD";
                 }

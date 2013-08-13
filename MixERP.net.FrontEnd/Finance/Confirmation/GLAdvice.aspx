@@ -16,21 +16,8 @@ http://mozilla.org/MPL/2.0/.
 <body>
     <form id="form1" runat="server">
     <mixerp:Report ID="GLAdviceReport" runat="server" 
-        ReportPath="~/Reports/Sources/Transactions.GLEntry.xml" AutoInitialize="true" />
+        ReportPath="~/Reports/Sources/Transactions.GLEntry.xml"
+        AutoInitialize="true" />
     </form>
 </body>
 </html>
-<script runat="server">
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>> parameters = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>>();
-
-        System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> list = new System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>();
-        list.Add(new KeyValuePair<string, string>("@transaction_master_id", this.Request["TranId"]));
-
-        parameters.Add(list);
-        parameters.Add(list);
-
-        GLAdviceReport.Parameters = parameters;
-    }
-</script>

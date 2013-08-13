@@ -349,7 +349,22 @@ namespace MixERP.Net.FrontEnd.UserControls
                 Response.Write(html);
                 Response.Flush();
                 Response.Close();
-                Response.Redirect("~/index.aspx");
+            }
+        }
+
+        protected void WordImageButton_Click(object sender, ImageClickEventArgs e)
+        {
+            string html = ReportHidden.Value;
+            if(!string.IsNullOrWhiteSpace(html))
+            {
+                Response.ContentType = "application/force-download";
+                Response.AddHeader("content-disposition", "attachment; filename=" + ReportTitleHidden.Value + ".doc");
+                Response.Charset = "";
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.ContentType = "application/vnd.ms-word";
+                Response.Write(html);
+                Response.Flush();
+                Response.Close();
             }
         }
 

@@ -12,9 +12,9 @@ http://mozilla.org/MPL/2.0/.
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:Form ID="AccountTypeForm" runat="server" 
-        Text="Chart of Accounts" 
+        Text="<%$Resources:Titles, ChartOfAccounts %>" 
         TableSchema="core" Table="accounts" KeyColumn="account_id"
-        ViewSchema="core" View="accounts" Width="1000" PageSize="10" 
+        ViewSchema="core" View="account_view" Width="1500" PageSize="10" 
         Exclude="sys_type"
         DisplayFields="core.account_masters.account_master_id-->account_master_code + ' (' + account_master_name + ')',core.accounts.account_id-->account_code + ' (' + account_name + ')'" />
 </asp:Content>

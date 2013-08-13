@@ -14,8 +14,13 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Finance.Confirmation
 {
-    public partial class JournalVoucher : System.Web.UI.Page
+    public partial class JournalVoucher : MixERP.Net.BusinessLayer.BasePageClass
     {
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            this.OverridePath = "/Finance/JournalVoucher.aspx";
+        }
+        
         protected void Page_Load(object sender, EventArgs e)
         {
 

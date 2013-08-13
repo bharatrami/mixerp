@@ -18,7 +18,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1100"
         TableSchema="office" Table="cost_centers"
         ViewSchema="office" View="cost_center_view"
-        Text="Cost Center Maintenace" />
+        Text="<%$Resources:Titles, CostCenters %>" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

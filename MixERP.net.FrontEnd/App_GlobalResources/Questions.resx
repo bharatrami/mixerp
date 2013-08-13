@@ -120,6 +120,9 @@
   <data name="AreYouSure" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
+  <data name="CantAccessAccount" xml:space="preserve">
+    <value>Can't access your account?</value>
+  </data>
   <data name="ConfirmAnalyze" xml:space="preserve">
     <value>This will lock client database access during execution. Are you sure you want to execute this action right now?</value>
   </data>

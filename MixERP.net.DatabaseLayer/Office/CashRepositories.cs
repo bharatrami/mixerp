@@ -37,8 +37,7 @@ namespace MixERP.Net.DatabaseLayer.Office
 
         public static decimal GetBalance(int cashRepositoryId)
         {
-            //TODO
-            string sql = "select trunc(random() * 9 + 1)::integer  * 1000;";
+            string sql = "SELECT transactions.get_cash_repository_balance(@CashRepositoryId);";
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@CashRepositoryId", cashRepositoryId);

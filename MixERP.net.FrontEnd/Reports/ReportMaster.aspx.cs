@@ -18,7 +18,7 @@ namespace MixERP.Net.FrontEnd.Reports
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            IFrame1.Attributes.Add("src", ResolveUrl("~/Reports/ReportViewer.aspx?Id=" + this.RouteData.Values["path"]));
         }
     }
 }

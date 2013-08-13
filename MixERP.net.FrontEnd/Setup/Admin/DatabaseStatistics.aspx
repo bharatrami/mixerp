@@ -16,15 +16,16 @@ http://mozilla.org/MPL/2.0/.
     <hr class="hr" />
     <asp:Literal ID="MessageLiteral" runat="server" />
 
-    <asp:Button ID="VacuumButton" runat="server" Text="Vacuum Database" CssClass="button" OnClick="VacuumButton_Click" />
-    <asp:Button ID="FullVacuumButton" runat="server" Text="Vacuum Database (Full)" CssClass="button" OnClick="FullVacuumButton_Click" />
-    <asp:Button ID="AnalyzeButton" runat="server" Text="Analyze Database" CssClass="button" OnClick="AnalyzeButton_Click" />
+    <asp:Button ID="VacuumButton" runat="server" Text="<%$Resources:Titles, VacuumDatabase %>" CssClass="button" OnClick="VacuumButton_Click" />
+    <asp:Button ID="FullVacuumButton" runat="server" Text="<%$Resources:Titles, VacuumFullDatabase %>" CssClass="button" OnClick="FullVacuumButton_Click" />
+    <asp:Button ID="AnalyzeButton" runat="server" Text="<%$Resources:Titles, AnalyzeDatabse %>" CssClass="button" OnClick="AnalyzeButton_Click" />
 
     <br />
     <br />
 
     <mixerp:Form ID="DBStatisticsForm" runat="server" DenyAdd="true" DenyDelete="true" DenyEdit="true" KeyColumn="relname"
-        PageSize="500" TableSchema="public" Table="db_stat" ViewSchema="public" View="db_stat" Text="Database Statistics" Width="1800" />
+        PageSize="500" TableSchema="public" Table="db_stat" ViewSchema="public" View="db_stat" 
+        Text="<%$Resources:Titles, DatabaseStatistics %>" Width="1800" />
 
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

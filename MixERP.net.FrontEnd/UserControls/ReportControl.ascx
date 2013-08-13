@@ -15,6 +15,7 @@ http://mozilla.org/MPL/2.0/.
         <img src="/Resource/Icons/print-16.png" />
     </a>
     <asp:ImageButton ID="ExcelImageButton" runat="server" ImageUrl="~/Resource/Icons/excel-16.png" OnClientClick="$('#ReportHidden').val(getPageHTML())" OnClick="ExcelImageButton_Click" />
+    <asp:ImageButton ID="WordImageButton" runat="server" ImageUrl="~/Resource/Icons/word-16.png" OnClientClick="$('#ReportHidden').val(getPageHTML())" OnClick="WordImageButton_Click" />
 
     <a href="javascript:window.scrollTo(0, 0);">
         <img src="/Resource/Icons/top-16.png" />
@@ -31,7 +32,7 @@ http://mozilla.org/MPL/2.0/.
 </div>
 
 <div id="report">
-    <pes:ReportHeader runat="server" />
+    <mixerp:ReportHeader runat="server" />
 
     <h1>
         <asp:Literal ID="ReportTitleLiteral" runat="server" />

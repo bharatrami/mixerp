@@ -9,37 +9,37 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="Account/ChangePassword.aspx">
-      <publishTime>08/02/2013 01:36:07</publishTime>
+      <publishTime>08/11/2013 16:12:45</publishTime>
     </File>
     <File Include="Account/Index.aspx">
-      <publishTime>08/02/2013 01:36:07</publishTime>
+      <publishTime>08/11/2013 16:12:45</publishTime>
     </File>
     <File Include="Account/Messaging/Inbox.aspx">
-      <publishTime>08/02/2013 01:36:07</publishTime>
+      <publishTime>08/11/2013 16:12:46</publishTime>
     </File>
     <File Include="Account/Messaging/SentItems.aspx">
-      <publishTime>08/02/2013 01:36:07</publishTime>
+      <publishTime>08/11/2013 16:12:46</publishTime>
     </File>
     <File Include="Account/SignOut.aspx">
-      <publishTime>08/02/2013 01:36:07</publishTime>
+      <publishTime>08/11/2013 16:12:47</publishTime>
     </File>
     <File Include="App_GlobalResources/FormResource.resx">
-      <publishTime>08/09/2013 03:16:52</publishTime>
+      <publishTime>08/13/2013 12:24:33</publishTime>
     </File>
     <File Include="App_GlobalResources/Labels.resx">
-      <publishTime>08/09/2013 01:09:11</publishTime>
+      <publishTime>08/13/2013 12:23:33</publishTime>
     </File>
     <File Include="App_GlobalResources/Questions.resx">
-      <publishTime>07/25/2013 23:37:19</publishTime>
+      <publishTime>08/12/2013 03:10:28</publishTime>
     </File>
     <File Include="App_GlobalResources/Setup.resx">
-      <publishTime>07/25/2013 23:50:32</publishTime>
+      <publishTime>08/11/2013 16:06:18</publishTime>
     </File>
     <File Include="App_GlobalResources/Titles.resx">
-      <publishTime>08/09/2013 02:11:15</publishTime>
+      <publishTime>08/14/2013 00:36:21</publishTime>
     </File>
     <File Include="App_GlobalResources/Warnings.resx">
-      <publishTime>08/04/2013 16:11:01</publishTime>
+      <publishTime>08/13/2013 11:54:46</publishTime>
     </File>
     <File Include="App_Themes/MixERP/Default.css">
       <publishTime>08/04/2013 22:04:52</publishTime>
@@ -90,16 +90,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/16/2013 01:27:08</publishTime>
     </File>
     <File Include="bin/MixERP.net.BusinessLayer.dll">
-      <publishTime>08/09/2013 03:37:44</publishTime>
+      <publishTime>08/14/2013 00:54:20</publishTime>
     </File>
     <File Include="bin/MixERP.net.Common.dll">
-      <publishTime>08/02/2013 04:48:43</publishTime>
+      <publishTime>08/14/2013 00:54:19</publishTime>
     </File>
     <File Include="bin/MixERP.net.DatabaseLayer.dll">
-      <publishTime>08/09/2013 03:37:43</publishTime>
+      <publishTime>08/14/2013 00:54:19</publishTime>
     </File>
     <File Include="bin/MixERP.net.FrontEnd.dll">
-      <publishTime>08/09/2013 03:39:30</publishTime>
+      <publishTime>08/14/2013 00:54:22</publishTime>
     </File>
     <File Include="bin/Mono.Security.dll">
       <publishTime>07/14/2013 01:51:27</publishTime>
@@ -111,7 +111,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/10/2013 23:08:54</publishTime>
     </File>
     <File Include="bin/Pes.Utility.dll">
-      <publishTime>08/09/2013 03:37:40</publishTime>
+      <publishTime>08/14/2013 00:54:18</publishTime>
     </File>
     <File Include="bin/pt/AjaxControlToolkit.resources.dll">
       <publishTime>07/16/2013 01:27:08</publishTime>
@@ -132,34 +132,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/16/2013 01:27:08</publishTime>
     </File>
     <File Include="ContentMaster.Master">
-      <publishTime>08/02/2013 01:36:07</publishTime>
+      <publishTime>08/12/2013 02:11:28</publishTime>
     </File>
     <File Include="CRM/ConvertLeadToOpportunity.aspx">
-      <publishTime>08/02/2013 01:36:08</publishTime>
+      <publishTime>08/11/2013 16:12:48</publishTime>
     </File>
     <File Include="CRM/Index.aspx">
-      <publishTime>08/02/2013 01:36:08</publishTime>
+      <publishTime>08/11/2013 16:12:49</publishTime>
     </File>
     <File Include="CRM/Lead.aspx">
-      <publishTime>08/02/2013 01:36:08</publishTime>
+      <publishTime>08/11/2013 16:12:49</publishTime>
     </File>
     <File Include="CRM/LeadFollowup.aspx">
-      <publishTime>08/02/2013 01:36:08</publishTime>
+      <publishTime>08/11/2013 16:12:49</publishTime>
     </File>
     <File Include="CRM/Opportunity.aspx">
-      <publishTime>08/02/2013 01:36:08</publishTime>
+      <publishTime>08/11/2013 16:12:50</publishTime>
     </File>
     <File Include="CRM/OpportunityFollowup.aspx">
-      <publishTime>08/02/2013 01:36:08</publishTime>
+      <publishTime>08/11/2013 16:12:50</publishTime>
     </File>
     <File Include="CRM/Setup/LeadSources.aspx">
-      <publishTime>08/02/2013 01:36:08</publishTime>
+      <publishTime>08/12/2013 02:40:58</publishTime>
     </File>
     <File Include="CRM/Setup/LeadStatuses.aspx">
-      <publishTime>08/02/2013 01:36:09</publishTime>
+      <publishTime>08/12/2013 02:41:21</publishTime>
     </File>
     <File Include="CRM/Setup/OpportunityStages.aspx">
-      <publishTime>08/02/2013 01:36:09</publishTime>
+      <publishTime>08/12/2013 02:41:39</publishTime>
     </File>
     <File Include="db/customer-sample.sql">
       <publishTime>07/18/2013 18:54:10</publishTime>
@@ -167,14 +167,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="db/en-US/customer-sample.sql">
       <publishTime>08/09/2013 02:30:28</publishTime>
     </File>
+    <File Include="db/en-US/mixerp-db-logic.sql">
+      <publishTime>08/13/2013 23:01:02</publishTime>
+    </File>
     <File Include="db/en-US/mixerp..sql">
       <publishTime>08/09/2013 02:16:20</publishTime>
     </File>
     <File Include="db/en-US/mixerp.bak.sql">
-      <publishTime>08/09/2013 03:35:53</publishTime>
+      <publishTime>08/13/2013 22:57:32</publishTime>
+    </File>
+    <File Include="db/en-US/mixerp.sql">
+      <publishTime>08/13/2013 15:45:00</publishTime>
+    </File>
+    <File Include="db/en-US/party-sample.sql">
+      <publishTime>08/12/2013 22:00:36</publishTime>
     </File>
     <File Include="db/en-US/sample-data.sql">
-      <publishTime>08/08/2013 21:38:23</publishTime>
+      <publishTime>08/11/2013 16:11:08</publishTime>
     </File>
     <File Include="db/FormControlCodeBackup.txt">
       <publishTime>07/14/2013 02:42:51</publishTime>
@@ -198,37 +207,43 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/10/2013 23:08:54</publishTime>
     </File>
     <File Include="Finance/BankReconcilation.aspx">
-      <publishTime>08/02/2013 01:36:09</publishTime>
+      <publishTime>08/11/2013 16:12:53</publishTime>
     </File>
     <File Include="Finance/Confirmation/GLAdvice.aspx">
-      <publishTime>08/05/2013 00:05:38</publishTime>
+      <publishTime>08/14/2013 00:08:58</publishTime>
+    </File>
+    <File Include="Finance/Confirmation/JournalVoucher.aspx">
+      <publishTime>08/14/2013 00:09:08</publishTime>
     </File>
     <File Include="Finance/Index.aspx">
-      <publishTime>08/02/2013 01:36:09</publishTime>
+      <publishTime>08/11/2013 16:12:54</publishTime>
     </File>
     <File Include="Finance/JournalVoucher.aspx">
-      <publishTime>08/02/2013 01:36:10</publishTime>
+      <publishTime>08/13/2013 23:42:59</publishTime>
     </File>
     <File Include="Finance/Setup/AgeingSlabs.aspx">
-      <publishTime>08/02/2013 01:36:10</publishTime>
+      <publishTime>08/11/2013 17:35:33</publishTime>
+    </File>
+    <File Include="Finance/Setup/BankAccounts.aspx">
+      <publishTime>08/13/2013 23:58:22</publishTime>
     </File>
     <File Include="Finance/Setup/BudgetAndTarget.aspx">
-      <publishTime>08/02/2013 01:36:10</publishTime>
+      <publishTime>08/11/2013 16:15:07</publishTime>
     </File>
     <File Include="Finance/Setup/CashBankAccounts.aspx">
       <publishTime>08/02/2013 01:36:10</publishTime>
     </File>
     <File Include="Finance/Setup/COA.aspx">
-      <publishTime>08/09/2013 01:14:06</publishTime>
+      <publishTime>08/12/2013 17:13:00</publishTime>
     </File>
     <File Include="Finance/Setup/CostCenters.aspx">
-      <publishTime>08/02/2013 01:36:10</publishTime>
+      <publishTime>08/12/2013 02:42:31</publishTime>
     </File>
     <File Include="Finance/Setup/Currencies.aspx">
-      <publishTime>08/02/2013 01:36:11</publishTime>
+      <publishTime>08/12/2013 02:42:50</publishTime>
     </File>
     <File Include="Finance/Setup/ProductGLMapping.aspx">
-      <publishTime>08/02/2013 01:36:11</publishTime>
+      <publishTime>08/11/2013 16:15:10</publishTime>
     </File>
     <File Include="Finance/Setup/TaxFormDetails.aspx">
       <publishTime>07/15/2013 13:46:52</publishTime>
@@ -237,25 +252,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/15/2013 13:44:34</publishTime>
     </File>
     <File Include="Finance/Setup/TaxSetup.aspx">
-      <publishTime>08/02/2013 01:36:11</publishTime>
+      <publishTime>08/12/2013 02:43:07</publishTime>
     </File>
     <File Include="Finance/Setup/TaxTypes.aspx">
-      <publishTime>08/02/2013 01:36:11</publishTime>
+      <publishTime>08/12/2013 02:43:15</publishTime>
     </File>
     <File Include="Finance/StandingInstructions.aspx">
-      <publishTime>08/02/2013 01:36:11</publishTime>
+      <publishTime>08/11/2013 16:15:12</publishTime>
     </File>
     <File Include="Finance/TemplateTransaction.aspx">
-      <publishTime>08/02/2013 01:36:11</publishTime>
+      <publishTime>08/11/2013 16:15:13</publishTime>
     </File>
     <File Include="Finance/TransactionDocumentManager.aspx">
-      <publishTime>08/02/2013 01:36:11</publishTime>
+      <publishTime>08/11/2013 16:15:13</publishTime>
     </File>
     <File Include="Finance/UpdateExchangeRates.aspx">
-      <publishTime>08/02/2013 01:36:12</publishTime>
+      <publishTime>08/11/2013 16:15:14</publishTime>
     </File>
     <File Include="Finance/VoucherVerification.aspx">
-      <publishTime>08/02/2013 01:36:12</publishTime>
+      <publishTime>08/11/2013 16:15:14</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>08/02/2013 01:36:12</publishTime>
@@ -264,103 +279,115 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2013 00:51:44</publishTime>
     </File>
     <File Include="Items/Adjustment.aspx">
-      <publishTime>08/02/2013 01:36:12</publishTime>
+      <publishTime>08/11/2013 16:15:15</publishTime>
     </File>
     <File Include="Items/Index.aspx">
-      <publishTime>08/02/2013 01:36:12</publishTime>
+      <publishTime>08/11/2013 16:15:16</publishTime>
     </File>
     <File Include="Items/Setup/Brands.aspx">
-      <publishTime>08/02/2013 01:36:12</publishTime>
+      <publishTime>08/12/2013 02:43:23</publishTime>
     </File>
     <File Include="Items/Setup/CostPrices.aspx">
-      <publishTime>08/08/2013 22:42:25</publishTime>
+      <publishTime>08/12/2013 02:43:48</publishTime>
     </File>
     <File Include="Items/Setup/CUOM.aspx">
-      <publishTime>08/02/2013 01:36:13</publishTime>
+      <publishTime>08/12/2013 03:03:56</publishTime>
     </File>
     <File Include="Items/Setup/ItemGroups.aspx">
-      <publishTime>08/02/2013 01:36:13</publishTime>
+      <publishTime>08/13/2013 11:18:28</publishTime>
     </File>
     <File Include="Items/Setup/Items.aspx">
-      <publishTime>08/08/2013 22:42:49</publishTime>
+      <publishTime>08/12/2013 03:30:27</publishTime>
     </File>
     <File Include="Items/Setup/Parties.aspx">
-      <publishTime>08/09/2013 01:34:03</publishTime>
+      <publishTime>08/13/2013 00:30:59</publishTime>
     </File>
     <File Include="Items/Setup/PartyTypes.aspx">
-      <publishTime>08/09/2013 01:08:14</publishTime>
+      <publishTime>08/11/2013 16:24:54</publishTime>
     </File>
     <File Include="Items/Setup/SellingPrices.aspx">
-      <publishTime>08/09/2013 02:18:11</publishTime>
+      <publishTime>08/12/2013 02:44:51</publishTime>
     </File>
     <File Include="Items/Setup/Shipper.aspx">
-      <publishTime>08/02/2013 01:36:13</publishTime>
+      <publishTime>08/12/2013 02:45:04</publishTime>
     </File>
     <File Include="Items/Setup/UOM.aspx">
-      <publishTime>08/02/2013 01:36:13</publishTime>
+      <publishTime>08/12/2013 02:45:23</publishTime>
     </File>
     <File Include="Items/Transfer.aspx">
-      <publishTime>08/02/2013 01:36:14</publishTime>
+      <publishTime>08/11/2013 16:15:22</publishTime>
     </File>
     <File Include="Manufacturing/Index.aspx">
-      <publishTime>08/02/2013 01:36:14</publishTime>
+      <publishTime>08/11/2013 16:15:23</publishTime>
     </File>
     <File Include="Manufacturing/Setup/WorkCenters.aspx">
-      <publishTime>08/09/2013 03:07:15</publishTime>
+      <publishTime>08/11/2013 16:24:54</publishTime>
     </File>
     <File Include="MenuMaster.Master">
-      <publishTime>08/02/2013 01:36:14</publishTime>
+      <publishTime>08/11/2013 16:21:03</publishTime>
+    </File>
+    <File Include="Mix Open Foundation.snk">
+      <publishTime>08/11/2013 16:23:19</publishTime>
     </File>
     <File Include="MixERP.net.FrontEnd.licenseheader">
-      <publishTime>07/14/2013 15:22:22</publishTime>
+      <publishTime>08/11/2013 16:20:20</publishTime>
     </File>
     <File Include="MixERPMaster.Master">
-      <publishTime>08/04/2013 22:17:33</publishTime>
+      <publishTime>08/13/2013 00:42:41</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>08/04/2013 02:31:59</publishTime>
+      <publishTime>08/11/2013 16:15:24</publishTime>
     </File>
     <File Include="PES Technologies.snk">
       <publishTime>08/02/2013 02:52:14</publishTime>
     </File>
     <File Include="POS/AssignCashier.aspx">
-      <publishTime>08/02/2013 01:36:14</publishTime>
+      <publishTime>08/11/2013 16:15:25</publishTime>
     </File>
     <File Include="POS/Index.aspx">
-      <publishTime>08/02/2013 01:36:14</publishTime>
+      <publishTime>08/11/2013 16:15:25</publishTime>
     </File>
     <File Include="POS/Setup/Stores.aspx">
-      <publishTime>08/02/2013 01:36:14</publishTime>
+      <publishTime>08/12/2013 02:45:35</publishTime>
     </File>
     <File Include="POS/Setup/StoreTypes.aspx">
-      <publishTime>08/02/2013 01:36:15</publishTime>
+      <publishTime>08/12/2013 02:45:43</publishTime>
+    </File>
+    <File Include="Purchase/Confirmation/DirectPurchase.aspx">
+      <publishTime>08/14/2013 00:34:36</publishTime>
+    </File>
+    <File Include="Purchase/Confirmation/DirectPurchaseInvoice.aspx">
+      <publishTime>08/14/2013 00:18:17</publishTime>
     </File>
     <File Include="Purchase/DirectPurchase.aspx">
-      <publishTime>08/02/2013 01:36:15</publishTime>
+      <publishTime>08/13/2013 23:22:56</publishTime>
     </File>
     <File Include="Purchase/GRN.aspx">
-      <publishTime>08/02/2013 01:36:15</publishTime>
+      <publishTime>08/12/2013 02:46:18</publishTime>
     </File>
     <File Include="Purchase/Index.aspx">
-      <publishTime>08/08/2013 22:42:47</publishTime>
+      <publishTime>08/11/2013 16:15:29</publishTime>
     </File>
     <File Include="Purchase/Invoice.aspx">
-      <publishTime>08/02/2013 01:36:15</publishTime>
+      <publishTime>08/11/2013 16:15:29</publishTime>
     </File>
     <File Include="Purchase/Order.aspx">
-      <publishTime>08/02/2013 01:36:16</publishTime>
+      <publishTime>08/12/2013 02:46:33</publishTime>
     </File>
     <File Include="Purchase/Payment.aspx">
-      <publishTime>08/02/2013 01:36:16</publishTime>
+      <publishTime>08/11/2013 16:15:30</publishTime>
     </File>
     <File Include="Purchase/Return.aspx">
-      <publishTime>08/02/2013 01:36:16</publishTime>
+      <publishTime>08/11/2013 16:15:31</publishTime>
     </File>
     <File Include="Purchase/Setup/Suppliers.aspx">
       <publishTime>08/02/2013 01:36:16</publishTime>
     </File>
+    <File Include="Readme.txt">
+      <publishTime>08/13/2013 15:48:55</publishTime>
+    </File>
     <File Include="Reports/Assets/Header.aspx">
-      <publishTime>08/04/2013 04:34:16</publishTime>
+      <publishTime>08/11/2013 16:24:54</publishTime>
     </File>
     <File Include="Reports/Assets/Header.html">
       <publishTime>08/04/2013 03:56:39</publishTime>
@@ -369,25 +396,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2013 01:36:16</publishTime>
     </File>
     <File Include="Reports/Print.html">
-      <publishTime>08/04/2013 04:32:54</publishTime>
+      <publishTime>08/12/2013 22:17:25</publishTime>
     </File>
     <File Include="Reports/ReportMaster.aspx">
-      <publishTime>08/02/2013 01:36:16</publishTime>
+      <publishTime>08/13/2013 23:58:37</publishTime>
     </File>
     <File Include="Reports/ReportViewer.aspx">
-      <publishTime>08/04/2013 04:27:04</publishTime>
+      <publishTime>08/13/2013 23:58:52</publishTime>
     </File>
     <File Include="Reports/Sources/Office.Login.xml">
-      <publishTime>08/04/2013 01:30:33</publishTime>
+      <publishTime>08/11/2013 16:15:33</publishTime>
+    </File>
+    <File Include="Reports/Sources/Purchase.View.Purchase.Invoice.xml">
+      <publishTime>08/14/2013 00:21:16</publishTime>
     </File>
     <File Include="Reports/Sources/Sales.View.Sales.CustomerInvoice.xml">
-      <publishTime>08/09/2013 02:18:11</publishTime>
+      <publishTime>08/11/2013 16:15:33</publishTime>
     </File>
     <File Include="Reports/Sources/Sales.View.Sales.Invoice.xml">
-      <publishTime>08/09/2013 02:18:51</publishTime>
+      <publishTime>08/11/2013 16:15:33</publishTime>
     </File>
     <File Include="Reports/Sources/Transactions.GLEntry.xml">
-      <publishTime>08/05/2013 00:01:44</publishTime>
+      <publishTime>08/11/2013 23:53:42</publishTime>
     </File>
     <File Include="Res/Icons/bottom-16.png">
       <publishTime>07/31/2013 22:02:29</publishTime>
@@ -412,6 +442,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Res/Icons/top-16.png">
       <publishTime>07/31/2013 22:01:59</publishTime>
+    </File>
+    <File Include="Resource/Configuration/DbParameters.config">
+      <publishTime>08/12/2013 16:21:36</publishTime>
+    </File>
+    <File Include="Resource/Configuration/Parameters.config">
+      <publishTime>08/12/2013 21:08:10</publishTime>
+    </File>
+    <File Include="Resource/Configuration/Switches.config">
+      <publishTime>08/12/2013 01:28:19</publishTime>
     </File>
     <File Include="Resource/Icons/bottom-16.png">
       <publishTime>07/31/2013 22:02:29</publishTime>
@@ -443,53 +482,56 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Resource/Icons/top-16.png">
       <publishTime>07/31/2013 22:01:59</publishTime>
     </File>
+    <File Include="Resource/Icons/word-16.png">
+      <publishTime>08/12/2013 15:16:18</publishTime>
+    </File>
     <File Include="RuntimeError.aspx">
-      <publishTime>08/02/2013 01:36:17</publishTime>
+      <publishTime>08/13/2013 23:59:11</publishTime>
     </File>
     <File Include="Sales/Confirmation/CustomerInvoice.aspx">
-      <publishTime>08/05/2013 00:05:01</publishTime>
+      <publishTime>08/13/2013 23:59:27</publishTime>
     </File>
     <File Include="Sales/Confirmation/DirectSales.aspx">
-      <publishTime>08/05/2013 00:19:31</publishTime>
+      <publishTime>08/14/2013 00:16:09</publishTime>
     </File>
     <File Include="Sales/Confirmation/DirectSalesInovice.aspx">
-      <publishTime>08/05/2013 00:04:02</publishTime>
+      <publishTime>08/14/2013 00:17:06</publishTime>
     </File>
     <File Include="Sales/Delivery.aspx">
-      <publishTime>08/02/2013 01:36:17</publishTime>
+      <publishTime>08/14/2013 00:00:03</publishTime>
     </File>
     <File Include="Sales/DirectSales.aspx">
-      <publishTime>08/09/2013 02:23:53</publishTime>
+      <publishTime>08/13/2013 23:01:55</publishTime>
     </File>
     <File Include="Sales/Index.aspx">
-      <publishTime>08/02/2013 01:36:17</publishTime>
+      <publishTime>08/11/2013 16:15:39</publishTime>
     </File>
     <File Include="Sales/Invoice.aspx">
-      <publishTime>08/02/2013 01:36:18</publishTime>
+      <publishTime>08/11/2013 16:15:40</publishTime>
     </File>
     <File Include="Sales/Order.aspx">
-      <publishTime>08/02/2013 01:36:18</publishTime>
+      <publishTime>08/12/2013 02:46:44</publishTime>
     </File>
     <File Include="Sales/Quotation.aspx">
-      <publishTime>08/02/2013 01:36:18</publishTime>
+      <publishTime>08/12/2013 02:47:00</publishTime>
     </File>
     <File Include="Sales/Receipt.aspx">
-      <publishTime>08/04/2013 04:18:30</publishTime>
+      <publishTime>08/11/2013 16:15:42</publishTime>
     </File>
     <File Include="Sales/Return.aspx">
-      <publishTime>08/04/2013 04:18:27</publishTime>
+      <publishTime>08/11/2013 16:15:43</publishTime>
     </File>
     <File Include="Sales/Setup/AgentBonusSlabDetails.aspx">
-      <publishTime>08/02/2013 01:36:18</publishTime>
+      <publishTime>08/12/2013 02:47:18</publishTime>
     </File>
     <File Include="Sales/Setup/AgentBonusSlabs.aspx">
-      <publishTime>08/02/2013 01:36:19</publishTime>
+      <publishTime>08/12/2013 02:47:39</publishTime>
     </File>
     <File Include="Sales/Setup/Agents.aspx">
-      <publishTime>08/02/2013 01:36:19</publishTime>
+      <publishTime>08/13/2013 15:56:49</publishTime>
     </File>
     <File Include="Sales/Setup/BonusSlabAssignment.aspx">
-      <publishTime>08/02/2013 01:36:19</publishTime>
+      <publishTime>08/12/2013 02:48:15</publishTime>
     </File>
     <File Include="Sales/Setup/Customers.aspx">
       <publishTime>08/02/2013 01:36:19</publishTime>
@@ -648,106 +690,106 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:30</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/activeline.html">
-      <publishTime>07/14/2013 15:26:11</publishTime>
+      <publishTime>08/11/2013 16:07:06</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/bidi.html">
-      <publishTime>07/14/2013 15:26:11</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/btree.html">
-      <publishTime>07/14/2013 15:26:11</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/buffers.html">
-      <publishTime>07/14/2013 15:26:11</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/changemode.html">
-      <publishTime>07/14/2013 15:26:11</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/closebrackets.html">
-      <publishTime>07/14/2013 15:26:11</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/closetag.html">
-      <publishTime>07/14/2013 15:26:11</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/complete.html">
-      <publishTime>07/14/2013 15:26:12</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/emacs.html">
-      <publishTime>07/14/2013 15:26:12</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/folding.html">
-      <publishTime>07/14/2013 15:26:12</publishTime>
+      <publishTime>08/11/2013 16:07:07</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/fullscreen.html">
-      <publishTime>07/14/2013 15:26:12</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/html5complete.html">
-      <publishTime>07/14/2013 15:26:12</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/indentwrap.html">
-      <publishTime>07/14/2013 15:26:12</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/lint.html">
-      <publishTime>07/14/2013 15:26:13</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/loadmode.html">
-      <publishTime>07/14/2013 15:26:13</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/marker.html">
-      <publishTime>07/14/2013 15:26:13</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/markselection.html">
-      <publishTime>07/14/2013 15:26:13</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/matchhighlighter.html">
-      <publishTime>07/14/2013 15:26:13</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/merge.html">
-      <publishTime>07/14/2013 15:26:13</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/multiplex.html">
-      <publishTime>07/14/2013 15:26:13</publishTime>
+      <publishTime>08/11/2013 16:07:08</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/mustache.html">
-      <publishTime>07/14/2013 15:26:14</publishTime>
+      <publishTime>08/11/2013 16:07:09</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/placeholder.html">
-      <publishTime>07/14/2013 15:26:14</publishTime>
+      <publishTime>08/11/2013 16:07:09</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/preview.html">
-      <publishTime>07/14/2013 15:26:14</publishTime>
+      <publishTime>08/11/2013 16:07:09</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/resize.html">
-      <publishTime>07/14/2013 15:26:14</publishTime>
+      <publishTime>08/11/2013 16:07:09</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/runmode.html">
-      <publishTime>07/14/2013 15:26:14</publishTime>
+      <publishTime>08/11/2013 16:07:09</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/search.html">
-      <publishTime>07/14/2013 15:26:14</publishTime>
+      <publishTime>08/11/2013 16:07:09</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/spanaffectswrapping_shim.html">
-      <publishTime>07/14/2013 15:26:14</publishTime>
+      <publishTime>08/11/2013 16:07:09</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/theme.html">
-      <publishTime>07/14/2013 15:26:15</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/trailingspace.html">
-      <publishTime>07/14/2013 15:26:15</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/variableheight.html">
-      <publishTime>07/14/2013 15:26:15</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/vim.html">
-      <publishTime>07/14/2013 15:26:15</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/visibletabs.html">
-      <publishTime>07/14/2013 15:26:15</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/widget.html">
-      <publishTime>07/14/2013 15:26:15</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/demo/xmlcomplete.html">
-      <publishTime>07/14/2013 15:26:15</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/baboon.png">
       <publishTime>07/14/2013 01:51:31</publishTime>
@@ -756,37 +798,37 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:31</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/compress.html">
-      <publishTime>07/14/2013 15:26:16</publishTime>
+      <publishTime>08/11/2013 16:07:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/docs.css">
       <publishTime>07/14/2013 01:51:31</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/internals.html">
-      <publishTime>07/14/2013 15:26:16</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/manual.html">
-      <publishTime>07/14/2013 15:26:16</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/modes.html">
-      <publishTime>07/14/2013 15:26:16</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/oldrelease.html">
-      <publishTime>07/14/2013 15:26:17</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/realworld.html">
-      <publishTime>07/14/2013 15:26:17</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/reporting.html">
-      <publishTime>07/14/2013 15:26:17</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/upgrade_v2.2.html">
-      <publishTime>07/14/2013 15:26:17</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/doc/upgrade_v3.html">
-      <publishTime>07/14/2013 15:26:17</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/index.html">
-      <publishTime>07/14/2013 15:26:18</publishTime>
+      <publishTime>08/11/2013 16:07:11</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/keymap/emacs.js">
       <publishTime>07/14/2013 01:51:31</publishTime>
@@ -801,7 +843,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:31</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/lib/codemirror.js">
-      <publishTime>07/14/2013 01:51:32</publishTime>
+      <publishTime>08/11/2013 21:54:01</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/LICENSE">
       <publishTime>07/14/2013 01:51:32</publishTime>
@@ -810,40 +852,40 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:32</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/apl/index.html">
-      <publishTime>07/14/2013 15:26:19</publishTime>
+      <publishTime>08/11/2013 16:07:12</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/asterisk/asterisk.js">
       <publishTime>07/14/2013 01:51:32</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/asterisk/index.html">
-      <publishTime>07/14/2013 15:26:19</publishTime>
+      <publishTime>08/11/2013 16:07:12</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/clike/clike.js">
       <publishTime>07/14/2013 01:51:32</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/clike/index.html">
-      <publishTime>07/14/2013 15:26:19</publishTime>
+      <publishTime>08/11/2013 16:07:13</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/clike/scala.html">
-      <publishTime>07/14/2013 15:26:20</publishTime>
+      <publishTime>08/11/2013 16:07:13</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/clojure/clojure.js">
       <publishTime>07/14/2013 01:51:32</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/clojure/index.html">
-      <publishTime>07/14/2013 15:26:20</publishTime>
+      <publishTime>08/11/2013 16:07:13</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/cobol/cobol.js">
       <publishTime>07/14/2013 01:51:32</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/cobol/index.html">
-      <publishTime>07/23/2013 23:05:08</publishTime>
+      <publishTime>08/11/2013 16:07:13</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/coffeescript/coffeescript.js">
-      <publishTime>07/14/2013 01:51:32</publishTime>
+      <publishTime>08/11/2013 21:54:01</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/coffeescript/index.html">
-      <publishTime>07/14/2013 15:26:20</publishTime>
+      <publishTime>08/11/2013 16:07:13</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/coffeescript/LICENSE">
       <publishTime>07/14/2013 01:51:32</publishTime>
@@ -852,16 +894,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:32</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/commonlisp/index.html">
-      <publishTime>07/14/2013 15:26:21</publishTime>
+      <publishTime>08/11/2013 16:07:14</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/css/css.js">
-      <publishTime>07/14/2013 01:51:32</publishTime>
+      <publishTime>08/11/2013 21:54:01</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/css/index.html">
-      <publishTime>07/14/2013 15:26:21</publishTime>
+      <publishTime>08/11/2013 16:07:14</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/css/scss.html">
-      <publishTime>07/14/2013 15:26:21</publishTime>
+      <publishTime>08/11/2013 16:07:14</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/css/scss_test.js">
       <publishTime>07/14/2013 01:51:32</publishTime>
@@ -873,37 +915,37 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:32</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/d/index.html">
-      <publishTime>07/14/2013 15:26:22</publishTime>
+      <publishTime>08/11/2013 16:07:14</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/diff/diff.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/diff/index.html">
-      <publishTime>07/14/2013 15:26:22</publishTime>
+      <publishTime>08/11/2013 16:07:15</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ecl/ecl.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ecl/index.html">
-      <publishTime>07/14/2013 15:26:22</publishTime>
+      <publishTime>08/11/2013 16:07:15</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/erlang/erlang.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/erlang/index.html">
-      <publishTime>07/14/2013 15:26:22</publishTime>
+      <publishTime>08/11/2013 16:07:15</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/gas/gas.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/gas/index.html">
-      <publishTime>07/14/2013 15:26:23</publishTime>
+      <publishTime>08/11/2013 16:07:15</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/gfm/gfm.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/gfm/index.html">
-      <publishTime>07/14/2013 15:26:23</publishTime>
+      <publishTime>08/11/2013 16:07:15</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/gfm/test.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
@@ -912,19 +954,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/go/index.html">
-      <publishTime>07/14/2013 15:26:23</publishTime>
+      <publishTime>08/11/2013 16:07:16</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/groovy/groovy.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/groovy/index.html">
-      <publishTime>07/14/2013 15:26:24</publishTime>
+      <publishTime>08/11/2013 16:07:16</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/haml/haml.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/haml/index.html">
-      <publishTime>07/14/2013 15:26:24</publishTime>
+      <publishTime>08/11/2013 16:07:16</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/haml/test.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
@@ -933,55 +975,55 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/haskell/index.html">
-      <publishTime>07/14/2013 15:26:24</publishTime>
+      <publishTime>08/11/2013 16:07:16</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/haxe/haxe.js">
-      <publishTime>07/14/2013 01:51:33</publishTime>
+      <publishTime>08/11/2013 21:54:01</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/haxe/index.html">
-      <publishTime>07/14/2013 15:26:24</publishTime>
+      <publishTime>08/11/2013 16:07:17</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/htmlembedded/htmlembedded.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/htmlembedded/index.html">
-      <publishTime>07/14/2013 15:26:25</publishTime>
+      <publishTime>08/11/2013 16:07:17</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/htmlmixed/htmlmixed.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/htmlmixed/index.html">
-      <publishTime>07/14/2013 15:26:25</publishTime>
+      <publishTime>08/11/2013 21:54:01</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/http/http.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/http/index.html">
-      <publishTime>07/14/2013 15:26:25</publishTime>
+      <publishTime>08/11/2013 16:07:17</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/javascript/index.html">
-      <publishTime>07/14/2013 15:26:25</publishTime>
+      <publishTime>08/11/2013 16:07:17</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/javascript/javascript.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/javascript/typescript.html">
-      <publishTime>07/14/2013 15:26:26</publishTime>
+      <publishTime>08/11/2013 16:07:18</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/jinja2/index.html">
-      <publishTime>07/14/2013 15:26:26</publishTime>
+      <publishTime>08/11/2013 16:07:18</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/jinja2/jinja2.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/less/index.html">
-      <publishTime>07/14/2013 15:26:26</publishTime>
+      <publishTime>08/11/2013 16:07:18</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/less/less.js">
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/livescript/index.html">
-      <publishTime>07/14/2013 15:26:26</publishTime>
+      <publishTime>08/11/2013 16:07:18</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/livescript/LICENSE">
       <publishTime>07/14/2013 01:51:33</publishTime>
@@ -993,13 +1035,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:33</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/lua/index.html">
-      <publishTime>07/14/2013 15:26:27</publishTime>
+      <publishTime>08/11/2013 16:07:18</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/lua/lua.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/markdown/index.html">
-      <publishTime>07/14/2013 15:26:27</publishTime>
+      <publishTime>08/11/2013 16:07:18</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/markdown/markdown.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
@@ -1011,25 +1053,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/mirc/index.html">
-      <publishTime>07/14/2013 15:26:28</publishTime>
+      <publishTime>08/11/2013 16:07:19</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/mirc/mirc.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ntriples/index.html">
-      <publishTime>07/14/2013 15:26:28</publishTime>
+      <publishTime>08/11/2013 16:07:19</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ntriples/ntriples.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ocaml/index.html">
-      <publishTime>07/14/2013 15:26:28</publishTime>
+      <publishTime>08/11/2013 16:07:19</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ocaml/ocaml.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/pascal/index.html">
-      <publishTime>07/14/2013 15:26:28</publishTime>
+      <publishTime>08/11/2013 16:07:19</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/pascal/LICENSE">
       <publishTime>07/14/2013 01:51:34</publishTime>
@@ -1038,7 +1080,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/perl/index.html">
-      <publishTime>07/14/2013 15:26:29</publishTime>
+      <publishTime>08/11/2013 16:07:20</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/perl/LICENSE">
       <publishTime>07/14/2013 01:51:34</publishTime>
@@ -1047,40 +1089,40 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/php/index.html">
-      <publishTime>07/14/2013 15:26:29</publishTime>
+      <publishTime>08/11/2013 16:07:20</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/php/php.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/pig/index.html">
-      <publishTime>07/14/2013 15:26:29</publishTime>
+      <publishTime>08/11/2013 16:07:20</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/pig/pig.js">
-      <publishTime>07/14/2013 01:51:34</publishTime>
+      <publishTime>08/11/2013 21:54:02</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/properties/index.html">
-      <publishTime>07/14/2013 15:26:29</publishTime>
+      <publishTime>08/11/2013 16:07:20</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/properties/properties.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/python/index.html">
-      <publishTime>07/14/2013 15:26:30</publishTime>
+      <publishTime>08/11/2013 16:07:21</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/python/LICENSE.txt">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/python/python.js">
-      <publishTime>07/14/2013 01:51:34</publishTime>
+      <publishTime>08/11/2013 21:54:02</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/q/index.html">
-      <publishTime>07/14/2013 15:26:30</publishTime>
+      <publishTime>08/11/2013 16:07:21</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/q/q.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/r/index.html">
-      <publishTime>07/14/2013 15:26:30</publishTime>
+      <publishTime>08/11/2013 16:07:21</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/r/LICENSE">
       <publishTime>07/14/2013 01:51:34</publishTime>
@@ -1092,10 +1134,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/rpm/changes/index.html">
-      <publishTime>07/14/2013 15:26:31</publishTime>
+      <publishTime>08/11/2013 16:07:21</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/rpm/spec/index.html">
-      <publishTime>07/14/2013 15:26:31</publishTime>
+      <publishTime>08/11/2013 16:07:22</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/rpm/spec/spec.css">
       <publishTime>07/14/2013 01:51:34</publishTime>
@@ -1104,7 +1146,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/rst/index.html">
-      <publishTime>07/14/2013 15:26:31</publishTime>
+      <publishTime>08/11/2013 16:07:22</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/rst/LICENSE.txt">
       <publishTime>07/14/2013 01:51:34</publishTime>
@@ -1113,7 +1155,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ruby/index.html">
-      <publishTime>07/14/2013 15:26:32</publishTime>
+      <publishTime>08/11/2013 16:07:22</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/ruby/LICENSE">
       <publishTime>07/14/2013 01:51:34</publishTime>
@@ -1122,31 +1164,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/rust/index.html">
-      <publishTime>07/14/2013 15:26:32</publishTime>
+      <publishTime>08/11/2013 16:07:22</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/rust/rust.js">
       <publishTime>07/14/2013 01:51:34</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sass/index.html">
-      <publishTime>07/14/2013 15:26:32</publishTime>
+      <publishTime>08/11/2013 16:07:22</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sass/sass.js">
-      <publishTime>07/14/2013 01:51:34</publishTime>
+      <publishTime>08/11/2013 21:54:02</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/scheme/index.html">
-      <publishTime>07/14/2013 15:26:32</publishTime>
+      <publishTime>08/11/2013 16:07:23</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/scheme/scheme.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/shell/index.html">
-      <publishTime>07/14/2013 15:26:33</publishTime>
+      <publishTime>08/11/2013 16:07:23</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/shell/shell.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sieve/index.html">
-      <publishTime>07/14/2013 15:26:33</publishTime>
+      <publishTime>08/11/2013 16:07:23</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sieve/LICENSE">
       <publishTime>07/14/2013 01:51:35</publishTime>
@@ -1155,31 +1197,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 15:25:05</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/smalltalk/index.html">
-      <publishTime>07/14/2013 15:26:33</publishTime>
+      <publishTime>08/11/2013 16:07:23</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/smalltalk/smalltalk.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/smarty/index.html">
-      <publishTime>07/14/2013 15:26:34</publishTime>
+      <publishTime>08/11/2013 16:07:24</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/smarty/smarty.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sparql/index.html">
-      <publishTime>07/14/2013 15:26:34</publishTime>
+      <publishTime>08/11/2013 16:07:24</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sparql/sparql.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sql/index.html">
-      <publishTime>07/14/2013 15:26:34</publishTime>
+      <publishTime>08/11/2013 16:07:24</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/sql/sql.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/stex/index.html">
-      <publishTime>07/14/2013 15:26:34</publishTime>
+      <publishTime>08/11/2013 16:07:24</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/stex/stex.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
@@ -1188,13 +1230,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/tcl/index.html">
-      <publishTime>07/14/2013 15:26:35</publishTime>
+      <publishTime>08/11/2013 16:07:25</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/tcl/tcl.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/tiddlywiki/index.html">
-      <publishTime>07/14/2013 15:26:35</publishTime>
+      <publishTime>08/11/2013 16:07:25</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/tiddlywiki/tiddlywiki.css">
       <publishTime>07/14/2013 01:51:35</publishTime>
@@ -1212,7 +1254,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/turtle/index.html">
-      <publishTime>07/14/2013 15:26:36</publishTime>
+      <publishTime>08/11/2013 16:07:26</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/turtle/turtle.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
@@ -1227,31 +1269,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/vbscript/index.html">
-      <publishTime>07/14/2013 15:26:36</publishTime>
+      <publishTime>08/11/2013 16:07:26</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/vbscript/vbscript.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/velocity/index.html">
-      <publishTime>07/14/2013 15:26:36</publishTime>
+      <publishTime>08/11/2013 16:07:26</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/velocity/velocity.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/verilog/index.html">
-      <publishTime>07/14/2013 15:26:37</publishTime>
+      <publishTime>08/11/2013 16:07:26</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/verilog/verilog.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/xml/index.html">
-      <publishTime>07/14/2013 15:26:37</publishTime>
+      <publishTime>08/11/2013 16:07:27</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/xml/xml.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/xquery/index.html">
-      <publishTime>07/14/2013 15:26:37</publishTime>
+      <publishTime>08/11/2013 16:07:27</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/xquery/LICENSE">
       <publishTime>07/14/2013 01:51:35</publishTime>
@@ -1263,13 +1305,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 15:25:10</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/yaml/index.html">
-      <publishTime>07/14/2013 15:26:38</publishTime>
+      <publishTime>08/11/2013 16:07:27</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/yaml/yaml.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/z80/index.html">
-      <publishTime>07/14/2013 15:26:38</publishTime>
+      <publishTime>08/11/2013 16:07:27</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/mode/z80/z80.js">
       <publishTime>07/14/2013 01:51:35</publishTime>
@@ -1293,7 +1335,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:36</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/test/index.html">
-      <publishTime>07/14/2013 15:26:39</publishTime>
+      <publishTime>08/11/2013 16:07:28</publishTime>
     </File>
     <File Include="Scripts/CodeMirror/test/lint/acorn.js">
       <publishTime>07/14/2013 15:25:13</publishTime>
@@ -1392,76 +1434,79 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:37</publishTime>
     </File>
     <File Include="Scripts/mixerp.js">
-      <publishTime>07/26/2013 00:19:20</publishTime>
+      <publishTime>08/13/2013 11:17:48</publishTime>
     </File>
     <File Include="Scripts/shortcut.js">
-      <publishTime>07/21/2013 17:02:29</publishTime>
+      <publishTime>08/11/2013 16:07:31</publishTime>
+    </File>
+    <File Include="Services/AccountData.asmx">
+      <publishTime>08/11/2013 01:20:50</publishTime>
     </File>
     <File Include="Services/ItemData.asmx">
       <publishTime>08/02/2013 01:36:20</publishTime>
     </File>
     <File Include="Setup/Admin/Backup.aspx">
-      <publishTime>08/02/2013 01:36:20</publishTime>
+      <publishTime>08/11/2013 16:16:07</publishTime>
     </File>
     <File Include="Setup/Admin/ChangePassword.aspx">
-      <publishTime>08/02/2013 01:36:20</publishTime>
+      <publishTime>08/11/2013 16:16:08</publishTime>
     </File>
     <File Include="Setup/Admin/DatabaseStatistics.aspx">
-      <publishTime>08/02/2013 01:36:20</publishTime>
+      <publishTime>08/12/2013 02:49:23</publishTime>
     </File>
     <File Include="Setup/Admin/NewCompany.aspx">
-      <publishTime>08/02/2013 01:36:20</publishTime>
+      <publishTime>08/11/2013 16:16:10</publishTime>
     </File>
     <File Include="Setup/Admin/Query.aspx">
-      <publishTime>08/04/2013 04:45:05</publishTime>
+      <publishTime>08/14/2013 00:01:35</publishTime>
     </File>
     <File Include="Setup/Admin/Restore.aspx">
-      <publishTime>08/02/2013 01:36:21</publishTime>
+      <publishTime>08/11/2013 16:16:12</publishTime>
     </File>
     <File Include="Setup/CashRepositories.aspx">
-      <publishTime>08/02/2013 01:36:21</publishTime>
+      <publishTime>08/12/2013 02:50:58</publishTime>
     </File>
     <File Include="Setup/Counters.aspx">
-      <publishTime>08/02/2013 01:36:21</publishTime>
+      <publishTime>08/12/2013 02:51:24</publishTime>
     </File>
     <File Include="Setup/Departments.aspx">
-      <publishTime>08/02/2013 01:36:21</publishTime>
+      <publishTime>08/12/2013 02:51:24</publishTime>
     </File>
     <File Include="Setup/FiscalYear.aspx">
-      <publishTime>08/02/2013 01:36:21</publishTime>
+      <publishTime>08/11/2013 16:24:55</publishTime>
     </File>
     <File Include="Setup/Frequency.aspx">
-      <publishTime>08/02/2013 01:36:21</publishTime>
+      <publishTime>08/12/2013 02:51:51</publishTime>
     </File>
     <File Include="Setup/Index.aspx">
-      <publishTime>08/02/2013 01:36:22</publishTime>
+      <publishTime>08/11/2013 16:16:18</publishTime>
     </File>
     <File Include="Setup/Offices.aspx">
-      <publishTime>08/02/2013 01:36:22</publishTime>
+      <publishTime>08/12/2013 02:51:51</publishTime>
     </File>
     <File Include="Setup/Policy/AutoVerification.aspx">
-      <publishTime>08/02/2013 01:36:22</publishTime>
+      <publishTime>08/12/2013 00:32:39</publishTime>
     </File>
     <File Include="Setup/Policy/GLAccess.aspx">
-      <publishTime>08/02/2013 01:36:22</publishTime>
+      <publishTime>08/11/2013 16:16:20</publishTime>
     </File>
     <File Include="Setup/Policy/MenuAccess.aspx">
-      <publishTime>08/02/2013 01:36:22</publishTime>
+      <publishTime>08/11/2013 16:16:21</publishTime>
     </File>
     <File Include="Setup/Policy/Store.aspx">
-      <publishTime>08/02/2013 01:36:22</publishTime>
+      <publishTime>08/11/2013 16:16:21</publishTime>
     </File>
     <File Include="Setup/Policy/VoucherVerification.aspx">
-      <publishTime>08/02/2013 01:36:23</publishTime>
+      <publishTime>08/14/2013 00:01:49</publishTime>
     </File>
     <File Include="Setup/Roles.aspx">
-      <publishTime>08/02/2013 01:36:23</publishTime>
+      <publishTime>08/12/2013 02:52:07</publishTime>
     </File>
     <File Include="Setup/Users.aspx">
-      <publishTime>08/02/2013 01:36:23</publishTime>
+      <publishTime>08/11/2013 16:16:24</publishTime>
     </File>
     <File Include="SignIn.aspx">
-      <publishTime>08/02/2013 01:36:23</publishTime>
+      <publishTime>08/12/2013 03:11:09</publishTime>
     </File>
     <File Include="spinner.gif">
       <publishTime>07/14/2013 20:38:05</publishTime>
@@ -1479,7 +1524,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:37</publishTime>
     </File>
     <File Include="Themes/purple/main.css">
-      <publishTime>08/09/2013 03:14:06</publishTime>
+      <publishTime>08/13/2013 16:18:01</publishTime>
     </File>
     <File Include="Themes/purple/mixerp-logo-light.png">
       <publishTime>07/14/2013 03:10:00</publishTime>
@@ -1493,23 +1538,29 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Themes/purple/padding.css">
       <publishTime>07/14/2013 01:51:37</publishTime>
     </File>
+    <File Include="UserControls/Core/AccountControl.ascx">
+      <publishTime>08/11/2013 16:16:28</publishTime>
+    </File>
     <File Include="UserControls/DateTextBox.ascx">
-      <publishTime>08/02/2013 01:36:23</publishTime>
+      <publishTime>08/11/2013 16:16:28</publishTime>
     </File>
     <File Include="UserControls/Forms/FormControl.ascx">
-      <publishTime>08/09/2013 00:49:53</publishTime>
+      <publishTime>08/13/2013 00:01:43</publishTime>
     </File>
     <File Include="UserControls/Products/ProductControl.ascx">
-      <publishTime>08/09/2013 02:09:17</publishTime>
+      <publishTime>08/14/2013 00:41:48</publishTime>
     </File>
     <File Include="UserControls/ReportControl.ascx">
-      <publishTime>08/04/2013 16:29:54</publishTime>
+      <publishTime>08/12/2013 15:17:15</publishTime>
     </File>
     <File Include="UserControls/Reporting/Header.ascx">
-      <publishTime>08/02/2013 01:36:24</publishTime>
+      <publishTime>08/11/2013 16:16:35</publishTime>
+    </File>
+    <File Include="UserControls/TransactionChecklistControl.ascx">
+      <publishTime>08/14/2013 00:15:33</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/04/2013 04:50:32</publishTime>
+      <publishTime>08/14/2013 00:54:24</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -42,8 +42,15 @@ namespace MixERP.Net.DatabaseLayer.Core
 
         public static decimal GetItemCostPrice(string itemCode, string partyCode, int unitId)
         {
-            //Todo
-            return 100m;
+            string sql = "SELECT core.get_item_cost_price(core.get_item_id_by_item_code(@ItemCode), core.get_party_id_by_party_code(@PartyCode), @UnitId);";
+            using(NpgsqlCommand command = new NpgsqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("@ItemCode", itemCode);
+                command.Parameters.AddWithValue("@PartyCode", partyCode);
+                command.Parameters.AddWithValue("@UnitId", unitId);
+
+                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+            }
         }
 
         public static decimal GetTaxRate(string itemCode)
@@ -56,7 +63,7 @@ namespace MixERP.Net.DatabaseLayer.Core
             }
         }
 
-        public static int CountItemInStock(string itemCode, int unitId, int storeId)
+        public static decimal CountItemInStock(string itemCode, int unitId, int storeId)
         {
             string sql = "SELECT core.count_item_in_stock(core.get_item_id_by_item_code(@ItemCode), @UnitId, @StoreId);";
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
@@ -64,8 +71,19 @@ namespace MixERP.Net.DatabaseLayer.Core
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
                 command.Parameters.AddWithValue("@UnitId", unitId);
                 command.Parameters.AddWithValue("@StoreId", storeId);
-                return Pes.Utility.Conversion.TryCastInteger(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }        
+        }
+
+        public static bool IsStockItem(string itemCode)
+        {
+            string sql = "SELECT 1 FROM core.items WHERE item_code=@ItemCode AND maintain_stock=true;";
+            using(NpgsqlCommand command = new NpgsqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("@ItemCode", itemCode);
+
+                return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command).Rows.Count.Equals(1);
+            }
         }
 
     }

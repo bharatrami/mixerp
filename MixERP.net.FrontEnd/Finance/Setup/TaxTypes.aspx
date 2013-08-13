@@ -11,7 +11,7 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <mixerp:Form ID="TaxTypeForm" runat="server" Text="Tax Types" TableSchema="core" Table="tax_types" KeyColumn="tax_type_id"
+    <mixerp:Form ID="TaxTypeForm" runat="server" Text="<%$Resources:Titles, TaxTypes %>" TableSchema="core" Table="tax_types" KeyColumn="tax_type_id"
         ViewSchema="core" View="tax_types" Width="1000" PageSize="10" 
         SelectedValues=""
         DisplayFields=""

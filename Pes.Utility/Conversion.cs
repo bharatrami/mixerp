@@ -164,6 +164,11 @@ namespace Pes.Utility
                     {
                         return true;
                     }
+
+                    if(value.ToString().ToLower().Equals("true"))
+                    {
+                        return true;
+                    }
                 }
 
                 bool retVal = false;
@@ -186,11 +191,11 @@ namespace Pes.Utility
                     {
                         if(Convert.ToBoolean(value, CultureInfo.InvariantCulture) == true)
                         {
-                            return "1";
+                            return "true";
                         }
                         else
                         {
-                            return "0";
+                            return "false";
                         }
                     }
                     else

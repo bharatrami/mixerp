@@ -8,13 +8,18 @@ http://mozilla.org/MPL/2.0/.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Text;
 
-namespace MixERP.Net.FrontEnd.Finance.Setup
+namespace MixERP.Net.Common.Transactions.Models
 {
-    public partial class CashBankAccounts : MixERP.Net.BusinessLayer.BasePageClass
+    public class StockMasterModel
     {
+        public long StockMasterId { get; set; }
+        public long TransactionMasterId { get; set; }
+        public string PartyCode { get; set; }
+        public int PriceTypeId { get; set; }
+        public bool IsCredit { get; set; }
+        public int ShipperId { get; set; }
+        public decimal ShippingCharge { get; set; }
     }
 }

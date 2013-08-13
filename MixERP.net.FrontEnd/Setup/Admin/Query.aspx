@@ -33,16 +33,16 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <div id="buttons">
 
-        <asp:Button ID="ExecuteButton" runat="server" Text="Execute" OnClick="ExecuteButton_Click" />
-        <asp:Button ID="LoadButton" runat="server" Text="Load" OnClick="LoadButton_Click" />
-        <asp:Button ID="ClearButton" runat="server" Text="Clear" OnClick="ClearButton_Click" />
-        <asp:Button ID="SaveButton" runat="server" Text="Save" OnClientClick="$('#QueryHidden').val(editor.getValue());" OnClick="SaveButton_Click" />
+        <asp:Button ID="ExecuteButton" runat="server" Text="<%$Resources:Titles, Execute %>" OnClick="ExecuteButton_Click" />
+        <asp:Button ID="LoadButton" runat="server" Text="<%$Resources:Titles, Load %>" OnClick="LoadButton_Click" />
+        <asp:Button ID="ClearButton" runat="server" Text="<%$Resources:Titles, Clear %>" OnClick="ClearButton_Click" />
+        <asp:Button ID="SaveButton" runat="server" Text="<%$Resources:Titles, Save %>" OnClientClick="$('#QueryHidden').val(editor.getValue());" OnClick="SaveButton_Click" />
 
-        <asp:Button ID="RunButton" runat="server" Text="Run" OnClick="RunButton_Click" />
+        <asp:Button ID="RunButton" runat="server" Text="<%$Resources:Titles, Run %>" OnClick="RunButton_Click" />
         <asp:Button ID="LoadCustomerButton" runat="server" Text="Load Customers" OnClick="LoadCustomerButton_Click" />
         <asp:Button ID="LoadSampleData" runat="server" Text="Load Sample Data" OnClick="LoadSampleData_Click" />
 
-        <asp:Button ID="GoToTopButton" runat="server" Text="Go to Top" OnClientClick="$('html, body').animate({ scrollTop: 0 }, 'slow');return(false);" />
+        <asp:Button ID="GoToTopButton" runat="server" Text="<%$Resources:Titles, GoToTop %>" OnClientClick="$('html, body').animate({ scrollTop: 0 }, 'slow');return(false);" />
     </div>
 
     <br />
@@ -101,13 +101,7 @@ http://mozilla.org/MPL/2.0/.
     </script>
 </asp:Content>
 
-
 <script runat="server">
-    protected void Page_Load(object sender, EventArgs e)
-    {
-
-    }
-
     protected void ClearButton_Click(object sender, EventArgs e)
     {
         QueryTextBox.Text = "";
@@ -137,7 +131,7 @@ http://mozilla.org/MPL/2.0/.
 
     protected void LoadCustomerButton_Click(object sender, EventArgs e)
     {
-        string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/en-US/customer-sample.sql"));
+        string sql = System.IO.File.ReadAllText(Server.MapPath("~/db/en-US/party-sample.sql"));
         using(System.Data.DataTable table = MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(new Npgsql.NpgsqlCommand(sql)))
         {
             MessageLiteral.Text = string.Format("<div class='success'>{0} row(s) affected.</div>", table.Rows.Count);

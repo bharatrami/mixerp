@@ -49,6 +49,15 @@ namespace MixERP.Net.FrontEnd.UserControls {
         protected global::System.Web.UI.WebControls.ImageButton ExcelImageButton;
         
         /// <summary>
+        /// WordImageButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton WordImageButton;
+        
+        /// <summary>
         /// ReportTitleLiteral control.
         /// </summary>
         /// <remarks>

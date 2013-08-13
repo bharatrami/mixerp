@@ -16,10 +16,3 @@ http://mozilla.org/MPL/2.0/.
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>
-
-<script runat="server">
-    protected void Page_Load(object sender, EventArgs e)
-    { 
-        IFrame1.Attributes.Add("src", ResolveUrl("~/Reports/ReportViewer.aspx?Id=" + this.RouteData.Values["path"]));
-    }
-</script>

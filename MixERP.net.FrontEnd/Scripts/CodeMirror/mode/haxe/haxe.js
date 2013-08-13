@@ -388,7 +388,7 @@ CodeMirror.defineMode("haxe", function(config, parserConfig) {
         cc: [],
         lexical: new HaxeLexical((basecolumn || 0) - indentUnit, 0, "block", false),
         localVars: parserConfig.localVars,
-    importedtypes: defaulttypes,
+    importedtymixerp: defaulttypes,
         context: parserConfig.localVars && {vars: parserConfig.localVars},
         indented: 0
       };

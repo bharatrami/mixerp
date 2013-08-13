@@ -14,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Manufacturing.Setup
 {
-    public partial class WorkCenters : System.Web.UI.Page
+    public partial class WorkCenters : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

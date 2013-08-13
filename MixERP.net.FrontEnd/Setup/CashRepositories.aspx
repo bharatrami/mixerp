@@ -18,7 +18,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000"
         TableSchema="office" Table="cash_repositories"
         ViewSchema="office" View="cash_repository_view"
-        Text="Cash Repository Maintenance"
+        Text="<%$Resources:Titles, CashRepositories %>"
         SelectedValues=""
         DisplayFields="office.cash_repositories.cash_repository_id-->cash_repository_code + ' (' + cash_repository_name + ')', office.offices.office_id-->office_code + ' (' + office_name + ')'" />
 </asp:Content>

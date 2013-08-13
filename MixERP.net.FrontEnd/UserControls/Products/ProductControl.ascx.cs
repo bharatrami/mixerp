@@ -108,6 +108,20 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                 return;
             }
 
+            if(this.TransactionType == TranType.Purchase && CashRepositoryRow.Visible)
+            {
+                this.UpdateRepositoryBalance();
+
+                decimal repositoryBalance = Pes.Utility.Conversion.TryCastDecimal(CashRepositoryBalanceTextBox.Text);
+                decimal grandTotal = Pes.Utility.Conversion.TryCastDecimal(GrandTotalTextBox.Text);
+
+                if(grandTotal > repositoryBalance)
+                {
+                    ErrorLabel.Text = Resources.Warnings.NotEnoughCash;
+                    return;
+                }
+            }
+
             if(!string.IsNullOrWhiteSpace(ShippingChargeTextBox.Text))
             {
                 if(!Information.IsNumeric(ShippingChargeTextBox.Text))
@@ -189,13 +203,6 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                 StoreDropDownList.DataBind();
             }
 
-            //using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items"))
-            //{
-            //    ItemDropDownList.DataSource = table;
-            //    ItemDropDownList.DataBind();
-            //    ItemDropDownList.Items.Insert(0, new ListItem(Resources.Titles.Select, ""));
-            //}
-
             if(this.ShowCashRepository)
             {
                 using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Office.CashRepositories.GetCashRepositories(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId()))
@@ -259,6 +266,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             if(this.TransactionType == TranType.Sales)
             {
+                ItemDropDownListCascadingDropDown.ServiceMethod = "GetItems";
                 TransactionTypeLiteral.Text = "<label>Sales Type</label>";
 
                 using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "price_types"))
@@ -271,7 +279,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                     PriceTypeDropDownList.DataBind();
                 }
 
-                if(MixERP.Net.BusinessLayer.Core.Switches.AllowSupplierInSales())
+                if(MixERP.Net.Common.Helpers.Switches.AllowSupplierInSales())
                 {
                     //This indicates that the admin has chosen to perform sales transaction 
                     //with suppliers as well.
@@ -299,13 +307,17 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             }
             else
             {
-                TransactionTypeLiteral.Text = "<label>Purchase Type</label>";
+                ItemDropDownListCascadingDropDown.ServiceMethod = "GetStockItems";
+                TransactionTypeLiteral.Text = "<label>" + Resources.Titles.PurchaseType + "</label>";
 
                 PriceTypeLiteral.Visible = false;
                 PriceTypeDropDownList.Visible = false;
 
+                ShippingCompanyRow.Visible = false;
+                ShippingChargeRow.Visible = false;
 
-                if(MixERP.Net.BusinessLayer.Core.Switches.AllowNonSupplierInPurchase())
+
+                if(MixERP.Net.Common.Helpers.Switches.AllowNonSupplierInPurchase())
                 {
                     //This indicates that the admin has chosen to perform purchase transaction 
                     //with non suppliers or customers.
@@ -403,7 +415,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             int quantity = Pes.Utility.Conversion.TryCastInteger(QuantityTextBox.Text);
             string unit = UnitDropDownList.SelectedItem.Text;
             int unitId = Pes.Utility.Conversion.TryCastInteger(UnitDropDownList.SelectedItem.Value);
-            int itemInStock = 0;
+            decimal itemInStock = 0;
             decimal price = Pes.Utility.Conversion.TryCastDecimal(PriceTextBox.Text);
             decimal discount = Pes.Utility.Conversion.TryCastDecimal(DiscountTextBox.Text);
             decimal taxRate = Pes.Utility.Conversion.TryCastDecimal(TaxRateTextBox.Text);
@@ -495,13 +507,15 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 if(this.TransactionType == TranType.Sales)
                 {
-
-                    itemInStock = MixERP.Net.BusinessLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
-                    if(quantity > itemInStock)
+                    if(MixERP.Net.BusinessLayer.Core.Items.IsStockItem(itemCode))
                     {
-                        MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(QuantityTextBox);
-                        ErrorLabel.Text = String.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), Resources.Warnings.InsufficientStockWarning, itemInStock.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture()), UnitDropDownList.SelectedItem.Text, ItemDropDownList.SelectedItem.Text);
-                        return;
+                        itemInStock = MixERP.Net.BusinessLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
+                        if(quantity > itemInStock)
+                        {
+                            MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(QuantityTextBox);
+                            ErrorLabel.Text = String.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), Resources.Warnings.InsufficientStockWarning, itemInStock.ToString("G29", MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture()), UnitDropDownList.SelectedItem.Text, ItemDropDownList.SelectedItem.Text);
+                            return;
+                        }
                     }
                 }
             }

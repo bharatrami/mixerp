@@ -30,7 +30,7 @@ namespace MixERP.Net.FrontEnd.Services
         [WebMethod(EnableSession=true)]
         public CascadingDropDownNameValue[] GetAccounts(string knownCategoryValues, string category)
         {
-            if(MixERP.Net.BusinessLayer.Core.Switches.AllowParentAccountInGLTransaction())
+            if(MixERP.Net.Common.Helpers.Switches.AllowParentAccountInGLTransaction())
             {
                 if(MixERP.Net.BusinessLayer.Helpers.SessionHelper.IsAdmin())
                 {

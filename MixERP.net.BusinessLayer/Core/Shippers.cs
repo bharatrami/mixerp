@@ -16,7 +16,7 @@ namespace MixERP.Net.BusinessLayer.Core
     {
         public static string GetDisplayField()
         {
-            string displayField = Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPParameters", "ShipperDisplayField");
+            string displayField = Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPDbParameters", "ShipperDisplayField");
 
             if(string.IsNullOrWhiteSpace(displayField))
             {

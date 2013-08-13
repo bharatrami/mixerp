@@ -56,7 +56,7 @@ http://mozilla.org/MPL/2.0/.
                     </tr>
                     <tr style="vertical-align: middle;">
                         <td>
-                            <pes:DateTextBox ID="DateTextBox" runat="server" Width="70" CssClass="date" />
+                            <mixerp:DateTextBox ID="DateTextBox" runat="server" Width="70" CssClass="date" />
                         </td>
                         <td>
                             <asp:DropDownList ID="StoreDropDownList" runat="server" Width="80">
@@ -140,7 +140,7 @@ http://mozilla.org/MPL/2.0/.
                                     ToolTip="Ctrl + I" Width="300">
                                 </asp:DropDownList>
                                 <ajaxToolkit:CascadingDropDown ID="ItemDropDownListCascadingDropDown" runat="server"
-                                    TargetControlID="ItemDropDownList" Category="Item" ServiceMethod="GetItems"
+                                    TargetControlID="ItemDropDownList" Category="Item" 
                                     ServicePath="~/Services/ItemData.asmx"
                                     LoadingText="<%$Resources:Labels, Loading %>"
                                     PromptText="<%$Resources:Titles, Select %>">
@@ -206,7 +206,7 @@ http://mozilla.org/MPL/2.0/.
                 </asp:Panel>
                 <div class="vpad8"></div>
                 <asp:Table runat="server" CssClass="grid3 grid4">
-                    <asp:TableRow>
+                    <asp:TableRow ID="ShippingCompanyRow" runat="server">
                         <asp:TableCell>
                             <asp:Literal ID="ShippingCompanyDropDownListLabelLiteral" runat="server" />
                         </asp:TableCell>
@@ -215,7 +215,7 @@ http://mozilla.org/MPL/2.0/.
                             </asp:DropDownList>
                         </asp:TableCell>
                     </asp:TableRow>
-                    <asp:TableRow>
+                    <asp:TableRow ID="ShippingChargeRow" runat="server">
                         <asp:TableCell>
                             <asp:Literal ID="ShippingChargeTextBoxLabelLiteral" runat="server" />
                         </asp:TableCell>

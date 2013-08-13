@@ -18,8 +18,9 @@ namespace MixERP.Net.BusinessLayer.Transactions
     {
         public static long Add(DateTime valueDate, int storeId, bool isCredit, string partyCode, int priceTypeId, GridView grid, int shipperId, decimal shippingCharge, int cashRepositoryId, int costCenterId, string statementReference)
         {
-            MixERP.Net.DatabaseLayer.Transactions.Models.StockMasterModel stockMaster = new DatabaseLayer.Transactions.Models.StockMasterModel();
-            Collection<MixERP.Net.DatabaseLayer.Transactions.Models.StockMasterDetailModel> details = new Collection<DatabaseLayer.Transactions.Models.StockMasterDetailModel>();
+            MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster = new MixERP.Net.Common.Transactions.Models.StockMasterModel();
+            Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details = new Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel>();
+            long transactionMasterId = 0;
 
             stockMaster.PartyCode = partyCode;
             stockMaster.IsCredit = isCredit;
@@ -33,7 +34,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
                 {
                     foreach(GridViewRow row in grid.Rows)
                     {
-                        MixERP.Net.DatabaseLayer.Transactions.Models.StockMasterDetailModel detail = new DatabaseLayer.Transactions.Models.StockMasterDetailModel();
+                        MixERP.Net.Common.Transactions.Models.StockMasterDetailModel detail = new MixERP.Net.Common.Transactions.Models.StockMasterDetailModel();
 
                         detail.StoreId = storeId;
                         detail.ItemCode = row.Cells[0].Text;
@@ -50,7 +51,9 @@ namespace MixERP.Net.BusinessLayer.Transactions
             }
 
 
-            return MixERP.Net.DatabaseLayer.Transactions.DirectSales.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), storeId, cashRepositoryId, costCenterId, statementReference, stockMaster, details);
+            transactionMasterId = MixERP.Net.DatabaseLayer.Transactions.DirectSales.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), storeId, cashRepositoryId, costCenterId, statementReference, stockMaster, details);
+            MixERP.Net.DatabaseLayer.Transactions.Verification.CallAutoVerification(transactionMasterId);
+            return transactionMasterId;
         }
     }
 }

@@ -13,6 +13,15 @@ namespace MixERP.Net.FrontEnd.UserControls {
     public partial class TransactionChecklistControl {
         
         /// <summary>
+        /// TitleLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal TitleLiteral;
+        
+        /// <summary>
         /// VerificationLabel control.
         /// </summary>
         /// <remarks>
@@ -20,6 +29,15 @@ namespace MixERP.Net.FrontEnd.UserControls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label VerificationLabel;
+        
+        /// <summary>
+        /// ChecklistLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ChecklistLiteral;
         
         /// <summary>
         /// WithdrawButton control.
@@ -31,31 +49,31 @@ namespace MixERP.Net.FrontEnd.UserControls {
         protected global::System.Web.UI.WebControls.LinkButton WithdrawButton;
         
         /// <summary>
-        /// ViewButton control.
+        /// ViewInvoiceButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton ViewButton;
+        protected global::System.Web.UI.WebControls.LinkButton ViewInvoiceButton;
         
         /// <summary>
-        /// EmailButton control.
+        /// EmailInvoiceButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton EmailButton;
+        protected global::System.Web.UI.WebControls.LinkButton EmailInvoiceButton;
         
         /// <summary>
-        /// PrintButton control.
+        /// CustomerInvoiceButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton PrintButton;
+        protected global::System.Web.UI.WebControls.LinkButton CustomerInvoiceButton;
         
         /// <summary>
         /// PrintReceiptButton control.
@@ -67,13 +85,13 @@ namespace MixERP.Net.FrontEnd.UserControls {
         protected global::System.Web.UI.WebControls.LinkButton PrintReceiptButton;
         
         /// <summary>
-        /// ViewGLButton control.
+        /// PrintGLButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton ViewGLButton;
+        protected global::System.Web.UI.WebControls.LinkButton PrintGLButton;
         
         /// <summary>
         /// AttachmentButton control.
@@ -92,6 +110,60 @@ namespace MixERP.Net.FrontEnd.UserControls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton BackButton;
+        
+        /// <summary>
+        /// WithdrawTransactionLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal WithdrawTransactionLiteral;
+        
+        /// <summary>
+        /// ReasonLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ReasonLiteral;
+        
+        /// <summary>
+        /// ReasonTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ReasonTextBox;
+        
+        /// <summary>
+        /// ReasonTextBoxRequired control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator ReasonTextBoxRequired;
+        
+        /// <summary>
+        /// OKButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button OKButton;
+        
+        /// <summary>
+        /// CancelButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CancelButton;
         
         /// <summary>
         /// MessageLabel control.

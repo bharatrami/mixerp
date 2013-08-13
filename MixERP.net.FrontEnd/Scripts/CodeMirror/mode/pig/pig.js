@@ -166,6 +166,6 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
     name: "pig",
     builtins: keywords(pBuiltins),
     keywords: keywords(pKeywords),
-    types: keywords(pTypes)
+    tymixerp: keywords(pTypes)
   });
 }());

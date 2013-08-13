@@ -18,7 +18,8 @@ namespace MixERP.Net.BusinessLayer.Transactions
     {
         public static long Add(DateTime valueDate, string referenceNumber, int costCenterId, GridView grid)
         {
-            Collection<MixERP.Net.DatabaseLayer.Transactions.Models.TransactionDetailModel> details = new Collection<DatabaseLayer.Transactions.Models.TransactionDetailModel>();
+            Collection<MixERP.Net.Common.Transactions.Models.TransactionDetailModel> details = new Collection<MixERP.Net.Common.Transactions.Models.TransactionDetailModel>();
+            long transactionMasterId = 0;
 
             if(grid != null)
             {
@@ -26,7 +27,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
                 {
                     foreach(GridViewRow row in grid.Rows)
                     {
-                        MixERP.Net.DatabaseLayer.Transactions.Models.TransactionDetailModel detail = new DatabaseLayer.Transactions.Models.TransactionDetailModel();
+                        MixERP.Net.Common.Transactions.Models.TransactionDetailModel detail = new MixERP.Net.Common.Transactions.Models.TransactionDetailModel();
                         detail.AccountCode = row.Cells[0].Text;
                         detail.CashRepositoryName = row.Cells[2].Text;
                         detail.StatementReference = row.Cells[3].Text;
@@ -39,7 +40,9 @@ namespace MixERP.Net.BusinessLayer.Transactions
             }
 
 
-            return MixERP.Net.DatabaseLayer.Transactions.Transaction.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), costCenterId, referenceNumber, details);
+            transactionMasterId = MixERP.Net.DatabaseLayer.Transactions.Transaction.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), costCenterId, referenceNumber, details);
+            MixERP.Net.DatabaseLayer.Transactions.Verification.CallAutoVerification(transactionMasterId);
+            return transactionMasterId;
         }
     }
 }

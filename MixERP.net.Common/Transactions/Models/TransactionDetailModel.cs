@@ -10,13 +10,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.BusinessLayer.Transactions.Models
+namespace MixERP.Net.Common.Transactions.Models
 {
-    public class VerificationModel
+    public class TransactionDetailModel
     {
-        public short Verification { get; set; }
-        public string VerifierName { get; set; }
-        public DateTime VerifiedDate { get; set; }
-        public string VerificationReason { get; set; }
+        public long TransactionDetailId { get; set; }
+        public long TransactionMasterId { get; set; }
+        public string AccountCode { get; set; }
+        public string CashRepositoryName { get; set; }
+        public string StatementReference { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
     }
 }

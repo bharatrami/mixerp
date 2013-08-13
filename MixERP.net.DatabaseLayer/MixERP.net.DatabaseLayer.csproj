@@ -76,14 +76,10 @@
     <Compile Include="Office\Stores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\User.cs" />
+    <Compile Include="Transactions\DirectPurchase.cs" />
     <Compile Include="Transactions\DirectSales.cs" />
-    <Compile Include="Transactions\Models\StockMasterDetailModel.cs" />
-    <Compile Include="Transactions\Models\StockMasterModel.cs" />
-    <Compile Include="Transactions\Models\TranactionMasterModel.cs" />
-    <Compile Include="Transactions\Models\TransactionDetailModel.cs" />
-    <Compile Include="Transactions\Models\TransactionTypeDomain.cs" />
-    <Compile Include="Transactions\Models\VerificationDomain.cs" />
     <Compile Include="Transactions\Transaction.cs" />
+    <Compile Include="Transactions\Verification.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pes.Utility\Pes.Utility.csproj">

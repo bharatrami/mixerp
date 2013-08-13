@@ -306,7 +306,7 @@ CodeMirror.defineMode("python", function(conf, parserConf) {
         startState: function(basecolumn) {
             return {
               tokenize: tokenBase,
-              scopes: [{offset:basecolumn || 0, type:'py'}],
+              scomixerp: [{offset:basecolumn || 0, type:'py'}],
               lastToken: null,
               lambda: false,
               dedent: 0

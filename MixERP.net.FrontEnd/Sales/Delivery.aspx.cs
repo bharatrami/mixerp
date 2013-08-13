@@ -16,10 +16,37 @@ namespace MixERP.Net.FrontEnd.Sales
 {
     public partial class Delivery : MixERP.Net.BusinessLayer.BasePageClass
     {
- 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.LoadParmeters();
+            this.LoadGridView();
+        }
 
+        protected void GoButton_Click(object sender, EventArgs e)
+        {
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "account_mini_view", FilterDropDownList.SelectedItem.Value, FilterTextBox.Text, 10))
+            {
+                SearchGridView.DataSource = table;
+                SearchGridView.DataBind();
+            }
+        }
+
+        private void LoadParmeters()
+        {
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.TableHelper.GetTable("core", "account_mini_view", ""))
+            {
+                FilterDropDownList.DataSource = table;
+                FilterDropDownList.DataBind();
+            }
+        }
+
+        private void LoadGridView()
+        {
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "account_mini_view", "", "", 10))
+            {
+                SearchGridView.DataSource = table;
+                SearchGridView.DataBind();
+            }
         }
     }
 }

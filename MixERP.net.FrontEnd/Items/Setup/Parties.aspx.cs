@@ -20,5 +20,10 @@ namespace MixERP.Net.FrontEnd.Items.Setup
         {
 
         }
+
+        public string GetPartyNameParameter()
+        {
+            return Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPParameters", "PartyName");
+        }
     }
 }

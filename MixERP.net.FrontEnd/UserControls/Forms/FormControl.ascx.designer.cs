@@ -58,40 +58,58 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms {
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// AddNewLiteral control.
+        /// ShowCompactButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal AddNewLiteral;
+        protected global::System.Web.UI.WebControls.Button ShowCompactButton;
         
         /// <summary>
-        /// EditLinkButton control.
+        /// ShowAllButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton EditLinkButton;
+        protected global::System.Web.UI.WebControls.Button ShowAllButton;
         
         /// <summary>
-        /// DeleteLinkButton control.
+        /// AddButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton DeleteLinkButton;
+        protected global::System.Web.UI.WebControls.Button AddButton;
         
         /// <summary>
-        /// PrintLiteral control.
+        /// EditButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal PrintLiteral;
+        protected global::System.Web.UI.WebControls.Button EditButton;
+        
+        /// <summary>
+        /// DeleteButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DeleteButton;
+        
+        /// <summary>
+        /// PrintButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PrintButton;
         
         /// <summary>
         /// FormLabel control.
@@ -184,58 +202,58 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms {
         protected global::System.Web.UI.WebControls.Button CancelButton;
         
         /// <summary>
-        /// ShowCompact2 control.
+        /// ShowCompactButton2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton ShowCompact2;
+        protected global::System.Web.UI.WebControls.Button ShowCompactButton2;
         
         /// <summary>
-        /// ShowAll2 control.
+        /// ShowAllButton2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton ShowAll2;
+        protected global::System.Web.UI.WebControls.Button ShowAllButton2;
         
         /// <summary>
-        /// AddNewLiteral2 control.
+        /// AddButton2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal AddNewLiteral2;
+        protected global::System.Web.UI.WebControls.Button AddButton2;
         
         /// <summary>
-        /// EditLinkButton2 control.
+        /// EditButton2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton EditLinkButton2;
+        protected global::System.Web.UI.WebControls.Button EditButton2;
         
         /// <summary>
-        /// DeleteLinkButton2 control.
+        /// DeleteButton2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton DeleteLinkButton2;
+        protected global::System.Web.UI.WebControls.Button DeleteButton2;
         
         /// <summary>
-        /// PrintLiteral2 control.
+        /// PrintButton2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal PrintLiteral2;
+        protected global::System.Web.UI.WebControls.Button PrintButton2;
         
         /// <summary>
         /// UserIdHidden control.

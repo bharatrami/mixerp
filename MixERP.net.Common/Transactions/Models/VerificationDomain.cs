@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.DatabaseLayer.Transactions.Models
+namespace MixERP.Net.Common.Transactions.Models
 {
-    public enum VerificationType { Rejected, Closed, Locked, Awaiting, Approved }
+    public enum VerificationType { Rejected, Closed, Withdrawn, Unapproved, Approved }
 
     public static class VerificationDomain
     {
@@ -24,9 +24,9 @@ namespace MixERP.Net.DatabaseLayer.Transactions.Models
                     return -3;
                 case VerificationType.Closed:
                     return -2;
-                case VerificationType.Locked:
+                case VerificationType.Withdrawn:
                     return -1;
-                case VerificationType.Awaiting:
+                case VerificationType.Unapproved:
                     return 0;
                 case VerificationType.Approved:
                     return 1;

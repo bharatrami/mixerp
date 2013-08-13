@@ -34,9 +34,14 @@ namespace MixERP.Net.BusinessLayer.Core
             return MixERP.Net.DatabaseLayer.Core.Items.GetTaxRate(itemCode);
         }
 
-        public static int CountItemInStock(string itemCode, int unitId, int storeId)
+        public static decimal CountItemInStock(string itemCode, int unitId, int storeId)
         {
             return MixERP.Net.DatabaseLayer.Core.Items.CountItemInStock(itemCode, unitId, storeId);
+        }
+
+        public static bool IsStockItem(string itemCode)
+        {
+            return MixERP.Net.DatabaseLayer.Core.Items.IsStockItem(itemCode);
         }
     }
 }

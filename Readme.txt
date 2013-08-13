@@ -15,8 +15,10 @@ http://postgresql.org
 Please run the following database scripts under the directory "/MixERP.Net.FrontEnd/db/en-US/", in this order:
 
 1. mixerp.sql
-2. customer-sample.sql
-3. sample-data.sql
+2. mixerp-db-logic.sql
+3. party-sample.sql (optional)
+4. sample-data.sql  (optional)
+
 
 **Please Note:**
 If you are using PostgreSQL 9.2 and below, you would have to make a very minor change to 

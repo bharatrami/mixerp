@@ -11,12 +11,45 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace MixERP.Net.BusinessLayer
 {
     public class BasePageClass : System.Web.UI.Page
     {
+        /// <summary>
+        /// Use this parameter on the Page_Init event of member pages.
+        /// This parameter ensures that the user is not redirected to the login page 
+        /// even when the user is not logged in.
+        /// </summary>
         public bool NoLogOn { get; set; }
+        
+        /// <summary>
+        /// Since we save the menu on the database, this parameter is only used 
+        /// when there is no associated record of this page's url or path in the menu table.
+        /// Use this to override or fake the page's url or path. This forces navigation menus 
+        /// on the left hand side to be displayed in regards with the specified path.
+        /// </summary>
+        public string OverridePath { get; set; }
+        
+        protected override void OnLoad(EventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(OverridePath))
+            {
+                OverridePath = this.Page.Request.Url.AbsolutePath;
+            }
+            
+            Literal menuLiteral = ((Literal)Pes.Utility.PageUtility.FindControlIterative(this.Master, "ContentMenuLiteral"));
+
+            if(menuLiteral != null)
+            {
+                string menu = MixERP.Net.BusinessLayer.Helpers.MenuHelper.GetContentPageMenu(this.Page, this.OverridePath);
+                menuLiteral.Text = menu;            
+            }
+
+            base.OnLoad(e);
+        }
 
         protected override void OnInit(EventArgs e)
         {

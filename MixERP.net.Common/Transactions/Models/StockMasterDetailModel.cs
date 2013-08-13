@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.DatabaseLayer.Transactions.Models
+namespace MixERP.Net.Common.Transactions.Models
 {
     public class StockMasterDetailModel
     {

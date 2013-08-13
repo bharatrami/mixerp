@@ -12,7 +12,7 @@ http://mozilla.org/MPL/2.0/.
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:Form ID="UnitForm" runat="server" DenyAdd="false" DenyDelete="false" DenyEdit="false" KeyColumn="unit_id"
-        PageSize="10" TableSchema="core" Table="units" ViewSchema="core" View="units" Text="Unit of Measure" Width="1000" />
+        PageSize="10" TableSchema="core" Table="units" ViewSchema="core" View="units" Text="<%$Resources:Titles, UnitsOfMeasure %>" Width="1000" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

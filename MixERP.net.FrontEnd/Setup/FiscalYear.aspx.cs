@@ -14,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Setup
 {
-    public partial class FiscalYear : System.Web.UI.Page
+    public partial class FiscalYear : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

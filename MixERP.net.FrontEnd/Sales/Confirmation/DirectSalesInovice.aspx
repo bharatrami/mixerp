@@ -14,25 +14,9 @@ http://mozilla.org/MPL/2.0/.
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-        
+    <form id="form1" runat="server">        
     <mixerp:Report ID="DirectSalesInvoiceReport" runat="server" 
         ReportPath="~/Reports/Sources/Sales.View.Sales.Invoice.xml" AutoInitialize="true" />
     </form>
 </body>
 </html>
-
-<script runat="server">
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>> parameters = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>>();
-
-        System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> list = new System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>();
-        list.Add(new KeyValuePair<string, string>("@transaction_master_id", this.Request["TranId"]));
-
-        parameters.Add(list);
-        parameters.Add(list);
-
-        DirectSalesInvoiceReport.Parameters = parameters;
-    }
-</script>

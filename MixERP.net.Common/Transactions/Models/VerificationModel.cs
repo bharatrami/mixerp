@@ -10,16 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.DatabaseLayer.Transactions.Models
+namespace MixERP.Net.Common.Transactions.Models
 {
-    public class StockMasterModel
+    public class VerificationModel
     {
-        public long StockMasterId { get; set; }
-        public long TransactionMasterId { get; set; }
-        public string PartyCode { get; set; }
-        public int PriceTypeId { get; set; }
-        public bool IsCredit { get; set; }
-        public int ShipperId { get; set; }
-        public decimal ShippingCharge { get; set; }
+        public short Verification { get; set; }
+        public int VerifierUserId { get; set; }
+        public string VerifierName { get; set; }
+        public DateTime VerifiedDate { get; set; }
+        public string VerificationReason { get; set; }
     }
 }

@@ -106,8 +106,9 @@ input, select
             color: #FFFF00;
         }
 
-#menu a, #menu a:visited, a.menu, a.menu:visited
+#menu a, #menu a:visited, .menu, .menu:visited
 {
+    cursor:pointer;
     background-color: #9374CB;
     color: White;
     text-decoration: none;
@@ -116,7 +117,7 @@ input, select
     margin-right: 4px;
 }
 
-    #menu a:hover, a.menu:hover
+    #menu a:hover, .menu:hover
     {
         background-color: #0D9EEC;
         border: 1px solid #0C89CD;
@@ -753,7 +754,7 @@ input.date
     cursor:pointer;
 }
 
-.description, .info
+.description
 {
     display: block;
     font-weight: bold;
@@ -763,7 +764,7 @@ input.date
     color: #333333;
 }
 
-.description:hover, .info:hover
+.description:hover
 {
     background-color: #E1CEFF;
     color: #4A1689;
@@ -803,4 +804,10 @@ input.date
 .valignmiddle tr td
 {
     vertical-align:middle!important;
+}
+
+
+.linkbutton
+{
+    color: #9900CC!important;
 }

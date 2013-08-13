@@ -22,6 +22,24 @@ namespace MixERP.Net.FrontEnd {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// SignInLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal SignInLiteral;
+        
+        /// <summary>
+        /// UserIdLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal UserIdLiteral;
+        
+        /// <summary>
         /// UserIdTextBox control.
         /// </summary>
         /// <remarks>
@@ -31,6 +49,15 @@ namespace MixERP.Net.FrontEnd {
         protected global::System.Web.UI.WebControls.TextBox UserIdTextBox;
         
         /// <summary>
+        /// PasswordLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal PasswordLiteral;
+        
+        /// <summary>
         /// PasswordTextBox control.
         /// </summary>
         /// <remarks>
@@ -38,6 +65,15 @@ namespace MixERP.Net.FrontEnd {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PasswordTextBox;
+        
+        /// <summary>
+        /// SelectBranchLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal SelectBranchLiteral;
         
         /// <summary>
         /// BranchDropDownList control.
@@ -83,5 +119,14 @@ namespace MixERP.Net.FrontEnd {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SignInButton;
+        
+        /// <summary>
+        /// CantAccessAccountLinkButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton CantAccessAccountLinkButton;
     }
 }

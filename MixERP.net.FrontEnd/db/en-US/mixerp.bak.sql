@@ -37,11 +37,14 @@ CREATE TABLE core.verification_statuses
 CREATE UNIQUE INDEX verification_statuses_verification_status_name_uix
 ON core.verification_statuses(UPPER(verification_status_name));
 
+
+--These are hardcoded values and therefore the meanings should always remain intact
+--regardless of the language.
 INSERT INTO core.verification_statuses
 SELECT -3, 'Rejected' UNION ALL
 SELECT -2, 'Closed' UNION ALL
 SELECT -1, 'Withdrawn' UNION ALL
-SELECT 0, 'Unapproved' UNION ALL
+SELECT 0, 'Unverified' UNION ALL
 SELECT 1, 'Automatically Approved by Workflow' UNION ALL
 SELECT 2, 'Approved';
 
@@ -58,7 +61,7 @@ CHECK
 );
 
 /*******************************************************************
-	MIXERP STRICT DATATYPES: NEGATIVES ARE NOT ALLOWED
+	MIXERP STRICT DATATYmixerp: NEGATIVES ARE NOT ALLOWED
 *******************************************************************/
 
 DROP DOMAIN IF EXISTS money_strict;
@@ -377,6 +380,20 @@ END
 $$
 LANGUAGE plpgsql;
 
+CREATE FUNCTION office.get_user_name_by_user_id(user_id integer)
+RETURNS text
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT office.users.user_name FROM office.users
+		WHERE office.users.user_id=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE FUNCTION office.get_role_id_by_use_id(user_id integer_strict)
 RETURNS integer
 AS
@@ -417,7 +434,7 @@ BEGIN
 		SELECT office.users.user_id 
 		FROM office.roles, office.users
 		WHERE office.roles.role_id = office.users.role_id
-		AND office.roles.role_code='SYST' LIMIT 1
+		AND office.roles.is_system=true LIMIT 1
 	);
 END
 $$
@@ -808,7 +825,7 @@ UNION ALL SELECT 'Transaction Document Manager', '/Finance/TransactionDocumentMa
 UNION ALL SELECT 'Setup & Maintenance', NULL, 'FSM', 1, core.get_menu_id('FI')
 UNION ALL SELECT 'Chart of Accounts', '/Finance/Setup/COA.aspx', 'COA', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Currency Management', '/Finance/Setup/Currencies.aspx', 'CUR', 2, core.get_menu_id('FSM')
-UNION ALL SELECT 'Cash & Bank Accounts', '/Finance/Setup/CashBankAccounts.aspx', 'CBA', 2, core.get_menu_id('FSM')
+UNION ALL SELECT 'Bank Accounts', '/Finance/Setup/BankAccounts.aspx', 'CBA', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Product GL Mapping', '/Finance/Setup/ProductGLMapping.aspx', 'PGM', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Budgets & Targets', '/Finance/Setup/BudgetAndTarget.aspx', 'BT', 2, core.get_menu_id('FSM')
 UNION ALL SELECT 'Ageing Slabs', '/Finance/Setup/AgeingSlabs.aspx', 'AGS', 2, core.get_menu_id('FSM')
@@ -1433,19 +1450,50 @@ END
 $$
 LANGUAGE plpgsql;
 
+
+CREATE FUNCTION core.get_cash_account_id()
+RETURNS integer
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT account_id
+		FROM core.accounts
+		WHERE is_cash=true
+		LIMIT 1
+	);
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE VIEW core.account_view
 AS
-SELECT 
+SELECT
+	core.accounts.account_id,
+	core.account_masters.account_master_code,
+	core.accounts.account_code,
+	core.accounts.external_code,
+	core.accounts.account_name,
+	core.accounts.confidential,
+	core.accounts.description,
+	core.accounts.sys_type,
+	core.accounts.is_cash,
+	parent_account.account_code || ' (' || parent_account.account_name || ')' AS parent,
+	core.has_child_accounts(core.accounts.account_id) AS has_child
+FROM core.accounts
+INNER JOIN core.account_masters
+ON core.account_masters.account_master_id=core.accounts.account_master_id
+LEFT JOIN core.accounts parent_account
+ON parent_account.account_id=core.accounts.parent_account_id;
+
+CREATE VIEW core.account_mini_view
+AS
+SELECT
 	account_id,
-	account_master_id,
 	account_code,
-	external_code,
-	confidential,
 	account_name,
-	description,
-	sys_type,
-	parent_account_id,
-	core.has_child_accounts(account_id) AS has_child
+	external_code
 FROM core.accounts;
 
 
@@ -1751,7 +1799,6 @@ ON core.account_parameters(UPPER(parameter_name));
 
 INSERT INTO core.account_parameters(parameter_name, account_id)
 SELECT 'Sales', core.get_account_id_by_account_code('30100') UNION ALL
-SELECT 'Sales.Cash', core.get_account_id_by_account_code('10200') UNION ALL
 SELECT 'Sales.Receivables', core.get_account_id_by_account_code('10400') UNION ALL
 SELECT 'Sales.Discount', core.get_account_id_by_account_code('30700') UNION ALL
 SELECT 'Sales.Tax', core.get_account_id_by_account_code('20700') UNION ALL
@@ -1798,15 +1845,11 @@ END
 $$
 LANGUAGE plpgsql;
 
--- SELECT * FROM core.accounts
--- WHERE account_name like '%Cash%'
-
-CREATE TABLE core.cash_bank_accounts
+CREATE TABLE core.bank_accounts
 (
-	account_id integer NOT NULL CONSTRAINT cash_bank_accounts_pk PRIMARY KEY
-								CONSTRAINT cash_bank_accounts_accounts_fk REFERENCES core.accounts(account_id),
-	maintained_by_user_id integer NOT NULL CONSTRAINT cash_bank_accounts_users_fk REFERENCES office.users(user_id),
-	is_cash boolean NOT NULL,
+	account_id integer NOT NULL CONSTRAINT bank_accounts_pk PRIMARY KEY
+								CONSTRAINT bank_accounts_accounts_fk REFERENCES core.accounts(account_id),
+	maintained_by_user_id integer NOT NULL CONSTRAINT bank_accounts_users_fk REFERENCES office.users(user_id),
 	bank_name national character varying(128) NOT NULL,
 	bank_branch national character varying(128) NOT NULL,
 	bank_contact_number national character varying(128) NULL,
@@ -1817,25 +1860,24 @@ CREATE TABLE core.cash_bank_accounts
 );
 
 
-CREATE VIEW core.cash_bank_account_view
+CREATE VIEW core.bank_account_view
 AS
 SELECT
 	core.accounts.account_id,
 	core.accounts.account_code,
 	core.accounts.account_name,
-	core.cash_bank_accounts.is_cash,
 	office.users.user_name AS maintained_by,
-	core.cash_bank_accounts.bank_name,
-	core.cash_bank_accounts.bank_branch,
-	core.cash_bank_accounts.bank_contact_number,
-	core.cash_bank_accounts.bank_address,
-	core.cash_bank_accounts.bank_account_code,
-	core.cash_bank_accounts.bank_account_type,
-	core.cash_bank_accounts.relationship_officer_name AS relation_officer
+	core.bank_accounts.bank_name,
+	core.bank_accounts.bank_branch,
+	core.bank_accounts.bank_contact_number,
+	core.bank_accounts.bank_address,
+	core.bank_accounts.bank_account_code,
+	core.bank_accounts.bank_account_type,
+	core.bank_accounts.relationship_officer_name AS relation_officer
 FROM
-	core.cash_bank_accounts
-INNER JOIN core.accounts ON core.accounts.account_id = core.cash_bank_accounts.account_id
-INNER JOIN office.users ON core.cash_bank_accounts.maintained_by_user_id = office.users.user_id;
+	core.bank_accounts
+INNER JOIN core.accounts ON core.accounts.account_id = core.bank_accounts.account_id
+INNER JOIN office.users ON core.bank_accounts.maintained_by_user_id = office.users.user_id;
 
 CREATE TABLE core.agents
 (
@@ -1992,6 +2034,7 @@ CREATE TABLE core.parties
 	last_name national character varying(50) NOT NULL,
 	party_name text NULL,
 	date_of_birth date NULL,
+	address national character varying(50) NULL,
 	street national character varying(50) NULL,
 	city national character varying(50) NULL,
 	state national character varying(50) NULL,
@@ -2002,19 +2045,10 @@ CREATE TABLE core.parties
 	cell national character varying(24) NULL,
 	email national character varying(128) NULL,
 	url national character varying(50) NULL,
-	contact_person national character varying(50) NULL,
-	contact_street national character varying(50) NULL,
-	contact_city national character varying(50) NULL,
-	contact_state national character varying(50) NULL,
-	contact_country national character varying(50) NULL,
-	contact_email national character varying(128) NULL,
-	contact_phone national character varying(50) NULL,
-	contact_cell national character varying(50) NULL,
 	pan_number national character varying(50) NULL,
 	sst_number national character varying(50) NULL,
 	cst_number national character varying(50) NULL,
 	allow_credit boolean NULL,
-	mimimum_credit_amount money NULL,
 	maximum_credit_period smallint NULL,
 	maximum_credit_amount money NULL,
 	charge_interest boolean NULL,
@@ -2096,16 +2130,13 @@ $$
 BEGIN
 	UPDATE core.parties
 	SET 
-		party_code=core.get_party_code(NEW.first_name, NEW.middle_name, NEW.last_name),
-		party_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
+		party_code=core.get_party_code(NEW.first_name, NEW.middle_name, NEW.last_name)
 	WHERE core.parties.party_id=NEW.party_id;
 	
 	RETURN NEW;
 END
 $$
 LANGUAGE plpgsql;
-
-
 
 CREATE TRIGGER update_party_code
 AFTER INSERT
@@ -2160,6 +2191,7 @@ SELECT
 	core.parties.middle_name,
 	core.parties.last_name,
 	core.parties.party_name,
+	core.parties.address,
 	core.parties.street,
 	core.parties.city,
 	core.parties.state,
@@ -2177,15 +2209,7 @@ SELECT
 	core.parties.fax,
 	core.parties.cell,
 	core.parties.email,
-	core.parties.url,	
-	core.parties.contact_person,
-	core.parties.contact_street,
-	core.parties.contact_city,
-	core.parties.contact_state,
-	core.parties.contact_country,
-	core.parties.contact_email,
-	core.parties.contact_phone,
-	core.parties.contact_cell
+	core.parties.url
 FROM
 core.parties
 INNER JOIN
@@ -2547,81 +2571,6 @@ LEFT JOIN
 	core.party_types
 ON	core.item_selling_prices.party_type_id = core.party_types.party_type_id;
 
-
-CREATE FUNCTION core.get_item_selling_price(item_id_ integer, party_type_id_ integer, price_type_id_ integer, unit_id_ integer)
-RETURNS money
-AS
-$$
-	DECLARE _price money;
-	DECLARE _unit_id integer;
-	DECLARE _factor decimal;
-	DECLARE _tax_rate decimal;
-	DECLARE _includes_tax boolean;
-	DECLARE _tax money;
-BEGIN
-
-	--Fist pick the catalog price which matches all these fields:
-	--Item, Customer Type, Price Type, and Unit.
-	--This is the most effective price.
-	SELECT 
-		item_selling_prices.price, 
-		item_selling_prices.unit_id,
-		item_selling_prices.includes_tax
-	INTO 
-		_price, 
-		_unit_id,
-		_includes_tax		
-	FROM core.item_selling_prices
-	WHERE item_selling_prices.item_id=$1
-	AND item_selling_prices.party_type_id=$2
-	AND item_selling_prices.price_type_id =$3
-	AND item_selling_prices.unit_id = $4;
-
-	IF(_unit_id IS NULL) THEN
-		--We do not have a selling price of this item for the unit supplied.
-		--Let's see if this item has a price for other units.
-		SELECT 
-			item_selling_prices.price, 
-			item_selling_prices.unit_id,
-			item_selling_prices.includes_tax
-		INTO 
-			_price, 
-			_unit_id,
-			_includes_tax
-		FROM core.item_selling_prices
-		WHERE item_selling_prices.item_id=$1
-		AND item_selling_prices.party_type_id=$2
-		AND item_selling_prices.price_type_id =$3;
-	END IF;
-
-	
-	IF(_price IS NULL) THEN
-		--This item does not have selling price defined in the catalog.
-		--Therefore, getting the default selling price from the item definition.
-		SELECT 
-			selling_price, 
-			unit_id,
-			selling_price_includes_tax
-		INTO 
-			_price, 
-			_unit_id,
-			_includes_tax
-		FROM core.items
-		WHERE core.items.item_id = $1;
-	END IF;
-
-	IF(_includes_tax) THEN
-		_tax_rate := core.get_item_tax_rate($1);
-		_price := _price / ((100 + _tax_rate)/ 100);
-	END IF;
-
-	--Get the unitary conversion factor if the requested unit does not match with the price defition.
-	_factor := core.convert_unit($4, _unit_id);
-
-	RETURN _price * _factor;
-END
-$$
-LANGUAGE plpgsql;
 
 
 CREATE TABLE core.item_cost_prices
@@ -3035,6 +2984,7 @@ CREATE TABLE transactions.transaction_master
 	cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id),
 	ref_no national character varying(24) NULL,
 	statement_reference text NULL,
+	last_verified_on TIMESTAMP WITH TIME ZONE NULL, 
 	verified_by_user_id integer NULL REFERENCES office.users(user_id),
 	verification_status_id smallint NOT NULL REFERENCES core.verification_statuses(verification_status_id) DEFAULT(0/*Awaiting verification*/),
 	verification_reason national character varying(128) NOT NULL CONSTRAINT transaction_master_verification_reason_df DEFAULT(''),
@@ -3204,11 +3154,11 @@ CREATE FUNCTION core.count_item_in_stock(item_id_ integer, unit_id_ integer, sto
 RETURNS decimal
 AS
 $$
-DECLARE _base_unit_id integer;
-DECLARE _debit integer;
-DECLARE _credit integer;
-DECLARE _balance integer;
-DECLARE _factor decimal;
+	DECLARE _base_unit_id integer;
+	DECLARE _debit integer;
+	DECLARE _credit integer;
+	DECLARE _balance integer;
+	DECLARE _factor decimal;
 BEGIN
 
 	--Get the base item unit
@@ -3310,4 +3260,105 @@ ON office.work_centers.office_id = office.offices.office_id;
 
 
 
+CREATE FUNCTION office.is_admin(integer)
+RETURNS boolean
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT office.roles.is_admin FROM office.users
+		INNER JOIN office.roles
+		ON office.users.role_id = office.roles.role_id
+		WHERE office.users.user_id=$1
+	);
+END
+$$
+LANGUAGE PLPGSQL;
 
+
+CREATE FUNCTION office.is_sys(integer)
+RETURNS boolean
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT office.roles.is_system FROM office.users
+		INNER JOIN office.roles
+		ON office.users.role_id = office.roles.role_id
+		WHERE office.users.user_id=$1
+	);
+END
+$$
+LANGUAGE PLPGSQL;
+
+
+
+CREATE TABLE policy.voucher_verification_policy
+(
+	user_id					integer NOT NULL PRIMARY KEY REFERENCES office.users(user_id),
+	can_verify_sales_transactions		boolean NOT NULL CONSTRAINT voucher_verification_policy_verify_sales_df DEFAULT(false),
+	sales_verification_limit		money NOT NULL CONSTRAINT voucher_verification_policy_sales_verification_limit_df DEFAULT(0),
+	can_verify_purchase_transactions	boolean NOT NULL CONSTRAINT voucher_verification_policy_verify_purchase_df DEFAULT(false),
+	purchase_verification_limit		money NOT NULL CONSTRAINT voucher_verification_policy_purchase_verification_limit_df DEFAULT(0),
+	can_verify_gl_transactions		boolean NOT NULL CONSTRAINT voucher_verification_policy_verify_gl_df DEFAULT(false),
+	gl_verification_limit			money NOT NULL CONSTRAINT voucher_verification_policy_gl_verification_limit_df DEFAULT(0),
+	can_self_verify				boolean NOT NULL CONSTRAINT voucher_verification_policy_verify_self_df DEFAULT(false),
+	self_verification_limit			money NOT NULL CONSTRAINT voucher_verification_policy_self_verification_limit_df DEFAULT(0),
+	effective_from				date NOT NULL,
+	ends_on					date NOT NULL,
+	is_active				boolean NOT NULL
+);
+
+CREATE VIEW policy.voucher_verification_policy_view
+AS
+SELECT
+	policy.voucher_verification_policy.user_id,
+	office.users.user_name,
+	policy.voucher_verification_policy.can_verify_sales_transactions,
+	policy.voucher_verification_policy.sales_verification_limit,
+	policy.voucher_verification_policy.can_verify_purchase_transactions,
+	policy.voucher_verification_policy.purchase_verification_limit,
+	policy.voucher_verification_policy.can_verify_gl_transactions,
+	policy.voucher_verification_policy.gl_verification_limit,
+	policy.voucher_verification_policy.can_self_verify,
+	policy.voucher_verification_policy.self_verification_limit,
+	policy.voucher_verification_policy.effective_from,
+	policy.voucher_verification_policy.ends_on,
+	policy.voucher_verification_policy.is_active
+FROM policy.voucher_verification_policy
+INNER JOIN office.users
+ON policy.voucher_verification_policy.user_id=office.users.user_id;
+
+CREATE TABLE policy.auto_verification_policy
+(
+	user_id					integer NOT NULL PRIMARY KEY REFERENCES office.users(user_id),
+	verify_sales_transactions		boolean NOT NULL CONSTRAINT auto_verification_policy_verify_sales_df DEFAULT(false),
+	sales_verification_limit		money NOT NULL CONSTRAINT auto_verification_policy_sales_verification_limit_df DEFAULT(0),
+	verify_purchase_transactions		boolean NOT NULL CONSTRAINT auto_verification_policy_verify_purchase_df DEFAULT(false),
+	purchase_verification_limit		money NOT NULL CONSTRAINT auto_verification_policy_purchase_verification_limit_df DEFAULT(0),
+	verify_gl_transactions			boolean NOT NULL CONSTRAINT auto_verification_policy_verify_gl_df DEFAULT(false),
+	gl_verification_limit			money NOT NULL CONSTRAINT auto_verification_policy_gl_verification_limit_df DEFAULT(0),
+	effective_from				date NOT NULL,
+	ends_on					date NOT NULL,
+	is_active				boolean NOT NULL
+);
+
+CREATE VIEW policy.auto_verification_policy_view
+AS
+SELECT
+	policy.auto_verification_policy.user_id,
+	office.users.user_name,
+	policy.auto_verification_policy.verify_sales_transactions,
+	policy.auto_verification_policy.sales_verification_limit,
+	policy.auto_verification_policy.verify_purchase_transactions,
+	policy.auto_verification_policy.purchase_verification_limit,
+	policy.auto_verification_policy.verify_gl_transactions,
+	policy.auto_verification_policy.gl_verification_limit,
+	policy.auto_verification_policy.effective_from,
+	policy.auto_verification_policy.ends_on,
+	policy.auto_verification_policy.is_active
+FROM policy.auto_verification_policy
+INNER JOIN office.users
+ON policy.auto_verification_policy.user_id=office.users.user_id;

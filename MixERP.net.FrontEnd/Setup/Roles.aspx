@@ -17,7 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000"
         TableSchema="office" Table="roles" 
         ViewSchema="office" View="roles" 
-        Text="Role Maintenance"
+        Text="<%$Resources:Titles, RoleMaintenance %>"
         SelectedValues=""
         DisplayFields=""
           />

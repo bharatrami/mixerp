@@ -45,11 +45,27 @@ namespace MixERP.Net.BusinessLayer.Helpers
             return null;
         }
 
+
         public static DataTable GetTable(string tableSchema, string tableName, string columnNames, string columnValues)
         {
             try
             {
                 return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName, columnNames, columnValues);
+            }
+            catch(DbException ex)
+            {
+                MixERP.Net.Common.ExceptionManager.HandleException(ex);
+            }
+
+            return null;
+        }
+
+
+        public static DataTable GetTable(string tableSchema, string tableName, string columnNames, string columnValuesLike, int limit)
+        {
+            try
+            {
+                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName, columnNames, columnValuesLike, limit);
             }
             catch(DbException ex)
             {

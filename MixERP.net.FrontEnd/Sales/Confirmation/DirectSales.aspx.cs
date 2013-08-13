@@ -14,8 +14,13 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Sales.Confirmation
 {
-    public partial class DirectSales : System.Web.UI.Page
+    public partial class DirectSales : MixERP.Net.BusinessLayer.BasePageClass
     {
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            this.OverridePath = "/Sales/DirectSales.aspx";
+        }
+        
         protected void Page_Load(object sender, EventArgs e)
         {
 

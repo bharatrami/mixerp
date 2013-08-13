@@ -12,7 +12,7 @@ http://mozilla.org/MPL/2.0/.
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:Product runat="server" ID="GoodReceiptNote"
-       TransactionType="Purchase" Text="Goods Receipt Note"
+       TransactionType="Purchase" Text="<%$Resources:Titles, GoodsReceiptNote %>"
         ShowTransactionType="false"
          />
 </asp:Content>

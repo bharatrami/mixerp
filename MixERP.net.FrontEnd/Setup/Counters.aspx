@@ -17,7 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000"
         TableSchema="office" Table="counters" 
         ViewSchema="office" View="counters" 
-        Text="Counter Maintenance"
+        Text="<%$Resources:Titles, Counters %>"
         SelectedValues=""
         DisplayFields="office.cash_repositories.cash_repository_id-->cash_repository_code + ' (' + cash_repository_name + ')', office.stores.store_id-->store_code + ' (' + store_name + ')'"
           />

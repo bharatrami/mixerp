@@ -532,7 +532,7 @@ CodeMirror.defineMode("css-base", function(config, parserConfig) {
   }
 
   CodeMirror.defineMIME("text/css", {
-    atMediaTypes: atMediaTypes,
+    atMediaTymixerp: atMediaTypes,
     atMediaFeatures: atMediaFeatures,
     propertyKeywords: propertyKeywords,
     colorKeywords: colorKeywords,
@@ -567,7 +567,7 @@ CodeMirror.defineMode("css-base", function(config, parserConfig) {
   });
 
   CodeMirror.defineMIME("text/x-scss", {
-    atMediaTypes: atMediaTypes,
+    atMediaTymixerp: atMediaTypes,
     atMediaFeatures: atMediaFeatures,
     propertyKeywords: propertyKeywords,
     colorKeywords: colorKeywords,

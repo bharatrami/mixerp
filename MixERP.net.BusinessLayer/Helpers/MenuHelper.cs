@@ -16,14 +16,14 @@ namespace MixERP.Net.BusinessLayer.Helpers
 {
     public static class MenuHelper
     {
-        public static string GetContentPageMenu(System.Web.UI.Page page)
+        public static string GetContentPageMenu(System.Web.UI.Page page, string path)
         {
             if(page != null)
             {
                 try
                 {
                     string menu = string.Empty;
-                    using(DataTable table = MixERP.Net.BusinessLayer.Core.Menu.GetRootMenuTable(page.Request.Url.AbsolutePath))
+                    using(DataTable table = MixERP.Net.BusinessLayer.Core.Menu.GetRootMenuTable(path))
                     {
                         if(table.Rows.Count > 0)
                         {

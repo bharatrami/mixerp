@@ -148,6 +148,9 @@
   <data name="NoItemFound" xml:space="preserve">
     <value>No item found.</value>
   </data>
+  <data name="NotEnoughCash" xml:space="preserve">
+    <value>Not enough cash in the repository.</value>
+  </data>
   <data name="OnlyNumbersAllowed" xml:space="preserve">
     <value>Only numbers are allowed.</value>
   </data>
@@ -162,5 +165,8 @@
   </data>
   <data name="UnknownTransactionType" xml:space="preserve">
     <value>Unknown transaction type.</value>
+  </data>
+  <data name="UserIdOrPasswordIncorrect" xml:space="preserve">
+    <value>User id or password incorrect.</value>
   </data>
 </root>

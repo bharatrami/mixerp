@@ -8,18 +8,17 @@ http://mozilla.org/MPL/2.0/.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-namespace MixERP.Net.DatabaseLayer.Transactions.Models
+namespace MixERP.Net.FrontEnd.Purchase.Confirmation
 {
-    public class TransactionDetailModel
+    public partial class DirectPurchase : System.Web.UI.Page
     {
-        public long TransactionDetailId { get; set; }
-        public long TransactionMasterId { get; set; }
-        public string AccountCode { get; set; }
-        public string CashRepositoryName { get; set; }
-        public string StatementReference { get; set; }
-        public decimal Debit { get; set; }
-        public decimal Credit { get; set; }
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

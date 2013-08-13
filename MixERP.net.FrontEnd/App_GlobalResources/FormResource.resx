@@ -993,4 +993,55 @@
   <data name="external_code" xml:space="preserve">
     <value>External Code</value>
   </data>
+  <data name="can_self_verify" xml:space="preserve">
+    <value>Can Self Verify</value>
+  </data>
+  <data name="can_verify_gl_transactions" xml:space="preserve">
+    <value>Can Verify GL Transactions</value>
+  </data>
+  <data name="can_verify_purchase_transactions" xml:space="preserve">
+    <value>Can Verify Purchase Transactions</value>
+  </data>
+  <data name="can_verify_sales_transactions" xml:space="preserve">
+    <value>Can Verify Sales Transactions</value>
+  </data>
+  <data name="effective_from" xml:space="preserve">
+    <value>Effective From</value>
+  </data>
+  <data name="is_active" xml:space="preserve">
+    <value>Is Active</value>
+  </data>
+  <data name="gl_verification_limit" xml:space="preserve">
+    <value>GL Verification Limit</value>
+  </data>
+  <data name="purchase_verification_limit" xml:space="preserve">
+    <value>Purchase Verification Limit</value>
+  </data>
+  <data name="sales_verification_limit" xml:space="preserve">
+    <value>Sales Verification Limit</value>
+  </data>
+  <data name="self_verification_limit" xml:space="preserve">
+    <value>Selft Verification Limit</value>
+  </data>
+  <data name="verify_gl_transactions" xml:space="preserve">
+    <value>Verify GL Transactions</value>
+  </data>
+  <data name="verify_purchase_transactions" xml:space="preserve">
+    <value>Verify Purchase Transactions</value>
+  </data>
+  <data name="verify_sales_transactions" xml:space="preserve">
+    <value>Verify Sales Transactions</value>
+  </data>
+  <data name="is_admin" xml:space="preserve">
+    <value>Is Admin</value>
+  </data>
+  <data name="is_system" xml:space="preserve">
+    <value>Is System</value>
+  </data>
+  <data name="parent" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="has_child" xml:space="preserve">
+    <value>Has Child</value>
+  </data>
 </root>

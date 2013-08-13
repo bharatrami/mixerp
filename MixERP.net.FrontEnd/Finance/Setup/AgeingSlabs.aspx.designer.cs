@@ -13,12 +13,12 @@ namespace MixERP.Net.FrontEnd.Finance.Setup {
     public partial class AgeingSlabs {
         
         /// <summary>
-        /// FormPlaceHolder control.
+        /// AgeingSlabForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder FormPlaceHolder;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl AgeingSlabForm;
     }
 }

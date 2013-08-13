@@ -22,30 +22,62 @@ http://mozilla.org/MPL/2.0/.
 </h1>
 <hr class="hr" />
 
-<asp:Label ID="DescriptionLabel" runat="server" />    
+<asp:Label ID="DescriptionLabel" runat="server" />
 
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
     <Triggers>
         <asp:AsyncPostBackTrigger ControlID="SaveButton" />
         <asp:AsyncPostBackTrigger ControlID="CancelButton" />
-        <asp:AsyncPostBackTrigger ControlID="EditLinkButton2" />
-        <asp:AsyncPostBackTrigger ControlID="DeleteLinkButton2" />
-        <asp:AsyncPostBackTrigger ControlID="EditLinkButton" />
-        <asp:AsyncPostBackTrigger ControlID="DeleteLinkButton" />
+        <asp:AsyncPostBackTrigger ControlID="EditButton2" />
+        <asp:AsyncPostBackTrigger ControlID="DeleteButton2" />
+        <asp:AsyncPostBackTrigger ControlID="EditButton" />
+        <asp:AsyncPostBackTrigger ControlID="DeleteButton" />
     </Triggers>
     <ContentTemplate>
         <div class="vpad16">
-            <a href="#" id="ShowCompactAnchor" class="menu" onclick="window.location = window.location.pathname + '?show=compact';">Show Compact</a>
-            <a href="#" id="ShowAllAnchor" class="menu" onclick="window.location = window.location.pathname + '?show=all';">Show All</a>
-            <a href="#" id="AddAnchor" class="menu" onclick="$('#FormGridView tr').find('td input:radio').removeAttr('checked');$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">
-                <asp:Literal ID="AddNewLiteral" runat="server" Text="<%$Resources:Titles, AddNew %>" /></a>
-            <asp:LinkButton ID="EditLinkButton" runat="server" Text="<%$Resources:Titles, EditSelected %>" CssClass="menu"
-                OnClick="EditLinkButton_Click" OnClientClick="return(confirmAction());" CausesValidation="false" />
-            <asp:LinkButton ID="DeleteLinkButton" runat="server" Text="<%$Resources:Titles, DeleteSelected %>" CssClass="menu" CausesValidation="false"
-                OnClick="DeleteLinkButton_Click" OnClientClick="return(confirmAction());" />
-            <a href="#" id="PrintAnchor" class="menu" onclick="printThis();">
-                <asp:Literal ID="PrintLiteral" runat="server" Text="<%$Resources:Titles, Print %>" />
-            </a>
+            <asp:Button ID="ShowCompactButton" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, ShowCompact %>"
+                ToolTip="Alt + C"
+                OnClientClick="showCompact();"
+                CausesValidation="false" />
+
+            <asp:Button ID="ShowAllButton" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, ShowAll %>"
+                ToolTip="Ctrl + S"
+                OnClientClick="showAll"
+                CausesValidation="false" />
+
+            <asp:Button ID="AddButton" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, AddNew %>"
+                ToolTip="Alt + A"
+                OnClientClick="return(addNew());"
+                CausesValidation="false" />
+
+            <asp:Button ID="EditButton" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, EditSelected %>"
+                OnClick="EditButton_Click"
+                ToolTip="Ctrl + E"
+                OnClientClick="return(confirmAction());"
+                CausesValidation="false" />
+
+            <asp:Button ID="DeleteButton" runat="server"
+                Text="<%$Resources:Titles, DeleteSelected %>"
+                CssClass="menu"
+                ToolTip="Ctrl + D"
+                OnClick="DeleteButton_Click"
+                OnClientClick="return(confirmAction());"
+                CausesValidation="false" />
+
+            <asp:Button ID="PrintButton" runat="server"
+                Text="<%$Resources:Titles, Print %>"
+                CssClass="menu"
+                ToolTip="Ctrl + P"
+                OnClientClick="printThis();"
+                CausesValidation="false" />
         </div>
 
         <asp:Label ID="FormLabel" runat="server" />
@@ -107,19 +139,50 @@ http://mozilla.org/MPL/2.0/.
 
 
         <p>
-            <asp:LinkButton ID="ShowCompact2" runat="server" Text="<%$Resources:Titles, ShowCompact %>" CssClass="menu"
-                OnClientClick="window.location = window.location.pathname + '?show=compact';" />
-            <asp:LinkButton ID="ShowAll2" runat="server" Text="<%$Resources:Titles, ShowAll %>" CssClass="menu" OnClientClick="window.location = window.location.pathname + '?show=all';" />
-            <a href="#" id="AddAnchor" class="menu" onclick="$('#FormGridView tr').find('td input:radio').removeAttr('checked');$('#form1').each(function(){this.reset();});$('#GridPanel').hide(500);$('#FormPanel').show(500);">
-                <asp:Literal ID="AddNewLiteral2" runat="server" Text="<%$Resources:Titles, AddNew %>" />
-            </a>
-            <asp:LinkButton ID="EditLinkButton2" runat="server" Text="<%$Resources:Titles, EditSelected %>" CssClass="menu"
-                OnClick="EditLinkButton_Click" OnClientClick="return(confirmAction());" CausesValidation="false" />
-            <asp:LinkButton ID="DeleteLinkButton2" runat="server" Text="<%$Resources:Titles, DeleteSelected %>" CssClass="menu" CausesValidation="false"
-                OnClick="DeleteLinkButton_Click" OnClientClick="return(confirmAction());" />
-            <a href="#" id="PrintAnchor2" class="menu" onclick="printThis();">
-                <asp:Literal ID="PrintLiteral2" runat="server" Text="<%$Resources:Titles, Print %>" />
-            </a>
+            <asp:Button ID="ShowCompactButton2" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, ShowCompact %>"
+                ToolTip="Alt + C"
+                OnClientClick="showCompact();"
+                CausesValidation="false" />
+
+            <asp:Button ID="ShowAllButton2" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, ShowAll %>"
+                ToolTip="Ctrl + S"
+                OnClientClick="showAll();"
+                CausesValidation="false" />
+
+            <asp:Button ID="AddButton2" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, AddNew %>"
+                ToolTip="Alt + A"
+                OnClientClick="return(addNew());"
+                CausesValidation="false" />
+
+            <asp:Button ID="EditButton2" runat="server"
+                CssClass="menu"
+                Text="<%$Resources:Titles, EditSelected %>"
+                ToolTip="Ctrl + E"
+                OnClick="EditButton_Click"
+                OnClientClick="return(confirmAction());"
+                CausesValidation="false" />
+
+            <asp:Button ID="DeleteButton2" runat="server"
+                Text="<%$Resources:Titles, DeleteSelected %>"
+                CssClass="menu"
+                ToolTip="Ctrl + D"
+                OnClick="DeleteButton_Click"
+                OnClientClick="return(confirmAction());"
+                CausesValidation="false" />
+
+            <asp:Button ID="PrintButton2" runat="server"
+                Text="<%$Resources:Titles, Print %>"
+                CssClass="menu"
+                ToolTip="Ctrl + P"
+                OnClientClick="printThis();"
+                CausesValidation="false" />
+
         </p>
         <p class="vpad16">
         </p>
@@ -130,6 +193,14 @@ http://mozilla.org/MPL/2.0/.
 </asp:UpdatePanel>
 
 <script type="text/javascript">
+
+    var showCompact = function () {
+        window.location = window.location.pathname + '?show=compact';
+    }
+
+    var showAll = function () {
+        window.location = window.location.pathname + '?show=all';
+    }
 
     var confirmAction = function () {
         var c = confirm("<%= Resources.Questions.AreYouSure %>");
@@ -161,7 +232,12 @@ http://mozilla.org/MPL/2.0/.
 
 
     var printThis = function () {
-        var report = $.get("/Reports/Print.html", function () { }).done(function (data) {
+        var randomnumber = Math.floor(Math.random() * 1200)
+
+        //Append the report template with a random number to prevent caching.
+        var reportTemplatePath = "/Reports/Print.html?" + randomnumber;
+
+        var report = $.get(reportTemplatePath, function () { }).done(function (data) {
             var report = $.get("/Reports/Assets/Header.aspx", function () { }).done(function (header) {
                 var table = $("#FormGridView").clone();
 
@@ -261,4 +337,53 @@ http://mozilla.org/MPL/2.0/.
         $(window).scroll(UpdateTableHeaders);
         $(window).resize(UpdateTableHeaders);
     });
+
+    var addNew = function () {
+        $('#FormGridView tr').find('td input:radio').removeAttr('checked');
+        $('#form1').each(function () {
+            this.reset();
+        });
+
+        $('#GridPanel').hide(500);
+        $('#FormPanel').show(500);
+
+        //Prevent postback
+        return false;
+    }
+
+    $(document).ready(function () {
+        shortcut.add("ESC", function () {
+            if (!$('#FormPanel').is(':hidden')) {
+                var result = confirm('Are you sure?');
+                $('#CancelButton').click();
+            }
+        });
+
+        shortcut.add("ALT+C", function () {
+            $('#ShowCompactButton').click();
+        });
+
+        shortcut.add("CTRL+S", function () {
+            $('#ShowAllButton').click();
+        });
+
+        shortcut.add("ALT+A", function () {
+            $('#AddButton').click();
+        });
+
+        shortcut.add("CTRL+E", function () {
+            $('#EditButton').click();
+        });
+
+        shortcut.add("CTRL+D", function () {
+            $('#DeleteButton').click();
+        });
+
+        shortcut.add("CTRL+P", function () {
+            printThis();
+        });
+
+    });
+
+
 </script>

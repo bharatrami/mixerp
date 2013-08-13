@@ -18,8 +18,6 @@ namespace MixERP.Net.FrontEnd
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string menu = MixERP.Net.BusinessLayer.Helpers.MenuHelper.GetContentPageMenu(this.Page);
-            MenuLiteral.Text = menu;
         }
     }
 }

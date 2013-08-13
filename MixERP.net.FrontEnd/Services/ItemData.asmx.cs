@@ -33,9 +33,25 @@ namespace MixERP.Net.FrontEnd.Services
         {
             System.Collections.ObjectModel.Collection<CascadingDropDownNameValue> values = new System.Collections.ObjectModel.Collection<CascadingDropDownNameValue>();
 
-            using (System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items"))
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items"))
             {
-                foreach (System.Data.DataRow dr in table.Rows)
+                foreach(System.Data.DataRow dr in table.Rows)
+                {
+                    values.Add(new CascadingDropDownNameValue((string)dr["item_name"], dr["item_code"].ToString()));
+                }
+
+                return values.ToArray();
+            }
+        }
+
+        [WebMethod]
+        public CascadingDropDownNameValue[] GetStockItems(string knownCategoryValues, string category)
+        {
+            System.Collections.ObjectModel.Collection<CascadingDropDownNameValue> values = new System.Collections.ObjectModel.Collection<CascadingDropDownNameValue>();
+
+            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "items", "maintain_stock", "true"))
+            {
+                foreach(System.Data.DataRow dr in table.Rows)
                 {
                     values.Add(new CascadingDropDownNameValue((string)dr["item_name"], dr["item_code"].ToString()));
                 }

@@ -255,19 +255,19 @@
     <Compile Include="Finance\Setup\AgeingSlabs.aspx.designer.cs">
       <DependentUpon>AgeingSlabs.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Finance\Setup\BankAccounts.aspx.cs">
+      <DependentUpon>BankAccounts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Finance\Setup\BankAccounts.aspx.designer.cs">
+      <DependentUpon>BankAccounts.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Finance\Setup\BudgetAndTarget.aspx.cs">
       <DependentUpon>BudgetAndTarget.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Finance\Setup\BudgetAndTarget.aspx.designer.cs">
       <DependentUpon>BudgetAndTarget.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Finance\Setup\CashBankAccounts.aspx.cs">
-      <DependentUpon>CashBankAccounts.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Finance\Setup\CashBankAccounts.aspx.designer.cs">
-      <DependentUpon>CashBankAccounts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Finance\Setup\COA.aspx.cs">
       <DependentUpon>COA.aspx</DependentUpon>
@@ -491,6 +491,20 @@
       <DependentUpon>StoreTypes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Purchase\Confirmation\DirectPurchase.aspx.cs">
+      <DependentUpon>DirectPurchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Purchase\Confirmation\DirectPurchase.aspx.designer.cs">
+      <DependentUpon>DirectPurchase.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Purchase\Confirmation\DirectPurchaseInvoice.aspx.cs">
+      <DependentUpon>DirectPurchaseInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Purchase\Confirmation\DirectPurchaseInvoice.aspx.designer.cs">
+      <DependentUpon>DirectPurchaseInvoice.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Purchase\DirectPurchase.aspx.cs">
       <DependentUpon>DirectPurchase.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -889,6 +903,9 @@
     <CodeAnalysisDictionary Include="..\Dictionary.xml">
       <Link>Dictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <Content Include="..\Readme.txt">
+      <Link>Readme.txt</Link>
+    </Content>
     <Content Include="Account\ChangePassword.aspx" />
     <Content Include="Account\Index.aspx" />
     <Content Include="Account\Messaging\Inbox.aspx" />
@@ -904,9 +921,10 @@
     <Content Include="CRM\Setup\LeadSources.aspx" />
     <Content Include="CRM\Setup\LeadStatuses.aspx" />
     <Content Include="CRM\Setup\OpportunityStages.aspx" />
-    <Content Include="db\en-US\customer-sample.sql" />
+    <Content Include="db\en-US\mixerp-db-logic.sql" />
+    <Content Include="db\en-US\party-sample.sql" />
     <Content Include="db\en-US\mixerp.bak.sql" />
-    <Content Include="db\en-US\mixerp..sql" />
+    <Content Include="db\en-US\mixerp.sql" />
     <Content Include="db\en-US\sample-data.sql" />
     <Content Include="Dependencies\AspNetPager.dll" />
     <Content Include="Dependencies\Mono.Security.dll" />
@@ -917,8 +935,8 @@
     <Content Include="Finance\Index.aspx" />
     <Content Include="Finance\JournalVoucher.aspx" />
     <Content Include="Finance\Setup\AgeingSlabs.aspx" />
+    <Content Include="Finance\Setup\BankAccounts.aspx" />
     <Content Include="Finance\Setup\BudgetAndTarget.aspx" />
-    <Content Include="Finance\Setup\CashBankAccounts.aspx" />
     <Content Include="Finance\Setup\COA.aspx" />
     <Content Include="Finance\Setup\CostCenters.aspx" />
     <Content Include="Finance\Setup\Currencies.aspx" />
@@ -951,6 +969,8 @@
     <Content Include="POS\Index.aspx" />
     <Content Include="POS\Setup\Stores.aspx" />
     <Content Include="POS\Setup\StoreTypes.aspx" />
+    <Content Include="Purchase\Confirmation\DirectPurchase.aspx" />
+    <Content Include="Purchase\Confirmation\DirectPurchaseInvoice.aspx" />
     <Content Include="Purchase\DirectPurchase.aspx" />
     <Content Include="Purchase\GRN.aspx" />
     <Content Include="Purchase\Index.aspx" />
@@ -962,6 +982,9 @@
     <Content Include="Reports\Assets\Header.html" />
     <Content Include="Reports\ReportMaster.aspx" />
     <Content Include="Reports\ReportViewer.aspx" />
+    <Content Include="Reports\Sources\Purchase.View.Purchase.Invoice.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Reports\Sources\Transactions.GLEntry.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -983,6 +1006,7 @@
     <Content Include="Resource\Icons\pdf-16.png" />
     <Content Include="Resource\Icons\print-16.png" />
     <Content Include="Resource\Icons\top-16.png" />
+    <Content Include="Resource\Icons\word-16.png" />
     <Content Include="RuntimeError.aspx" />
     <Content Include="Sales\Confirmation\CustomerInvoice.aspx" />
     <Content Include="Sales\Confirmation\DirectSales.aspx" />
@@ -1350,6 +1374,7 @@
     <Content Include="Reports\Assets\ReadMe.txt" />
     <Content Include="Resource\Configuration\Switches.config" />
     <Content Include="Resource\Configuration\Parameters.config" />
+    <Content Include="Resource\Configuration\DbParameters.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

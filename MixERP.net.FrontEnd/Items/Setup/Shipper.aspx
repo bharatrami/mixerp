@@ -11,7 +11,7 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <mixerp:Form ID="ShipperForm" runat="server" Text="Shipper Maintenance" TableSchema="core" Table="shippers" KeyColumn="shipper_id"
+    <mixerp:Form ID="ShipperForm" runat="server" Text="<%$Resources:Titles, Shippers %>" TableSchema="core" Table="shippers" KeyColumn="shipper_id"
         ViewSchema="core" View="shippers" Width="5000" PageSize="10"
         Exclude="shipper_code, shipper_name"
         SelectedValues="core.accounts.account_id-->'20110 (Shipping Charge Payable)'"

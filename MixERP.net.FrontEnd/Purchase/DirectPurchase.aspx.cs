@@ -20,5 +20,25 @@ namespace MixERP.Net.FrontEnd.Purchase
         {
 
         }
+
+        protected void Purchase_SaveButtonClick(object sender, EventArgs e)
+        {
+            DateTime valueDate = Pes.Utility.Conversion.TryCastDate(DirectPurchaseControl.GetForm.DateTextBox.Text);
+            int storeId = Pes.Utility.Conversion.TryCastInteger(DirectPurchaseControl.GetForm.StoreDropDownList.SelectedItem.Value);
+            bool isCredit = DirectPurchaseControl.GetForm.TransactionTypeRadioButtonList.SelectedItem.Value.Equals(Resources.Titles.Credit); ;
+            string partyCode = DirectPurchaseControl.GetForm.PartyDropDownList.SelectedItem.Value;
+            GridView grid = DirectPurchaseControl.GetForm.Grid;
+            int cashRepositoryId = Pes.Utility.Conversion.TryCastInteger(DirectPurchaseControl.GetForm.CashRepositoryDropDownList.SelectedItem.Value);
+
+            int costCenterId = Pes.Utility.Conversion.TryCastInteger(DirectPurchaseControl.GetForm.CostCenterDropDownList.SelectedItem.Value);
+            string statementReference = DirectPurchaseControl.GetForm.StatementReferenceTextBox.Text;
+
+            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectPurchase.Add(valueDate, storeId, isCredit, partyCode, grid, cashRepositoryId, costCenterId, statementReference);
+            if(transactionMasterId > 0)
+            {
+                Response.Redirect("~/Purchase/Confirmation/DirectPurchase.aspx?TranId=" + transactionMasterId, true);
+            }
+        }
+
     }
 }

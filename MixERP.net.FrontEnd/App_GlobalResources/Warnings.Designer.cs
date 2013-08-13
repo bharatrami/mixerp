@@ -151,6 +151,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not enough cash in the repository..
+        /// </summary>
+        internal static string NotEnoughCash {
+            get {
+                return ResourceManager.GetString("NotEnoughCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only numbers are allowed..
         /// </summary>
         internal static string OnlyNumbersAllowed {
@@ -192,6 +201,15 @@ namespace Resources {
         internal static string UnknownTransactionType {
             get {
                 return ResourceManager.GetString("UnknownTransactionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User id or password incorrect..
+        /// </summary>
+        internal static string UserIdOrPasswordIncorrect {
+            get {
+                return ResourceManager.GetString("UserIdOrPasswordIncorrect", resourceCulture);
             }
         }
     }

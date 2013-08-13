@@ -5,6 +5,7 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 --%>
+
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SignIn.aspx.cs" Inherits="MixERP.Net.FrontEnd.SignIn" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,17 +20,19 @@ http://mozilla.org/MPL/2.0/.
     <div class="sign-in-logo">
         <a href="/SignIn.aspx">
             <img src="themes/purple/mixerp-logo.png" />
-        </a>    
+        </a>
     </div>
     <div class="sign-in">
         <h1>
-            Sign In
+            <asp:Literal ID="SignInLiteral" runat="server" Text="<%$Resources:Titles, SignIn %>" />
         </h1>
         <hr />
         <table width="100%">
             <tr>
                 <td style="width: 100px;">
-                    User Id
+                    <label for="UserIdTextBox">
+                        <asp:Literal ID="UserIdLiteral" runat="server" Text="<%$Resources:Titles, UserId %>" />
+                    </label>
                 </td>
                 <td>
                     <p>
@@ -39,7 +42,9 @@ http://mozilla.org/MPL/2.0/.
             </tr>
             <tr>
                 <td>
-                    Password
+                    <label for="PasswordTextBox">
+                        <asp:Literal ID="PasswordLiteral" runat="server" Text="<%$Resources:Titles, Password %>" />
+                    </label>
                 </td>
                 <td>
                     <p>
@@ -49,7 +54,9 @@ http://mozilla.org/MPL/2.0/.
             </tr>
             <tr>
                 <td>
-                    Select Your Branch
+                    <label for="BranchDropDownList">
+                        <asp:Literal ID="SelectBranchLiteral" runat="server" Text="<%$Resources:Titles, SelectYourBranch  %>" />
+                    </label>
                 </td>
                 <td>
                     <asp:DropDownList ID="BranchDropDownList" runat="server" DataSourceID="ObjectDataSource1"
@@ -64,7 +71,7 @@ http://mozilla.org/MPL/2.0/.
                 </td>
                 <td>
                     <p>
-                        <asp:CheckBox ID="RememberMe" runat="server" Text="&nbsp;Don't Forget Me" />
+                        <asp:CheckBox ID="RememberMe" runat="server" Text="<%$Resources:Titles, RememberMe %>" />
                     </p>
                 </td>
             </tr>
@@ -80,7 +87,7 @@ http://mozilla.org/MPL/2.0/.
                 </td>
                 <td>
                     <p>
-                        <asp:Button ID="SignInButton" runat="server" Text="Sign In" OnClick="SignInButton_Click" />
+                        <asp:Button ID="SignInButton" runat="server" Text="<%$Resources:Titles, SignIn %>" OnClick="SignInButton_Click" />
                     </p>
                 </td>
             </tr>
@@ -89,54 +96,16 @@ http://mozilla.org/MPL/2.0/.
                 </td>
                 <td>
                     <p>
-                        <a href="#">
-                            Can't access your account?</a>
+                        <asp:LinkButton ID="CantAccessAccountLinkButton" runat="server" Text="<%$Resources:Questions, CantAccessAccount %>" />
                     </p>
                 </td>
             </tr>
         </table>
     </div>
-        <script type="text/javascript">
-            $("#UserIdTextBox").val('binod');
-            $("#PasswordTextBox").val('binod');
-        </script>
+    <script type="text/javascript">
+        $("#UserIdTextBox").val('binod');
+        $("#PasswordTextBox").val('binod');
+    </script>
     </form>
 </body>
 </html>
-<script runat="server">
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        UserIdTextBox.Focus();
-
-        if (!IsPostBack)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                string user = User.Identity.Name;
-                if (!string.IsNullOrWhiteSpace(user))
-                {
-                    string sessionUser = Pes.Utility.Conversion.TryCastString(this.Page.Session["UserName"]);
-
-                    if (string.IsNullOrWhiteSpace(sessionUser))
-                    {
-                        MixERP.Net.BusinessLayer.Security.User.SetSession(this.Page, user);
-                    }
-
-                    Response.Redirect("~/Account/Index.aspx", true);                    
-                                    
-                }
-            }        
-        }
-    }
-
-    protected void SignInButton_Click(object sender, EventArgs e)
-    {
-        int officeId = Pes.Utility.Conversion.TryCastInteger(BranchDropDownList.SelectedItem.Value);
-        bool results = MixERP.Net.BusinessLayer.Security.User.SignIn(officeId, UserIdTextBox.Text, PasswordTextBox.Text, RememberMe.Checked, this.Page);
-
-        if (!results)
-        {
-            MessageLiteral.Text = "<span class='error-message'>Username or password incorrect.</span>";
-        }
-    }
-</script>

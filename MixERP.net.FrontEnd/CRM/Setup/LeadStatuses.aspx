@@ -17,7 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000" 
         TableSchema="crm" Table="lead_statuses" 
         ViewSchema="crm" View="lead_statuses" 
-        Text="Lead Status Maintenace"
+        Text="<%$Resources:Titles, LeadStatuses %>"
         SelectedValues=""
         DisplayFields=""/>
 </asp:Content>

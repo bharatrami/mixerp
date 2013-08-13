@@ -19,7 +19,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
     {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int storeId, int cashRepositoryId, int costCenterId, string statementReference, Models.StockMasterModel stockMaster, Collection<Models.StockMasterDetailModel> details)
+        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int storeId, int cashRepositoryId, int costCenterId, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
         {
             if(stockMaster == null)
             {
@@ -44,8 +44,6 @@ namespace MixERP.Net.DatabaseLayer.Transactions
             decimal discountTotal = details.Sum(d => d.Discount);
             decimal taxTotal = details.Sum(d => d.Tax);
 
-
-            string cashInvariantParameter = "Sales.Cash";
             string creditInvariantParameter = "Sales.Receivables";
             string salesInvariantParameter = "Sales";
             string salesTaxInvariantParamter = "Sales.Tax";
@@ -134,11 +132,11 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                         }
                         else
                         {
+                            sql = "INSERT INTO transactions.transaction_details(transaction_master_id, tran_type, account_id, statement_reference, cash_repository_id, amount) SELECT @TransactionMasterId, @TranType, core.get_cash_account_id(), @StatementReference, @CashRepositoryId, @Amount;";
                             using(NpgsqlCommand cashRow = new NpgsqlCommand(sql, connection))
                             {
                                 cashRow.Parameters.AddWithValue("@TransactionMasterId", transactionMasterId);
                                 cashRow.Parameters.AddWithValue("@TranType", "Dr");
-                                cashRow.Parameters.AddWithValue("@ParameterName", cashInvariantParameter);
                                 cashRow.Parameters.AddWithValue("@StatementReference", statementReference);
                                 cashRow.Parameters.AddWithValue("@CashRepositoryId", cashRepositoryId);
                                 cashRow.Parameters.AddWithValue("@Amount", total - discountTotal + taxTotal + stockMaster.ShippingCharge);
@@ -186,7 +184,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                                 transactions.stock_details(stock_master_id, tran_type, store_id, item_id, quantity, unit_id, base_quantity, base_unit_id, price, discount, tax_rate, tax) 
                                 SELECT  @StockMasterId, @TranType, @StoreId, core.get_item_id_by_item_code(@ItemCode), @Quantity, core.get_unit_id_by_unit_name(@UnitName), core.get_base_quantity_by_unit_name(@UnitName, @Quantity), core.get_base_unit_id_by_unit_name(@UnitName), @Price, @Discount, @TaxRate, @Tax;";
 
-                        foreach(Models.StockMasterDetailModel model in details)
+                        foreach(MixERP.Net.Common.Transactions.Models.StockMasterDetailModel model in details)
                         {
                             using(NpgsqlCommand stockMasterDetailRow = new NpgsqlCommand(sql, connection))
                             {

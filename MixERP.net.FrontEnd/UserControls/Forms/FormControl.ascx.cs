@@ -97,7 +97,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             }
         }
 
-        protected void EditLinkButton_Click(object sender, EventArgs e)
+        protected void EditButton_Click(object sender, EventArgs e)
         {
             string id = this.GetSelectedValue();
             if(string.IsNullOrWhiteSpace(id))
@@ -121,7 +121,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             }
         }
 
-        protected void DeleteLinkButton_Click(object sender, EventArgs e)
+        protected void DeleteButton_Click(object sender, EventArgs e)
         {
             string id = this.GetSelectedValue();
             if(string.IsNullOrWhiteSpace(id))
@@ -508,7 +508,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                         this.AddDecimalTextBox(t, columnName, defaultValue, isNullable, maxLength, domain);
                         break;
                     case "boolean":
-                        this.AddRadioButtonList(t, columnName, isNullable, Resources.Titles.YesNo, Resources.Titles.YesNo, defaultValue);
+                        this.AddRadioButtonList(t, columnName, isNullable, Resources.Titles.YesNo, "true,false", defaultValue);
                         break;
                     case "date":
                         this.AddDateTextBox(t, columnName, defaultValue, isNullable, maxLength);
@@ -740,10 +740,11 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                 textBox.Text = defaultValue;
             }
 
+            textBox.Width = 200;
+
             if(isSerial)
             {
                 textBox.ReadOnly = true;
-                textBox.Width = 100;
             }
             else
             {

@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t access your account?.
+        /// </summary>
+        internal static string CantAccessAccount {
+            get {
+                return ResourceManager.GetString("CantAccessAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will lock client database access during execution. Are you sure you want to execute this action right now?.
         /// </summary>
         internal static string ConfirmAnalyze {

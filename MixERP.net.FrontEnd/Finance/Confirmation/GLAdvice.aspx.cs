@@ -14,11 +14,20 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Finance.Confirmation
 {
-    public partial class GLAdvice : System.Web.UI.Page
+    public partial class GLAdvice : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>> parameters = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>>();
 
+            System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> list = new System.Collections.ObjectModel.Collection<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("@transaction_master_id", this.Request["TranId"]));
+
+            parameters.Add(list);
+            parameters.Add(list);
+
+            GLAdviceReport.Parameters = parameters;
         }
+
     }
 }

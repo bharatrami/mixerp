@@ -31,13 +31,13 @@ namespace MixERP.Net.FrontEnd {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder StyleSheetContentPlaceHolder;
         
         /// <summary>
-        /// MenuLiteral control.
+        /// ContentMenuLiteral control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal MenuLiteral;
+        protected global::System.Web.UI.WebControls.Literal ContentMenuLiteral;
         
         /// <summary>
         /// BodyContentPlaceHolder control.

@@ -6,33 +6,141 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TransactionChecklistControl.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.TransactionChecklistControl" %>
-<h1>Transaction Successfully Posted</h1>
+<h1>
+    <asp:Literal ID="TitleLiteral" runat="server" Text="<%$Resources:Titles, TransactionPostedSuccessfully %>" />
+</h1>
 <hr class="hr" />
 
-<asp:Label ID="VerificationLabel" runat="server" Text="" />
+<asp:Label ID="VerificationLabel" runat="server" />
+
+
+<br />
+
+<div style="float: left;">
+    <h2>
+        <asp:Literal ID="ChecklistLiteral" runat="server" Text="<%$Resources:Titles, Checklists %>" />
+    </h2>
+    <div class="transaction-confirmation" style="margin-top: 12px;">
+        <asp:LinkButton ID="WithdrawButton" runat="server" Text="<%$Resources:Titles, WithdrawThisTransaction %>" OnClientClick="$('#withdraw').toggle(200);return(false);" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="ViewInvoiceButton" runat="server" Text="<%$Resources:Titles, ViewThisInvoice %>" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="EmailInvoiceButton" runat="server" Text="<%$Resources:Titles, EmailThisInvoice %>" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="CustomerInvoiceButton" runat="server" Text="<%$Resources:Titles, PrintThisInvoice %>" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="PrintReceiptButton" runat="server" Text="<%$Resources:Titles, PrintReceipt %>" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="PrintGLButton" runat="server" Text="<%$Resources:Titles, PrintGLEntry %>" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="AttachmentButton" runat="server" Text="<%$Resources:Titles, UploadAttachmentForThisTransaction %>" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="BackButton" runat="server" Text="<%$Resources:Titles, Back %>" OnClientClick="javascript:history.go(-1);" CssClass="linkblock" CausesValidation="false" />
+    </div>
+</div>
+
+<div id="withdraw" style="float: left; margin-left: 12px; display: none;">
+    <h2>
+        <asp:Literal ID="WithdrawTransactionLiteral" runat="server" Text="<%$Resources:Titles, WithdrawTransaction %>" />
+    </h2>
+
+    <div class="transaction-confirmation" style="margin-top: 12px;">
+        <p>
+            <asp:Literal ID="ReasonLiteral" runat="server" Text="<%$Resources:Titles, WithdrawalReason %>" />
+        </p>
+        <p>
+            <asp:TextBox ID="ReasonTextBox" runat="server" TextMode="MultiLine" Width="96%" Height="120" />
+        </p>
+        <p>
+            <asp:RequiredFieldValidator ID="ReasonTextBoxRequired" runat="server" ControlToValidate="ReasonTextBox" ErrorMessage="<%$Resources:Labels, FieldRequired %>" CssClass="form-error" Display="Dynamic" />
+        </p>
+
+        <p>
+            <asp:Button ID="OKButton" runat="server" Text="<%$Resources:Titles, OK %>" CssClass="button" OnClick="OKButton_Click" />
+            <asp:Button ID="CancelButton" runat="server" Text="<%$Resources:Titles, Cancel %>" CssClass="button" CausesValidation="false" OnClientClick="$('#withdraw').toggle(200);return(false);" />
+        </p>
+
+    </div>
+</div>
+
+<div style="clear: both;"></div>
+
+<asp:Label ID="MessageLabel" runat="server" />
+
+
+<script type="text/javascript">
+    var showWindow = function (url) {
+
+        newwindow = window.open(url, name, 'width=' + $('html').width() + ',height=' + $('html').height() + ',toolbar=0,menubar=0,location=0,scrollbars=1,resizable=1');
+        newwindow.moveTo(0, 0);
+        if (window.focus) { newwindow.focus() }
+    }
+</script>
 
 <script runat="server">
-    private MixERP.Net.BusinessLayer.Transactions.Models.VerificationModel GetVerificationStatus()
-    {
-        MixERP.Net.BusinessLayer.Transactions.Models.VerificationModel model = new MixERP.Net.BusinessLayer.Transactions.Models.VerificationModel();
-        model.Verification = 0;
-        model.VerifierName = "System";
-        model.VerifiedDate = System.DateTime.Now;
-        model.VerificationReason = "Mistake entry.";
+    public bool DisplayWithdrawButton { get; set; }
+    public bool DisplayViewInvoiceButton { get; set; }
+    public bool DisplayEmailInvoiceButton { get; set; }
+    public bool DisplayCustomerInvoiceButton { get; set; }
+    public bool DisplayPrintReceiptButton { get; set; }
+    public bool DisplayPrintGLEntryButton { get; set; }
+    public bool DisplayAttachmentButton { get; set; }
 
-        return model;
+    public string InvoicePath { get; set; }
+    public string CustomerInvoicePath { get; set; }
+    public string GLAdvicePath { get; set; }
+
+    protected void OKButton_Click(object sender, EventArgs e)
+    {
+
+        DateTime transactionDate = DateTime.Now;
+        long transactionMasterId = Pes.Utility.Conversion.TryCastLong(this.Request["TranId"]);
+
+        MixERP.Net.Common.Transactions.Models.VerificationModel model = MixERP.Net.BusinessLayer.Transactions.Verification.GetVerificationStatus(transactionMasterId);
+        if(
+            model.Verification.Equals(0) //Awaiting verification 
+            ||
+            model.Verification.Equals(2) //Automatically Approved by Workflow
+            )
+        {
+            //Withdraw this transaction.                        
+            if(transactionMasterId > 0)
+            {
+                if(MixERP.Net.BusinessLayer.Transactions.Verification.WithdrawTransaction(transactionMasterId, MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), ReasonTextBox.Text))
+                {
+                    MessageLabel.Text = string.Format(Resources.Labels.TransactionWithdrawnMessage, transactionDate.ToShortDateString());
+                    MessageLabel.CssClass = "success vpad12";
+                }
+            }
+        }
+        else
+        {
+            MessageLabel.Text = Resources.Warnings.CannotWithdrawTransaction;
+            MessageLabel.CssClass = "error vpad12";
+        }
+
+        this.ShowVerificationStatus();
     }
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        MixERP.Net.BusinessLayer.Transactions.Models.VerificationModel model = this.GetVerificationStatus();
-        string invoiceUrl = ResolveUrl("~/Sales/Confirmation/DirectSalesInovice.aspx?TranId=" + this.Request["TranId"]);
-        string printUrl = ResolveUrl("~/Sales/Confirmation/CustomerInvoice.aspx?TranId=" + this.Request["TranId"]);
-        string glAdviceUrl = ResolveUrl("~/Finance/Confirmation/GLAdvice.aspx?TranId=" + this.Request["TranId"]);
+        WithdrawButton.Visible = this.DisplayWithdrawButton;
+        ViewInvoiceButton.Visible = this.DisplayViewInvoiceButton;
+        EmailInvoiceButton.Visible = this.DisplayEmailInvoiceButton;
+        CustomerInvoiceButton.Visible = this.DisplayCustomerInvoiceButton;
+        PrintReceiptButton.Visible = this.DisplayPrintReceiptButton;
+        PrintGLButton.Visible = this.DisplayPrintGLEntryButton;
+        AttachmentButton.Visible = this.DisplayAttachmentButton;
 
-        ViewButton.Attributes.Add("onclick", "showWindow('" + invoiceUrl + "');return false;");
-        PrintButton.Attributes.Add("onclick", "showWindow('" + printUrl + "');return false;");
-        ViewGLButton.Attributes.Add("onclick", "showWindow('" + glAdviceUrl + "');return false;");
+        string invoiceUrl = ResolveUrl(this.InvoicePath + "?TranId=" + this.Request["TranId"]);
+        string customerInvoiceUrl = ResolveUrl(this.CustomerInvoicePath + "?TranId=" + this.Request["TranId"]);
+        string glAdviceUrl = ResolveUrl(this.GLAdvicePath + "?TranId=" + this.Request["TranId"]);
+
+        ViewInvoiceButton.Attributes.Add("onclick", "showWindow('" + invoiceUrl + "');return false;");
+        CustomerInvoiceButton.Attributes.Add("onclick", "showWindow('" + customerInvoiceUrl + "');return false;");
+        PrintGLButton.Attributes.Add("onclick", "showWindow('" + glAdviceUrl + "');return false;");
+
+        this.ShowVerificationStatus();
+    }
+
+    private void ShowVerificationStatus()
+    {
+        long transactionMasterId = Pes.Utility.Conversion.TryCastLong(this.Request["TranId"]);
+        MixERP.Net.Common.Transactions.Models.VerificationModel model = MixERP.Net.BusinessLayer.Transactions.Verification.GetVerificationStatus(transactionMasterId);
 
         switch(model.Verification)
         {
@@ -59,62 +167,5 @@ http://mozilla.org/MPL/2.0/.
                 break;
         }
     }
-        
-</script>
 
-<br />
-
-<h2>Checklists</h2>
-<div class="transaction-confirmation">
-    <asp:LinkButton ID="WithdrawButton" runat="server" Text="Withdraw This Transaction" OnClick="WithdrawButton_Click" CssClass="linkblock" />
-    <script runat="server">
-        protected void WithdrawButton_Click(object sender, EventArgs e)
-        {
-            bool myTransaction = true;
-            DateTime transactionDate = DateTime.Now;
-
-            MixERP.Net.BusinessLayer.Transactions.Models.VerificationModel model = this.GetVerificationStatus();
-            if(
-                model.Verification.Equals(0) //Awaiting verification 
-                ||
-                model.Verification.Equals(2) //Automatically Approved by Workflow
-                )
-            {
-                //Withdraw this transaction.                        
-                if(myTransaction)
-                {
-                    MessageLabel.Text = string.Format(Resources.Labels.TransactionWithdrawnMessage, transactionDate.ToShortDateString());
-                    MessageLabel.CssClass = "success vpad12";
-                }
-                else
-                {
-                    MessageLabel.Text = Resources.Warnings.CannotWithdrawElsesTransaction;
-                    MessageLabel.CssClass = "error vpad12";
-                }
-            }
-            else
-            {
-                MessageLabel.Text = Resources.Warnings.CannotWithdrawTransaction;
-                MessageLabel.CssClass = "error vpad12";
-            }
-        }
-    </script>
-
-    <asp:LinkButton ID="ViewButton" runat="server" Text="View This Invoice" CssClass="linkblock" />
-    <asp:LinkButton ID="EmailButton" runat="server" Text="Email This Invoice" CssClass="linkblock" />
-    <asp:LinkButton ID="PrintButton" runat="server" Text="Print This Invoice" CssClass="linkblock" />
-    <asp:LinkButton ID="PrintReceiptButton" runat="server" Text="Print Receipt" CssClass="linkblock" />
-    <asp:LinkButton ID="ViewGLButton" runat="server" Text="Print GL Entry of This Invoice" CssClass="linkblock" />
-    <asp:LinkButton ID="AttachmentButton" runat="server" Text="Upload Attachments for This Invoice" CssClass="linkblock" />
-    <asp:LinkButton ID="BackButton" runat="server" Text="Back" OnClientClick="javascript:history.go(-1);" CssClass="linkblock" />
-</div>
-<asp:Label ID="MessageLabel" runat="server" Text="" />
-
-<script type="text/javascript">
-    var showWindow = function (url) {
-
-        newwindow = window.open(url, name, 'width=' + $('html').width() + ',height=' + $('html').height() + ',toolbar=0,menubar=0,location=0,scrollbars=1,resizable=1');
-        newwindow.moveTo(0, 0);
-        if (window.focus) { newwindow.focus() }
-    }
 </script>

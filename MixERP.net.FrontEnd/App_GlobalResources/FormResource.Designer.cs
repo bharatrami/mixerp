@@ -439,6 +439,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can Self Verify.
+        /// </summary>
+        internal static string can_self_verify {
+            get {
+                return ResourceManager.GetString("can_self_verify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can Verify GL Transactions.
+        /// </summary>
+        internal static string can_verify_gl_transactions {
+            get {
+                return ResourceManager.GetString("can_verify_gl_transactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can Verify Purchase Transactions.
+        /// </summary>
+        internal static string can_verify_purchase_transactions {
+            get {
+                return ResourceManager.GetString("can_verify_purchase_transactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can Verify Sales Transactions.
+        /// </summary>
+        internal static string can_verify_sales_transactions {
+            get {
+                return ResourceManager.GetString("can_verify_sales_transactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cashier Id.
         /// </summary>
         internal static string cashier_id {
@@ -925,6 +961,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Effective From.
+        /// </summary>
+        internal static string effective_from {
+            get {
+                return ResourceManager.GetString("effective_from", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string email {
@@ -1105,6 +1150,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GL Verification Limit.
+        /// </summary>
+        internal static string gl_verification_limit {
+            get {
+                return ResourceManager.GetString("gl_verification_limit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has Child.
+        /// </summary>
+        internal static string has_child {
+            get {
+                return ResourceManager.GetString("has_child", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hot Item.
         /// </summary>
         internal static string hot_item {
@@ -1159,6 +1222,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Active.
+        /// </summary>
+        internal static string is_active {
+            get {
+                return ResourceManager.GetString("is_active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Admin.
+        /// </summary>
+        internal static string is_admin {
+            get {
+                return ResourceManager.GetString("is_admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Cash.
         /// </summary>
         internal static string is_cash {
@@ -1182,6 +1263,15 @@ namespace Resources {
         internal static string is_supplier {
             get {
                 return ResourceManager.GetString("is_supplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is System.
+        /// </summary>
+        internal static string is_system {
+            get {
+                return ResourceManager.GetString("is_system", resourceCulture);
             }
         }
         
@@ -1690,6 +1780,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parent.
+        /// </summary>
+        internal static string parent {
+            get {
+                return ResourceManager.GetString("parent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent Account Code.
         /// </summary>
         internal static string parent_account_code {
@@ -1906,6 +2005,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchase Verification Limit.
+        /// </summary>
+        internal static string purchase_verification_limit {
+            get {
+                return ResourceManager.GetString("purchase_verification_limit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
         internal static string quantity {
@@ -2082,6 +2190,24 @@ namespace Resources {
         internal static string role_name {
             get {
                 return ResourceManager.GetString("role_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales Verification Limit.
+        /// </summary>
+        internal static string sales_verification_limit {
+            get {
+                return ResourceManager.GetString("sales_verification_limit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selft Verification Limit.
+        /// </summary>
+        internal static string self_verification_limit {
+            get {
+                return ResourceManager.GetString("self_verification_limit", resourceCulture);
             }
         }
         
@@ -2640,6 +2766,33 @@ namespace Resources {
         internal static string verification {
             get {
                 return ResourceManager.GetString("verification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify GL Transactions.
+        /// </summary>
+        internal static string verify_gl_transactions {
+            get {
+                return ResourceManager.GetString("verify_gl_transactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify Purchase Transactions.
+        /// </summary>
+        internal static string verify_purchase_transactions {
+            get {
+                return ResourceManager.GetString("verify_purchase_transactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify Sales Transactions.
+        /// </summary>
+        internal static string verify_sales_transactions {
+            get {
+                return ResourceManager.GetString("verify_sales_transactions", resourceCulture);
             }
         }
         

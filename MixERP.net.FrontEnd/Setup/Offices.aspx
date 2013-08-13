@@ -17,7 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" 
         TableSchema="office" Table="offices" 
         ViewSchema="office" View="offices" 
-        Text="Office Setup" 
+        Text="<%$Resources:Titles, OfficeSetup %>" 
         DisplayFields="office.offices.office_id-->office_name, core.currencies.currency_code-->currency_symbol + ' (' + currency_code + '/' + currency_name + ')'"
         Width="4000" />
 </asp:Content>

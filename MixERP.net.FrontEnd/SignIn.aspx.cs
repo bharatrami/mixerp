@@ -18,7 +18,38 @@ namespace MixERP.Net.FrontEnd
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            UserIdTextBox.Focus();
 
+            if(!IsPostBack)
+            {
+                if(User.Identity.IsAuthenticated)
+                {
+                    string user = User.Identity.Name;
+                    if(!string.IsNullOrWhiteSpace(user))
+                    {
+                        string sessionUser = Pes.Utility.Conversion.TryCastString(this.Page.Session["UserName"]);
+
+                        if(string.IsNullOrWhiteSpace(sessionUser))
+                        {
+                            MixERP.Net.BusinessLayer.Security.User.SetSession(this.Page, user);
+                        }
+
+                        Response.Redirect("~/Account/Index.aspx", true);
+
+                    }
+                }
+            }
+        }
+
+        protected void SignInButton_Click(object sender, EventArgs e)
+        {
+            int officeId = Pes.Utility.Conversion.TryCastInteger(BranchDropDownList.SelectedItem.Value);
+            bool results = MixERP.Net.BusinessLayer.Security.User.SignIn(officeId, UserIdTextBox.Text, PasswordTextBox.Text, RememberMe.Checked, this.Page);
+
+            if(!results)
+            {
+                MessageLiteral.Text = "<span class='error-message'>" + Resources.Warnings.UserIdOrPasswordIncorrect + "</span>";
+            }
         }
     }
 }

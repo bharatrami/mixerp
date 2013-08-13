@@ -11,6 +11,13 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
+    <mixerp:Form ID="VoucherVerificationPolicyForm" runat="server"
+        Text="<%$ Resources:Titles, VoucherVerificationPolicy %>"
+        DisplayFields="office.users.user_id-->user_name"
+        PageSize="100" Width="2000"
+        TableSchema="policy" Table="voucher_verification_policy" KeyColumn="user_id"
+        ViewSchema="policy" View="voucher_verification_policy_view"
+        />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

@@ -18,7 +18,12 @@ namespace MixERP.Net.FrontEnd.Setup.Policy
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if(!MixERP.Net.BusinessLayer.Helpers.SessionHelper.IsAdmin())
+            {
+                VoucherVerificationPolicyForm.DenyAdd = true;
+                VoucherVerificationPolicyForm.DenyEdit = true;
+                VoucherVerificationPolicyForm.DenyDelete = true;
+            }
         }
     }
 }

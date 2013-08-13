@@ -17,7 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000"
         TableSchema="office" Table="departments" 
         ViewSchema="office" View="departments" 
-        Text="Department Maintenance"
+        Text="<%$Resources:Titles, Departments %>"
         SelectedValues=""
         DisplayFields=""
           />

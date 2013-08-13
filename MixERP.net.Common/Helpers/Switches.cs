@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.BusinessLayer.Core
+namespace MixERP.Net.Common.Helpers
 {
     public static class Switches
     {
@@ -27,6 +27,11 @@ namespace MixERP.Net.BusinessLayer.Core
         public static bool AllowParentAccountInGLTransaction()
         {
             return GetSwitch("AllowParentAccountInGLTransaction");        
+        }
+
+        public static bool EnableAutoVerification()
+        {
+            return GetSwitch("EnableAutoVerification");                
         }
 
         private static bool GetSwitch(string key)

@@ -308,7 +308,7 @@ CodeMirror.defineMode("sass", function(config) {
     startState: function() {
       return {
         tokenizer: tokenBase,
-        scopes: [{offset: 0, type: 'sass'}],
+        scomixerp: [{offset: 0, type: 'sass'}],
         definedVars: [],
         definedMixins: []
       };
