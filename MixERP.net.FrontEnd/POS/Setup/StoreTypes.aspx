@@ -13,7 +13,6 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:Form ID="StoreTypeForm" runat="server" DenyAdd="false" DenyDelete="false" DenyEdit="false" KeyColumn="store_type_id"
         PageSize="10" TableSchema="office" Table="store_types" ViewSchema="office" View="store_types" Text="<%$Resources:Titles, StoreTypes %>" Width="1000"
-        DisplayFields=""
          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

@@ -15,6 +15,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" TableSchema="core" Table="bonus_slabs" ViewSchema="core" View="bonus_slab_view" 
         Text="<%$Resources:Titles, AgentBonusSlabs %>" Width="1000"
         DisplayFields="core.frequencies.frequency_id-->frequency_name"
+        DisplayViews="core.frequencies.frequency_id-->core.frequencies"
          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

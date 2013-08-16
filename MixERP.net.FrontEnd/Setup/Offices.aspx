@@ -19,6 +19,7 @@ http://mozilla.org/MPL/2.0/.
         ViewSchema="office" View="offices" 
         Text="<%$Resources:Titles, OfficeSetup %>" 
         DisplayFields="office.offices.office_id-->office_name, core.currencies.currency_code-->currency_symbol + ' (' + currency_code + '/' + currency_name + ')'"
+        DisplayViews="office.offices.office_id-->office.office_view, core.currencies.currency_code-->core.currencies"
         Width="4000" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

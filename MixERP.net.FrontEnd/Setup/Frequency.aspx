@@ -14,7 +14,10 @@ http://mozilla.org/MPL/2.0/.
     <mixerp:Form ID="FrequencySetupForm" runat="server" DenyAdd="false" DenyDelete="false" DenyEdit="false" KeyColumn="frequency_setup_id"
         PageSize="10" TableSchema="core" Table="frequency_setups" ViewSchema="core" View="frequency_setups" 
         Text="<%$Resources:Titles, Frequencies %>" Width="1000"
-        DisplayFields="core.frequencies.frequency_id-->frequency_name, core.fiscal_year.fiscal_year_code-->fiscal_year_code + ' (' + fiscal_year_name + ')'" />
+        DisplayFields="core.frequencies.frequency_id-->frequency_name, core.fiscal_year.fiscal_year_code-->fiscal_year_code + ' (' + fiscal_year_name + ')'" 
+        DisplayViews="core.frequencies.frequency_id-->core.frequencies, core.fiscal_year.fiscal_year_code-->core.fiscal_year" 
+        
+        />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

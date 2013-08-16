@@ -26,6 +26,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         public bool DenyAdd { get; set; }
         public string Description { get; set; }
         public string DisplayFields { get; set; }
+        public string DisplayViews { get; set; }
         public string Exclude { get; set; }
         public string KeyColumn { get; set; }
         public int PageSize { get; set; }
@@ -305,6 +306,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         private void LoadForm(Panel container, System.Data.DataTable values)
         {
             HtmlTable t = new HtmlTable();
+            t.Attributes["class"] = "valignmiddle";
 
             using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.TableHelper.GetTable(this.TableSchema, this.Table, this.Exclude))
             {
@@ -469,7 +471,10 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
             foreach(Control control in controls)
             {
-                controlCell.Controls.Add(control);
+                if(control != null)
+                {
+                    controlCell.Controls.Add(control);
+                }
             }
 
             newRow.Cells.Add(labelCell);
@@ -534,9 +539,12 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             string selectedItemValue = string.Empty;
             string dataTextField = string.Empty;
             string relation = string.Empty;
-            string field = string.Empty;
+            string viewRelation = string.Empty;
             string selected = string.Empty;
             string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string schema = string.Empty;
+            string view = string.Empty;
+            HtmlAnchor itemSelectorAnchor = null;
 
             DropDownList dropDownList = this.GetDropDownList(columnName + "_dropdownlist");
 
@@ -550,13 +558,13 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                     foreach(string displayField in this.DisplayFields.Split(','))
                     {
                         //First, trim the field to remove whitespaces.
-                        field = displayField.Trim();
+                        viewRelation = displayField.Trim();
 
                         //The fully qualified name of this column.
                         relation = tableSchema + "." + tableName + "." + tableColumn;
 
                         //Check whether this field matches exactly with this column.
-                        if(field.StartsWith(relation, StringComparison.OrdinalIgnoreCase))
+                        if(viewRelation.StartsWith(relation, StringComparison.OrdinalIgnoreCase))
                         {
                             //This field in this loop contained the column name we were looking for.
                             //Now, get the mapped column (display field) to show on the drop down list.
@@ -564,7 +572,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                             //1. Removing the column name from the field.
                             //2. Removign the the "-->" symbol.
                             //What we get is the name of the field that is displayed on this drop down list.
-                            dataTextField = field.Replace(relation + "-->", "");
+                            dataTextField = viewRelation.Replace(relation + "-->", "");
 
                             //Since we have found the field we needed, let's break this loop.
                             break;
@@ -586,6 +594,56 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                     dropDownList.DataValueField = tableColumn;
                     dropDownList.DataTextField = dataTextField;
                     dropDownList.DataBind();
+
+                    if(!string.IsNullOrWhiteSpace(this.DisplayViews))
+                    {
+                        //See DisplayViews Property for more information.
+                        //Loop through all the DisplayViews to match this control.
+                        foreach(string displayView in this.DisplayViews.Split(','))
+                        {
+                            //First, trim the field to remove whitespaces.
+                            viewRelation = displayView.Trim();
+
+                            //The fully qualified name of this column.
+                            relation = tableSchema + "." + tableName + "." + tableColumn;
+
+                            //Check whether this view matches exactly with this column.
+                            if(viewRelation.StartsWith(relation, StringComparison.OrdinalIgnoreCase))
+                            {
+                                //This view in this loop starts with the column name we were looking for.
+                                //Now, get the mapped view to show on the modal page.
+                                //This should be done by :
+                                //1. Removing the column name from the field.
+                                //2. Removign the the "-->" symbol.
+                                //What we get is the name of the view that is shown on the modal page.
+                                viewRelation = viewRelation.Replace(relation + "-->", "");
+
+                                //Since we have found the field we needed, let's break this loop.
+                                break;
+                            }
+                            //Probably this was not the field we were looking for.
+                        }
+
+                        schema = viewRelation.Split('.').First();
+                        view = viewRelation.Split('.').Last();
+
+                        //Sanitize the schema and the view
+                        schema = MixERP.Net.BusinessLayer.DBFactory.Sanitizer.SanitizeIdentifierName(schema);
+                        view = MixERP.Net.BusinessLayer.DBFactory.Sanitizer.SanitizeIdentifierName(view);
+
+                        if(string.IsNullOrWhiteSpace(schema) || string.IsNullOrWhiteSpace(view))
+                        {
+                            schema = string.Empty;
+                            view = string.Empty;
+                        }
+                        else
+                        {
+                            itemSelectorAnchor = new HtmlAnchor();
+                            itemSelectorAnchor.Attributes["class"] = "item-selector";
+                            itemSelectorAnchor.HRef = "/General/ItemSelector.aspx?Schema=" + schema + "&View=" + view + "&AssociatedControlId=" + dropDownList.ID;
+                        }
+                    }
+
                 }
             }
 
@@ -650,15 +708,16 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                 dropDownList.SelectedValue = selectedItemValue;
             }
 
+
             if(isNullable)
             {
                 dropDownList.Items.Insert(0, new ListItem(String.Empty, String.Empty));
-                AddRow(t, label, dropDownList);
+                AddRow(t, label, dropDownList, itemSelectorAnchor);
             }
             else
             {
                 RequiredFieldValidator required = GetRequiredFieldValidator(dropDownList);
-                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, dropDownList, required);
+                AddRow(t, label + Resources.Setup.RequiredFieldIndicator, dropDownList, required, itemSelectorAnchor);
             }
 
         }
@@ -789,7 +848,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             AjaxControlToolkit.CalendarExtender extender = new AjaxControlToolkit.CalendarExtender();
 
             textBox.Width = 70;
-            extender.ID = textBox.ID + "_calendar_extender";            
+            extender.ID = textBox.ID + "_calendar_extender";
             extender.TargetControlID = textBox.ID;
             extender.PopupButtonID = textBox.ID;
 

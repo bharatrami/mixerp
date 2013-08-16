@@ -20,6 +20,7 @@ http://mozilla.org/MPL/2.0/.
         ViewSchema="core" View="party_view"
         Exclude="party_code"
         DisplayFields="core.party_types.party_type_id-->party_type_code + ' (' + party_type_name + ')', core.frequencies.frequency_id-->frequency_code, core.accounts.account_id-->account_code + ' (' + account_name + ')' "
+        DisplayViews="core.party_types.party_type_id-->core.party_types, core.frequencies.frequency_id-->core.frequencies, core.accounts.account_id-->core.account_view "
         SelectedValues="core.accounts.account_id-->'10400 (Accounts Receivable)'"
         Text="<%$Resources: Titles, PartyMaintenance %>"
         Width="4000"

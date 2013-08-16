@@ -17,9 +17,6 @@ http://mozilla.org/MPL/2.0/.
         TableSchema="core" Table="party_types"
         KeyColumn="party_type_id"
         ViewSchema="core" View="party_types"
-        Exclude=""
-        DisplayFields=""
-        SelectedValues=""
         Text="<%$Resources: Titles, PartyTypes %>"
         Width="1000" />
 </asp:Content>

@@ -15,7 +15,10 @@ http://mozilla.org/MPL/2.0/.
         ViewSchema="core" View="shippers" Width="5000" PageSize="10"
         Exclude="shipper_code, shipper_name"
         SelectedValues="core.accounts.account_id-->'20110 (Shipping Charge Payable)'"
-        DisplayFields="core.accounts.account_id-->account_code + ' (' + account_name + ')'" />
+        DisplayFields="core.accounts.account_id-->account_code + ' (' + account_name + ')'"
+        DisplayViews="core.accounts.account_id-->core.account_view"
+        
+         />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

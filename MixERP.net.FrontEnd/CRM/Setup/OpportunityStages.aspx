@@ -17,9 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000" 
         TableSchema="crm" Table="opportunity_stages" 
         ViewSchema="crm" View="opportunity_stages" 
-        Text="<%$Resources:Titles, OpportunityStages %>"
-        SelectedValues=""
-        DisplayFields=""/>
+        Text="<%$Resources:Titles, OpportunityStages %>" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

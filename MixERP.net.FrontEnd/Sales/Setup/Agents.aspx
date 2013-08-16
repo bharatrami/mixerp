@@ -15,7 +15,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" TableSchema="core" Table="agents" ViewSchema="core" View="agent_view" 
         Text="<%$Resources:Titles, AgentSetup %>" Width="1000"
         DisplayFields="core.accounts.account_id-->account_code + ' (' + account_name + ')'"
-        ViewFields="core.accounts.account_id-->core.account_mini_view"
+        DisplayViews="core.accounts.account_id-->core.account_view"
         SelectedValues="core.accounts.account_id-->'20100 (Accounts Payable)'"
          />
 </asp:Content>

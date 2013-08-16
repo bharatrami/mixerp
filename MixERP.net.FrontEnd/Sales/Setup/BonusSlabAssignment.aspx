@@ -15,6 +15,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" TableSchema="core" Table="agent_bonus_setups" ViewSchema="core" View="agent_bonus_setup_view" 
         Text="<%$Resources:Titles, AgentBonusSlabAssignment %>" Width="1000"
         DisplayFields="core.bonus_slabs.bonus_slab_id-->bonus_slab_name, core.agents.agent_id-->agent_name"
+        DisplayViews="core.bonus_slabs.bonus_slab_id-->core.bonus_slab_view, core.agents.agent_id-->core.agent_view"
          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

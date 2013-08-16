@@ -270,6 +270,12 @@ END
 $$
 LANGUAGE plpgsql;
 
+
+--TODO
+CREATE VIEW office.office_view
+AS
+SELECT * FROM office.offices;
+
 CREATE TABLE office.departments
 (
 	department_id SERIAL  NOT NULL PRIMARY KEY,
@@ -423,6 +429,21 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+CREATE VIEW office.user_view
+AS
+SELECT
+	office.users.user_id,
+	office.users.user_name,
+	office.users.full_name,
+	office.roles.role_name,
+	office.offices.office_name
+FROM
+	office.users
+INNER JOIN office.roles
+ON office.users.role_id = office.roles.role_id
+INNER JOIN office.offices
+ON office.users.office_id = office.offices.office_id;
 
 CREATE FUNCTION office.get_sys_user_id()
 RETURNS integer
@@ -1366,6 +1387,10 @@ AND
 	core.compound_units.compare_unit_id = compare_unit.unit_id;
 
 
+--TODO
+CREATE VIEW core.unit_view
+AS
+SELECT * FROM core.units;
 
 CREATE FUNCTION core.get_base_quantity_by_unit_name(text, integer)
 RETURNS decimal
@@ -1486,16 +1511,6 @@ INNER JOIN core.account_masters
 ON core.account_masters.account_master_id=core.accounts.account_master_id
 LEFT JOIN core.accounts parent_account
 ON parent_account.account_id=core.accounts.parent_account_id;
-
-CREATE VIEW core.account_mini_view
-AS
-SELECT
-	account_id,
-	account_code,
-	account_name,
-	external_code
-FROM core.accounts;
-
 
 INSERT INTO core.account_masters(account_master_code, account_master_name) SELECT 'BSA', 'Balance Sheet A/C';
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10000', 'Assets', TRUE, (SELECT account_id FROM core.accounts WHERE account_name='Balance Sheet A/C');
@@ -2519,6 +2534,12 @@ END
 $$
 LANGUAGE plpgsql;
 
+--TODO
+CREATE VIEW core.item_view
+AS
+SELECT * FROM core.items;
+
+
 /*******************************************************************
 	PLEASE NOTE :
 
@@ -2715,6 +2736,12 @@ ON office.stores(UPPER(store_code));
 
 CREATE UNIQUE INDEX stores_store_name_uix
 ON office.stores(UPPER(store_name));
+
+
+--TODO
+CREATE VIEW office.store_view
+AS
+SELECT * FROM office.stores;
 
 
 CREATE TABLE office.cash_repositories

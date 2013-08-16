@@ -17,10 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000"
         TableSchema="office" Table="roles" 
         ViewSchema="office" View="roles" 
-        Text="<%$Resources:Titles, RoleMaintenance %>"
-        SelectedValues=""
-        DisplayFields=""
-          />
+        Text="<%$Resources:Titles, RoleMaintenance %>"  />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

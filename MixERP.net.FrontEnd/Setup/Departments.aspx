@@ -17,10 +17,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" Width="1000"
         TableSchema="office" Table="departments" 
         ViewSchema="office" View="departments" 
-        Text="<%$Resources:Titles, Departments %>"
-        SelectedValues=""
-        DisplayFields=""
-          />
+        Text="<%$Resources:Titles, Departments %>" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

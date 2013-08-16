@@ -15,6 +15,7 @@ http://mozilla.org/MPL/2.0/.
         PageSize="10" TableSchema="core" Table="compound_units" ViewSchema="core" View="compound_unit_view" 
         Text="<%$Resources:Titles, CompoundUnitsOfMeasure %>" Width="1000"
         DisplayFields="core.units.unit_id-->unit_name"
+        DisplayViews="core.units.unit_id-->core.unit_view"
          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

@@ -12,9 +12,7 @@ http://mozilla.org/MPL/2.0/.
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:Form ID="BrandForm" runat="server" Text="<%$Resources:Titles, Brands %>" TableSchema="core" Table="brands" KeyColumn="brand_id"
-        ViewSchema="core" View="brands" Width="1000" PageSize="10"
-        SelectedValues=""
-        DisplayFields="" />
+        ViewSchema="core" View="brands" Width="1000" PageSize="10"/>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

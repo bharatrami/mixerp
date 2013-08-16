@@ -82,7 +82,7 @@ http://mozilla.org/MPL/2.0/.
 
         <asp:Label ID="FormLabel" runat="server" />
 
-        <asp:Panel ID="GridPanel" runat="server" ScrollBars="Auto" Width="600">
+        <asp:Panel ID="GridPanel" runat="server" ScrollBars="Auto" Width="1000">
             <asp:GridView ID="FormGridView"
                 runat="server"
                 GridLines="None"
@@ -354,8 +354,13 @@ http://mozilla.org/MPL/2.0/.
     $(document).ready(function () {
         shortcut.add("ESC", function () {
             if (!$('#FormPanel').is(':hidden')) {
-                var result = confirm('Are you sure?');
-                $('#CancelButton').click();
+
+                if ($("#colorbox").css("display") != "block") {
+                    var result = confirm('Are you sure?');
+                    if (result) {
+                        $('#CancelButton').click();
+                    }
+                }
             }
         });
 

@@ -17,7 +17,9 @@ http://mozilla.org/MPL/2.0/.
         Text="<%$Resources:Titles, BankAccounts %>" 
         TableSchema="core" Table="bank_accounts" KeyColumn="account_id"
         ViewSchema="core" View="bank_accounts" Width="1000" PageSize="10" 
-        DisplayFields="office.users.user_id-->user_name, core.accounts.account_id-->account_code + ' (' + account_name + ')'" />
+        DisplayFields="office.users.user_id-->user_name, core.accounts.account_id-->account_code + ' (' + account_name + ')'"
+        DisplayViews="office.users.user_id-->office.user_view, core.accounts.account_id-->core.account_view"        
+         />
 
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

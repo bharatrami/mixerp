@@ -16,7 +16,10 @@ http://mozilla.org/MPL/2.0/.
         TableSchema="core" Table="accounts" KeyColumn="account_id"
         ViewSchema="core" View="account_view" Width="1500" PageSize="10" 
         Exclude="sys_type"
-        DisplayFields="core.account_masters.account_master_id-->account_master_code + ' (' + account_master_name + ')',core.accounts.account_id-->account_code + ' (' + account_name + ')'" />
+        DisplayFields="core.account_masters.account_master_id-->account_master_code + ' (' + account_master_name + ')',core.accounts.account_id-->account_code + ' (' + account_name + ')'" 
+        DisplayViews="core.account_masters.account_master_id-->core.account_masters, core.accounts.account_id--> core.account_view" 
+        
+        />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

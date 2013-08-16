@@ -37,11 +37,11 @@ a
 
     h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, a:hover, span:hover, table:hover, tr:hover, td:hover, div:hover
     {
-        -webkit-transition: all 1000ms ease;
-        -moz-transition: all 1000ms ease;
-        -o-transition: all 1000ms ease;
-        -ms-transition: all 1000ms ease;
-        transition: all 1000ms ease;
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        -ms-transition: all 500ms ease;
+        transition: all 500ms ease;
     }
 
 .ajax-container

@@ -15,6 +15,7 @@ http://mozilla.org/MPL/2.0/.
         ViewSchema="core" View="tax_view" Width="1000" PageSize="10" 
         SelectedValues="core.accounts.account_id-->'20700 (Tax Payables)' "
         DisplayFields="core.tax_types.tax_type_id-->tax_type_code + ' (' + tax_type_name + ')', core.accounts.account_id-->account_code + ' (' + account_name + ')'"
+        DisplayViews="core.tax_types.tax_type_id-->core.tax_types, core.accounts.account_id-->core.account_view"
          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

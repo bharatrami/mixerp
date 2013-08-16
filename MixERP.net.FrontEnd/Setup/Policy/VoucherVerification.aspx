@@ -14,6 +14,7 @@ http://mozilla.org/MPL/2.0/.
     <mixerp:Form ID="VoucherVerificationPolicyForm" runat="server"
         Text="<%$ Resources:Titles, VoucherVerificationPolicy %>"
         DisplayFields="office.users.user_id-->user_name"
+        DisplayViews="office.users.user_id-->office.user_view"
         PageSize="100" Width="2000"
         TableSchema="policy" Table="voucher_verification_policy" KeyColumn="user_id"
         ViewSchema="policy" View="voucher_verification_policy_view"

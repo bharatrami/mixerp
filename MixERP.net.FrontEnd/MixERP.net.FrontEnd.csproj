@@ -346,6 +346,13 @@
     <Compile Include="Finance\VoucherVerification.aspx.designer.cs">
       <DependentUpon>VoucherVerification.aspx</DependentUpon>
     </Compile>
+    <Compile Include="General\ItemSelector.aspx.cs">
+      <DependentUpon>ItemSelector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="General\ItemSelector.aspx.designer.cs">
+      <DependentUpon>ItemSelector.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -948,6 +955,7 @@
     <Content Include="Finance\TransactionDocumentManager.aspx" />
     <Content Include="Finance\UpdateExchangeRates.aspx" />
     <Content Include="Finance\VoucherVerification.aspx" />
+    <Content Include="General\ItemSelector.aspx" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="Items\Adjustment.aspx" />
@@ -1005,6 +1013,7 @@
     <Content Include="Resource\Icons\filter-16.png" />
     <Content Include="Resource\Icons\pdf-16.png" />
     <Content Include="Resource\Icons\print-16.png" />
+    <Content Include="Resource\Icons\search-16.png" />
     <Content Include="Resource\Icons\top-16.png" />
     <Content Include="Resource\Icons\word-16.png" />
     <Content Include="RuntimeError.aspx" />
@@ -1302,6 +1311,37 @@
     <Content Include="Scripts\CodeMirror\theme\visual-studio.css" />
     <Content Include="Scripts\CodeMirror\theme\xq-dark.css" />
     <Content Include="Scripts\CodeMirror\theme\xq-light.css" />
+    <Content Include="Scripts\colorbox\colorbox.css" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-ar.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-bg.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-cs.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-da.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-de.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-es.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-et.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-fa.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-fi.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-fr.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-hr.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-hu.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-id.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-it.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-ja.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-kr.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-lv.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-nl.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-no.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-pl.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-pt-br.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-ro.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-ru.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-sk.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-sv.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-tr.js" />
+    <Content Include="Scripts\colorbox\i18n\jquery.colorbox-zh-CN.js" />
+    <Content Include="Scripts\colorbox\images\controls.png" />
+    <Content Include="Scripts\colorbox\images\loading.gif" />
+    <Content Include="Scripts\colorbox\jquery.colorbox-min.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\mixerp.js" />
     <Content Include="Scripts\shortcut.js" />
