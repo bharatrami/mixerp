@@ -1,5 +1,3 @@
-/*.rar
-packages
-*.dll
 bin
 obj
+*.pdb

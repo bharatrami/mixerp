@@ -42,28 +42,25 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit">
-      <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\AjaxControlToolkit.dll</HintPath>
+    <Reference Include="AjaxControlToolkit, Version=4.1.7.725, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\AjaxControlToolkit\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="AjaxMin, Version=4.97.4951.28478, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\AjaxControlToolkit\AjaxMin.dll</HintPath>
     </Reference>
     <Reference Include="AspNetPager, Version=7.4.3.0, Culture=neutral, PublicKeyToken=fb0a0fe055d40fd4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\AspNetPager.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\SanitizerProviders\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="itextsharp">
-      <HintPath>..\packages\iTextSharp.5.4.3\lib\itextsharp.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\AjaxControlToolkit\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Npgsql, Version=2.0.12.91, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="SanitizerProviders">
-      <HintPath>..\packages\AjaxControlToolkit.7.0607\lib\40\SanitizerProviders\SanitizerProviders.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -84,27 +81,6 @@
     </Compile>
     <Compile Include="Account\ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Index.aspx.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Index.aspx.designer.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Messaging\Inbox.aspx.cs">
-      <DependentUpon>Inbox.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Messaging\Inbox.aspx.designer.cs">
-      <DependentUpon>Inbox.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Messaging\SentItems.aspx.cs">
-      <DependentUpon>SentItems.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Messaging\SentItems.aspx.designer.cs">
-      <DependentUpon>SentItems.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\SignOut.aspx.cs">
       <DependentUpon>SignOut.aspx</DependentUpon>
@@ -212,6 +188,13 @@
     </Compile>
     <Compile Include="CRM\Setup\OpportunityStages.aspx.designer.cs">
       <DependentUpon>OpportunityStages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Finance\BankReconcilation.aspx.cs">
       <DependentUpon>BankReconcilation.aspx</DependentUpon>
@@ -905,6 +888,62 @@
     <Compile Include="UserControls\TransactionChecklistControl.ascx.designer.cs">
       <DependentUpon>TransactionChecklistControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Widgets\AlertsWidget.ascx.cs">
+      <DependentUpon>AlertsWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\AlertsWidget.ascx.designer.cs">
+      <DependentUpon>AlertsWidget.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Widgets\CurrentOfficeSalesByMonthWidget.ascx.cs">
+      <DependentUpon>CurrentOfficeSalesByMonthWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\CurrentOfficeSalesByMonthWidget.ascx.designer.cs">
+      <DependentUpon>CurrentOfficeSalesByMonthWidget.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Widgets\LinksWidget.ascx.cs">
+      <DependentUpon>LinksWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\LinksWidget.ascx.designer.cs">
+      <DependentUpon>LinksWidget.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Widgets\OfficeInformationWidget.ascx.cs">
+      <DependentUpon>OfficeInformationWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\OfficeInformationWidget.ascx.designer.cs">
+      <DependentUpon>OfficeInformationWidget.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Widgets\SalesByOfficeWidget.ascx.cs">
+      <DependentUpon>SalesByOfficeWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\SalesByOfficeWidget.ascx.designer.cs">
+      <DependentUpon>SalesByOfficeWidget.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Widgets\TopSellingProductOfAllTimeCurrentWidget.ascx.cs">
+      <DependentUpon>TopSellingProductOfAllTimeCurrentWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\TopSellingProductOfAllTimeCurrentWidget.ascx.designer.cs">
+      <DependentUpon>TopSellingProductOfAllTimeCurrentWidget.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Widgets\TopSellingProductOfAllTimetWidget.ascx.cs">
+      <DependentUpon>TopSellingProductOfAllTimetWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\TopSellingProductOfAllTimetWidget.ascx.designer.cs">
+      <DependentUpon>TopSellingProductOfAllTimetWidget.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Widgets\WorkflowWidget.ascx.cs">
+      <DependentUpon>WorkflowWidget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Widgets\WorkflowWidget.ascx.designer.cs">
+      <DependentUpon>WorkflowWidget.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\Dictionary.xml">
@@ -914,9 +953,6 @@
       <Link>Readme.txt</Link>
     </Content>
     <Content Include="Account\ChangePassword.aspx" />
-    <Content Include="Account\Index.aspx" />
-    <Content Include="Account\Messaging\Inbox.aspx" />
-    <Content Include="Account\Messaging\SentItems.aspx" />
     <Content Include="Account\SignOut.aspx" />
     <Content Include="App_Themes\MixERP\Default.css" />
     <Content Include="CRM\ConvertLeadToOpportunity.aspx" />
@@ -928,6 +964,7 @@
     <Content Include="CRM\Setup\LeadSources.aspx" />
     <Content Include="CRM\Setup\LeadStatuses.aspx" />
     <Content Include="CRM\Setup\OpportunityStages.aspx" />
+    <Content Include="Dashboard\Index.aspx" />
     <Content Include="db\en-US\mixerp-db-logic.sql" />
     <Content Include="db\en-US\party-sample.sql" />
     <Content Include="db\en-US\mixerp.bak.sql" />
@@ -1005,6 +1042,128 @@
     <Content Include="Reports\Sources\Sales.View.Sales.Invoice.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Resource\Frameworks\MetroUi\css\modern-responsive.css" />
+    <Content Include="Resource\Frameworks\MetroUi\css\modern.css" />
+    <Content Include="Resource\Frameworks\MetroUi\css\theme-dark.css" />
+    <Content Include="Resource\Frameworks\MetroUi\fonts\iconFont.svg" />
+    <Content Include="Resource\Frameworks\MetroUi\fonts\license.txt" />
+    <Content Include="Resource\Frameworks\MetroUi\images\1.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\1005-BizSpark-261x230.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\2.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\3.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\4.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\5.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\armor.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\author.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-activity.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-alert.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-attention.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-available.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-away.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-busy.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-error.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-newMessage.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-paused.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-playing.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\bage-unavailable.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Calendar128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Camera48.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\chrome.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\collapse24-black.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\collapse24.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\collapse32-black.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\collapse32.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\download-32.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\excel2013icon.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\expand24-black.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\expand24.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\expand32-black.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\expand32.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\firefox.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\fork-32.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\github.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\grid.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\icons-white.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\icons.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\ie.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\InternetExplorer128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\lock-open.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\lock.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\logo-jetbrains.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\logo32.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Mail128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Market128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\michael.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Music128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\myface.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\onenote2013icon.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\opera.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Picture128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\preloader-w8-cycle-black.gif" />
+    <Content Include="Resource\Frameworks\MetroUi\images\preloader-w8-cycle-white.gif" />
+    <Content Include="Resource\Frameworks\MetroUi\images\preloader-w8-line-black.gif" />
+    <Content Include="Resource\Frameworks\MetroUi\images\preloader-w8-line-white.gif" />
+    <Content Include="Resource\Frameworks\MetroUi\images\pull24-dark.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\pull24.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\responsive.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\row24.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Rss128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\shield-user.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\simple.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\spface.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\star32.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\stock-up.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\svface.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\vbface.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\Video128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\view-32.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\WIN8.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\windows-8-metro.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\windows8_metro_green_1920_1080.jpg" />
+    <Content Include="Resource\Frameworks\MetroUi\images\word2013icon.png" />
+    <Content Include="Resource\Frameworks\MetroUi\images\YouTube128.png" />
+    <Content Include="Resource\Frameworks\MetroUi\js\assets\github.info.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\assets\google-analytics.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\assets\jquery-1.8.2.min.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\assets\jquery-1.9.0.min.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\assets\jquery.mousewheel.min.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\assets\moment.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\assets\moment_langs.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-apollo.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-clj.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-css.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-go.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-hs.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-lisp.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-lua.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-ml.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-n.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-proto.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-scala.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-sql.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-tex.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-vb.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-vhdl.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-wiki.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-xq.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\lang-yaml.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\prettify.css" />
+    <Content Include="Resource\Frameworks\MetroUi\js\google-code-prettify\prettify.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\accordion.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\buttonset.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\calendar.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\carousel.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\dialog.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\dropdown.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\input-control.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\pagecontrol.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\pagelist.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\rating.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\slider.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\start-menu.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\tile-drag.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\modern\tile-slider.js" />
+    <Content Include="Resource\Frameworks\MetroUi\js\sharrre\jquery.sharrre-1.3.4.min.js" />
     <Content Include="Resource\Icons\bottom-16.png" />
     <Content Include="Resource\Icons\calendar-16.png" />
     <Content Include="Resource\Icons\close-16.png" />
@@ -1016,6 +1175,7 @@
     <Content Include="Resource\Icons\search-16.png" />
     <Content Include="Resource\Icons\top-16.png" />
     <Content Include="Resource\Icons\word-16.png" />
+    <Content Include="Resource\TempImages\index.html" />
     <Content Include="RuntimeError.aspx" />
     <Content Include="Sales\Confirmation\CustomerInvoice.aspx" />
     <Content Include="Sales\Confirmation\DirectSales.aspx" />
@@ -1342,6 +1502,8 @@
     <Content Include="Scripts\colorbox\images\controls.png" />
     <Content Include="Scripts\colorbox\images\loading.gif" />
     <Content Include="Scripts\colorbox\jquery.colorbox-min.js" />
+    <Content Include="Scripts\gridster\jquery.gridster.js" />
+    <Content Include="Scripts\gridster\jquery.gridster.min.css" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\mixerp.js" />
     <Content Include="Scripts\shortcut.js" />
@@ -1383,7 +1545,6 @@
     <Content Include="App_Themes\MixERP\Skin1.skin" />
     <Content Include="ContentMaster.Master" />
     <Content Include="MenuMaster.Master" />
-    <Content Include="packages.config" />
     <Content Include="MixERPMaster.Master" />
     <Content Include="Scripts\CodeMirror\.travis.yml" />
     <Content Include="Scripts\CodeMirror\bin\compress" />
@@ -1407,6 +1568,14 @@
     <Content Include="UserControls\ReportControl.ascx" />
     <Content Include="UserControls\Reporting\Header.ascx" />
     <Content Include="UserControls\TransactionChecklistControl.ascx" />
+    <Content Include="UserControls\Widgets\AlertsWidget.ascx" />
+    <Content Include="UserControls\Widgets\CurrentOfficeSalesByMonthWidget.ascx" />
+    <Content Include="UserControls\Widgets\LinksWidget.ascx" />
+    <Content Include="UserControls\Widgets\OfficeInformationWidget.ascx" />
+    <Content Include="UserControls\Widgets\SalesByOfficeWidget.ascx" />
+    <Content Include="UserControls\Widgets\TopSellingProductOfAllTimeCurrentWidget.ascx" />
+    <Content Include="UserControls\Widgets\TopSellingProductOfAllTimetWidget.ascx" />
+    <Content Include="UserControls\Widgets\WorkflowWidget.ascx" />
     <Content Include="Web.config" />
     <Content Include="MixERP.Net.FrontEnd.licenseheader" />
     <Content Include="Mix Open Foundation.snk" />
@@ -1415,6 +1584,10 @@
     <Content Include="Resource\Configuration\Switches.config" />
     <Content Include="Resource\Configuration\Parameters.config" />
     <Content Include="Resource\Configuration\DbParameters.config" />
+    <Content Include="Resource\Frameworks\MetroUi\fonts\iconFont.eot" />
+    <Content Include="Resource\Frameworks\MetroUi\fonts\iconFont.ttf" />
+    <Content Include="Resource\Frameworks\MetroUi\fonts\iconFont.woff" />
+    <Content Include="Resource\Frameworks\MetroUi\js\sharrre\sharrre.php" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

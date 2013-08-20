@@ -6,8 +6,7 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProductControl.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.Products.ProductControl" %>
-<asp:ScriptManager ID="ScriptManager1" runat="server" />
-
+<AjaxCTK:ToolkitScriptManager ID="ScriptManager1" runat="server" />
 <div style="width: 1000px; overflow: hidden; margin: 0 auto;">
     <asp:Label ID="TitleLabel" CssClass="title" runat="server" />
     <asp:UpdateProgress ID="UpdateProgress1" runat="server">
@@ -139,12 +138,12 @@ http://mozilla.org/MPL/2.0/.
                                     onblur="getPrice();"
                                     ToolTip="Ctrl + I" Width="300">
                                 </asp:DropDownList>
-                                <ajaxToolkit:CascadingDropDown ID="ItemDropDownListCascadingDropDown" runat="server"
+                                <AjaxCTK:CascadingDropDown ID="ItemDropDownListCascadingDropDown" runat="server"
                                     TargetControlID="ItemDropDownList" Category="Item" 
                                     ServicePath="~/Services/ItemData.asmx"
                                     LoadingText="<%$Resources:Labels, Loading %>"
                                     PromptText="<%$Resources:Titles, Select %>">
-                                </ajaxToolkit:CascadingDropDown>
+                                </AjaxCTK:CascadingDropDown>
                             </td>
                             <td>
                                 <asp:TextBox ID="QuantityTextBox" 
@@ -157,13 +156,14 @@ http://mozilla.org/MPL/2.0/.
                                 <asp:DropDownList ID="UnitDropDownList" runat="server" AutoPostBack="true"
                                     ToolTip="Ctrl + U" Width="68">
                                 </asp:DropDownList>
-                                <ajaxToolkit:CascadingDropDown ID="UnitDropDownListCascadingDropDown" runat="server"
+                                <AjaxCTK:CascadingDropDown ID="UnitDropDownListCascadingDropDown" runat="server"
                                     ParentControlID="ItemDropDownList" TargetControlID="UnitDropDownList"
-                                    Category="Unit" ServiceMethod="GetUnits"
+                                    Category="Unit" 
+                                    ServiceMethod="GetUnits"
                                     ServicePath="~/Services/ItemData.asmx"
                                     LoadingText="<%$Resources:Labels, Loading %>"
                                     PromptText="<%$Resources:Titles, Select %>">
-                                </ajaxToolkit:CascadingDropDown>
+                                </AjaxCTK:CascadingDropDown>
                             </td>
                             <td>
                                 <asp:TextBox ID="PriceTextBox" runat="server" CssClass="right" onblur="updateTax();calculateAmount();"

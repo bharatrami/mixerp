@@ -1,4 +1,5 @@
-﻿<%-- 
+﻿
+<%-- 
 Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
 
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
@@ -36,9 +37,7 @@ http://mozilla.org/MPL/2.0/.
 <body>
     <form id="form1" runat="server">
     <div>
-        <h3>Quick View</h3>
-
-        <div class="vpad12">
+        <div class="vpad8">
             <table class="valignmiddle">
                 <tr>
                     <td>
@@ -107,82 +106,3 @@ http://mozilla.org/MPL/2.0/.
     </form>
 </body>
 </html>
-
-
-<script runat="server">
-    protected void FilterDropDownList_DataBound(object sender, EventArgs e)
-    {
-        foreach(ListItem item in FilterDropDownList.Items)
-        {
-            item.Text = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", item.Text);
-        }
-    }
-
-    protected void SearchGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        if(e.Row.RowType == DataControlRowType.Header)
-        {
-            for(int i = 0; i < e.Row.Cells.Count; i++)
-            {
-                string cellText = e.Row.Cells[i].Text;
-                if(!string.IsNullOrWhiteSpace(cellText))
-                {
-                    cellText = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
-                    e.Row.Cells[i].Text = cellText;
-                }
-            }
-        }
-    }
-
-    protected void Page_Init(object sender, EventArgs e)
-    {
-        this.LoadParmeters();
-        this.LoadGridView();
-    }
-
-    private string GetSchema()
-    {
-        return Pes.Utility.Conversion.TryCastString(this.Request["Schema"]);
-    }
-
-    private string GetView()
-    {
-        return Pes.Utility.Conversion.TryCastString(this.Request["View"]);
-    }
-
-    protected void GoButton_Click(object sender, EventArgs e)
-    {
-        if(string.IsNullOrWhiteSpace(this.GetSchema())) return;
-        if(string.IsNullOrWhiteSpace(this.GetView())) return;
-        
-        using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable(this.GetSchema(), this.GetView(), FilterDropDownList.SelectedItem.Value, FilterTextBox.Text, 10))
-        {
-            SearchGridView.DataSource = table;
-            SearchGridView.DataBind();
-        }
-    }
-
-    private void LoadParmeters()
-    {
-        if(string.IsNullOrWhiteSpace(this.GetSchema())) return;
-        if(string.IsNullOrWhiteSpace(this.GetView())) return;
-
-        using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.TableHelper.GetTable(this.GetSchema(), this.GetView(), ""))
-        {
-            FilterDropDownList.DataSource = table;
-            FilterDropDownList.DataBind();
-        }
-    }
-
-    private void LoadGridView()
-    {
-        if(string.IsNullOrWhiteSpace(this.GetSchema())) return;
-        if(string.IsNullOrWhiteSpace(this.GetView())) return;
-
-        using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable(this.GetSchema(), this.GetView(), "", "", 10))
-        {
-            SearchGridView.DataSource = table;
-            SearchGridView.DataBind();
-        }
-    }
-</script>

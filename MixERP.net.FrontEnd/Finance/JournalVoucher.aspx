@@ -5,6 +5,7 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 --%>
+
 <%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="JournalVoucher.aspx.cs" Inherits="MixERP.Net.FrontEnd.Finance.JournalVoucher" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
@@ -12,7 +13,7 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <asp:ScriptManager runat="server" />
+    <AjaxCTK:ToolkitScriptManager ID="ScriptManager1" runat="server" />
     <asp:Label ID="TitleLabel" runat="server" Text="<%$Resources:Titles, JournalVoucherEntry %>" CssClass="title" />
 
 
@@ -94,25 +95,25 @@ http://mozilla.org/MPL/2.0/.
                                 onchange="document.getElementById('AccountCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0) { return false };"
                                 ToolTip="Ctrl + A" />
 
-                            <ajaxToolkit:CascadingDropDown ID="AccountDropDownListCascadingDropDown" runat="server"
+                            <AjaxCTK:CascadingDropDown ID="AccountDropDownListCascadingDropDown" runat="server"
                                 TargetControlID="AccountDropDownList" Category="Account" ServiceMethod="GetAccounts"
                                 ServicePath="~/Services/AccountData.asmx"
                                 LoadingText="<%$Resources:Labels, Loading %>"
                                 PromptText="<%$Resources:Titles, Select %>">
-                            </ajaxToolkit:CascadingDropDown>
+                            </AjaxCTK:CascadingDropDown>
 
 
                         </td>
                         <td>
                             <asp:DropDownList ID="CashRepositoryDropDownList" runat="server" Width="100" />
 
-                            <ajaxToolkit:CascadingDropDown ID="CashRepositoryDropDownListCascadingDropDown" runat="server"
+                            <AjaxCTK:CascadingDropDown ID="CashRepositoryDropDownListCascadingDropDown" runat="server"
                                 ParentControlID="AccountDropDownList" TargetControlID="CashRepositoryDropDownList"
                                 Category="CashRepository" ServiceMethod="GetCashRepositories"
                                 ServicePath="~/Services/AccountData.asmx"
                                 LoadingText="<%$Resources:Labels, Loading %>"
                                 PromptText="<%$Resources:Titles, Select %>">
-                            </ajaxToolkit:CascadingDropDown>
+                            </AjaxCTK:CascadingDropDown>
                         </td>
                         <td>
                             <asp:TextBox ID="StatementReferenceTextBox" runat="server" Width="315"

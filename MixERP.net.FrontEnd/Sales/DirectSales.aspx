@@ -5,6 +5,7 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 --%>
+
 <%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="DirectSales.aspx.cs" Inherits="MixERP.Net.FrontEnd.Sales.DirectSales" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
@@ -13,13 +14,13 @@ http://mozilla.org/MPL/2.0/.
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:Product runat="server" ID="DirectSalesControl"
-       TransactionType="Sales" Text="<%$Resources:Titles, DirectSales %>"
+        TransactionType="Sales" 
+        Text="<%$Resources:Titles, DirectSales %>"
         ShowTransactionType="true"
         ShowCashRepository="true"
         VerifyStock="true"
         TopPanelWidth="750"
-        OnSaveButtonClick="Sales_SaveButtonClick"
-         />
+        OnSaveButtonClick="Sales_SaveButtonClick" />
 
     <asp:Label ID="ErrorLabel" runat="server" CssClass="error">
     </asp:Label>

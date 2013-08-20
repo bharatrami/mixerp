@@ -267,7 +267,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             if(this.TransactionType == TranType.Sales)
             {
                 ItemDropDownListCascadingDropDown.ServiceMethod = "GetItems";
-                TransactionTypeLiteral.Text = "<label>Sales Type</label>";
+                TransactionTypeLiteral.Text = "<label>" + Resources.Titles.SalesType + "</label>";
 
                 using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "price_types"))
                 {

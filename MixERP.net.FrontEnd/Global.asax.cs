@@ -26,7 +26,7 @@ namespace MixERP.Net.FrontEnd
         {
             if(routes != null)
             {
-                routes.MapPageRoute("DefaultRoute", "", "~/Account/Index.aspx");
+                routes.MapPageRoute("DefaultRoute", "", "~/SignIn.aspx");
                 routes.MapPageRoute("Reporting", "Reports/{path}", "~/Reports/ReportMaster.aspx");
             }
         }

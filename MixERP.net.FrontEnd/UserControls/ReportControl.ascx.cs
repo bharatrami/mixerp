@@ -18,15 +18,6 @@ using System.Xml;
 using System.Xml.Linq;
 using MixERP.Net.BusinessLayer.Helpers;
 
-//For converting HTML TO PDF- START
-using iTextSharp.text;
-using iTextSharp.text.html;
-using iTextSharp.text.pdf;
-using iTextSharp.text.xml;
-using iTextSharp.text.html.simpleparser;
-using System.util;
-//For converting HTML TO PDF- END
-
 namespace MixERP.Net.FrontEnd.UserControls
 {
     public partial class ReportControl : System.Web.UI.UserControl

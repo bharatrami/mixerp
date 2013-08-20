@@ -34,7 +34,7 @@ namespace MixERP.Net.FrontEnd
                             MixERP.Net.BusinessLayer.Security.User.SetSession(this.Page, user);
                         }
 
-                        Response.Redirect("~/Account/Index.aspx", true);
+                        Response.Redirect("~/Dashboard/Index.aspx", true);
 
                     }
                 }

@@ -46,6 +46,10 @@ http://mozilla.org/MPL/2.0/.
         </a>
         <div id="menu">
             <asp:Literal ID="MenuLiteral" runat="server" />
+            <div style="float: right; padding-right: 24px;">
+                <a href="/Account/SignOut.aspx">Sign Out</a>
+                <a href="/Account/ChangePassword.aspx">Change Password</a>
+            </div>
         </div>
         <div id="content">
             <asp:ContentPlaceHolder ID="BodyContentPlaceHolder" runat="server">
@@ -65,7 +69,7 @@ http://mozilla.org/MPL/2.0/.
             }
         });
 
-        function pageLoad(sender, args) { 
+        function pageLoad(sender, args) {
             $(".item-selector").colorbox({ iframe: true, innerWidth: 1024, innerHeight: 450, overlayClose: false });
         }
 

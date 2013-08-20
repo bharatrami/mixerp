@@ -7,7 +7,7 @@
 
 .menu-header, h1, h2, h3, h4, h5, .title, .menu-title
 {
-    font-family: 'Segoe UI Light'!important;;
+    font-family: 'Segoe UI Light'!important;
 }
 
 html
@@ -18,13 +18,15 @@ html
 body
 {
     height: 100%;
-    margin:auto;
+    margin: auto;
+    overflow-x: auto;
 }
 
 #page
 {
-    width:95%;
-    overflow-x:auto;
+    width: 95%;
+    height: 100%;
+    display: table;
 }
 
 form
@@ -86,9 +88,9 @@ input, select
 {
     background-color: White;
     width: 100%;
-    height: 100%;
     padding: 0px;
     padding-right: 16px;
+    height: 100%;
 }
 
 .content
@@ -102,6 +104,7 @@ input, select
     width: 100%;
     padding: 12px 8px 12px 8px;
     font-weight: bold;
+    height: 14px;
 }
 
 
@@ -268,12 +271,11 @@ h5
     {
         border-style: none none none solid;
         border-width: 1px;
-        border-color: #E0D7F4;
+        border-color: #8765C5;
         height: 18px;
         padding: 4px;
-        color: #654196;
-        font-size: 14px;
-        background-color: #E0D7F4;
+        color: #FFFFFF;
+        background-color: #8765C5;
         padding-left: 12px !important;
     }
 
@@ -443,6 +445,7 @@ label
 #menu-table
 {
     border-collapse: collapse;
+    height: 100%;
 }
 
     #menu-table td
@@ -455,7 +458,7 @@ label
 .menu2
 {
     border-width: 1px;
-    border-color: #A7A7C5;
+    border-color: #D1D1E0;
     background-color: #F3F3F8;
     width: 252px;
     border-right-style: solid;
@@ -486,7 +489,7 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 
     a.sub-menu-anchor:hover
     {
-        background-color: #7710BC;
+        background-color: #8765C5;
         color: White;
     }
 
@@ -555,6 +558,7 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
     padding: 16px 0px 16px 0px!important;
 }
 
+/* Todo: Check if still in use. */
 .activeline
 {
     background-color: #E1E1EC;
@@ -592,9 +596,11 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
 
 .grid2-header
 {
+    border: 1px solid #8765C5;
     height: 30px;
-    background-color: #9A61C0;
+    background-color: #8765C5;
     color: #FFFFFF;
+    height: 32px;
 }
 
 .grid3
@@ -713,8 +719,8 @@ textarea
 
 .info
 {
-    padding:8px;
-    background-color: #D0D9DD;
+    padding: 8px;
+    background-color: #C4B4E2;
 }
 
 .pink
@@ -849,5 +855,114 @@ input.date
     height: 20px;
     width: 20px;
     display: inline-block;
-    outline:none;
+    outline: none;
 }
+
+.table2
+{
+    border-collapse: collapse;
+}
+
+    .table2 tr
+    {
+    }
+
+    .table2 td
+    {
+        padding: 4px;
+    }
+
+    .table2 .row
+    {
+    }
+
+
+.panel
+{
+    float: left;
+    margin: 4px;
+    border: 1px solid #F1E6FB;
+    width: 100%;
+}
+
+
+.double-panel
+{
+    width: 100%;
+}
+
+
+.panel-title
+{
+    background-color: #F1E6FB;
+    padding: 4px 4px 4px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333333;
+}
+
+.panel-content
+{
+    padding: 12px;
+    line-height: 18px;
+    color: #333333;
+    height: 212px;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.double-panel-content
+{
+    height: 424px;
+}
+
+.panel-content ul
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+    .panel-content ul li:before
+    {
+        content: "\00BB";
+    }
+
+
+
+.ajax__calendar_other div
+{
+    color:#E0D7F4!important;
+}
+
+.ajax__calendar_day
+{
+    text-align:center!important;
+}
+
+.ajax__calendar br
+{
+}
+
+.ajax__calendar td
+{
+    vertical-align:middle!important;
+}
+
+.ajax__calendar_month, .ajax__calendar_year
+{
+    height:36px!important;
+    width:36px!important;
+    text-align:center!important;
+    vertical-align:middle!important;
+}
+
+.ajax__calendar_active div, .ajax__calendar_hover div
+{
+    border-color:#9900CC!important;
+    background-color: #9900CC!important;
+    color: #FFFFFF!important;
+}
+
+

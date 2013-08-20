@@ -7,7 +7,7 @@ http://mozilla.org/MPL/2.0/.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FormControl.ascx.cs"
     Inherits="MixERP.Net.FrontEnd.UserControls.Forms.FormControl" %>
-<asp:ScriptManager ID="ScriptManager1" runat="server" />
+<AjaxCTK:ToolkitScriptManager ID="ScriptManager1" runat="server" />
 
 <asp:UpdateProgress ID="updProgress" runat="server">
     <ProgressTemplate>
@@ -46,7 +46,7 @@ http://mozilla.org/MPL/2.0/.
                 CssClass="menu"
                 Text="<%$Resources:Titles, ShowAll %>"
                 ToolTip="Ctrl + S"
-                OnClientClick="showAll"
+                OnClientClick="showAll()"
                 CausesValidation="false" />
 
             <asp:Button ID="AddButton" runat="server"
@@ -76,7 +76,7 @@ http://mozilla.org/MPL/2.0/.
                 Text="<%$Resources:Titles, Print %>"
                 CssClass="menu"
                 ToolTip="Ctrl + P"
-                OnClientClick="printThis();"
+                OnClientClick="printThis();return false;"
                 CausesValidation="false" />
         </div>
 
@@ -180,7 +180,7 @@ http://mozilla.org/MPL/2.0/.
                 Text="<%$Resources:Titles, Print %>"
                 CssClass="menu"
                 ToolTip="Ctrl + P"
-                OnClientClick="printThis();"
+                OnClientClick="printThis();return false;"
                 CausesValidation="false" />
 
         </p>
@@ -206,7 +206,7 @@ http://mozilla.org/MPL/2.0/.
         var c = confirm("<%= Resources.Questions.AreYouSure %>");
 
         if (c) {
-            var selected = this.selectedValue();
+            var selected = selectedValue();
 
             if (selected == undefined) {
                 alert("<%= Resources.Labels.NothingSelected %>");
@@ -224,21 +224,29 @@ http://mozilla.org/MPL/2.0/.
     }
 
     var selected = function (id) {
+        console.log('Selecting the radio button "' + id + '".');
         $('[id^="SelectRadio"]').removeAttr("checked");
-
         $("#" + id).attr("checked", "checked");
+        console.log('Radio button "' + id + '" selected.');
     }
 
 
 
     var printThis = function () {
-        var randomnumber = Math.floor(Math.random() * 1200)
-
         //Append the report template with a random number to prevent caching.
+        var randomnumber = Math.floor(Math.random() * 1200)
         var reportTemplatePath = "/Reports/Print.html?" + randomnumber;
+        var reportHeaderPath = "/Reports/Assets/Header.aspx";
 
+        console.log('Trying the load report template from ' + reportTemplatePath + '.');
+        
         var report = $.get(reportTemplatePath, function () { }).done(function (data) {
-            var report = $.get("/Reports/Assets/Header.aspx", function () { }).done(function (header) {
+            console.log('The report template was loaded.');
+
+            console.log('Now, trying the load report header template from ' + reportHeaderPath + '.');
+            var report = $.get(reportHeaderPath, function () { }).done(function (header) {
+                console.log('The report header template was loaded.');
+
                 var table = $("#FormGridView").clone();
 
                 var user = $("#UserIdHidden").val();
@@ -258,33 +266,55 @@ http://mozilla.org/MPL/2.0/.
                 data = data.replace("{OfficeCode}", office);
                 data = data.replace("{Table}", table);
                 data = data.replace("{Header}", header);
+
+
+                console.log('Creating and opening a new window to display the report.');
                 var w = window.open();
                 w.moveTo(0, 0);
                 w.resizeTo(screen.width, screen.height);
 
+                console.log('Writing the report to the window.');
                 w.document.writeln(data);
 
+                console.log('Report sent to browser.');
             });
         });
     }
 
+    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function (sender, args) {
+        console.log('Fired by ASP.net AJAX request.');
+        initialize();
+    });
 
-    function pageLoad(sender, args) {
+    $(document).ready(function () {
+        initialize();
+    });
+
+    var initialize = function()
+    {
+        console.log('Adjusting panel size.');
         var gridPanel = $('#GridPanel');
-        gridPanel.width($(window).width() - 364);
+        gridPanel.width($(window).width() - 340);
+
+        adjustSpinnerSize();
+
+        console.log('Registering grid row click event to automatically select the radio.');
 
         $('#FormGridView tr').click(function () {
+            console.log('Grid row was clicked. Now, searching the radio button.');
             var radio = $(this).find('td input:radio')
-            console.log(radio.prop('id'));
-            radio.prop('checked', true);
+            console.log('The radio button was found.');
+            //radio.prop('checked', true);
             selected(radio.attr("id"));
-        })
-
-        this.adjustSpinnerSize();
+        });
     }
 
     function adjustSpinnerSize() {
+        console.log('Adjusting AJAX Spinner Size.');
         $(".ajax-container").height($(document).height());
+        //Todo: Adjust spinner to page.height, not doc height
+        //and adjust the x and y coordinates depending upon the
+        //current scroll position.
     }
 
 

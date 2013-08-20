@@ -214,10 +214,10 @@ SELECT 'PES','Planet Earth Solutions', 'PES Technologies', '06/06/1989', 'Brookl
 
 
 INSERT INTO office.offices(office_code,office_name,nick_name, registration_date, street,city,state,country,zip_code,phone,fax,email,url,registration_number,pan_number,parent_office_id)
-SELECT 'PES-NY','Brooklyn Branch', 'PES Brooklyn', '06/06/1989', 'Brooklyn','NY','12345555','','','','','info@planetearthsolution.com','http://planetearthsolution.com','0','0',(SELECT office_id FROM office.offices WHERE office_code='PES');
+SELECT 'PES-NY-BK','Brooklyn Branch', 'PES Brooklyn', '06/06/1989', 'Brooklyn','NY','12345555','','','','','info@planetearthsolution.com','http://planetearthsolution.com','0','0',(SELECT office_id FROM office.offices WHERE office_code='PES');
 
 INSERT INTO office.offices(office_code,office_name,nick_name, registration_date, street,city,state,country,zip_code,phone,fax,email,url,registration_number,pan_number,parent_office_id)
-SELECT 'PES-TN','Memphis Branch', 'PES Memphis', '06/06/1989', 'Memphis', 'NY','','','','64464554','','info@planetearthsolution.com','http://planetearthsolution.com','0','0',(SELECT office_id FROM office.offices WHERE office_code='PES');
+SELECT 'PES-NY-MEM','Memphis Branch', 'PES Memphis', '06/06/1989', 'Memphis', 'NY','','','','64464554','','info@planetearthsolution.com','http://planetearthsolution.com','0','0',(SELECT office_id FROM office.offices WHERE office_code='PES');
 
 
 /*******************************************************************
@@ -269,6 +269,12 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+
+--TODO
+CREATE VIEW office.office_view
+AS
+SELECT * FROM office.offices;
 
 CREATE TABLE office.departments
 (
@@ -423,6 +429,21 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+CREATE VIEW office.user_view
+AS
+SELECT
+	office.users.user_id,
+	office.users.user_name,
+	office.users.full_name,
+	office.roles.role_name,
+	office.offices.office_name
+FROM
+	office.users
+INNER JOIN office.roles
+ON office.users.role_id = office.roles.role_id
+INNER JOIN office.offices
+ON office.users.office_id = office.offices.office_id;
 
 CREATE FUNCTION office.get_sys_user_id()
 RETURNS integer
@@ -758,14 +779,14 @@ LANGUAGE plpgsql;
 
 
 INSERT INTO core.menus(menu_text, url, menu_code, level)
-SELECT 'Account', '/Account/Index.aspx', 'AC', 0 UNION ALL
+SELECT 'Dashboard', '/Dashboard/Index.aspx', 'DB', 0 UNION ALL
 SELECT 'Sales', '/Sales/Index.aspx', 'SA', 0 UNION ALL
 SELECT 'Purchase', '/Purchase/Index.aspx', 'PU', 0 UNION ALL
 SELECT 'Products & Items', '/Items/Index.aspx', 'ITM', 0 UNION ALL
 SELECT 'Finance', '/Finance/Index.aspx', 'FI', 0 UNION ALL
 SELECT 'Manufacturing', '/Manufacturing/Index.aspx', 'MF', 0 UNION ALL
 SELECT 'CRM', '/CRM/Index.aspx', 'CRM', 0 UNION ALL
-SELECT 'Setup Paramters', '/Setup/Index.aspx', 'SE', 0 UNION ALL
+SELECT 'Setup Parameters', '/Setup/Index.aspx', 'SE', 0 UNION ALL
 SELECT 'POS', '/POS/Index.aspx', 'POS', 0;
 
 
@@ -806,7 +827,7 @@ UNION ALL SELECT 'Stock Adjustments', '/Items/Adjustment.aspx', 'STA', 2, core.g
 UNION ALL SELECT 'Setup & Maintenance', NULL, 'ISM', 1, core.get_menu_id('ITM')
 UNION ALL SELECT 'Party Types', '/Items/Setup/PartyTypes.aspx', 'PT', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Party Accounts', '/Items/Setup/Parties.aspx', 'CA', 2, core.get_menu_id('ISM')
-UNION ALL SELECT 'Products & Items', '/Items/Setup/Items.aspx', 'SSI', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Item Maintenance', '/Items/Setup/Items.aspx', 'SSI', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Cost Prices', '/Items/Setup/CostPrices.aspx', 'ICP', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Selling Prices', '/Items/Setup/SellingPrices.aspx', 'ISP', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Item Groups', '/Items/Setup/ItemGroups.aspx', 'SSG', 2, core.get_menu_id('ISM')
@@ -854,7 +875,7 @@ UNION ALL SELECT 'Lead Sources Setup', '/CRM/Setup/LeadSources.aspx', 'CRMLS', 2
 UNION ALL SELECT 'Lead Status Setup', '/CRM/Setup/LeadStatuses.aspx', 'CRMLST', 2, core.get_menu_id('CSM')
 UNION ALL SELECT 'Opportunity Stages Setup', '/CRM/Setup/OpportunityStages.aspx', 'CRMOS', 2, core.get_menu_id('CSM')
 UNION ALL SELECT 'Office Setup', NULL, 'SOS', 1, core.get_menu_id('SE')
-UNION ALL SELECT 'Office & Branch Setups', '/Setup/Offices.aspx', 'SOB', 2, core.get_menu_id('SOS')
+UNION ALL SELECT 'Office & Branch Setup', '/Setup/Offices.aspx', 'SOB', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'Department Setup', '/Setup/Departments.aspx', 'SDS', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'Role Management', '/Setup/Roles.aspx', 'SRM', 2, core.get_menu_id('SOS')
 UNION ALL SELECT 'User Management', '/Setup/Users.aspx', 'SUM', 2, core.get_menu_id('SOS')
@@ -873,14 +894,7 @@ UNION ALL SELECT 'Database Statistics', '/Setup/Admin/DatabaseStatistics.aspx', 
 UNION ALL SELECT 'Backup Database', '/Setup/Admin/Backup.aspx', 'BAK', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'Restore Database', '/Setup/Admin/Restore.aspx', 'RES', 2, core.get_menu_id('SAT')
 UNION ALL SELECT 'Change User Password', '/Setup/Admin/ChangePassword.aspx', 'PWD', 2, core.get_menu_id('SAT')
-UNION ALL SELECT 'New Company', '/Setup/Admin/NewCompany.aspx', 'NEW', 2, core.get_menu_id('SAT')
-UNION ALL SELECT 'General', NULL, 'AGEN', 1, core.get_menu_id('AC')
-UNION ALL SELECT 'Sign Out', '/Account/SignOut.aspx', 'SOFF', 2, core.get_menu_id('AGEN')
-UNION ALL SELECT 'Change Password', '/Account/ChangePassword.aspx', 'PASS', 2, core.get_menu_id('AGEN')
-UNION ALL SELECT 'Messaging', NULL, 'MSG', 1, core.get_menu_id('AC')
-UNION ALL SELECT 'My Inbox', '/Account/Messaging/Inbox.aspx', 'IBX', 2, core.get_menu_id('MSG')
-UNION ALL SELECT 'Sent Items', '/Account/Messaging/SentItems.aspx', 'SENT', 2, core.get_menu_id('MSG')
-UNION ALL SELECT 'Compose', '/Account/Messaging/Compose.aspx', 'COMP', 2, core.get_menu_id('MSG');
+UNION ALL SELECT 'New Company', '/Setup/Admin/NewCompany.aspx', 'NEW', 2, core.get_menu_id('SAT');
 
 
 
@@ -1366,6 +1380,10 @@ AND
 	core.compound_units.compare_unit_id = compare_unit.unit_id;
 
 
+--TODO
+CREATE VIEW core.unit_view
+AS
+SELECT * FROM core.units;
 
 CREATE FUNCTION core.get_base_quantity_by_unit_name(text, integer)
 RETURNS decimal
@@ -1486,16 +1504,6 @@ INNER JOIN core.account_masters
 ON core.account_masters.account_master_id=core.accounts.account_master_id
 LEFT JOIN core.accounts parent_account
 ON parent_account.account_id=core.accounts.parent_account_id;
-
-CREATE VIEW core.account_mini_view
-AS
-SELECT
-	account_id,
-	account_code,
-	account_name,
-	external_code
-FROM core.accounts;
-
 
 INSERT INTO core.account_masters(account_master_code, account_master_name) SELECT 'BSA', 'Balance Sheet A/C';
 INSERT INTO core.accounts(account_master_id,account_code,account_name, sys_type, parent_account_id) SELECT (SELECT account_master_id FROM core.account_masters WHERE account_master_code='BSA'), '10000', 'Assets', TRUE, (SELECT account_id FROM core.accounts WHERE account_name='Balance Sheet A/C');
@@ -2519,6 +2527,12 @@ END
 $$
 LANGUAGE plpgsql;
 
+--TODO
+CREATE VIEW core.item_view
+AS
+SELECT * FROM core.items;
+
+
 /*******************************************************************
 	PLEASE NOTE :
 
@@ -2715,6 +2729,12 @@ ON office.stores(UPPER(store_code));
 
 CREATE UNIQUE INDEX stores_store_name_uix
 ON office.stores(UPPER(store_name));
+
+
+--TODO
+CREATE VIEW office.store_view
+AS
+SELECT * FROM office.stores;
 
 
 CREATE TABLE office.cash_repositories
