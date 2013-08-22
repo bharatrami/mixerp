@@ -597,4 +597,13 @@
   <data name="Update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="DeliveryWithoutSalesOrder" xml:space="preserve">
+    <value>Delivery Without Sales Order</value>
+  </data>
+  <data name="SalesDeliveryNote" xml:space="preserve">
+    <value>Sales Delivery Note</value>
+  </data>
+  <data name="SalesDelivery" xml:space="preserve">
+    <value>Sales Delivery</value>
+  </data>
 </root>

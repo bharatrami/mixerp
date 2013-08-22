@@ -448,6 +448,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery Without Sales Order.
+        /// </summary>
+        internal static string DeliveryWithoutSalesOrder {
+            get {
+                return ResourceManager.GetString("DeliveryWithoutSalesOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Departments.
         /// </summary>
         internal static string Departments {
@@ -1002,6 +1011,24 @@ namespace Resources {
         internal static string RunningTotal {
             get {
                 return ResourceManager.GetString("RunningTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales Delivery.
+        /// </summary>
+        internal static string SalesDelivery {
+            get {
+                return ResourceManager.GetString("SalesDelivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales Delivery Note.
+        /// </summary>
+        internal static string SalesDeliveryNote {
+            get {
+                return ResourceManager.GetString("SalesDeliveryNote", resourceCulture);
             }
         }
         

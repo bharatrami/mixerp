@@ -20,5 +20,22 @@ namespace MixERP.Net.FrontEnd.Sales
         {
 
         }
+
+        protected void SalesQuotation_SaveButtonClick(object sender, EventArgs e)
+        {
+            DateTime valueDate = Pes.Utility.Conversion.TryCastDate(SalesQuotation.GetForm.DateTextBox.Text);
+            string partyCode = SalesQuotation.GetForm.PartyDropDownList.SelectedItem.Value;
+            int priceTypeId = Pes.Utility.Conversion.TryCastInteger(SalesQuotation.GetForm.PriceTypeDropDownList.SelectedItem.Value);
+            GridView grid = SalesQuotation.GetForm.Grid;
+            string statementReference = SalesQuotation.GetForm.StatementReferenceTextBox.Text;
+
+            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Sales.Quotation", valueDate, partyCode, priceTypeId, grid, statementReference);
+            if(nonGlStockMasterId > 0)
+            {
+                Response.Redirect("~/Dashboard/Index.aspx?TranId=" + nonGlStockMasterId, true);
+            }
+
+        }
+
     }
 }

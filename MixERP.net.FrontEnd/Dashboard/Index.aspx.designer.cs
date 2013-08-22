@@ -13,42 +13,6 @@ namespace MixERP.Net.FrontEnd.Dashboard {
     public partial class Index {
         
         /// <summary>
-        /// ctl00 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ctl00;
-        
-        /// <summary>
-        /// ctl01 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ctl01;
-        
-        /// <summary>
-        /// ctl02 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ctl02;
-        
-        /// <summary>
-        /// ctl023 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ctl023;
-        
-        /// <summary>
         /// SavePositionButton control.
         /// </summary>
         /// <remarks>

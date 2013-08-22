@@ -44,7 +44,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
             decimal discountTotal = details.Sum(d => d.Discount);
             decimal taxTotal = details.Sum(d => d.Tax);
 
-            string creditInvariantParameter = "Purchase.Receivables";
+            string creditInvariantParameter = "Purchase.Payables";
             string purchaseInvariantParameter = "Purchase";
             string purchaseTaxInvariantParamter = "Purchase.Tax";
             string purchaseDiscountInvariantParameter = "Purchase.Discount";
@@ -67,7 +67,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                             tm.Parameters.AddWithValue("@OfficeId", officeId);
                             tm.Parameters.AddWithValue("@UserId", userId);
                             tm.Parameters.AddWithValue("@LogOnId", logOnId);
-                            tm.Parameters.AddWithValue("@Book", "Direct Purchase");
+                            tm.Parameters.AddWithValue("@Book", "Purchase.Direct");
                             tm.Parameters.AddWithValue("@CostCenterId", costCenterId);
                             tm.Parameters.AddWithValue("@StatementReference", statementReference);
 

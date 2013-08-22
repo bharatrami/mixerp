@@ -578,6 +578,11 @@ a.sub-menu-anchor, a.sub-menu-anchor:visited
     vertical-align: middle!important;
 }
 
+    .form-table
+    {
+        empty-cells:hide;
+    }
+
 .grid2
 {
     border-collapse: collapse;

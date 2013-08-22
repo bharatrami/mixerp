@@ -579,12 +579,26 @@
     <Compile Include="RuntimeError.aspx.designer.cs">
       <DependentUpon>RuntimeError.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Sales\Confirmation\CustomerInvoice.aspx.cs">
-      <DependentUpon>CustomerInvoice.aspx</DependentUpon>
+    <Compile Include="Sales\Confirmation\ReportCustomerInvoice.aspx.cs">
+      <DependentUpon>ReportCustomerInvoice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Sales\Confirmation\CustomerInvoice.aspx.designer.cs">
-      <DependentUpon>CustomerInvoice.aspx</DependentUpon>
+    <Compile Include="Sales\Confirmation\ReportCustomerInvoice.aspx.designer.cs">
+      <DependentUpon>ReportCustomerInvoice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\Confirmation\ReportDelivery.aspx.cs">
+      <DependentUpon>ReportDelivery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\Confirmation\ReportDelivery.aspx.designer.cs">
+      <DependentUpon>ReportDelivery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\Confirmation\DeliveryWithoutOrder.aspx.cs">
+      <DependentUpon>DeliveryWithoutOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\Confirmation\DeliveryWithoutOrder.aspx.designer.cs">
+      <DependentUpon>DeliveryWithoutOrder.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sales\Confirmation\DirectSales.aspx.cs">
       <DependentUpon>DirectSales.aspx</DependentUpon>
@@ -593,19 +607,33 @@
     <Compile Include="Sales\Confirmation\DirectSales.aspx.designer.cs">
       <DependentUpon>DirectSales.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Sales\Confirmation\DirectSalesInovice.aspx.cs">
-      <DependentUpon>DirectSalesInovice.aspx</DependentUpon>
+    <Compile Include="Sales\Confirmation\ReportDeliveryNote.aspx.cs">
+      <DependentUpon>ReportDeliveryNote.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Sales\Confirmation\DirectSalesInovice.aspx.designer.cs">
-      <DependentUpon>DirectSalesInovice.aspx</DependentUpon>
+    <Compile Include="Sales\Confirmation\ReportDeliveryNote.aspx.designer.cs">
+      <DependentUpon>ReportDeliveryNote.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Sales\Delivery.aspx.cs">
-      <DependentUpon>Delivery.aspx</DependentUpon>
+    <Compile Include="Sales\Confirmation\ReportDirectSalesInovice.aspx.cs">
+      <DependentUpon>ReportDirectSalesInovice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Sales\Delivery.aspx.designer.cs">
-      <DependentUpon>Delivery.aspx</DependentUpon>
+    <Compile Include="Sales\Confirmation\ReportDirectSalesInovice.aspx.designer.cs">
+      <DependentUpon>ReportDirectSalesInovice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\DeliveryForOrder.aspx.cs">
+      <DependentUpon>DeliveryForOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\DeliveryForOrder.aspx.designer.cs">
+      <DependentUpon>DeliveryForOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\DeliveryWithoutOrder.aspx.cs">
+      <DependentUpon>DeliveryWithoutOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\DeliveryWithoutOrder.aspx.designer.cs">
+      <DependentUpon>DeliveryWithoutOrder.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sales\DirectSales.aspx.cs">
       <DependentUpon>DirectSales.aspx</DependentUpon>
@@ -1027,6 +1055,12 @@
     <Content Include="Reports\Assets\Header.html" />
     <Content Include="Reports\ReportMaster.aspx" />
     <Content Include="Reports\ReportViewer.aspx" />
+    <Content Include="Reports\Sources\Sales.View.Sales.CustomerDeliveryNote.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Reports\Sources\Sales.View.Sales.Delivery.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Reports\Sources\Purchase.View.Purchase.Invoice.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -1177,10 +1211,14 @@
     <Content Include="Resource\Icons\word-16.png" />
     <Content Include="Resource\TempImages\index.html" />
     <Content Include="RuntimeError.aspx" />
-    <Content Include="Sales\Confirmation\CustomerInvoice.aspx" />
+    <Content Include="Sales\Confirmation\ReportCustomerInvoice.aspx" />
+    <Content Include="Sales\Confirmation\ReportDelivery.aspx" />
+    <Content Include="Sales\Confirmation\DeliveryWithoutOrder.aspx" />
     <Content Include="Sales\Confirmation\DirectSales.aspx" />
-    <Content Include="Sales\Confirmation\DirectSalesInovice.aspx" />
-    <Content Include="Sales\Delivery.aspx" />
+    <Content Include="Sales\Confirmation\ReportDeliveryNote.aspx" />
+    <Content Include="Sales\Confirmation\ReportDirectSalesInovice.aspx" />
+    <Content Include="Sales\DeliveryForOrder.aspx" />
+    <Content Include="Sales\DeliveryWithoutOrder.aspx" />
     <Content Include="Sales\DirectSales.aspx" />
     <Content Include="Sales\Index.aspx" />
     <Content Include="Sales\Invoice.aspx" />

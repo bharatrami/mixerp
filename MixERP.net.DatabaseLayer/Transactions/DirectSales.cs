@@ -67,7 +67,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                             tm.Parameters.AddWithValue("@OfficeId", officeId);
                             tm.Parameters.AddWithValue("@UserId", userId);
                             tm.Parameters.AddWithValue("@LogOnId", logOnId);
-                            tm.Parameters.AddWithValue("@Book", "Direct Sales");
+                            tm.Parameters.AddWithValue("@Book", "Sales.Direct");
                             tm.Parameters.AddWithValue("@CostCenterId", costCenterId);
                             tm.Parameters.AddWithValue("@StatementReference", statementReference);
 

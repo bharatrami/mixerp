@@ -11,9 +11,12 @@ http://mozilla.org/MPL/2.0/.
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
-    <mixerp:Product runat="server" ID="GoodReceiptNote"
-       TransactionType="Purchase" Text="<%$Resources:Titles, GoodsReceiptNote %>"
-        ShowTransactionType="false"
+    <mixerp:Product runat="server" 
+        ID="GoodReceiptNote"
+       TransactionType="Purchase" 
+        SubType="Receipt"
+        Text="<%$Resources:Titles, GoodsReceiptNote %>"
+        DisplayTransactionTypeRadioButtonList="false"
          />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

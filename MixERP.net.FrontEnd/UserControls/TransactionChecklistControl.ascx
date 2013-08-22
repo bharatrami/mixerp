@@ -28,7 +28,7 @@ http://mozilla.org/MPL/2.0/.
         <asp:LinkButton ID="PrintReceiptButton" runat="server" Text="<%$Resources:Titles, PrintReceipt %>" CssClass="linkblock" CausesValidation="false" />
         <asp:LinkButton ID="PrintGLButton" runat="server" Text="<%$Resources:Titles, PrintGLEntry %>" CssClass="linkblock" CausesValidation="false" />
         <asp:LinkButton ID="AttachmentButton" runat="server" Text="<%$Resources:Titles, UploadAttachmentForThisTransaction %>" CssClass="linkblock" CausesValidation="false" />
-        <asp:LinkButton ID="BackButton" runat="server" Text="<%$Resources:Titles, Back %>" OnClientClick="javascript:history.go(-1);" CssClass="linkblock" CausesValidation="false" />
+        <asp:LinkButton ID="BackButton" runat="server" Text="<%$Resources:Titles, Back %>" OnClientClick="javascript:history.go(-1);return false;" CssClass="linkblock" CausesValidation="false" />
     </div>
 </div>
 

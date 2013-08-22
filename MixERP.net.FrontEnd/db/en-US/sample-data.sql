@@ -38,6 +38,6 @@ SELECT 2, 'VLT', 'Vault', 'Vault';
 
 
 
-INSERT INTO core.shippers(company_name, first_name, middle_name, last_name, account_id)
-SELECT 'Default', '', '', '', core.get_account_id_by_account_code('20110');
+INSERT INTO core.shippers(company_name, account_id)
+SELECT 'Default', core.get_account_id_by_account_code('20110');
 

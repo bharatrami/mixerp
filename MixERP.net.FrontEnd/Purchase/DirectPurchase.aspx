@@ -7,17 +7,19 @@ http://mozilla.org/MPL/2.0/.
 --%>
 
 <%@ Page Title="" Language="C#" MasterPageFile="~/ContentMaster.Master" AutoEventWireup="true" CodeBehind="DirectPurchase.aspx.cs" Inherits="MixERP.Net.FrontEnd.Purchase.DirectPurchase" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ScriptContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:Product runat="server" ID="DirectPurchaseControl"
-       TransactionType="Purchase" Text="<%$Resources:Titles, DirectPurchase %>"
-        ShowTransactionType="true"
+        TransactionType="Purchase"
+        SubType="Direct"
+        Text="<%$Resources:Titles, DirectPurchase %>"
+        DisplayTransactionTypeRadioButtonList="true"
         ShowCashRepository="true"
-        OnSaveButtonClick="Purchase_SaveButtonClick"
-         />
+        OnSaveButtonClick="Purchase_SaveButtonClick" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>

@@ -795,7 +795,8 @@ INSERT INTO core.menus(menu_text, url, menu_code, level, parent_menu_id)
 UNION ALL SELECT 'Direct Sales', '/Sales/DirectSales.aspx', 'DRS', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Quotation', '/Sales/Quotation.aspx', 'SQ', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Order', '/Sales/Order.aspx', 'SO', 2, core.get_menu_id('SAQ')
-UNION ALL SELECT 'Delivery for Sales Order', '/Sales/Delivery.aspx', 'DSO', 2, core.get_menu_id('SAQ')
+UNION ALL SELECT 'Delivery for Sales Order', '/Sales/DeliveryForOrder.aspx', 'DSO', 2, core.get_menu_id('SAQ')
+UNION ALL SELECT 'Delivery Without Sales Order', '/Sales/DeliveryWithoutOrder.aspx', 'DWO', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Invoice for Sales Delivery', '/Sales/Invoice.aspx', 'ISD', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Receipt from Customer', '/Sales/Receipt.aspx', 'RFC', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Return', '/Sales/Return.aspx', 'SR', 2, core.get_menu_id('SAQ')
@@ -2267,9 +2268,6 @@ CREATE TABLE core.shippers
 	shipper_id BIGSERIAL NOT NULL PRIMARY KEY,
 	shipper_code national character varying(12) NULL,
 	company_name national character varying(128) NOT NULL,
-	first_name national character varying(50) NOT NULL,
-	middle_name national character varying(50) NULL,
-	last_name national character varying(50) NOT NULL,
 	shipper_name national character varying(150) NULL,
 	street national character varying(50) NULL,
 	city national character varying(50) NULL,
@@ -2354,8 +2352,7 @@ $$
 BEGIN
 	UPDATE core.shippers
 	SET 
-		shipper_code=core.get_shipper_code(NEW.company_name),
-		shipper_name= TRIM(NEW.last_name || ', ' || NEW.first_name || ' ' || COALESCE(NEW.middle_name, ''))
+		shipper_code=core.get_shipper_code(NEW.company_name)
 	WHERE core.shippers.shipper_id=NEW.shipper_id;
 	
 	RETURN NEW;
@@ -3079,6 +3076,32 @@ FROM transactions.transaction_details
 GROUP BY account_id;
 
 
+--TODO
+CREATE TABLE transactions.non_gl_stock_master
+(
+	non_gl_stock_master_id	BIGSERIAL NOT NULL PRIMARY KEY,
+	book			national character varying(48) NOT NULL,
+	party_id 		bigint NULL REFERENCES core.parties(party_id),
+	price_type_id 		integer NULL REFERENCES core.price_types(price_type_id),
+	reference		text NOT NULL CONSTRAINT non_gl_stock_master_reference_df DEFAULT('')
+);
+
+
+CREATE TABLE transactions.non_gl_stock_details
+(
+	non_gl_stock_details_id BIGSERIAL NOT NULL PRIMARY KEY,
+	non_gl_stock_master_id bigint NOT NULL REFERENCES transactions.non_gl_stock_master(non_gl_stock_master_id),
+	item_id integer NOT NULL REFERENCES core.items(item_id),
+	quantity integer NOT NULL,
+	unit_id integer NOT NULL REFERENCES core.units(unit_id),
+	base_quantity decimal NOT NULL,
+	base_unit_id integer NOT NULL REFERENCES core.units(unit_id),
+	price money_strict NOT NULL,
+	discount money NOT NULL CONSTRAINT non_gl_stock_details_discount_df DEFAULT(0),
+	tax_rate decimal NOT NULL CONSTRAINT non_gl_stock_details_tax_rate_df DEFAULT(0),
+	tax money NOT NULL CONSTRAINT non_gl_stock_details_tax_df DEFAULT(0)	
+);
+
 
 CREATE TABLE crm.lead_sources
 (
@@ -3175,9 +3198,9 @@ RETURNS decimal
 AS
 $$
 	DECLARE _base_unit_id integer;
-	DECLARE _debit integer;
-	DECLARE _credit integer;
-	DECLARE _balance integer;
+	DECLARE _debit decimal;
+	DECLARE _credit decimal;
+	DECLARE _balance decimal;
 	DECLARE _factor decimal;
 BEGIN
 

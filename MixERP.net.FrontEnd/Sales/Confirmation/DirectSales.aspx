@@ -23,8 +23,8 @@ http://mozilla.org/MPL/2.0/.
         DisplayPrintReceiptButton="true"
         DisplayPrintGLEntryButton="true"
         DisplayAttachmentButton="true"
-        InvoicePath="~/Sales/Confirmation/DirectSalesInovice.aspx"
-        CustomerInvoicePath="~/Sales/Confirmation/CustomerInvoice.aspx"
+        InvoicePath="~/Sales/Confirmation/ReportDirectSalesInovice.aspx"
+        CustomerInvoicePath="~/Sales/Confirmation/ReportCustomerInvoice.aspx"
         GLAdvicePath="~/Finance/Confirmation/GLAdvice.aspx"
          />
 </asp:Content>

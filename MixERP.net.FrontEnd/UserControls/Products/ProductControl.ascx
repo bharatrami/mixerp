@@ -279,7 +279,7 @@ http://mozilla.org/MPL/2.0/.
                             <asp:Literal ID="DrLiteral" runat="server" Text="<%$Resources:Titles, Dr %>" />
                         </asp:TableCell>
                     </asp:TableRow>
-                    <asp:TableRow>
+                    <asp:TableRow ID="CostCenterRow" runat="server">
                         <asp:TableCell>
                             <asp:Literal ID="CostCenterDropDownListLabelLiteral" runat="server" />
                         </asp:TableCell>
@@ -372,6 +372,18 @@ http://mozilla.org/MPL/2.0/.
     function pageLoad() {
         this.calculateAmount();
     }
+
+    $(document).ready(function () {
+        $(".form-table td").each(function () {
+            var content = $(this).html();
+            if (!content.trim())
+            {
+                $(this).html('');
+                $(this).hide();
+            }
+        });
+    });
+
 
     $(document).ready(function () {
         shortcut.add("ALT+C", function () {

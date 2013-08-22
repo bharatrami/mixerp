@@ -20,5 +20,26 @@ namespace MixERP.Net.FrontEnd.Purchase
         {
 
         }
+
+        protected void PurchaseOrder_SaveButtonClick(object sender, EventArgs e)
+        {
+            DateTime valueDate = Pes.Utility.Conversion.TryCastDate(PurchaseOrder.GetForm.DateTextBox.Text);
+            string partyCode = PurchaseOrder.GetForm.PartyDropDownList.SelectedItem.Value;
+            int priceTypeId = 0;
+
+            if(PurchaseOrder.GetForm.PriceTypeDropDownList.SelectedItem != null)
+            {
+                priceTypeId = Pes.Utility.Conversion.TryCastInteger(PurchaseOrder.GetForm.PriceTypeDropDownList.SelectedItem.Value);            
+            }
+            
+            GridView grid = PurchaseOrder.GetForm.Grid;
+            string statementReference = PurchaseOrder.GetForm.StatementReferenceTextBox.Text;
+
+            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Purchase.Order", valueDate, partyCode, priceTypeId, grid, statementReference);
+            if(nonGlStockMasterId > 0)
+            {
+                Response.Redirect("~/Dashboard/Index.aspx?TranId=" + nonGlStockMasterId, true);
+            }
+        }
     }
 }

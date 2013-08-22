@@ -25,6 +25,8 @@ namespace MixERP.Net.BusinessLayer.Transactions
             stockMaster.PartyCode = partyCode;
             stockMaster.IsCredit = isCredit;
 
+            statementReference = statementReference.Replace("&nbsp;", " ").Trim();
+
             if(grid != null)
             {
                 if(grid.Rows.Count > 0)
