@@ -961,6 +961,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ref#.
+        /// </summary>
+        internal static string ReferenceNumberAbbreviated {
+            get {
+                return ResourceManager.GetString("ReferenceNumberAbbreviated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remember Me.
         /// </summary>
         internal static string RememberMe {

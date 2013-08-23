@@ -19,7 +19,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
     {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int storeId, int cashRepositoryId, int costCenterId, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
+        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int storeId, int cashRepositoryId, int costCenterId, string referenceNumber, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
         {
             if(stockMaster == null)
             {
@@ -60,7 +60,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                     {
 
                         #region TransactionMaster
-                        sql = "INSERT INTO transactions.transaction_master(transaction_master_id, transaction_counter, transaction_code, book, value_date, user_id, login_id, office_id, cost_center_id, statement_reference) SELECT nextval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id')), transactions.get_new_transaction_counter(@ValueDate), transactions.get_transaction_code(@ValueDate, @OfficeId, @UserId, @LogOnId), @Book, @ValueDate, @UserId, @LogOnId, @OfficeId, @CostCenterId, @StatementReference;SELECT currval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id'));";
+                        sql = "INSERT INTO transactions.transaction_master(transaction_master_id, transaction_counter, transaction_code, book, value_date, user_id, login_id, office_id, cost_center_id, reference_number, statement_reference) SELECT nextval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id')), transactions.get_new_transaction_counter(@ValueDate), transactions.get_transaction_code(@ValueDate, @OfficeId, @UserId, @LogOnId), @Book, @ValueDate, @UserId, @LogOnId, @OfficeId, @CostCenterId, @ReferenceNumber, @StatementReference;SELECT currval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id'));";
                         using(NpgsqlCommand tm = new NpgsqlCommand(sql, connection))
                         {
                             tm.Parameters.AddWithValue("@ValueDate", valueDate);
@@ -69,6 +69,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                             tm.Parameters.AddWithValue("@LogOnId", logOnId);
                             tm.Parameters.AddWithValue("@Book", "Purchase.Direct");
                             tm.Parameters.AddWithValue("@CostCenterId", costCenterId);
+                            tm.Parameters.AddWithValue("@ReferenceNumber", referenceNumber);
                             tm.Parameters.AddWithValue("@StatementReference", statementReference);
 
                             transactionMasterId = Pes.Utility.Conversion.TryCastLong(tm.ExecuteScalar());
@@ -149,13 +150,25 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 
                         #region StockMaster
 
-                        sql = "INSERT INTO transactions.stock_master(stock_master_id, transaction_master_id, party_id, is_credit, store_id, cash_repository_id) SELECT nextval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id')), @TransactionMasterId, core.get_party_id_by_party_code(@PartyCode), @IsCredit, @StoreId, @CashRepositoryId; SELECT currval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id'));";
+                        sql = "INSERT INTO transactions.stock_master(stock_master_id, transaction_master_id, party_id, is_credit, shipper_id, shipping_charge, store_id, cash_repository_id) SELECT nextval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id')), @TransactionMasterId, core.get_party_id_by_party_code(@PartyCode), @IsCredit, @ShipperId, @ShippingCharge, @StoreId, @CashRepositoryId; SELECT currval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id'));";
 
                         using(NpgsqlCommand stockMasterRow = new NpgsqlCommand(sql, connection))
                         {
                             stockMasterRow.Parameters.AddWithValue("@TransactionMasterId", transactionMasterId);
                             stockMasterRow.Parameters.AddWithValue("@PartyCode", stockMaster.PartyCode);
                             stockMasterRow.Parameters.AddWithValue("@IsCredit", stockMaster.IsCredit);
+
+                            if(stockMaster.ShipperId.Equals(0))
+                            {
+                                stockMasterRow.Parameters.AddWithValue("@ShipperId", DBNull.Value);
+                            }
+                            else
+                            {
+                                stockMasterRow.Parameters.AddWithValue("@ShipperId", stockMaster.ShipperId);
+                            }
+
+                            stockMasterRow.Parameters.AddWithValue("@ShippingCharge", stockMaster.ShippingCharge);
+
                             stockMasterRow.Parameters.AddWithValue("@StoreId", storeId);
                             stockMasterRow.Parameters.AddWithValue("@CashRepositoryId", cashRepositoryId);
 

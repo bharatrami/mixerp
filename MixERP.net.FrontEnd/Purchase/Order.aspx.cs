@@ -33,9 +33,10 @@ namespace MixERP.Net.FrontEnd.Purchase
             }
             
             GridView grid = PurchaseOrder.GetForm.Grid;
+            string referenceNumber = PurchaseOrder.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = PurchaseOrder.GetForm.StatementReferenceTextBox.Text;
 
-            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Purchase.Order", valueDate, partyCode, priceTypeId, grid, statementReference);
+            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Purchase.Order", valueDate, partyCode, priceTypeId, grid, referenceNumber, statementReference);
             if(nonGlStockMasterId > 0)
             {
                 Response.Redirect("~/Dashboard/Index.aspx?TranId=" + nonGlStockMasterId, true);

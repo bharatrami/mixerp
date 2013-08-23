@@ -61,7 +61,7 @@ CHECK
 );
 
 /*******************************************************************
-	MIXERP STRICT DATATYmixerp: NEGATIVES ARE NOT ALLOWED
+	MIXERP STRICT Data Types: NEGATIVES ARE NOT ALLOWED
 *******************************************************************/
 
 DROP DOMAIN IF EXISTS money_strict;
@@ -2999,7 +2999,7 @@ CREATE TABLE transactions.transaction_master
 		CONSTRAINT transaction_master_sys_user_id_chk CHECK(sys_user_id IS NULL OR office.is_sys_user(sys_user_id)=true),
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
 	cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id),
-	ref_no national character varying(24) NULL,
+	reference_number national character varying(24) NULL,
 	statement_reference text NULL,
 	last_verified_on TIMESTAMP WITH TIME ZONE NULL, 
 	verified_by_user_id integer NULL REFERENCES office.users(user_id),
@@ -3080,10 +3080,16 @@ GROUP BY account_id;
 CREATE TABLE transactions.non_gl_stock_master
 (
 	non_gl_stock_master_id	BIGSERIAL NOT NULL PRIMARY KEY,
+	value_date 		date NOT NULL,
 	book			national character varying(48) NOT NULL,
 	party_id 		bigint NULL REFERENCES core.parties(party_id),
 	price_type_id 		integer NULL REFERENCES core.price_types(price_type_id),
-	reference		text NOT NULL CONSTRAINT non_gl_stock_master_reference_df DEFAULT('')
+	transaction_ts 		TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	login_id 		bigint NOT NULL REFERENCES audit.logins(login_id),
+	user_id 		integer NOT NULL REFERENCES office.users(user_id),
+	office_id 		integer NOT NULL REFERENCES office.offices(office_id),
+	reference_number	national character varying(24) NULL,
+	statement_reference 	text NULL
 );
 
 

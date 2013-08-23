@@ -31,9 +31,10 @@ namespace MixERP.Net.FrontEnd.Purchase
             int cashRepositoryId = Pes.Utility.Conversion.TryCastInteger(DirectPurchaseControl.GetForm.CashRepositoryDropDownList.SelectedItem.Value);
 
             int costCenterId = Pes.Utility.Conversion.TryCastInteger(DirectPurchaseControl.GetForm.CostCenterDropDownList.SelectedItem.Value);
+            string referenceNumber = DirectPurchaseControl.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = DirectPurchaseControl.GetForm.StatementReferenceTextBox.Text;
 
-            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectPurchase.Add(valueDate, storeId, isCredit, partyCode, grid, cashRepositoryId, costCenterId, statementReference);
+            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectPurchase.Add(valueDate, storeId, isCredit, partyCode, grid, cashRepositoryId, costCenterId, referenceNumber, statementReference);
             if(transactionMasterId > 0)
             {
                 Response.Redirect("~/Purchase/Confirmation/DirectPurchase.aspx?TranId=" + transactionMasterId, true);

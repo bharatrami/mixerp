@@ -523,7 +523,7 @@ SELECT
 	transactions.transaction_master.sys_user_id,
 	transactions.transaction_master.office_id,
 	transactions.transaction_master.cost_center_id,
-	transactions.transaction_master.ref_no,
+	transactions.transaction_master.reference_number,
 	transactions.transaction_master.statement_reference AS master_statement_reference,
 	transactions.transaction_master.last_verified_on,
 	transactions.transaction_master.verified_by_user_id,

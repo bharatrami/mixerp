@@ -21,7 +21,7 @@ http://mozilla.org/MPL/2.0/.
         DisplayTransactionTypeRadioButtonList="true"
         ShowCashRepository="true"
         VerifyStock="true"
-        TopPanelWidth="750"
+        TopPanelWidth="850"
         OnSaveButtonClick="Sales_SaveButtonClick" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">

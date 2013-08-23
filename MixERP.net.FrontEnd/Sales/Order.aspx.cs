@@ -27,9 +27,10 @@ namespace MixERP.Net.FrontEnd.Sales
             string partyCode = SalesOrder.GetForm.PartyDropDownList.SelectedItem.Value;
             int priceTypeId = Pes.Utility.Conversion.TryCastInteger(SalesOrder.GetForm.PriceTypeDropDownList.SelectedItem.Value);
             GridView grid = SalesOrder.GetForm.Grid;
+            string referenceNumber = SalesOrder.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = SalesOrder.GetForm.StatementReferenceTextBox.Text;
 
-            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Sales.Order", valueDate, partyCode, priceTypeId, grid, statementReference);
+            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Sales.Order", valueDate, partyCode, priceTypeId, grid, referenceNumber, statementReference);
             if(nonGlStockMasterId > 0)
             {
                 Response.Redirect("~/Dashboard/Index.aspx?TranId=" + nonGlStockMasterId, true);

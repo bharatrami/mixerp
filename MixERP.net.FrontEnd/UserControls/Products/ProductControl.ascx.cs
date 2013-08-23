@@ -43,6 +43,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             public TextBox PartyCodeTextBox { get; set; }
             public DropDownList PartyDropDownList { get; set; }
             public DropDownList PriceTypeDropDownList { get; set; }
+            public TextBox ReferenceNumberTextBox { get; set; }
             public GridView Grid { get; set; }
             public TextBox RunningTotalTextBox { get; set; }
             public TextBox TaxTotalTextBox { get; set; }
@@ -64,6 +65,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             collection.PartyCodeTextBox = this.PartyCodeTextBox;
             collection.PartyDropDownList = this.PartyDropDownList;
             collection.PriceTypeDropDownList = this.PriceTypeDropDownList;
+            collection.ReferenceNumberTextBox = this.ReferenceNumberTextBox;
             collection.Grid = this.ProductGridView;
             collection.RunningTotalTextBox = this.RunningTotalTextBox;
             collection.TaxTotalTextBox = this.TaxTotalTextBox;
@@ -254,6 +256,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             PartyLiteral.Text = "<label for='PartyCodeTextBox'>" + Resources.Titles.SelectParty + "</label>";
             PriceTypeLiteral.Text = "<label for='PriceTypeDropDownList'>" + Resources.Titles.PriceType + "</label>";
+            ReferenceNumberLiteral.Text = "<label for='ReferenceNumberTextBox'>" + Resources.Titles.ReferenceNumberAbbreviated + "</label>";
 
             RunningTotalTextBoxLabelLiteral.Text = "<label for ='RunningTotalTextBox'>" + Resources.Titles.RunningTotal + "</label>";
             TaxTotalTextBoxLabelLiteral.Text = "<label for='TaxTotalTextBox'>" + Resources.Titles.TaxTotal + "</label>";
@@ -449,6 +452,20 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
         protected void ShippingChargeTextBox_TextChanged(object sender, EventArgs e)
         {
             this.ShowTotals();
+
+            if(CashRepositoryBalanceRow.Visible)
+            {
+                CashRepositoryDropDownList.Focus();
+                return;
+            }
+
+            if(CostCenterRow.Visible)
+            {
+                CostCenterDropDownList.Focus();
+                return;
+            }
+
+            StatementReferenceTextBox.Focus();
         }
 
         private void ShowTotals()
@@ -805,6 +822,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             PartyCodeTextBox.Enabled = !state;
             PartyDropDownList.Enabled = !state;
             PriceTypeDropDownList.Enabled = !state;
+            ReferenceNumberTextBox.Enabled = !state;
             OKButton.Enabled = !state;
             CancelButton.Enabled = state;
 

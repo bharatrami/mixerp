@@ -606,4 +606,7 @@
   <data name="SalesDelivery" xml:space="preserve">
     <value>Sales Delivery</value>
   </data>
+  <data name="ReferenceNumberAbbreviated" xml:space="preserve">
+    <value>Ref#</value>
+  </data>
 </root>

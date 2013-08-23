@@ -34,9 +34,10 @@ namespace MixERP.Net.FrontEnd.Sales
             decimal shippingCharge = Pes.Utility.Conversion.TryCastDecimal(DirectSalesControl.GetForm.ShippingChargeTextBox.Text);
 
             int costCenterId = Pes.Utility.Conversion.TryCastInteger(DirectSalesControl.GetForm.CostCenterDropDownList.SelectedItem.Value);
+            string referenceNumber = DirectSalesControl.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = DirectSalesControl.GetForm.StatementReferenceTextBox.Text;
 
-            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectSales.Add(valueDate, storeId, isCredit, partyCode, priceTypeId, grid, shipperId, shippingCharge, cashRepositoryId, costCenterId, statementReference);
+            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectSales.Add(valueDate, storeId, isCredit, partyCode, priceTypeId, grid, shipperId, shippingCharge, cashRepositoryId, costCenterId, referenceNumber, statementReference);
             if(transactionMasterId > 0)
             {
                 Response.Redirect("~/Sales/Confirmation/DirectSales.aspx?TranId=" + transactionMasterId, true);

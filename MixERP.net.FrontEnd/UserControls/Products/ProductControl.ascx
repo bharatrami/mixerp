@@ -51,6 +51,9 @@ http://mozilla.org/MPL/2.0/.
                             <asp:Literal ID="PriceTypeLiteral" runat="server" />
                         </td>
                         <td>
+                            <asp:Literal ID="ReferenceNumberLiteral" runat="server" />
+                        </td>
+                        <td>
                         </td>
                     </tr>
                     <tr style="vertical-align: middle;">
@@ -78,6 +81,9 @@ http://mozilla.org/MPL/2.0/.
                         <td>
                             <asp:DropDownList ID="PriceTypeDropDownList" runat="server" Width="80">
                             </asp:DropDownList>
+                        </td>
+                        <td>
+                            <asp:TextBox ID="ReferenceNumberTextBox" runat="server" Width="60" MaxLength="24" />
                         </td>
                         <td>
                             <asp:Button ID="OKButton" runat="server" Text="<%$ Resources:Titles, OK %>" Width="40" OnClick="OKButton_Click" />

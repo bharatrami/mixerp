@@ -16,7 +16,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
 {
     public static class NonGlStockTransaction
     {
-        public static long Add(string book, DateTime valueDate, string partyCode, int priceTypeId, GridView grid, string statementReference)
+        public static long Add(string book, DateTime valueDate, string partyCode, int priceTypeId, GridView grid, string referenceNumber, string statementReference)
         {
             MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster = new MixERP.Net.Common.Transactions.Models.StockMasterModel();
             Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details = new Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel>();
@@ -46,7 +46,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
                 }
             }
 
-            nonGlStockMasterId = MixERP.Net.DatabaseLayer.Transactions.NonGlStockTransaction.Add(book, valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), statementReference, stockMaster, details);
+            nonGlStockMasterId = MixERP.Net.DatabaseLayer.Transactions.NonGlStockTransaction.Add(book, valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), referenceNumber, statementReference, stockMaster, details);
             return nonGlStockMasterId;
         }
     }

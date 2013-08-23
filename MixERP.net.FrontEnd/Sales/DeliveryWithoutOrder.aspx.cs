@@ -31,9 +31,10 @@ namespace MixERP.Net.FrontEnd.Sales
             int shipperId = Pes.Utility.Conversion.TryCastInteger(SalesDeliveryControl.GetForm.ShippingCompanyDropDownList.SelectedItem.Value);
             decimal shippingCharge = Pes.Utility.Conversion.TryCastDecimal(SalesDeliveryControl.GetForm.ShippingChargeTextBox.Text);
             int costCenterId = Pes.Utility.Conversion.TryCastInteger(SalesDeliveryControl.GetForm.CostCenterDropDownList.SelectedItem.Value);
+            string referenceNumber = SalesDeliveryControl.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = SalesDeliveryControl.GetForm.StatementReferenceTextBox.Text;
 
-            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.SalesDelivery.Add(valueDate, storeId, partyCode, priceTypeId, grid, shipperId, shippingCharge, costCenterId, statementReference);
+            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.SalesDelivery.Add(valueDate, storeId, partyCode, priceTypeId, grid, shipperId, shippingCharge, costCenterId, referenceNumber, statementReference);
             if(transactionMasterId > 0)
             {
                 Response.Redirect("~/Sales/Confirmation/DeliveryWithoutOrder.aspx?TranId=" + transactionMasterId, true);

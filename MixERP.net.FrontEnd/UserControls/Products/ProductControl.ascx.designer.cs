@@ -112,6 +112,15 @@ namespace MixERP.Net.FrontEnd.UserControls.Products {
         protected global::System.Web.UI.WebControls.Literal PriceTypeLiteral;
         
         /// <summary>
+        /// ReferenceNumberLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ReferenceNumberLiteral;
+        
+        /// <summary>
         /// DateTextBox control.
         /// </summary>
         /// <remarks>
@@ -164,6 +173,15 @@ namespace MixERP.Net.FrontEnd.UserControls.Products {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList PriceTypeDropDownList;
+        
+        /// <summary>
+        /// ReferenceNumberTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ReferenceNumberTextBox;
         
         /// <summary>
         /// OKButton control.

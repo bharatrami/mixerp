@@ -17,7 +17,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
     public static class NonGlStockTransaction
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        public static long Add(string book, DateTime valueDate, int officeId, int userId, long logOnId, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
+        public static long Add(string book, DateTime valueDate, int officeId, int userId, long logOnId, string referenceNumber, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
         {
             if(stockMaster == null)
             {
@@ -51,10 +51,11 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                     {
 
                         #region NonGLStockMaster
-                        sql = "INSERT INTO transactions.non_gl_stock_master(non_gl_stock_master_id, book, party_id, price_type_id, reference) SELECT nextval(pg_get_serial_sequence('transactions.non_gl_stock_master', 'non_gl_stock_master_id')), @Book, core.get_party_id_by_party_code(@PartyCode), @PriceTypeId, @StatementReference; SELECT currval(pg_get_serial_sequence('transactions.non_gl_stock_master', 'non_gl_stock_master_id'));";
+                        sql = "INSERT INTO transactions.non_gl_stock_master(non_gl_stock_master_id, value_date, book, party_id, price_type_id, login_id, user_id, office_id, reference_number, statement_reference) SELECT nextval(pg_get_serial_sequence('transactions.non_gl_stock_master', 'non_gl_stock_master_id')), @ValueDate, @Book, core.get_party_id_by_party_code(@PartyCode), @PriceTypeId, @LoginId, @UserId, @OfficeId, @ReferenceNumber, @StatementReference; SELECT currval(pg_get_serial_sequence('transactions.non_gl_stock_master', 'non_gl_stock_master_id'));";
 
                         using(NpgsqlCommand stockMasterRow = new NpgsqlCommand(sql, connection))
                         {
+                            stockMasterRow.Parameters.AddWithValue("@ValueDate", valueDate);
                             stockMasterRow.Parameters.AddWithValue("@Book", book);
                             stockMasterRow.Parameters.AddWithValue("@PartyCode", stockMaster.PartyCode);
 
@@ -66,6 +67,11 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                             {
                                 stockMasterRow.Parameters.AddWithValue("@PriceTypeId", stockMaster.PriceTypeId);
                             }
+
+                            stockMasterRow.Parameters.AddWithValue("@LoginId", logOnId);
+                            stockMasterRow.Parameters.AddWithValue("@UserId", userId);
+                            stockMasterRow.Parameters.AddWithValue("@OfficeId", officeId);
+                            stockMasterRow.Parameters.AddWithValue("@ReferenceNumber", referenceNumber);
 
                             stockMasterRow.Parameters.AddWithValue("@StatementReference", statementReference);
 

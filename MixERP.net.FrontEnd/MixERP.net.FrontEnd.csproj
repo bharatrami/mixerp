@@ -874,6 +874,13 @@
     <Compile Include="UserControls\Core\AccountControl.ascx.designer.cs">
       <DependentUpon>AccountControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CurrencyExtender.ascx.cs">
+      <DependentUpon>CurrencyExtender.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\CurrencyExtender.ascx.designer.cs">
+      <DependentUpon>CurrencyExtender.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DateTextBox.ascx.cs">
       <DependentUpon>DateTextBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1576,6 +1583,7 @@
     <Content Include="Themes\purple\padding.css" />
     <Content Include="Themes\purple\mixerp-logo.png" />
     <Content Include="UserControls\Core\AccountControl.ascx" />
+    <Content Include="UserControls\CurrencyExtender.ascx" />
     <Content Include="UserControls\DateTextBox.ascx" />
     <Content Include="UserControls\Forms\FormControl.ascx" />
   </ItemGroup>
