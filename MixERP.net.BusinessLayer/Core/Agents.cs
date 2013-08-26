@@ -8,17 +8,23 @@ http://mozilla.org/MPL/2.0/.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Text;
 
-namespace MixERP.Net.FrontEnd.Sales
+namespace MixERP.Net.BusinessLayer.Core
 {
-    public partial class Quotation : MixERP.Net.BusinessLayer.BasePageClass
+    public static class Agents
     {
-        protected void Page_Load(object sender, EventArgs e)
+        public static string GetDisplayField()
         {
+            string displayField = Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPDbParameters", "AgentDisplayField");
 
+            if(string.IsNullOrWhiteSpace(displayField))
+            {
+                displayField = "agent_name";
+            }
+
+            return displayField;
         }
+
     }
 }

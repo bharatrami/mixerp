@@ -43,6 +43,8 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         protected void Page_Load(object sender, EventArgs e)
         {
             TitleLabel.Text = this.Text;
+            this.Page.Title = this.Text;
+
             if(!string.IsNullOrWhiteSpace(this.Description))
             {
                 DescriptionLabel.CssClass = "description";

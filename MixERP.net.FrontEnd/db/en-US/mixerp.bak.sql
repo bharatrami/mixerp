@@ -61,7 +61,7 @@ CHECK
 );
 
 /*******************************************************************
-	MIXERP STRICT DATATYmixerp: NEGATIVES ARE NOT ALLOWED
+	MIXERP STRICT Data Types: NEGATIVES ARE NOT ALLOWED
 *******************************************************************/
 
 DROP DOMAIN IF EXISTS money_strict;
@@ -72,12 +72,29 @@ CHECK
 	VALUE > '0'
 );
 
+
+DROP DOMAIN IF EXISTS money_strict2;
+CREATE DOMAIN money_strict2
+AS money
+CHECK
+(
+	VALUE >= '0'
+);
+
 DROP DOMAIN IF EXISTS integer_strict;
 CREATE DOMAIN integer_strict
 AS integer
 CHECK
 (
 	VALUE > 0
+);
+
+DROP DOMAIN IF EXISTS integer_strict2;
+CREATE DOMAIN integer_strict2
+AS integer
+CHECK
+(
+	VALUE >= 0
 );
 
 DROP DOMAIN IF EXISTS smallint_strict;
@@ -88,12 +105,29 @@ CHECK
 	VALUE > 0
 );
 
+DROP DOMAIN IF EXISTS smallint_strict2;
+CREATE DOMAIN smallint_strict2
+AS smallint
+CHECK
+(
+	VALUE >= 0
+);
+
 DROP DOMAIN IF EXISTS decimal_strict;
 CREATE DOMAIN decimal_strict
 AS decimal
 CHECK
 (
 	VALUE > 0
+);
+
+
+DROP DOMAIN IF EXISTS decimal_strict2;
+CREATE DOMAIN decimal_strict2
+AS decimal
+CHECK
+(
+	VALUE >= 0
 );
 
 DROP DOMAIN IF EXISTS image_path;
@@ -165,27 +199,28 @@ LANGUAGE plpgsql;
 
 CREATE TABLE office.offices
 (
-	office_id SERIAL  NOT NULL PRIMARY KEY,
-	office_code national character varying(12) NOT NULL,
-	office_name national character varying(150) NOT NULL,
-	nick_name national character varying(50) NULL,
-	registration_date date NOT NULL,
-	currency_code national character varying(12) NOT NULL 
-					CONSTRAINT offices_currencies_fk REFERENCES core.currencies(currency_code)
-					CONSTRAINT offices_currency_code_df DEFAULT('NPR'),
-	office_address national character varying(128) NULL,
-	street national character varying(50) NULL,
-	city national character varying(50) NULL,
-	state national character varying(50) NULL,
-	country national character varying(50) NULL,
-	zip_code national character varying(24) NULL,
-	phone national character varying(24) NULL,
-	fax national character varying(24) NULL,
-	email national character varying(128) NULL,
-	url national character varying(50) NULL,
-	registration_number national character varying(24) NULL,
-	pan_number national character varying(24) NULL,
-	parent_office_id integer NULL REFERENCES office.offices(office_id)
+	office_id				SERIAL NOT NULL PRIMARY KEY,
+	office_code 				national character varying(12) NOT NULL,
+	office_name 				national character varying(150) NOT NULL,
+	nick_name 				national character varying(50) NULL,
+	registration_date 			date NOT NULL,
+	currency_code 				national character varying(12) NOT NULL 
+						CONSTRAINT offices_currencies_fk REFERENCES core.currencies(currency_code)
+						CONSTRAINT offices_currency_code_df DEFAULT('NPR'),
+	address_line_1				national character varying(128) NULL,	
+	address_line_2				national character varying(128) NULL,
+	street 					national character varying(50) NULL,
+	city 					national character varying(50) NULL,
+	state 					national character varying(50) NULL,
+	country 				national character varying(50) NULL,
+	zip_code 				national character varying(24) NULL,
+	phone 					national character varying(24) NULL,
+	fax 					national character varying(24) NULL,
+	email 					national character varying(128) NULL,
+	url 					national character varying(50) NULL,
+	registration_number 			national character varying(24) NULL,
+	pan_number 				national character varying(24) NULL,
+	parent_office_id 			integer NULL REFERENCES office.offices(office_id)
 		CHECK
 		(
 			office.is_parent_office(office_id, parent_office_id) = FALSE
@@ -795,7 +830,8 @@ INSERT INTO core.menus(menu_text, url, menu_code, level, parent_menu_id)
 UNION ALL SELECT 'Direct Sales', '/Sales/DirectSales.aspx', 'DRS', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Quotation', '/Sales/Quotation.aspx', 'SQ', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Order', '/Sales/Order.aspx', 'SO', 2, core.get_menu_id('SAQ')
-UNION ALL SELECT 'Delivery for Sales Order', '/Sales/Delivery.aspx', 'DSO', 2, core.get_menu_id('SAQ')
+UNION ALL SELECT 'Delivery for Sales Order', '/Sales/DeliveryForOrder.aspx', 'DSO', 2, core.get_menu_id('SAQ')
+UNION ALL SELECT 'Delivery Without Sales Order', '/Sales/DeliveryWithoutOrder.aspx', 'DWO', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Invoice for Sales Delivery', '/Sales/Invoice.aspx', 'ISD', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Receipt from Customer', '/Sales/Receipt.aspx', 'RFC', 2, core.get_menu_id('SAQ')
 UNION ALL SELECT 'Sales Return', '/Sales/Return.aspx', 'SR', 2, core.get_menu_id('SAQ')
@@ -826,7 +862,8 @@ UNION ALL SELECT 'Stock Transfer Journal', '/Items/Transfer.aspx', 'STJ', 2, cor
 UNION ALL SELECT 'Stock Adjustments', '/Items/Adjustment.aspx', 'STA', 2, core.get_menu_id('IIM')
 UNION ALL SELECT 'Setup & Maintenance', NULL, 'ISM', 1, core.get_menu_id('ITM')
 UNION ALL SELECT 'Party Types', '/Items/Setup/PartyTypes.aspx', 'PT', 2, core.get_menu_id('ISM')
-UNION ALL SELECT 'Party Accounts', '/Items/Setup/Parties.aspx', 'CA', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Party Accounts', '/Items/Setup/Parties.aspx', 'PA', 2, core.get_menu_id('ISM')
+UNION ALL SELECT 'Shipping Addresses', '/Items/Setup/ShippingAddresses.aspx', 'PSA', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Item Maintenance', '/Items/Setup/Items.aspx', 'SSI', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Cost Prices', '/Items/Setup/CostPrices.aspx', 'ICP', 2, core.get_menu_id('ISM')
 UNION ALL SELECT 'Selling Prices', '/Items/Setup/SellingPrices.aspx', 'ISP', 2, core.get_menu_id('ISM')
@@ -916,6 +953,8 @@ SELECT
 	logged_in_office.registration_date,
 	logged_in_office.registration_number,
 	logged_in_office.pan_number,
+	logged_in_office.address_line_1,
+	logged_in_office.address_line_2,
 	logged_in_office.street,
 	logged_in_office.city,
 	logged_in_office.state,
@@ -1894,14 +1933,15 @@ CREATE TABLE core.agents
 	agent_name national character varying(100) NOT NULL,
 	address national character varying(100) NOT NULL,
 	contact_number national character varying(50) NOT NULL,
-	commission_rate decimal_strict NOT NULL DEFAULT(0),
+	commission_rate decimal_strict2 NOT NULL DEFAULT(0),
 	account_id integer NOT NULL REFERENCES core.accounts(account_id)
 );
-
 
 CREATE UNIQUE INDEX agents_agent_name_uix
 ON core.agents(UPPER(agent_name));
 
+INSERT INTO core.agents(agent_code, agent_name, address, contact_number, commission_rate, account_id)
+SELECT 'OFF', 'Office', 'Office', '', 0, (SELECT account_id FROM core.accounts WHERE account_code='20100');
 
 CREATE VIEW core.agent_view
 AS
@@ -2034,35 +2074,35 @@ INSERT INTO core.party_types(party_type_code, party_type_name, is_supplier) SELE
 
 CREATE TABLE core.parties
 (
-	party_id BIGSERIAL NOT NULL PRIMARY KEY,
-	party_type_id smallint NOT NULL REFERENCES core.party_types(party_type_id),
-	party_code national character varying(12) NULL,
-	first_name national character varying(50) NOT NULL,
-	middle_name national character varying(50) NULL,
-	last_name national character varying(50) NOT NULL,
-	party_name text NULL,
-	date_of_birth date NULL,
-	address national character varying(50) NULL,
-	street national character varying(50) NULL,
-	city national character varying(50) NULL,
-	state national character varying(50) NULL,
-	country national character varying(50) NULL,
-	shipping_address national character varying(250) NULL,
-	phone national character varying(24) NULL,
-	fax national character varying(24) NULL,
-	cell national character varying(24) NULL,
-	email national character varying(128) NULL,
-	url national character varying(50) NULL,
-	pan_number national character varying(50) NULL,
-	sst_number national character varying(50) NULL,
-	cst_number national character varying(50) NULL,
-	allow_credit boolean NULL,
-	maximum_credit_period smallint NULL,
-	maximum_credit_amount money NULL,
-	charge_interest boolean NULL,
-	interest_rate decimal NULL,
-	interest_compounding_frequency_id smallint NULL REFERENCES core.frequencies(frequency_id),
-	account_id integer NOT NULL REFERENCES core.accounts(account_id)
+	party_id BIGSERIAL			NOT NULL PRIMARY KEY,
+	party_type_id				smallint NOT NULL REFERENCES core.party_types(party_type_id),
+	party_code				national character varying(12) NULL,
+	first_name				national character varying(50) NOT NULL,
+	middle_name				national character varying(50) NULL,
+	last_name				national character varying(50) NOT NULL,
+	party_name				text NULL,
+	date_of_birth				date NULL,
+	address_line_1				national character varying(128) NULL,	
+	address_line_2				national character varying(128) NULL,
+	street 					national character varying(50) NULL,
+	city 					national character varying(50) NULL,
+	state 					national character varying(50) NULL,
+	country 				national character varying(50) NULL,
+	phone 					national character varying(24) NULL,
+	fax 					national character varying(24) NULL,
+	cell 					national character varying(24) NULL,
+	email 					national character varying(128) NULL,
+	url 					national character varying(50) NULL,
+	pan_number 				national character varying(50) NULL,
+	sst_number 				national character varying(50) NULL,
+	cst_number 				national character varying(50) NULL,
+	allow_credit 				boolean NULL,
+	maximum_credit_period 			smallint NULL,
+	maximum_credit_amount 			money_strict2 NULL,
+	charge_interest 			boolean NULL,
+	interest_rate 				decimal NULL,
+	interest_compounding_frequency_id	smallint NULL REFERENCES core.frequencies(frequency_id),
+	account_id 				integer NOT NULL REFERENCES core.accounts(account_id)
 );
 
 
@@ -2071,7 +2111,7 @@ ON core.parties(UPPER(party_code));
 
 /*******************************************************************
 	GET UNIQUE EIGHT-TO-TEN DIGIT CUSTOMER CODE
-	TO IDENTIFY A CUSTOMER.
+	TO IDENTIFY A PARTY.
 	BASIC FORMULA:
 		1. FIRST TWO LETTERS OF FIRST NAME
 		2. FIRST LETTER OF MIDDLE NAME (IF AVAILABLE)
@@ -2081,16 +2121,16 @@ ON core.parties(UPPER(party_code));
 
 CREATE OR REPLACE FUNCTION core.get_party_code
 (
-	text, --first_name
+	text, --First Name
 	text, --Middle Name
 	text  --Last Name
 )
 RETURNS text AS
 $$
-	DECLARE __party_code TEXT;
+	DECLARE _party_code TEXT;
 BEGIN
 	SELECT INTO 
-		__party_code 
+		_party_code 
 			party_code
 	FROM
 		core.parties
@@ -2107,7 +2147,7 @@ BEGIN
 	ORDER BY party_code desc
 	LIMIT 1;
 
-	__party_code :=
+	_party_code :=
 					UPPER
 					(
 						left($1,2)||
@@ -2120,12 +2160,12 @@ BEGIN
 					) 
 					|| '-' ||
 					CASE
-						WHEN __party_code IS NULL 
+						WHEN _party_code IS NULL 
 						THEN '0001'
 					ELSE 
-						to_char(CAST(right(__party_code,4) AS integer)+1,'FM0000')
+						to_char(CAST(right(_party_code,4) AS integer)+1,'FM0000')
 					END;
-	RETURN __party_code;
+	RETURN _party_code;
 END;
 $$
 LANGUAGE 'plpgsql';
@@ -2199,12 +2239,12 @@ SELECT
 	core.parties.middle_name,
 	core.parties.last_name,
 	core.parties.party_name,
-	core.parties.address,
+	core.parties.address_line_1,
+	core.parties.address_line_2,
 	core.parties.street,
 	core.parties.city,
 	core.parties.state,
 	core.parties.country,
-	core.parties.shipping_address,
 	core.parties.allow_credit,
 	core.parties.maximum_credit_period,
 	core.parties.maximum_credit_amount,
@@ -2245,6 +2285,66 @@ END
 $$
 LANGUAGE plpgsql;
 
+CREATE TABLE core.shipping_addresses
+(
+	shipping_address_id	BIGSERIAL NOT NULL PRIMARY KEY,
+	shipping_address_code	national character varying(24) NOT NULL,
+	party_id		bigint NOT NULL REFERENCES core.parties(party_id),
+	address_line_1		national character varying(128) NULL,	
+	address_line_2		national character varying(128) NULL,
+	street			national character varying(128) NULL,
+	city			national character varying(128) NOT NULL,
+	state			national character varying(128) NOT NULL,
+	country			national character varying(128) NOT NULL
+);
+
+CREATE UNIQUE INDEX shipping_addresses_shipping_address_code_uix
+ON core.shipping_addresses(UPPER(shipping_address_code), party_id);
+
+CREATE FUNCTION core.update_shipping_address_code_trigger()
+RETURNS TRIGGER
+AS
+$$
+DECLARE _counter integer;
+BEGIN
+	IF TG_OP='INSERT' THEN
+
+		SELECT COALESCE(MAX(shipping_address_code::integer), 0) + 1
+		INTO _counter
+		FROM core.shipping_addresses
+		WHERE party_id=NEW.party_id;
+
+		NEW.shipping_address_code := trim(to_char(_counter, '000'));
+		
+		RETURN NEW;
+	END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER update_shipping_address_code_trigger
+BEFORE INSERT
+ON core.shipping_addresses
+FOR EACH ROW EXECUTE PROCEDURE core.update_shipping_address_code_trigger();
+
+CREATE VIEW core.shipping_address_view
+AS
+SELECT
+	core.shipping_addresses.shipping_address_id,
+	core.shipping_addresses.shipping_address_code,
+	core.shipping_addresses.party_id,
+	core.parties.party_code || ' (' || core.parties.party_name || ')' AS party,
+	core.shipping_addresses.address_line_1,
+	core.shipping_addresses.address_line_2,
+	core.shipping_addresses.street,
+	core.shipping_addresses.city,
+	core.shipping_addresses.state,
+	core.shipping_addresses.country
+FROM core.shipping_addresses
+INNER JOIN core.parties
+ON core.shipping_addresses.party_id=core.parties.party_id;
+
 CREATE TABLE core.brands
 (
 	brand_id SERIAL NOT NULL PRIMARY KEY,
@@ -2264,31 +2364,35 @@ SELECT 'DEF', 'Default';
 
 CREATE TABLE core.shippers
 (
-	shipper_id BIGSERIAL NOT NULL PRIMARY KEY,
-	shipper_code national character varying(12) NULL,
-	company_name national character varying(128) NOT NULL,
-	shipper_name national character varying(150) NULL,
-	street national character varying(50) NULL,
-	city national character varying(50) NULL,
-	state national character varying(50) NULL,
-	country national character varying(50) NULL,
-	phone national character varying(50) NULL,
-	fax national character varying(50) NULL,
-	cell national character varying(50) NULL,
-	email national character varying(128) NULL,
-	url national character varying(50) NULL,
-	contact_person national character varying(50) NULL,
-	contact_street national character varying(50) NULL,
-	contact_city national character varying(50) NULL,
-	contact_state national character varying(50) NULL,
-	contact_country national character varying(50) NULL,
-	contact_email national character varying(128) NULL,
-	contact_phone national character varying(50) NULL,
-	contact_cell national character varying(50) NULL,
-	factory_address national character varying(250) NULL,
-	pan_number national character varying(50) NULL,
-	sst_number national character varying(50) NULL,
-	cst_number national character varying(50) NULL,
+	shipper_id				BIGSERIAL NOT NULL PRIMARY KEY,
+	shipper_code				national character varying(12) NULL,
+	company_name				national character varying(128) NOT NULL,
+	shipper_name				national character varying(150) NULL,
+	address_line_1				national character varying(128) NULL,	
+	address_line_2				national character varying(128) NULL,
+	street					national character varying(50) NULL,
+	city					national character varying(50) NULL,
+	state 					national character varying(50) NULL,
+	country 				national character varying(50) NULL,
+	phone 					national character varying(50) NULL,
+	fax 					national character varying(50) NULL,
+	cell 					national character varying(50) NULL,
+	email 					national character varying(128) NULL,
+	url 					national character varying(50) NULL,
+	contact_person 				national character varying(50) NULL,
+	contact_address_line_1			national character varying(128) NULL,	
+	contact_address_line_2			national character varying(128) NULL,
+	contact_street 				national character varying(50) NULL,
+	contact_city 				national character varying(50) NULL,
+	contact_state 				national character varying(50) NULL,
+	contact_country 			national character varying(50) NULL,
+	contact_email 				national character varying(128) NULL,
+	contact_phone 				national character varying(50) NULL,
+	contact_cell 				national character varying(50) NULL,
+	factory_address 			national character varying(250) NULL,
+	pan_number 				national character varying(50) NULL,
+	sst_number 				national character varying(50) NULL,
+	cst_number 				national character varying(50) NULL,
 	account_id integer NOT NULL REFERENCES core.accounts(account_id)
 );
 
@@ -2998,7 +3102,7 @@ CREATE TABLE transactions.transaction_master
 		CONSTRAINT transaction_master_sys_user_id_chk CHECK(sys_user_id IS NULL OR office.is_sys_user(sys_user_id)=true),
 	office_id integer NOT NULL REFERENCES office.offices(office_id),
 	cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id),
-	ref_no national character varying(24) NULL,
+	reference_number national character varying(24) NULL,
 	statement_reference text NULL,
 	last_verified_on TIMESTAMP WITH TIME ZONE NULL, 
 	verified_by_user_id integer NULL REFERENCES office.users(user_id),
@@ -3040,6 +3144,7 @@ CREATE TABLE transactions.stock_master
 	stock_master_id BIGSERIAL NOT NULL PRIMARY KEY,
 	transaction_master_id bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
 	party_id bigint NULL REFERENCES core.parties(party_id),
+	agent_id integer NULL REFERENCES core.agents(agent_id),
 	price_type_id integer NULL REFERENCES core.price_types(price_type_id),
 	is_credit boolean NOT NULL CONSTRAINT stock_master_is_credit_df DEFAULT(false),
 	shipper_id integer NULL REFERENCES core.shippers(shipper_id),
@@ -3079,10 +3184,16 @@ GROUP BY account_id;
 CREATE TABLE transactions.non_gl_stock_master
 (
 	non_gl_stock_master_id	BIGSERIAL NOT NULL PRIMARY KEY,
+	value_date 		date NOT NULL,
 	book			national character varying(48) NOT NULL,
 	party_id 		bigint NULL REFERENCES core.parties(party_id),
 	price_type_id 		integer NULL REFERENCES core.price_types(price_type_id),
-	reference		text NOT NULL CONSTRAINT non_gl_stock_master_reference_df DEFAULT('')
+	transaction_ts 		TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	login_id 		bigint NOT NULL REFERENCES audit.logins(login_id),
+	user_id 		integer NOT NULL REFERENCES office.users(user_id),
+	office_id 		integer NOT NULL REFERENCES office.offices(office_id),
+	reference_number	national character varying(24) NULL,
+	statement_reference 	text NULL
 );
 
 
@@ -3197,9 +3308,9 @@ RETURNS decimal
 AS
 $$
 	DECLARE _base_unit_id integer;
-	DECLARE _debit integer;
-	DECLARE _credit integer;
-	DECLARE _balance integer;
+	DECLARE _debit decimal;
+	DECLARE _credit decimal;
+	DECLARE _balance decimal;
 	DECLARE _factor decimal;
 BEGIN
 

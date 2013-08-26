@@ -12,13 +12,19 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace MixERP.Net.FrontEnd.Sales
+namespace MixERP.Net.FrontEnd.Items.Setup
 {
-    public partial class Quotation : MixERP.Net.BusinessLayer.BasePageClass
+    public partial class PartiesPopup : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
+
+        public string GetPartyNameParameter()
+        {
+            return Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPParameters", "PartyName");
+        }
+
     }
 }

@@ -133,6 +133,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address Line 1.
+        /// </summary>
+        internal static string address_line_1 {
+            get {
+                return ResourceManager.GetString("address_line_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address Line 2.
+        /// </summary>
+        internal static string address_line_2 {
+            get {
+                return ResourceManager.GetString("address_line_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ageing Slab Id.
         /// </summary>
         internal static string ageing_slab_id {
@@ -1861,6 +1879,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Party.
+        /// </summary>
+        internal static string party {
+            get {
+                return ResourceManager.GetString("party", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Party Code.
         /// </summary>
         internal static string party_code {
@@ -2262,6 +2289,24 @@ namespace Resources {
         internal static string shipping_address {
             get {
                 return ResourceManager.GetString("shipping_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipping Address Code.
+        /// </summary>
+        internal static string shipping_address_code {
+            get {
+                return ResourceManager.GetString("shipping_address_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipping Address Id.
+        /// </summary>
+        internal static string shipping_address_id {
+            get {
+                return ResourceManager.GetString("shipping_address_id", resourceCulture);
             }
         }
         

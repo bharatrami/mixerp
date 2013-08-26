@@ -19,7 +19,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
     {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int storeId, int cashRepositoryId, int costCenterId, string referenceNumber, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
+        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int costCenterId, string referenceNumber, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
         {
             if(stockMaster == null)
             {
@@ -140,7 +140,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                                 cashRow.Parameters.AddWithValue("@TransactionMasterId", transactionMasterId);
                                 cashRow.Parameters.AddWithValue("@TranType", "Cr");
                                 cashRow.Parameters.AddWithValue("@StatementReference", statementReference);
-                                cashRow.Parameters.AddWithValue("@CashRepositoryId", cashRepositoryId);
+                                cashRow.Parameters.AddWithValue("@CashRepositoryId", stockMaster.CashRepositoryId);
                                 cashRow.Parameters.AddWithValue("@Amount", total - discountTotal + taxTotal);
                                 cashRow.ExecuteNonQuery();
                             }
@@ -169,8 +169,8 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 
                             stockMasterRow.Parameters.AddWithValue("@ShippingCharge", stockMaster.ShippingCharge);
 
-                            stockMasterRow.Parameters.AddWithValue("@StoreId", storeId);
-                            stockMasterRow.Parameters.AddWithValue("@CashRepositoryId", cashRepositoryId);
+                            stockMasterRow.Parameters.AddWithValue("@StoreId", stockMaster.StoreId);
+                            stockMasterRow.Parameters.AddWithValue("@CashRepositoryId", stockMaster.CashRepositoryId);
 
                             stockMasterId = Pes.Utility.Conversion.TryCastLong(stockMasterRow.ExecuteScalar());
                         }

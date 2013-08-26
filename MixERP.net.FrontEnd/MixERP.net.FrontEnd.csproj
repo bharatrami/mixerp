@@ -396,6 +396,13 @@
     <Compile Include="Items\Setup\Parties.aspx.designer.cs">
       <DependentUpon>Parties.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Items\Setup\PartiesPopup.aspx.cs">
+      <DependentUpon>PartiesPopup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Items\Setup\PartiesPopup.aspx.designer.cs">
+      <DependentUpon>PartiesPopup.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Items\Setup\PartyTypes.aspx.cs">
       <DependentUpon>PartyTypes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -416,6 +423,13 @@
     </Compile>
     <Compile Include="Items\Setup\Shipper.aspx.designer.cs">
       <DependentUpon>Shipper.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Items\Setup\ShippingAddresses.aspx.cs">
+      <DependentUpon>ShippingAddresses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Items\Setup\ShippingAddresses.aspx.designer.cs">
+      <DependentUpon>ShippingAddresses.aspx</DependentUpon>
     </Compile>
     <Compile Include="Items\Setup\UOM.aspx.cs">
       <DependentUpon>UOM.aspx</DependentUpon>
@@ -641,6 +655,13 @@
     </Compile>
     <Compile Include="Sales\DirectSales.aspx.designer.cs">
       <DependentUpon>DirectSales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\Entry\Quotation.aspx.cs">
+      <DependentUpon>Quotation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\Entry\Quotation.aspx.designer.cs">
+      <DependentUpon>Quotation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sales\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
@@ -1038,9 +1059,11 @@
     <Content Include="Items\Setup\ItemGroups.aspx" />
     <Content Include="Items\Setup\Items.aspx" />
     <Content Include="Items\Setup\Parties.aspx" />
+    <Content Include="Items\Setup\PartiesPopup.aspx" />
     <Content Include="Items\Setup\PartyTypes.aspx" />
     <Content Include="Items\Setup\SellingPrices.aspx" />
     <Content Include="Items\Setup\Shipper.aspx" />
+    <Content Include="Items\Setup\ShippingAddresses.aspx" />
     <Content Include="Items\Setup\UOM.aspx" />
     <Content Include="Items\Transfer.aspx" />
     <Content Include="Manufacturing\Index.aspx" />
@@ -1227,6 +1250,7 @@
     <Content Include="Sales\DeliveryForOrder.aspx" />
     <Content Include="Sales\DeliveryWithoutOrder.aspx" />
     <Content Include="Sales\DirectSales.aspx" />
+    <Content Include="Sales\Entry\Quotation.aspx" />
     <Content Include="Sales\Index.aspx" />
     <Content Include="Sales\Invoice.aspx" />
     <Content Include="Sales\Order.aspx" />
@@ -1628,7 +1652,9 @@
     <None Include="Properties\PublishProfiles\MixERP.pubxml" />
     <Content Include="Reports\Assets\ReadMe.txt" />
     <Content Include="Resource\Configuration\Switches.config" />
-    <Content Include="Resource\Configuration\Parameters.config" />
+    <Content Include="Resource\Configuration\Parameters.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Resource\Configuration\DbParameters.config" />
     <Content Include="Resource\Frameworks\MetroUi\fonts\iconFont.eot" />
     <Content Include="Resource\Frameworks\MetroUi\fonts\iconFont.ttf" />

@@ -53,6 +53,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             public DropDownList CashRepositoryDropDownList { get; set; }
             public TextBox CashRepositoryBalanceTextBox { get; set; }
             public DropDownList CostCenterDropDownList { get; set; }
+            public DropDownList AgentDropDownList { get; set; }
             public TextBox StatementReferenceTextBox { get; set; }
         }
 
@@ -75,6 +76,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             collection.CashRepositoryDropDownList = this.CashRepositoryDropDownList;
             collection.CashRepositoryBalanceTextBox = this.CashRepositoryBalanceTextBox;
             collection.CostCenterDropDownList = this.CostCenterDropDownList;
+            collection.AgentDropDownList = this.SalesPersonDropDownList;
             collection.StatementReferenceTextBox = this.StatementReferenceTextBox;
             return collection;
         }
@@ -266,6 +268,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             CashRepositoryDropDownListLabelLiteral.Text = "<label for='CashRepositoryDropDownList'>" + Resources.Titles.CashRepository + "</label>";
             CashRepositoryBalanceTextBoxLabelLiteral.Text = "<label for='CashRepositoryBalanceTextBox'>" + Resources.Titles.CashRepositoryBalance + "</label>";
             CostCenterDropDownListLabelLiteral.Text = "<label for='CostCenterDropDownList'>" + Resources.Titles.CostCenter + "</label>";
+            SalesPersonDropDownListLabelLiteral.Text = "<label for='SalesPersonDropDownList'>" + Resources.Titles.SalesPerson + "</label>";
             StatementReferenceTextBoxLabelLiteral.Text = "<label for='StatementReferenceTextBox'>" + Resources.Titles.StatementReference + "</label>";
         }
 
@@ -316,6 +319,25 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                 ShippingChargeRow.Visible = false;
             }
 
+        }
+
+        private void LoadSalesPerson()
+        {
+            SalesPersonRow.Visible = false;
+
+            if(this.TransactionType == TranType.Sales)
+            {
+                using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "agents"))
+                {
+                    table.Columns.Add("agent", typeof(string), MixERP.Net.BusinessLayer.Core.Agents.GetDisplayField());
+
+                    SalesPersonDropDownList.DataSource = table;
+                    SalesPersonDropDownList.DataValueField = "agent_id";
+                    SalesPersonDropDownList.DataTextField = "agent";
+                    SalesPersonDropDownList.DataBind();
+                    SalesPersonRow.Visible = true;
+                }
+            }
         }
 
         private void LoadShippers()
@@ -411,6 +433,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             this.LoadParties();
             this.LoadShippers();
             this.LoadCostCenters();
+            this.LoadSalesPerson();
             this.LoadStores();
             this.LoadCashRepositories();
         }
@@ -432,6 +455,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             //Moved from Page_Init
             this.TitleLabel.Text = this.Text;
+            this.Page.Title = this.Text;
             TransactionTypeLiteral.Visible = this.DisplayTransactionTypeRadioButtonList;
             TransactionTypeRadioButtonList.Visible = this.DisplayTransactionTypeRadioButtonList;
 

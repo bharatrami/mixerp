@@ -1060,6 +1060,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sales Person.
+        /// </summary>
+        internal static string SalesPerson {
+            get {
+                return ResourceManager.GetString("SalesPerson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sales Quotation.
         /// </summary>
         internal static string SalesQuotation {
@@ -1155,6 +1164,15 @@ namespace Resources {
         internal static string Shippers {
             get {
                 return ResourceManager.GetString("Shippers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipping Address Maintenance.
+        /// </summary>
+        internal static string ShippingAddressMaintenance {
+            get {
+                return ResourceManager.GetString("ShippingAddressMaintenance", resourceCulture);
             }
         }
         

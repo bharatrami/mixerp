@@ -194,3 +194,9 @@ function formatDate(obj) {
 /******************************************************************************************************
 DATE EXPRESSION END
 ******************************************************************************************************/
+
+var showWindow = function (url) {
+    newwindow = window.open(url, name, 'width=' + $('html').width() + ',height=' + $('html').height() + ',toolbar=0,menubar=0,location=0,scrollbars=1,resizable=1');
+    newwindow.moveTo(0, 0);
+    if (window.focus) { newwindow.focus() }
+}

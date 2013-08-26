@@ -7,7 +7,7 @@ http://mozilla.org/MPL/2.0/.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProductControl.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.Products.ProductControl" %>
 <AjaxCTK:ToolkitScriptManager ID="ScriptManager1" runat="server" />
-<div style="width: 1000px; overflow: hidden; margin: 0 auto;">
+<div style="width: 1000px; overflow: hidden; margin: 0;">
     <asp:Label ID="TitleLabel" CssClass="title" runat="server" />
     <asp:UpdateProgress ID="UpdateProgress1" runat="server">
         <ProgressTemplate>
@@ -72,9 +72,12 @@ http://mozilla.org/MPL/2.0/.
                         </td>
                         <td>
                             <asp:TextBox ID="PartyCodeTextBox" runat="server" Width="80" 
-                                onblur="selectItem(this.id, 'PartyDropDownList');" />
+                                onblur="selectItem(this.id, 'PartyDropDownList');"
+                                ToolTip="F2"
+                                 />
                             <asp:DropDownList ID="PartyDropDownList" runat="server" Width="150"
                                    onchange="document.getElementById('PartyCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0) { return false };"                                
+                                ToolTip="F2"
                                 >
                             </asp:DropDownList>
                         </td>
@@ -294,6 +297,15 @@ http://mozilla.org/MPL/2.0/.
                             </asp:DropDownList>
                         </asp:TableCell>
                     </asp:TableRow>
+                    <asp:TableRow ID="SalesPersonRow" runat="server">
+                        <asp:TableCell>
+                            <asp:Literal ID="SalesPersonDropDownListLabelLiteral" runat="server" />
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:DropDownList ID="SalesPersonDropDownList" runat="server" Width="300">
+                            </asp:DropDownList>
+                        </asp:TableCell>
+                    </asp:TableRow>
                     <asp:TableRow>
                         <asp:TableCell>
                             <asp:Literal ID="StatementReferenceTextBoxLabelLiteral" runat="server" />
@@ -392,6 +404,11 @@ http://mozilla.org/MPL/2.0/.
 
 
     $(document).ready(function () {
+        shortcut.add("F2", function () {
+            var url = "/Items/Setup/PartiesPopup.aspx";
+            showWindow(url);
+        });
+
         shortcut.add("ALT+C", function () {
             $('#ItemCodeTextBox').focus();
         });

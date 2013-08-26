@@ -16,7 +16,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
 {
     public static class DirectSales
     {
-        public static long Add(DateTime valueDate, int storeId, bool isCredit, string partyCode, int priceTypeId, GridView grid, int shipperId, decimal shippingCharge, int cashRepositoryId, int costCenterId, string referenceNumber, string statementReference)
+        public static long Add(DateTime valueDate, int storeId, bool isCredit, string partyCode, int agentId, int priceTypeId, GridView grid, int shipperId, decimal shippingCharge, int cashRepositoryId, int costCenterId, string referenceNumber, string statementReference)
         {
             MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster = new MixERP.Net.Common.Transactions.Models.StockMasterModel();
             Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details = new Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel>();
@@ -27,6 +27,9 @@ namespace MixERP.Net.BusinessLayer.Transactions
             stockMaster.PriceTypeId = priceTypeId;
             stockMaster.ShipperId = shipperId;
             stockMaster.ShippingCharge = shippingCharge;
+            stockMaster.AgentId = agentId;
+            stockMaster.CashRepositoryId = cashRepositoryId;
+            stockMaster.StoreId = storeId;
 
             if(grid != null)
             {
@@ -51,7 +54,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
             }
 
 
-            transactionMasterId = MixERP.Net.DatabaseLayer.Transactions.DirectSales.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), storeId, cashRepositoryId, costCenterId, referenceNumber, statementReference, stockMaster, details);
+            transactionMasterId = MixERP.Net.DatabaseLayer.Transactions.DirectSales.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), costCenterId, referenceNumber, statementReference, stockMaster, details);
             MixERP.Net.DatabaseLayer.Transactions.Verification.CallAutoVerification(transactionMasterId);
             return transactionMasterId;
         }

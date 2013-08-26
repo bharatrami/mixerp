@@ -33,12 +33,13 @@ namespace MixERP.Net.DatabaseLayer.DBFactory
             {
                 return null;
             }
+
             //No comment.
             if(identifier.Contains("--")){return string.Empty;}
             if(identifier.Contains("/*")){return string.Empty;}
 
-            //Removing the match else than alphabets and underscore.
-            return Regex.Replace(identifier, @"[^a-zA-Z_]", "");
+            //Removing the match else than alphabets, numbers, and underscore.
+            return Regex.Replace(identifier, @"[^a-zA-Z0-9_]", "");
         }
 
     }

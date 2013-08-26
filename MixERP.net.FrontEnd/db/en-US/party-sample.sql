@@ -5,6 +5,8 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
+ALTER TABLE core.parties
+ADD 	shipping_address national character varying(250) NULL;
 
 INSERT INTO core.parties(party_type_id, first_name, last_name, date_of_birth, city, state, country,shipping_address, phone, fax, cell, email, url, pan_number, sst_number, cst_number, allow_credit, maximum_credit_period, maximum_credit_amount, charge_interest, interest_rate, interest_compounding_frequency_id, account_id)
 SELECT  4, 'Jacob', 'Smith', '1970-01-01'::date, 'Yuma', ' Colorado', ' USA', 'Yuma  Colorado  USA', '1-5741510', '1-5478450', '9812345670', 'jacob_smith@gmail.com', 'www.jacob.com', '5412541', '12457841','4578420','t'::boolean,1,500000,'t'::boolean,5,3,67 UNION ALL
@@ -1088,4 +1090,7 @@ SELECT  1, 'Audrey', 'Connor', '1972-12-12'::date, 'Yuma', ' Colorado', ' USA', 
 
 UPDATE core.parties
 SET party_name = REPLACE(TRIM(COALESCE(last_name, '') || ', ' || first_name || ' ' || COALESCE(middle_name, '')), ' ', '');
+
+ALTER TABLE core.parties
+DROP column shipping_address;
 

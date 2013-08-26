@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.FrontEnd.Sales {
+namespace MixERP.Net.FrontEnd.Items.Setup {
     
     
-    public partial class Quotation {
+    public partial class ShippingAddresses {
         
         /// <summary>
-        /// TitleLiteral control.
+        /// BrandForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal TitleLiteral;
+        protected global::MixERP.Net.FrontEnd.UserControls.Forms.FormControl BrandForm;
     }
 }

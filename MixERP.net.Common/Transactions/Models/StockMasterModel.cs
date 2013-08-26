@@ -17,9 +17,12 @@ namespace MixERP.Net.Common.Transactions.Models
         public long StockMasterId { get; set; }
         public long TransactionMasterId { get; set; }
         public string PartyCode { get; set; }
+        public int AgentId { get; set; }
         public int PriceTypeId { get; set; }
         public bool IsCredit { get; set; }
         public int ShipperId { get; set; }
         public decimal ShippingCharge { get; set; }
+        public int StoreId { get; set; }
+        public int CashRepositoryId { get; set; }
     }
 }

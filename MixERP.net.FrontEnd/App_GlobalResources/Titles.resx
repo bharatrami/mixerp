@@ -609,4 +609,10 @@
   <data name="ReferenceNumberAbbreviated" xml:space="preserve">
     <value>Ref#</value>
   </data>
+  <data name="SalesPerson" xml:space="preserve">
+    <value>Sales Person</value>
+  </data>
+  <data name="ShippingAddressMaintenance" xml:space="preserve">
+    <value>Shipping Address Maintenance</value>
+  </data>
 </root>

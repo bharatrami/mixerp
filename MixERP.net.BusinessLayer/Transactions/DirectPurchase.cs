@@ -23,6 +23,8 @@ namespace MixERP.Net.BusinessLayer.Transactions
             long transactionMasterId = 0;
 
             stockMaster.PartyCode = partyCode;
+            stockMaster.StoreId = storeId;
+            stockMaster.CashRepositoryId = cashRepositoryId;
             stockMaster.IsCredit = isCredit;
 
             statementReference = statementReference.Replace("&nbsp;", " ").Trim();
@@ -50,7 +52,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
             }
 
 
-            transactionMasterId = MixERP.Net.DatabaseLayer.Transactions.DirectPurchase.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), storeId, cashRepositoryId, costCenterId, referenceNumber, statementReference, stockMaster, details);
+            transactionMasterId = MixERP.Net.DatabaseLayer.Transactions.DirectPurchase.Add(valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), costCenterId, referenceNumber, statementReference, stockMaster, details);
             MixERP.Net.DatabaseLayer.Transactions.Verification.CallAutoVerification(transactionMasterId);
             return transactionMasterId;
         }

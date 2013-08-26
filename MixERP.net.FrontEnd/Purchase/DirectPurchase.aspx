@@ -19,7 +19,9 @@ http://mozilla.org/MPL/2.0/.
         Text="<%$Resources:Titles, DirectPurchase %>"
         DisplayTransactionTypeRadioButtonList="true"
         ShowCashRepository="true"
-        OnSaveButtonClick="Purchase_SaveButtonClick" />
+        OnSaveButtonClick="Purchase_SaveButtonClick"
+        TopPanelWidth="750px"
+         />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceHolder" runat="server">
 </asp:Content>
