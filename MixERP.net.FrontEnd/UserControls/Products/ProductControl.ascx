@@ -157,7 +157,7 @@ http://mozilla.org/MPL/2.0/.
                             <td>
                                 <asp:TextBox ID="QuantityTextBox" 
                                     runat="server" type="number" 
-                                    onblur="calculateAmount();" CssClass="right"
+                                    onblur="updateTax();calculateAmount();" CssClass="right"
                                     Text="1"
                                     ToolTip="Ctrl + Q" Width="42" />
                             </td>
@@ -361,31 +361,37 @@ http://mozilla.org/MPL/2.0/.
         totalTextBox.val(parseFloat2(subTotalTextBox.val()) + parseFloat2(taxTextBox.val()));
     }
 
-    var updateTax = function () {
+var updateTax = function () {
+    var taxRateTextBox = $("#TaxRateTextBox");
+    var taxTextBox = $("#TaxTextBox");
+    var priceTextBox = $("#PriceTextBox");
+    var discountTextBox = $("#DiscountTextBox");
+    var quantityTextBox = $("#QuantityTextBox");
 
-        var taxRateTextBox = $("#TaxRateTextBox");
-        var taxTextBox = $("#TaxTextBox");
+    var total = parseFloat2(priceTextBox.val()) * parseFloat2(quantityTextBox.val());
+    var subTotal = total - parseFloat2(discountTextBox.val());
+    var taxableAmount = total;
+    var taxAfterDiscount = '<%=MixERP.Net.Common.Helpers.Switches.TaxAfterDiscount().ToString()%>';
 
-        var priceTextBox = $("#PriceTextBox");
+    if (taxAfterDiscount.toLowerCase() == "true")
+    {
+        taxableAmount = subTotal;
+    }
 
-        var discountTextBox = $("#DiscountTextBox");
+    var tax = (taxableAmount * parseFloat2(taxRateTextBox.val())) / 100;
 
-        var subTotal = parseFloat2(priceTextBox.val()) - parseFloat2(discountTextBox.val());
-        var tax = (subTotal * parseFloat2(taxRateTextBox.val())) / 100;
-
-        if (parseFloat2(tax).toFixed(2) != parseFloat2(taxTextBox.val())) {
-            var question = confirm(updateTaxLocalized);
-            if (question) {
-
-                if (tax.toFixed) {
-                    taxTextBox.val(tax.toFixed(2));
-                }
-                else {
-                    taxTextBox.val(tax);
-                }
+    if (parseFloat2(tax).toFixed(2) != parseFloat2(taxTextBox.val()).toFixed(2)) {
+        var question = confirm(updateTaxLocalized);
+        if (question) {
+            if (tax.toFixed) {
+                taxTextBox.val(tax.toFixed(2));
+            }
+            else {
+                taxTextBox.val(tax);
             }
         }
     }
+}
 
     function pageLoad() {
         this.calculateAmount();

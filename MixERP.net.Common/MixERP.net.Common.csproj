@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExceptionManager.cs" />
+    <Compile Include="Helpers\Parameters.cs" />
     <Compile Include="Helpers\Switches.cs" />
     <Compile Include="Transactions\Models\StockMasterDetailModel.cs" />
     <Compile Include="Transactions\Models\StockMasterModel.cs" />

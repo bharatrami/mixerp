@@ -34,6 +34,11 @@ namespace MixERP.Net.Common.Helpers
             return GetSwitch("EnableAutoVerification");                
         }
 
+        public static bool TaxAfterDiscount()
+        {
+            return GetSwitch("TaxAfterDiscount");
+        }
+
         private static bool GetSwitch(string key)
         {
             string sw = Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPSwitches", key);
