@@ -593,6 +593,13 @@
     <Compile Include="RuntimeError.aspx.designer.cs">
       <DependentUpon>RuntimeError.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Sales\Confirmation\Quotation.aspx.cs">
+      <DependentUpon>Quotation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sales\Confirmation\Quotation.aspx.designer.cs">
+      <DependentUpon>Quotation.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Sales\Confirmation\ReportCustomerInvoice.aspx.cs">
       <DependentUpon>ReportCustomerInvoice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1119,6 +1126,7 @@
     <Content Include="Resource\Icons\word-16.png" />
     <Content Include="Resource\TempImages\index.html" />
     <Content Include="RuntimeError.aspx" />
+    <Content Include="Sales\Confirmation\Quotation.aspx" />
     <Content Include="Sales\Confirmation\ReportCustomerInvoice.aspx" />
     <Content Include="Sales\Confirmation\ReportDelivery.aspx" />
     <Content Include="Sales\Confirmation\DeliveryWithoutOrder.aspx" />

@@ -1059,4 +1059,16 @@
   <data name="party" xml:space="preserve">
     <value>Party</value>
   </data>
+  <data name="id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="price_type" xml:space="preserve">
+    <value>Price Type</value>
+  </data>
+  <data name="reference_number" xml:space="preserve">
+    <value>Reference Number</value>
+  </data>
+  <data name="user" xml:space="preserve">
+    <value>User</value>
+  </data>
 </root>

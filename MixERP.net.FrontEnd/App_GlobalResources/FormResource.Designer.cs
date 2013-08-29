@@ -1204,6 +1204,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        internal static string id {
+            get {
+                return ResourceManager.GetString("id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Includes Tax.
         /// </summary>
         internal static string includes_tax {
@@ -1987,6 +1996,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Price Type.
+        /// </summary>
+        internal static string price_type {
+            get {
+                return ResourceManager.GetString("price_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Price Type Code.
         /// </summary>
         internal static string price_type_code {
@@ -2100,6 +2118,15 @@ namespace Resources {
         internal static string references_table {
             get {
                 return ResourceManager.GetString("references_table", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference Number.
+        /// </summary>
+        internal static string reference_number {
+            get {
+                return ResourceManager.GetString("reference_number", resourceCulture);
             }
         }
         
@@ -2757,6 +2784,15 @@ namespace Resources {
         internal static string url {
             get {
                 return ResourceManager.GetString("url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        internal static string user {
+            get {
+                return ResourceManager.GetString("user", resourceCulture);
             }
         }
         

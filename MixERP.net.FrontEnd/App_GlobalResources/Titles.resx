@@ -615,4 +615,13 @@
   <data name="ShippingAddressMaintenance" xml:space="preserve">
     <value>Shipping Address Maintenance</value>
   </data>
+  <data name="FlagSelection" xml:space="preserve">
+    <value>Flag Selection</value>
+  </data>
+  <data name="MergeBatchConvertToSalesDelivery" xml:space="preserve">
+    <value>Merge and Convert Batch to Sales Delivery</value>
+  </data>
+  <data name="MergeBatchToSalesOrder" xml:space="preserve">
+    <value>Merge Batch to Sales Order</value>
+  </data>
 </root>

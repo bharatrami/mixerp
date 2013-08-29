@@ -565,6 +565,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flag Selection.
+        /// </summary>
+        internal static string FlagSelection {
+            get {
+                return ResourceManager.GetString("FlagSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frequencies.
         /// </summary>
         internal static string Frequencies {
@@ -732,6 +741,24 @@ namespace Resources {
         internal static string LoginView {
             get {
                 return ResourceManager.GetString("LoginView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge and Convert Batch to Sales Delivery.
+        /// </summary>
+        internal static string MergeBatchConvertToSalesDelivery {
+            get {
+                return ResourceManager.GetString("MergeBatchConvertToSalesDelivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge Batch to Sales Order.
+        /// </summary>
+        internal static string MergeBatchToSalesOrder {
+            get {
+                return ResourceManager.GetString("MergeBatchToSalesOrder", resourceCulture);
             }
         }
         

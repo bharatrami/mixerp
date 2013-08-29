@@ -38,7 +38,7 @@ namespace MixERP.Net.FrontEnd.Sales.Entry
             long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Sales.Quotation", valueDate, partyCode, priceTypeId, grid, referenceNumber, statementReference);
             if(nonGlStockMasterId > 0)
             {
-                Response.Redirect("~/Dashboard/Index.aspx?TranId=" + nonGlStockMasterId, true);
+                Response.Redirect("~/Sales/Quotation.aspx?TranId=" + nonGlStockMasterId, true);
             }
 
         }

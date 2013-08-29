@@ -49,5 +49,10 @@ namespace MixERP.Net.BusinessLayer.Transactions
             nonGlStockMasterId = MixERP.Net.DatabaseLayer.Transactions.NonGlStockTransaction.Add(book, valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), referenceNumber, statementReference, stockMaster, details);
             return nonGlStockMasterId;
         }
+
+        public static System.Data.DataTable GetView(string book)
+        {
+            return MixERP.Net.DatabaseLayer.Transactions.NonGlStockTransaction.GetView(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), book);
+        }
     }
 }
