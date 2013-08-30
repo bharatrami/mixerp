@@ -75,12 +75,11 @@ namespace MixERP.Net.FrontEnd.Services
 
             foreach(System.Data.DataRow dr in table.Rows)
             {
-                values.Add(new CascadingDropDownNameValue((string)dr["account_name"], dr["account_code"].ToString()));
+                values.Add(new CascadingDropDownNameValue(dr["account_name"].ToString(), dr["account_code"].ToString()));
             }
 
             return values.ToArray();
         }
-
 
         [WebMethod]
         public CascadingDropDownNameValue[] GetCashRepositories(string knownCategoryValues, string category)
@@ -96,7 +95,7 @@ namespace MixERP.Net.FrontEnd.Services
                 {
                     foreach(System.Data.DataRow dr in table.Rows)
                     {
-                        values.Add(new CascadingDropDownNameValue((string)dr["cash_repository_name"], dr["cash_repository_code"].ToString()));
+                        values.Add(new CascadingDropDownNameValue(dr["cash_repository_name"].ToString(), dr["cash_repository_code"].ToString()));
                     }
                 }
             }

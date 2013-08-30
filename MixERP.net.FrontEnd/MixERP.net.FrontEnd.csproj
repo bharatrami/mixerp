@@ -748,6 +748,10 @@
       <DependentUpon>ItemData.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Services\PartyData.asmx.cs">
+      <DependentUpon>PartyData.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Setup\Admin\Backup.aspx.cs">
       <DependentUpon>Backup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -930,6 +934,13 @@
     <Compile Include="UserControls\Products\ProductControl.ascx.designer.cs">
       <DependentUpon>ProductControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Products\ProductViewControl.ascx.cs">
+      <DependentUpon>ProductViewControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Products\ProductViewControl.ascx.designer.cs">
+      <DependentUpon>ProductViewControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ReportControl.ascx.cs">
       <DependentUpon>ReportControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1092,25 +1103,25 @@
     <Content Include="Reports\Assets\Header.html" />
     <Content Include="Reports\ReportMaster.aspx" />
     <Content Include="Reports\ReportViewer.aspx" />
-    <Content Include="Reports\Sources\Sales.View.Sales.CustomerDeliveryNote.xml">
+    <Content Include="Reports\Sources\en-US\Sales.View.Sales.CustomerDeliveryNote.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Reports\Sources\Sales.View.Sales.Delivery.xml">
+    <Content Include="Reports\Sources\en-US\Sales.View.Sales.Delivery.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Reports\Sources\Purchase.View.Purchase.Invoice.xml">
+    <Content Include="Reports\Sources\en-US\Purchase.View.Purchase.Invoice.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Reports\Sources\Transactions.GLEntry.xml">
+    <Content Include="Reports\Sources\en-US\Transactions.GLEntry.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Reports\Sources\Sales.View.Sales.CustomerInvoice.xml">
+    <Content Include="Reports\Sources\en-US\Sales.View.Sales.CustomerInvoice.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Reports\Sources\Office.Login.xml">
+    <Content Include="Reports\Sources\en-US\Office.Login.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Reports\Sources\Sales.View.Sales.Invoice.xml">
+    <Content Include="Reports\Sources\en-US\Sales.View.Sales.Invoice.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Resource\Icons\bottom-16.png" />
@@ -1464,6 +1475,7 @@
     <Content Include="Scripts\shortcut.js" />
     <Content Include="Services\AccountData.asmx" />
     <Content Include="Services\ItemData.asmx" />
+    <Content Include="Services\PartyData.asmx" />
     <Content Include="Setup\Admin\Backup.aspx" />
     <Content Include="Setup\Admin\ChangePassword.aspx" />
     <Content Include="Setup\Admin\DatabaseStatistics.aspx" />
@@ -1521,6 +1533,7 @@
     <Content Include="Scripts\CodeMirror\package.json" />
     <Content Include="Scripts\CodeMirror\README.md" />
     <Content Include="UserControls\Products\ProductControl.ascx" />
+    <Content Include="UserControls\Products\ProductViewControl.ascx" />
     <Content Include="UserControls\ReportControl.ascx" />
     <Content Include="UserControls\Reporting\Header.ascx" />
     <Content Include="UserControls\TransactionChecklistControl.ascx" />

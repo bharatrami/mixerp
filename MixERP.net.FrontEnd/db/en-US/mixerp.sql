@@ -3148,6 +3148,7 @@ CREATE TABLE transactions.stock_master
 	price_type_id integer NULL REFERENCES core.price_types(price_type_id),
 	is_credit boolean NOT NULL CONSTRAINT stock_master_is_credit_df DEFAULT(false),
 	shipper_id integer NULL REFERENCES core.shippers(shipper_id),
+	shipping_address_id NULL REFERENCES core.shipping_addresses(shipping_address_id),
 	shipping_charge money NOT NULL CONSTRAINT stock_master_shipping_charge_df DEFAULT(0),
 	store_id integer NULL REFERENCES office.stores(store_id),
 	cash_repository_id integer NULL REFERENCES office.cash_repositories(cash_repository_id)

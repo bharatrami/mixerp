@@ -28,7 +28,7 @@ http://mozilla.org/MPL/2.0/.
     <DataSources>
         <DataSource>
             <Query>
-                select * from office.login_view;
+                SELECT * FROM office.login_view;
             </Query>
         </DataSource>
     </DataSources>

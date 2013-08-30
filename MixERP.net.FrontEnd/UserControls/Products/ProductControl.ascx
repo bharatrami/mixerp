@@ -26,7 +26,7 @@ http://mozilla.org/MPL/2.0/.
             <asp:AsyncPostBackTrigger ControlID="CancelButton" />
             <asp:AsyncPostBackTrigger ControlID="ItemDropDownList" />
             <asp:AsyncPostBackTrigger ControlID="UnitDropDownList" />
-            <asp:AsyncPostBackTrigger ControlID="ShippingChargeTextBox" />            
+            <asp:AsyncPostBackTrigger ControlID="ShippingChargeTextBox" />
             <asp:PostBackTrigger ControlID="SaveButton" />
         </Triggers>
         <ContentTemplate>
@@ -71,15 +71,22 @@ http://mozilla.org/MPL/2.0/.
                             </asp:RadioButtonList>
                         </td>
                         <td>
-                            <asp:TextBox ID="PartyCodeTextBox" runat="server" Width="80" 
+                            <asp:TextBox ID="PartyCodeTextBox" runat="server" Width="80"
                                 onblur="selectItem(this.id, 'PartyDropDownList');"
-                                ToolTip="F2"
-                                 />
+                                ToolTip="F2" />
                             <asp:DropDownList ID="PartyDropDownList" runat="server" Width="150"
-                                   onchange="document.getElementById('PartyCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0) { return false };"                                
-                                ToolTip="F2"
-                                >
+                                onchange="document.getElementById('PartyCodeTextBox').value = this.options[this.selectedIndex].value;if(this.selectedIndex == 0) { return false };"
+                                ToolTip="F2">
                             </asp:DropDownList>
+
+                            <AjaxCTK:CascadingDropDown ID="PartyDropDownListCascadingDropDown" runat="server"
+                                TargetControlID="PartyDropDownList" Category="Party"
+                                ServicePath="~/Services/PartyData.asmx"
+                                LoadingText="<%$Resources:Labels, Loading %>"
+                                PromptText="<%$Resources:Titles, Select %>"
+                                ServiceMethod="GetParties">
+                            </AjaxCTK:CascadingDropDown>
+
                         </td>
                         <td>
                             <asp:DropDownList ID="PriceTypeDropDownList" runat="server" Width="80">
@@ -137,8 +144,8 @@ http://mozilla.org/MPL/2.0/.
                     <table id="FormTable" class="grid3" runat="server">
                         <tr>
                             <td>
-                                <asp:TextBox ID="ItemCodeTextBox" runat="server" 
-                                    onblur="selectItem(this.id, 'ItemDropDownList');" 
+                                <asp:TextBox ID="ItemCodeTextBox" runat="server"
+                                    onblur="selectItem(this.id, 'ItemDropDownList');"
                                     ToolTip="Alt + C" Width="58" />
                             </td>
                             <td>
@@ -148,15 +155,15 @@ http://mozilla.org/MPL/2.0/.
                                     ToolTip="Ctrl + I" Width="300">
                                 </asp:DropDownList>
                                 <AjaxCTK:CascadingDropDown ID="ItemDropDownListCascadingDropDown" runat="server"
-                                    TargetControlID="ItemDropDownList" Category="Item" 
+                                    TargetControlID="ItemDropDownList" Category="Item"
                                     ServicePath="~/Services/ItemData.asmx"
                                     LoadingText="<%$Resources:Labels, Loading %>"
                                     PromptText="<%$Resources:Titles, Select %>">
                                 </AjaxCTK:CascadingDropDown>
                             </td>
                             <td>
-                                <asp:TextBox ID="QuantityTextBox" 
-                                    runat="server" type="number" 
+                                <asp:TextBox ID="QuantityTextBox"
+                                    runat="server" type="number"
                                     onblur="updateTax();calculateAmount();" CssClass="right"
                                     Text="1"
                                     ToolTip="Ctrl + Q" Width="42" />
@@ -167,7 +174,7 @@ http://mozilla.org/MPL/2.0/.
                                 </asp:DropDownList>
                                 <AjaxCTK:CascadingDropDown ID="UnitDropDownListCascadingDropDown" runat="server"
                                     ParentControlID="ItemDropDownList" TargetControlID="UnitDropDownList"
-                                    Category="Unit" 
+                                    Category="Unit"
                                     ServiceMethod="GetUnits"
                                     ServicePath="~/Services/ItemData.asmx"
                                     LoadingText="<%$Resources:Labels, Loading %>"
@@ -214,115 +221,146 @@ http://mozilla.org/MPL/2.0/.
                     <asp:Label ID="ErrorLabel" runat="server" CssClass="error" />
                 </asp:Panel>
                 <div class="vpad8"></div>
-                <asp:Table runat="server" CssClass="grid3 grid4">
-                    <asp:TableRow ID="ShippingCompanyRow" runat="server">
-                        <asp:TableCell>
-                            <asp:Literal ID="ShippingCompanyDropDownListLabelLiteral" runat="server" />
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:DropDownList ID="ShippingCompanyDropDownList" runat="server" Width="200">
-                            </asp:DropDownList>
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow ID="ShippingChargeRow" runat="server">
-                        <asp:TableCell>
-                            <asp:Literal ID="ShippingChargeTextBoxLabelLiteral" runat="server" />
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:TextBox ID="ShippingChargeTextBox" runat="server" AutoPostBack="true" OnTextChanged="ShippingChargeTextBox_TextChanged">
-                            </asp:TextBox>
-                        </asp:TableCell>
+                <asp:Panel ID="BottomPanel" CssClass="form" runat="server" Width="600px" Enabled="false">
+                    <asp:Table runat="server" CssClass="form-table grid3">
+                        <asp:TableRow ID="ShippingAddressRow" runat="server">
+                            <asp:TableCell Style="vertical-align: top!important;">
+                                <asp:Literal ID="ShippingAddressDropDownListLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:DropDownList ID="ShippingAddressDropDownList" runat="server" Width="200" onchange="$('#ShippingAddressTextBox').val(($(this).val()));">
+                                </asp:DropDownList>
+                                <AjaxCTK:CascadingDropDown ID="ShippingAddressDropDownListCascadingDropDown" runat="server"
+                                    ParentControlID="PartyDropDownList" TargetControlID="ShippingAddressDropDownList"
+                                    Category="ShippingAddress"
+                                    ServiceMethod="GetShippingAddresses"
+                                    ServicePath="~/Services/PartyData.asmx"
+                                    LoadingText="<%$Resources:Labels, Loading %>"
+                                    PromptText="<%$Resources:Titles, Select %>">
+                                </AjaxCTK:CascadingDropDown>
 
-                    </asp:TableRow>
-                    <asp:TableRow>
-                        <asp:TableCell>
-                            <asp:Literal ID="TotalsLiteral" runat="server" Text="<%$Resources:Titles, Totals %>">
-                            </asp:Literal>
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <table style="border-collapse: collapse; width: 100%;">
-                                <tr>
-                                    <td>
-                                        <asp:Literal ID="RunningTotalTextBoxLabelLiteral" runat="server" />
-                                    </td>
-                                    <td>
-                                        <asp:Literal ID="TaxTotalTextBoxLabelLiteral" runat="server" />
-                                    </td>
-                                    <td>
-                                        <asp:Literal ID="GrandTotalTextBoxLabelLiteral" runat="server" />
+                                <p>
+                                    <asp:TextBox 
+                                        ID="ShippingAddressTextBox" 
+                                        runat="server" 
+                                        ReadOnly="true" 
+                                        TextMode="MultiLine" 
+                                        Width="410px" 
+                                        Height="72px" />
+                                </p>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow ID="ShippingCompanyRow" runat="server">
+                            <asp:TableCell>
+                                <asp:Literal ID="ShippingCompanyDropDownListLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:DropDownList ID="ShippingCompanyDropDownList" runat="server" Width="200">
+                                </asp:DropDownList>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow ID="ShippingChargeRow" runat="server">
+                            <asp:TableCell>
+                                <asp:Literal ID="ShippingChargeTextBoxLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:TextBox ID="ShippingChargeTextBox" runat="server" AutoPostBack="true" OnTextChanged="ShippingChargeTextBox_TextChanged" Width="100px">
+                                </asp:TextBox>
+                            </asp:TableCell>
 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="RunningTotalTextBox" runat="server" Width="100" ReadOnly="true" />
+                        </asp:TableRow>
+                        <asp:TableRow>
+                            <asp:TableCell>
+                                <asp:Literal ID="TotalsLiteral" runat="server" Text="<%$Resources:Titles, Totals %>">
+                                </asp:Literal>
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <table style="border-collapse: collapse; width: 100%;">
+                                    <tr>
+                                        <td>
+                                            <asp:Literal ID="RunningTotalTextBoxLabelLiteral" runat="server" />
+                                        </td>
+                                        <td>
+                                            <asp:Literal ID="TaxTotalTextBoxLabelLiteral" runat="server" />
+                                        </td>
+                                        <td>
+                                            <asp:Literal ID="GrandTotalTextBoxLabelLiteral" runat="server" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:TextBox ID="RunningTotalTextBox" runat="server" Width="100" ReadOnly="true" />
 
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="TaxTotalTextBox" runat="server" Width="100" ReadOnly="true" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="TaxTotalTextBox" runat="server" Width="100" ReadOnly="true" />
 
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="GrandTotalTextBox" runat="server" Width="100" ReadOnly="true" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow ID="CashRepositoryRow" runat="server">
-                        <asp:TableCell runat="server">
-                            <asp:Literal ID="CashRepositoryDropDownListLabelLiteral" runat="server" />
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:DropDownList ID="CashRepositoryDropDownList" runat="server" 
-                                AutoPostBack="true" OnSelectedIndexChanged="CashRepositoryDropDownList_SelectIndexChanged">
-                            </asp:DropDownList>
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow ID="CashRepositoryBalanceRow" runat="server">
-                        <asp:TableCell>
-                            <asp:Literal ID="CashRepositoryBalanceTextBoxLabelLiteral" runat="server" />
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:TextBox ID="CashRepositoryBalanceTextBox" runat="server" Width="100" ReadOnly="true" />
-                            <asp:Literal ID="DrLiteral" runat="server" Text="<%$Resources:Titles, Dr %>" />
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow ID="CostCenterRow" runat="server">
-                        <asp:TableCell>
-                            <asp:Literal ID="CostCenterDropDownListLabelLiteral" runat="server" />
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:DropDownList ID="CostCenterDropDownList" runat="server" Width="300">
-                            </asp:DropDownList>
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow ID="SalesPersonRow" runat="server">
-                        <asp:TableCell>
-                            <asp:Literal ID="SalesPersonDropDownListLabelLiteral" runat="server" />
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:DropDownList ID="SalesPersonDropDownList" runat="server" Width="300">
-                            </asp:DropDownList>
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow>
-                        <asp:TableCell>
-                            <asp:Literal ID="StatementReferenceTextBoxLabelLiteral" runat="server" />
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:TextBox ID="StatementReferenceTextBox" runat="server" TextMode="MultiLine" Width="400" Height="100">
-                            </asp:TextBox>
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow>
-                        <asp:TableCell>
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            <asp:Button ID="SaveButton" runat="server" Text="<%$Resources:Titles, Save %>" OnClick="SaveButton_Click" />
-                        </asp:TableCell>
-                    </asp:TableRow>
-                </asp:Table>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="GrandTotalTextBox" runat="server" Width="100" ReadOnly="true" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow ID="CashRepositoryRow" runat="server">
+                            <asp:TableCell runat="server">
+                                <asp:Literal ID="CashRepositoryDropDownListLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:DropDownList ID="CashRepositoryDropDownList" runat="server"
+                                    AutoPostBack="true" 
+                                    OnSelectedIndexChanged="CashRepositoryDropDownList_SelectIndexChanged"
+                                    Width="300px">
+                                </asp:DropDownList>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow ID="CashRepositoryBalanceRow" runat="server">
+                            <asp:TableCell>
+                                <asp:Literal ID="CashRepositoryBalanceTextBoxLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:TextBox ID="CashRepositoryBalanceTextBox" runat="server" Width="100" ReadOnly="true" />
+                                <asp:Literal ID="DrLiteral" runat="server" Text="<%$Resources:Titles, Dr %>" />
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow ID="CostCenterRow" runat="server">
+                            <asp:TableCell>
+                                <asp:Literal ID="CostCenterDropDownListLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:DropDownList ID="CostCenterDropDownList" runat="server" Width="300">
+                                </asp:DropDownList>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow ID="SalesPersonRow" runat="server">
+                            <asp:TableCell>
+                                <asp:Literal ID="SalesPersonDropDownListLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:DropDownList ID="SalesPersonDropDownList" runat="server" Width="300">
+                                </asp:DropDownList>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow>
+                            <asp:TableCell>
+                                <asp:Literal ID="StatementReferenceTextBoxLabelLiteral" runat="server" />
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:TextBox ID="StatementReferenceTextBox" runat="server" TextMode="MultiLine" Width="410" Height="100">
+                                </asp:TextBox>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow>
+                            <asp:TableCell>
+                                &nbsp;
+                            </asp:TableCell>
+                            <asp:TableCell>
+                                <asp:Button ID="SaveButton" runat="server" CssClass="button" Text="<%$Resources:Titles, Save %>" OnClick="SaveButton_Click" />
+                            </asp:TableCell>
+                        </asp:TableRow>
+                    </asp:Table>
+                </asp:Panel>
                 <p>
                     <asp:Label ID="ErrorLabelBottom" runat="server" CssClass="error" />
                 </p>
@@ -361,37 +399,36 @@ http://mozilla.org/MPL/2.0/.
         totalTextBox.val(parseFloat2(subTotalTextBox.val()) + parseFloat2(taxTextBox.val()));
     }
 
-var updateTax = function () {
-    var taxRateTextBox = $("#TaxRateTextBox");
-    var taxTextBox = $("#TaxTextBox");
-    var priceTextBox = $("#PriceTextBox");
-    var discountTextBox = $("#DiscountTextBox");
-    var quantityTextBox = $("#QuantityTextBox");
+    var updateTax = function () {
+        var taxRateTextBox = $("#TaxRateTextBox");
+        var taxTextBox = $("#TaxTextBox");
+        var priceTextBox = $("#PriceTextBox");
+        var discountTextBox = $("#DiscountTextBox");
+        var quantityTextBox = $("#QuantityTextBox");
 
-    var total = parseFloat2(priceTextBox.val()) * parseFloat2(quantityTextBox.val());
-    var subTotal = total - parseFloat2(discountTextBox.val());
-    var taxableAmount = total;
-    var taxAfterDiscount = '<%=MixERP.Net.Common.Helpers.Switches.TaxAfterDiscount().ToString()%>';
+        var total = parseFloat2(priceTextBox.val()) * parseFloat2(quantityTextBox.val());
+        var subTotal = total - parseFloat2(discountTextBox.val());
+        var taxableAmount = total;
+        var taxAfterDiscount = '<%=MixERP.Net.Common.Helpers.Switches.TaxAfterDiscount().ToString()%>';
 
-    if (taxAfterDiscount.toLowerCase() == "true")
-    {
-        taxableAmount = subTotal;
-    }
+        if (taxAfterDiscount.toLowerCase() == "true") {
+            taxableAmount = subTotal;
+        }
 
-    var tax = (taxableAmount * parseFloat2(taxRateTextBox.val())) / 100;
+        var tax = (taxableAmount * parseFloat2(taxRateTextBox.val())) / 100;
 
-    if (parseFloat2(tax).toFixed(2) != parseFloat2(taxTextBox.val()).toFixed(2)) {
-        var question = confirm(updateTaxLocalized);
-        if (question) {
-            if (tax.toFixed) {
-                taxTextBox.val(tax.toFixed(2));
-            }
-            else {
-                taxTextBox.val(tax);
+        if (parseFloat2(tax).toFixed(2) != parseFloat2(taxTextBox.val()).toFixed(2)) {
+            var question = confirm(updateTaxLocalized);
+            if (question) {
+                if (tax.toFixed) {
+                    taxTextBox.val(tax.toFixed(2));
+                }
+                else {
+                    taxTextBox.val(tax);
+                }
             }
         }
     }
-}
 
     function pageLoad() {
         this.calculateAmount();
@@ -400,8 +437,7 @@ var updateTax = function () {
     $(document).ready(function () {
         $(".form-table td").each(function () {
             var content = $(this).html();
-            if (!content.trim())
-            {
+            if (!content.trim()) {
                 $(this).html('');
                 $(this).hide();
             }

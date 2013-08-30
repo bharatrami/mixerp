@@ -1195,6 +1195,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shipping Address.
+        /// </summary>
+        internal static string ShippingAddress {
+            get {
+                return ResourceManager.GetString("ShippingAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shipping Address Maintenance.
         /// </summary>
         internal static string ShippingAddressMaintenance {

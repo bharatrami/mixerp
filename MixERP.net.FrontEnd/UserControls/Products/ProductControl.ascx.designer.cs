@@ -166,6 +166,15 @@ namespace MixERP.Net.FrontEnd.UserControls.Products {
         protected global::System.Web.UI.WebControls.DropDownList PartyDropDownList;
         
         /// <summary>
+        /// PartyDropDownListCascadingDropDown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CascadingDropDown PartyDropDownListCascadingDropDown;
+        
+        /// <summary>
         /// PriceTypeDropDownList control.
         /// </summary>
         /// <remarks>
@@ -371,6 +380,60 @@ namespace MixERP.Net.FrontEnd.UserControls.Products {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ErrorLabel;
+        
+        /// <summary>
+        /// BottomPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel BottomPanel;
+        
+        /// <summary>
+        /// ShippingAddressRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableRow ShippingAddressRow;
+        
+        /// <summary>
+        /// ShippingAddressDropDownListLabelLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ShippingAddressDropDownListLabelLiteral;
+        
+        /// <summary>
+        /// ShippingAddressDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ShippingAddressDropDownList;
+        
+        /// <summary>
+        /// ShippingAddressDropDownListCascadingDropDown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CascadingDropDown ShippingAddressDropDownListCascadingDropDown;
+        
+        /// <summary>
+        /// ShippingAddressTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ShippingAddressTextBox;
         
         /// <summary>
         /// ShippingCompanyRow control.

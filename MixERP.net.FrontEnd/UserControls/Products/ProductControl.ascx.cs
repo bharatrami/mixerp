@@ -48,6 +48,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             public TextBox RunningTotalTextBox { get; set; }
             public TextBox TaxTotalTextBox { get; set; }
             public TextBox GrandTotalTextBox { get; set; }
+            public DropDownList ShippingAddressDropDownList { get; set; }
             public DropDownList ShippingCompanyDropDownList { get; set; }
             public TextBox ShippingChargeTextBox { get; set; }
             public DropDownList CashRepositoryDropDownList { get; set; }
@@ -71,6 +72,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             collection.RunningTotalTextBox = this.RunningTotalTextBox;
             collection.TaxTotalTextBox = this.TaxTotalTextBox;
             collection.GrandTotalTextBox = this.GrandTotalTextBox;
+            collection.ShippingAddressDropDownList = this.ShippingAddressDropDownList;
             collection.ShippingCompanyDropDownList = this.ShippingCompanyDropDownList;
             collection.ShippingChargeTextBox = this.ShippingChargeTextBox;
             collection.CashRepositoryDropDownList = this.CashRepositoryDropDownList;
@@ -263,6 +265,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             RunningTotalTextBoxLabelLiteral.Text = "<label for ='RunningTotalTextBox'>" + Resources.Titles.RunningTotal + "</label>";
             TaxTotalTextBoxLabelLiteral.Text = "<label for='TaxTotalTextBox'>" + Resources.Titles.TaxTotal + "</label>";
             GrandTotalTextBoxLabelLiteral.Text = "<label for='GrandTotalTextBox'>" + Resources.Titles.GrandTotal + "</label>";
+            ShippingAddressDropDownListLabelLiteral.Text = "<label for='ShippingAddressDropDownList'>" + Resources.Titles.ShippingAddress + "</label>";
             ShippingCompanyDropDownListLabelLiteral.Text = "<label for='ShippingCompanyDropDownList'>" + Resources.Titles.ShippingCompany + "</label>";
             ShippingChargeTextBoxLabelLiteral.Text = "<label for='ShippingChargeTextBox'>" + Resources.Titles.ShippingCharge + "</label>";
             CashRepositoryDropDownListLabelLiteral.Text = "<label for='CashRepositoryDropDownList'>" + Resources.Titles.CashRepository + "</label>";
@@ -315,8 +318,9 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                 PriceTypeLiteral.Visible = false;
                 PriceTypeDropDownList.Visible = false;
 
-                ShippingCompanyRow.Visible = false;
+                ShippingAddressRow.Visible = false;
                 ShippingChargeRow.Visible = false;
+                ShippingCompanyRow.Visible = false;
             }
 
         }
@@ -342,8 +346,9 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
         private void LoadShippers()
         {
-            ShippingCompanyRow.Visible = false;
+            ShippingAddressRow.Visible = false;
             ShippingChargeRow.Visible = false;
+            ShippingCompanyRow.Visible = false;
 
             if(this.TransactionType == TranType.Sales)
             {
@@ -357,68 +362,9 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                         ShippingCompanyDropDownList.DataValueField = "shipper_id";
                         ShippingCompanyDropDownList.DataTextField = "shipper";
                         ShippingCompanyDropDownList.DataBind();
-                        ShippingCompanyRow.Visible = true;
+                        ShippingAddressRow.Visible = true;
                         ShippingChargeRow.Visible = true;
-                    }
-                }
-            }
-        }
-
-        private void LoadParties()
-        {
-            if(this.TransactionType == TranType.Sales)
-            {
-                if(MixERP.Net.Common.Helpers.Switches.AllowSupplierInSales())
-                {
-                    //This indicates that the admin has enabled sales transaction with suppliers.
-                    //In other words, we can sell to suppliers as well.
-                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "parties"))
-                    {
-                        PartyDropDownList.DataSource = table;
-                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
-                        PartyDropDownList.DataValueField = "party_code";
-                        PartyDropDownList.DataTextField = "party";
-                        PartyDropDownList.DataBind();
-                    }
-                }
-                else
-                {
-                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "customer_view"))
-                    {
-                        PartyDropDownList.DataSource = table;
-                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
-                        PartyDropDownList.DataValueField = "party_code";
-                        PartyDropDownList.DataTextField = "party";
-                        PartyDropDownList.DataBind();
-                    }
-                }
-            }
-            else
-            {
-                if(MixERP.Net.Common.Helpers.Switches.AllowNonSupplierInPurchase())
-                {
-                    //This indicates that the admin has enabled purchase transaction for customers.
-                    //In other words, we can purchase from customers as well.
-                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "parties"))
-                    {
-                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
-
-                        PartyDropDownList.DataSource = table;
-                        PartyDropDownList.DataValueField = "party_code";
-                        PartyDropDownList.DataTextField = "party";
-                        PartyDropDownList.DataBind();
-                    }
-                }
-                else
-                {
-                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "supplier_view"))
-                    {
-                        table.Columns.Add("party", typeof(string), MixERP.Net.BusinessLayer.Core.Parties.GetDisplayField());
-
-                        PartyDropDownList.DataSource = table;
-                        PartyDropDownList.DataValueField = "party_code";
-                        PartyDropDownList.DataTextField = "party";
-                        PartyDropDownList.DataBind();
+                        ShippingCompanyRow.Visible = true;
                     }
                 }
             }
@@ -430,7 +376,6 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             this.LoadTransactionTypeLabel();
             this.LoadItems();
             this.LoadPriceTypes();
-            this.LoadParties();
             this.LoadShippers();
             this.LoadCostCenters();
             this.LoadSalesPerson();
@@ -762,7 +707,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             int storeId = 0;
             string transactionType = string.Empty;
             string partyCode = string.Empty;
-
+            partyCode = PartyDropDownList.SelectedItem.Value;
 
             if(DateTextBox != null)
             {
@@ -780,7 +725,13 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             }
 
 
-            //ErrorLabel.Text = "";
+            if(string.IsNullOrWhiteSpace(partyCode))
+            {
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(PartyCodeTextBox);
+                MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(PartyDropDownList);
+                PartyCodeTextBox.Focus();
+                return;
+            }
 
             if(valueDate.Equals(DateTime.MinValue))
             {
@@ -792,8 +743,6 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             if(this.TransactionType == TranType.Sales)
             {
-                partyCode = PartyDropDownList.SelectedItem.Value;
-
                 if(StoreDropDownList.Visible)
                 {
                     if(!MixERP.Net.BusinessLayer.Office.Stores.IsSalesAllowed(storeId))
@@ -840,6 +789,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             bool state = ModeHiddenField.Value.Equals("Started");
 
             FormPanel.Enabled = state;
+            BottomPanel.Enabled = state;
             DateTextBox.Disabled = state;
             StoreDropDownList.Enabled = !state;
             TransactionTypeRadioButtonList.Enabled = !state;

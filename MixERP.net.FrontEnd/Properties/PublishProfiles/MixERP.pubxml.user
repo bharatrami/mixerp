@@ -24,7 +24,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2013 16:12:47</publishTime>
     </File>
     <File Include="App_GlobalResources/FormResource.resx">
-      <publishTime>08/13/2013 12:24:33</publishTime>
+      <publishTime>08/29/2013 21:40:37</publishTime>
     </File>
     <File Include="App_GlobalResources/Labels.resx">
       <publishTime>08/13/2013 12:23:33</publishTime>
@@ -36,7 +36,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2013 16:06:18</publishTime>
     </File>
     <File Include="App_GlobalResources/Titles.resx">
-      <publishTime>08/14/2013 00:36:21</publishTime>
+      <publishTime>08/29/2013 22:05:02</publishTime>
     </File>
     <File Include="App_GlobalResources/Warnings.resx">
       <publishTime>08/13/2013 11:54:46</publishTime>
@@ -96,16 +96,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/11/2012 07:48:20</publishTime>
     </File>
     <File Include="bin/MixERP.net.BusinessLayer.dll">
-      <publishTime>08/20/2013 23:37:31</publishTime>
+      <publishTime>08/30/2013 14:30:56</publishTime>
     </File>
     <File Include="bin/MixERP.net.Common.dll">
-      <publishTime>08/14/2013 00:54:19</publishTime>
+      <publishTime>08/30/2013 14:30:55</publishTime>
     </File>
     <File Include="bin/MixERP.net.DatabaseLayer.dll">
-      <publishTime>08/20/2013 23:37:30</publishTime>
+      <publishTime>08/30/2013 14:30:56</publishTime>
     </File>
     <File Include="bin/MixERP.net.FrontEnd.dll">
-      <publishTime>08/20/2013 23:37:33</publishTime>
+      <publishTime>08/30/2013 14:30:58</publishTime>
     </File>
     <File Include="bin/Mono.Security.dll">
       <publishTime>08/19/2013 16:39:22</publishTime>
@@ -117,7 +117,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/19/2013 16:39:22</publishTime>
     </File>
     <File Include="bin/Pes.Utility.dll">
-      <publishTime>08/14/2013 00:54:18</publishTime>
+      <publishTime>08/30/2013 14:30:55</publishTime>
     </File>
     <File Include="bin/pt/AjaxControlToolkit.resources.dll">
       <publishTime>08/19/2013 16:40:53</publishTime>
@@ -168,7 +168,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/17/2013 00:12:54</publishTime>
     </File>
     <File Include="Dashboard/Index.aspx">
-      <publishTime>08/20/2013 21:38:26</publishTime>
+      <publishTime>08/21/2013 19:35:49</publishTime>
     </File>
     <File Include="db/customer-sample.sql">
       <publishTime>07/18/2013 18:54:10</publishTime>
@@ -177,22 +177,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/09/2013 02:30:28</publishTime>
     </File>
     <File Include="db/en-US/mixerp-db-logic.sql">
-      <publishTime>08/14/2013 01:04:24</publishTime>
+      <publishTime>08/23/2013 13:24:22</publishTime>
     </File>
     <File Include="db/en-US/mixerp..sql">
       <publishTime>08/09/2013 02:16:20</publishTime>
     </File>
     <File Include="db/en-US/mixerp.bak.sql">
-      <publishTime>08/20/2013 21:15:37</publishTime>
+      <publishTime>08/27/2013 00:50:58</publishTime>
     </File>
     <File Include="db/en-US/mixerp.sql">
-      <publishTime>08/20/2013 00:05:52</publishTime>
+      <publishTime>08/26/2013 22:39:45</publishTime>
     </File>
     <File Include="db/en-US/party-sample.sql">
-      <publishTime>08/12/2013 22:00:36</publishTime>
+      <publishTime>08/26/2013 21:20:59</publishTime>
     </File>
     <File Include="db/en-US/sample-data.sql">
-      <publishTime>08/11/2013 16:11:08</publishTime>
+      <publishTime>08/22/2013 12:15:59</publishTime>
     </File>
     <File Include="db/FormControlCodeBackup.txt">
       <publishTime>07/14/2013 02:42:51</publishTime>
@@ -228,7 +228,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2013 16:12:54</publishTime>
     </File>
     <File Include="Finance/JournalVoucher.aspx">
-      <publishTime>08/20/2013 23:35:11</publishTime>
+      <publishTime>08/22/2013 20:14:52</publishTime>
     </File>
     <File Include="Finance/Setup/AgeingSlabs.aspx">
       <publishTime>08/11/2013 17:35:33</publishTime>
@@ -312,7 +312,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/17/2013 00:13:14</publishTime>
     </File>
     <File Include="Items/Setup/Parties.aspx">
-      <publishTime>08/16/2013 23:58:25</publishTime>
+      <publishTime>08/26/2013 23:13:44</publishTime>
+    </File>
+    <File Include="Items/Setup/PartiesPopup.aspx">
+      <publishTime>08/26/2013 23:16:01</publishTime>
     </File>
     <File Include="Items/Setup/PartyTypes.aspx">
       <publishTime>08/17/2013 00:12:23</publishTime>
@@ -322,6 +325,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Items/Setup/Shipper.aspx">
       <publishTime>08/17/2013 00:00:30</publishTime>
+    </File>
+    <File Include="Items/Setup/ShippingAddresses.aspx">
+      <publishTime>08/26/2013 21:45:02</publishTime>
     </File>
     <File Include="Items/Setup/UOM.aspx">
       <publishTime>08/12/2013 02:45:23</publishTime>
@@ -345,7 +351,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2013 16:20:20</publishTime>
     </File>
     <File Include="MixERPMaster.Master">
-      <publishTime>08/18/2013 14:57:31</publishTime>
+      <publishTime>08/26/2013 23:19:35</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>08/19/2013 16:41:04</publishTime>
@@ -372,10 +378,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/14/2013 00:18:17</publishTime>
     </File>
     <File Include="Purchase/DirectPurchase.aspx">
-      <publishTime>08/13/2013 23:22:56</publishTime>
+      <publishTime>08/24/2013 13:13:53</publishTime>
     </File>
     <File Include="Purchase/GRN.aspx">
-      <publishTime>08/12/2013 02:46:18</publishTime>
+      <publishTime>08/21/2013 19:55:16</publishTime>
     </File>
     <File Include="Purchase/Index.aspx">
       <publishTime>08/11/2013 16:15:29</publishTime>
@@ -384,7 +390,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2013 16:15:29</publishTime>
     </File>
     <File Include="Purchase/Order.aspx">
-      <publishTime>08/12/2013 02:46:33</publishTime>
+      <publishTime>08/22/2013 12:21:50</publishTime>
     </File>
     <File Include="Purchase/Payment.aspx">
       <publishTime>08/11/2013 16:15:30</publishTime>
@@ -417,19 +423,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/13/2013 23:58:52</publishTime>
     </File>
     <File Include="Reports/Sources/Office.Login.xml">
-      <publishTime>08/11/2013 16:15:33</publishTime>
+      <publishTime>08/30/2013 14:28:03</publishTime>
     </File>
     <File Include="Reports/Sources/Purchase.View.Purchase.Invoice.xml">
       <publishTime>08/14/2013 00:21:16</publishTime>
     </File>
+    <File Include="Reports/Sources/Sales.View.Sales.CustomerDeliveryNote.xml">
+      <publishTime>08/22/2013 21:57:29</publishTime>
+    </File>
     <File Include="Reports/Sources/Sales.View.Sales.CustomerInvoice.xml">
       <publishTime>08/11/2013 16:15:33</publishTime>
+    </File>
+    <File Include="Reports/Sources/Sales.View.Sales.Delivery.xml">
+      <publishTime>08/22/2013 21:56:44</publishTime>
     </File>
     <File Include="Reports/Sources/Sales.View.Sales.Invoice.xml">
       <publishTime>08/11/2013 16:15:33</publishTime>
     </File>
     <File Include="Reports/Sources/Transactions.GLEntry.xml">
-      <publishTime>08/11/2013 23:53:42</publishTime>
+      <publishTime>08/24/2013 13:09:43</publishTime>
     </File>
     <File Include="Res/Icons/bottom-16.png">
       <publishTime>07/31/2013 22:02:29</publishTime>
@@ -456,13 +468,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2013 22:01:59</publishTime>
     </File>
     <File Include="Resource/Configuration/DbParameters.config">
-      <publishTime>08/12/2013 16:21:36</publishTime>
+      <publishTime>08/26/2013 20:03:40</publishTime>
     </File>
     <File Include="Resource/Configuration/Parameters.config">
-      <publishTime>08/12/2013 21:08:10</publishTime>
+      <publishTime>08/27/2013 21:24:05</publishTime>
     </File>
     <File Include="Resource/Configuration/Switches.config">
-      <publishTime>08/12/2013 01:28:19</publishTime>
+      <publishTime>08/27/2013 21:33:26</publishTime>
     </File>
     <File Include="Resource/Frameworks/MetroUi/css/modern-responsive.css">
       <publishTime>08/18/2013 21:52:26</publishTime>
@@ -887,17 +899,44 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Sales/Confirmation/CustomerInvoice.aspx">
       <publishTime>08/13/2013 23:59:27</publishTime>
     </File>
+    <File Include="Sales/Confirmation/DeliveryWithoutOrder.aspx">
+      <publishTime>08/22/2013 22:08:00</publishTime>
+    </File>
     <File Include="Sales/Confirmation/DirectSales.aspx">
-      <publishTime>08/14/2013 00:16:09</publishTime>
+      <publishTime>08/22/2013 22:00:09</publishTime>
     </File>
     <File Include="Sales/Confirmation/DirectSalesInovice.aspx">
       <publishTime>08/14/2013 00:17:06</publishTime>
     </File>
+    <File Include="Sales/Confirmation/Quotation.aspx">
+      <publishTime>08/29/2013 22:40:28</publishTime>
+    </File>
+    <File Include="Sales/Confirmation/ReportCustomerInvoice.aspx">
+      <publishTime>08/22/2013 22:06:13</publishTime>
+    </File>
+    <File Include="Sales/Confirmation/ReportDelivery.aspx">
+      <publishTime>08/22/2013 22:09:26</publishTime>
+    </File>
+    <File Include="Sales/Confirmation/ReportDeliveryNote.aspx">
+      <publishTime>08/22/2013 22:12:50</publishTime>
+    </File>
+    <File Include="Sales/Confirmation/ReportDirectSalesInovice.aspx">
+      <publishTime>08/22/2013 22:05:32</publishTime>
+    </File>
     <File Include="Sales/Delivery.aspx">
       <publishTime>08/17/2013 01:02:31</publishTime>
     </File>
+    <File Include="Sales/DeliveryForOrder.aspx">
+      <publishTime>08/22/2013 12:39:35</publishTime>
+    </File>
+    <File Include="Sales/DeliveryWithoutOrder.aspx">
+      <publishTime>08/22/2013 13:24:29</publishTime>
+    </File>
     <File Include="Sales/DirectSales.aspx">
-      <publishTime>08/20/2013 20:40:03</publishTime>
+      <publishTime>08/23/2013 13:09:28</publishTime>
+    </File>
+    <File Include="Sales/Entry/Quotation.aspx">
+      <publishTime>08/25/2013 22:37:51</publishTime>
     </File>
     <File Include="Sales/Index.aspx">
       <publishTime>08/11/2013 16:15:39</publishTime>
@@ -906,10 +945,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2013 16:15:40</publishTime>
     </File>
     <File Include="Sales/Order.aspx">
-      <publishTime>08/12/2013 02:46:44</publishTime>
+      <publishTime>08/22/2013 12:20:11</publishTime>
     </File>
     <File Include="Sales/Quotation.aspx">
-      <publishTime>08/12/2013 02:47:00</publishTime>
+      <publishTime>08/29/2013 22:07:24</publishTime>
     </File>
     <File Include="Sales/Receipt.aspx">
       <publishTime>08/11/2013 16:15:42</publishTime>
@@ -1932,7 +1971,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:37</publishTime>
     </File>
     <File Include="Scripts/mixerp.js">
-      <publishTime>08/13/2013 11:17:48</publishTime>
+      <publishTime>08/26/2013 22:48:23</publishTime>
     </File>
     <File Include="Scripts/shortcut.js">
       <publishTime>08/11/2013 16:07:31</publishTime>
@@ -2022,7 +2061,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2013 01:51:37</publishTime>
     </File>
     <File Include="Themes/purple/main.css">
-      <publishTime>08/20/2013 23:02:17</publishTime>
+      <publishTime>08/21/2013 20:47:52</publishTime>
     </File>
     <File Include="Themes/purple/mixerp-logo-light.png">
       <publishTime>07/14/2013 03:10:00</publishTime>
@@ -2039,14 +2078,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="UserControls/Core/AccountControl.ascx">
       <publishTime>08/11/2013 16:16:28</publishTime>
     </File>
+    <File Include="UserControls/CurrencyExtender.ascx">
+      <publishTime>08/23/2013 12:55:32</publishTime>
+    </File>
     <File Include="UserControls/DateTextBox.ascx">
       <publishTime>08/20/2013 22:21:27</publishTime>
     </File>
     <File Include="UserControls/Forms/FormControl.ascx">
-      <publishTime>08/20/2013 23:34:47</publishTime>
+      <publishTime>08/26/2013 23:20:42</publishTime>
     </File>
     <File Include="UserControls/Products/ProductControl.ascx">
-      <publishTime>08/20/2013 23:35:31</publishTime>
+      <publishTime>08/27/2013 21:39:44</publishTime>
     </File>
     <File Include="UserControls/ReportControl.ascx">
       <publishTime>08/12/2013 15:17:15</publishTime>
@@ -2055,34 +2097,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2013 16:16:35</publishTime>
     </File>
     <File Include="UserControls/TransactionChecklistControl.ascx">
-      <publishTime>08/14/2013 00:15:33</publishTime>
+      <publishTime>08/26/2013 22:48:16</publishTime>
     </File>
     <File Include="UserControls/Widgets/AlertsWidget.ascx">
-      <publishTime>08/20/2013 21:42:08</publishTime>
+      <publishTime>08/21/2013 19:33:26</publishTime>
     </File>
     <File Include="UserControls/Widgets/CurrentOfficeSalesByMonthWidget.ascx">
-      <publishTime>08/20/2013 21:41:25</publishTime>
+      <publishTime>08/21/2013 19:32:19</publishTime>
     </File>
     <File Include="UserControls/Widgets/LinksWidget.ascx">
-      <publishTime>08/20/2013 21:42:20</publishTime>
+      <publishTime>08/21/2013 19:33:47</publishTime>
     </File>
     <File Include="UserControls/Widgets/OfficeInformationWidget.ascx">
-      <publishTime>08/20/2013 21:41:56</publishTime>
+      <publishTime>08/21/2013 19:33:13</publishTime>
     </File>
     <File Include="UserControls/Widgets/SalesByOfficeWidget.ascx">
-      <publishTime>08/20/2013 21:40:37</publishTime>
+      <publishTime>08/21/2013 19:31:47</publishTime>
     </File>
     <File Include="UserControls/Widgets/TopSellingProductOfAllTimeCurrentWidget.ascx">
-      <publishTime>08/20/2013 21:43:01</publishTime>
+      <publishTime>08/21/2013 19:34:42</publishTime>
     </File>
     <File Include="UserControls/Widgets/TopSellingProductOfAllTimetWidget.ascx">
-      <publishTime>08/20/2013 21:43:30</publishTime>
+      <publishTime>08/21/2013 19:34:24</publishTime>
     </File>
     <File Include="UserControls/Widgets/WorkflowWidget.ascx">
-      <publishTime>08/20/2013 21:41:42</publishTime>
+      <publishTime>08/21/2013 19:32:53</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/20/2013 23:37:35</publishTime>
+      <publishTime>08/30/2013 14:31:02</publishTime>
     </File>
   </ItemGroup>
 </Project>

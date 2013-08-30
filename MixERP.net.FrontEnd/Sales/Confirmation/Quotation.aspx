@@ -12,13 +12,14 @@ http://mozilla.org/MPL/2.0/.
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceHolder" runat="server">
     <mixerp:TransactionChecklist runat="server"
-        DisplayWithdrawButton="true"
+        DisplayWithdrawButton="false"
         DisplayViewInvoiceButton="true"
         DisplayEmailInvoiceButton="true"
         DisplayCustomerInvoiceButton="true"
         DisplayPrintReceiptButton="true"
         DisplayPrintGLEntryButton="true"
         DisplayAttachmentButton="true"
+        IsNonGLTransaction="true"
         InvoicePath="~/Sales/Confirmation/ReportDirectSalesInovice.aspx"
         CustomerInvoicePath="~/Sales/Confirmation/ReportCustomerInvoice.aspx"
         GLAdvicePath="~/Finance/Confirmation/GLAdvice.aspx"

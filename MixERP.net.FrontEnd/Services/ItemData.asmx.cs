@@ -37,7 +37,7 @@ namespace MixERP.Net.FrontEnd.Services
             {
                 foreach(System.Data.DataRow dr in table.Rows)
                 {
-                    values.Add(new CascadingDropDownNameValue((string)dr["item_name"], dr["item_code"].ToString()));
+                    values.Add(new CascadingDropDownNameValue(dr["item_name"].ToString(), dr["item_code"].ToString()));
                 }
 
                 return values.ToArray();
@@ -53,7 +53,7 @@ namespace MixERP.Net.FrontEnd.Services
             {
                 foreach(System.Data.DataRow dr in table.Rows)
                 {
-                    values.Add(new CascadingDropDownNameValue((string)dr["item_name"], dr["item_code"].ToString()));
+                    values.Add(new CascadingDropDownNameValue(dr["item_name"].ToString(), dr["item_code"].ToString()));
                 }
 
                 return values.ToArray();
@@ -72,7 +72,7 @@ namespace MixERP.Net.FrontEnd.Services
             {
                 foreach (System.Data.DataRow dr in table.Rows)
                 {
-                    values.Add(new CascadingDropDownNameValue((string)dr["unit_name"], dr["unit_id"].ToString()));
+                    values.Add(new CascadingDropDownNameValue(dr["unit_name"].ToString(), dr["unit_id"].ToString()));
                 }
 
                 return values.ToArray();

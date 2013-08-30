@@ -387,7 +387,7 @@ table.grid th[scope=col]
     font-weight: bold;
 }
 
-.form input, .form select
+.form input, .form select, .form textarea
 {
     outline: none;
     color: #5A5A87;
@@ -404,7 +404,7 @@ table.grid th[scope=col]
     padding: 2px!important;
 }
 
-.form input[type="text"], .form input[type="number"], .form input[type="date"], .form select
+.form textarea, .form input[type="text"], .form input[type="number"], .form input[type="date"], .form select
 {
     border: 1px solid #E1DBEE;
     width: 414px;

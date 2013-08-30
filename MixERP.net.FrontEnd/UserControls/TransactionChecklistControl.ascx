@@ -69,7 +69,7 @@ http://mozilla.org/MPL/2.0/.
     public bool DisplayPrintReceiptButton { get; set; }
     public bool DisplayPrintGLEntryButton { get; set; }
     public bool DisplayAttachmentButton { get; set; }
-
+    public bool IsNonGLTransaction { get; set; }
     public string InvoicePath { get; set; }
     public string CustomerInvoicePath { get; set; }
     public string GLAdvicePath { get; set; }
