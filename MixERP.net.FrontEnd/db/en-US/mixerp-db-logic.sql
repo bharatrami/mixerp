@@ -1,4 +1,74 @@
-﻿DROP FUNCTION IF EXISTS core.get_item_cost_price(item_id_ integer, party_id_ integer, unit_id_ integer);
+﻿
+
+
+DROP FUNCTION IF EXISTS office.can_login(user_id integer_strict, office_id integer_strict);
+CREATE FUNCTION office.can_login(user_id integer_strict, office_id integer_strict)
+RETURNS boolean
+AS
+$$
+DECLARE _office_id integer;
+BEGIN
+	_office_id:=office.get_office_id_by_user_id($1);
+
+	IF $1 = office.get_sys_user_id() THEN
+		RETURN false;
+	END IF;
+
+	IF $2=_office_id THEN
+		RETURN true;
+	ELSE
+		IF office.is_parent_office(_office_id,$2) THEN
+			RETURN true;
+		END IF;
+	END IF;
+	RETURN false;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+DROP FUNCTION IF EXISTS office.sign_in(office_id integer_strict, user_name text, password text, browser text, ip_address text, remote_user text);
+CREATE FUNCTION office.sign_in(office_id integer_strict, user_name text, password text, browser text, ip_address text, remote_user text)
+RETURNS integer
+AS
+$$
+DECLARE _user_id integer;
+DECLARE _lock_out_till TIMESTAMP;
+BEGIN
+	_user_id:=office.get_user_id_by_user_name($2);
+
+	IF _user_id IS NULL THEN
+		INSERT INTO audit.failed_logins(user_name,browser,ip_address,remote_user,details)
+		SELECT $2, $4, $5, $6, 'Invalid user name.';
+	ELSE
+		_lock_out_till:=policy.is_locked_out_till(_user_id);
+		IF NOT ((_lock_out_till IS NOT NULL) AND (_lock_out_till>NOW())) THEN
+			IF office.validate_login($2,$3) THEN
+				IF office.can_login(_user_id,$1) THEN
+					INSERT INTO audit.logins(office_id,user_id,browser,ip_address,remote_user)
+					SELECT $1, _user_id, $4, $5, $6;
+
+					RETURN CAST(currval('audit.logins_login_id_seq') AS integer);
+				ELSE
+					INSERT INTO audit.failed_logins(office_id,user_id,user_name,browser,ip_address,remote_user,details)
+					SELECT $1, _user_id, $2, $4, $5, $6, 'User from ' || office.get_office_name_by_id(office.get_office_id_by_user_id(_user_id)) || ' cannot login to ' || office.get_office_name_by_id($1) || '.';
+				END IF;
+			ELSE
+				INSERT INTO audit.failed_logins(office_id,user_id,user_name,browser,ip_address,remote_user,details)
+				SELECT $1, _user_id, $2, $4, $5, $6, 'Invalid login attempt.';
+			END IF;
+		END IF;
+	END IF;
+
+	RETURN 0;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+
+DROP FUNCTION IF EXISTS core.get_item_cost_price(item_id_ integer, party_id_ integer, unit_id_ integer);
 CREATE FUNCTION core.get_item_cost_price(item_id_ integer, party_id_ integer, unit_id_ integer)
 RETURNS money
 AS
@@ -161,7 +231,7 @@ $$
 	DECLARE _verifier integer;
 	DECLARE _status integer;
 	DECLARE _reason national character varying(128);
-	DECLARE _can_verify boolean;
+	DECLARE _has_policy boolean;
 	DECLARE _is_sys boolean;
 	DECLARE _rejected smallint=-3;
 	DECLARE _closed smallint=-2;
@@ -170,11 +240,11 @@ $$
 	DECLARE _auto_approved smallint = 1;
 	DECLARE _approved smallint=2;
 	DECLARE _book text;
-	DECLARE _can_verify_sales boolean;
+	DECLARE _can_verify_sales_transactions boolean;
 	DECLARE _sales_verification_limit money;
-	DECLARE _can_verify_purchase boolean;
+	DECLARE _can_verify_purchase_transactions boolean;
 	DECLARE _purchase_verification_limit money;
-	DECLARE _can_verify_gl boolean;
+	DECLARE _can_verify_gl_transactions boolean;
 	DECLARE _gl_verification_limit money;
 	DECLARE _can_verify_self boolean;
 	DECLARE _self_verification_limit money;
@@ -244,7 +314,7 @@ BEGIN
 
 
 		SELECT
-			sum(amount)
+			SUM(amount)
 		INTO
 			_posted_amount
 		FROM
@@ -264,12 +334,12 @@ BEGIN
 			can_self_verify,
 			self_verification_limit
 		INTO
-			_can_verify,
-			_can_verify_sales,
+			_has_policy,
+			_can_verify_sales_transactions,
 			_sales_verification_limit,
-			_can_verify_purchase,
+			_can_verify_purchase_transactions,
 			_purchase_verification_limit,
-			_can_verify_gl,
+			_can_verify_gl_transactions,
 			_gl_verification_limit,
 			_can_verify_self,
 			_self_verification_limit
@@ -284,11 +354,11 @@ BEGIN
 			RAISE EXCEPTION 'Access is denied.';
 		END IF;		
 		
-		IF(_status != _withdrawn AND _can_verify = false) THEN
+		IF(_status != _withdrawn AND _has_policy = false) THEN
 			RAISE EXCEPTION 'Access is denied. You don''t have the right to verify the transaction.';
 		END IF;
 
-		IF(_status = _withdrawn AND _can_verify = false) THEN
+		IF(_status = _withdrawn AND _has_policy = false) THEN
 			IF(_transaction_posted_by != _verifier) THEN
 				RAISE EXCEPTION 'Access is denied. You don''t have the right to withdraw the transaction.';
 			END IF;
@@ -299,7 +369,7 @@ BEGIN
 		END IF;
 
 
-		IF(_can_verify = false) THEN
+		IF(_has_policy = false) THEN
 			RAISE EXCEPTION 'Access is denied.';
 		END IF;
 
@@ -317,10 +387,10 @@ BEGIN
 		END IF;
 
 		IF(lower(_book) LIKE '%sales%') THEN
-			IF(_can_verify_sales = false) THEN
+			IF(_can_verify_sales_transactions = false) THEN
 				RAISE EXCEPTION 'Access is denied.';
 			END IF;
-			IF(_can_verify_sales = true) THEN
+			IF(_can_verify_sales_transactions = true) THEN
 				IF(_posted_amount > _sales_verification_limit AND _sales_verification_limit > 0::money) THEN
 					RAISE EXCEPTION 'Sales verfication limit exceeded. The transaction was not verified.';
 				END IF;
@@ -329,10 +399,10 @@ BEGIN
 
 
 		IF(lower(_book) LIKE '%purchase%') THEN
-			IF(_can_verify_purchase = false) THEN
+			IF(_can_verify_purchase_transactions = false) THEN
 				RAISE EXCEPTION 'Access is denied.';
 			END IF;
-			IF(_can_verify_purchase = true) THEN
+			IF(_can_verify_purchase_transactions = true) THEN
 				IF(_posted_amount > _purchase_verification_limit AND _purchase_verification_limit > 0::money) THEN
 					RAISE EXCEPTION 'Purchase verfication limit exceeded. The transaction was not verified.';
 				END IF;
@@ -341,10 +411,10 @@ BEGIN
 
 
 		IF(lower(_book) LIKE 'journal%') THEN
-			IF(_can_verify_gl = false) THEN
+			IF(_can_verify_gl_transactions = false) THEN
 				RAISE EXCEPTION 'Access is denied.';
 			END IF;
-			IF(_can_verify_gl = true) THEN
+			IF(_can_verify_gl_transactions = true) THEN
 				IF(_posted_amount > _gl_verification_limit AND _gl_verification_limit > 0::money) THEN
 					RAISE EXCEPTION 'GL verfication limit exceeded. The transaction was not verified.';
 				END IF;
@@ -419,7 +489,7 @@ BEGIN
 	_reason := 'Automatically verified by workflow.';
 
 	SELECT
-		sum(amount)
+		SUM(amount)
 	INTO
 		_posted_amount
 	FROM

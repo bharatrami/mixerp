@@ -93,7 +93,7 @@ namespace MixERP.Net.BusinessLayer.Helpers
         {
             try
             {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.InsertRecord(tableSchema, tableName, data, imageColumn);
+                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.InsertRecord(MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), tableSchema, tableName, data, imageColumn);
             }
             catch(DbException ex)
             {
@@ -107,7 +107,7 @@ namespace MixERP.Net.BusinessLayer.Helpers
         {
             try
             {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.UpdateRecord(tableSchema, tableName, data, keyColumn, keyColumnValue, imageColumn);
+                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.UpdateRecord(MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), tableSchema, tableName, data, keyColumn, keyColumnValue, imageColumn);
             }
             catch(DbException ex)
             {

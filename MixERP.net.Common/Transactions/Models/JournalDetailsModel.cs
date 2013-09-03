@@ -12,18 +12,13 @@ using System.Text;
 
 namespace MixERP.Net.Common.Transactions.Models
 {
-    public class StockMasterDetailModel
+    public class JournalDetailsModel
     {
-        public long StockMasterDetailId { get; set; }
-        public long StockMasterId { get; set; }
-        public TransactionType TransactionType { get; set; }
-        public int StoreId { get; set; }
-        public string ItemCode { get; set; }
-        public int Quantity { get; set; }
-        public string UnitName { get; set; }
-        public decimal Price { get; set; }
-        public decimal Discount { get; set; }
-        public decimal TaxRate { get; set; }
-        public decimal Tax { get; set; }
+        public string AccountCode { get; set; }
+        public string Account { get; set; }
+        public string CashRepository { get; set; }
+        public string StatementReference { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
     }
 }

@@ -105,7 +105,6 @@
   <ItemGroup>
     <None Include="Mix Open Foundation.snk" />
     <None Include="MixERP.net.BusinessLayer.licenseheader" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\Dictionary.xml">

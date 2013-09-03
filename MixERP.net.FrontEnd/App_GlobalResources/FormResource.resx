@@ -1071,4 +1071,10 @@
   <data name="user" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="audit_ts" xml:space="preserve">
+    <value>Audit Timestamp</value>
+  </data>
+  <data name="audit_user_id" xml:space="preserve">
+    <value>Audit User Id</value>
+  </data>
 </root>

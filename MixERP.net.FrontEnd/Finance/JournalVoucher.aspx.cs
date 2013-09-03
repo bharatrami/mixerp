@@ -7,6 +7,7 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -40,15 +41,14 @@ namespace MixERP.Net.FrontEnd.Finance
 
         protected void TransactionGridView_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            using(System.Data.DataTable table = this.GetTable())
-            {
-                GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
-                int index = row.RowIndex;
+            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
 
-                table.Rows.RemoveAt(index);
-                Session[this.ID] = table;
-                this.BindGridView();
-            }
+            GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
+            int index = row.RowIndex;
+
+            table.RemoveAt(index);
+            Session[this.ID] = table;
+            this.BindGridView();
         }
 
 
@@ -76,42 +76,30 @@ namespace MixERP.Net.FrontEnd.Finance
             CreditTotalLiteral.Text = "<label for='CreditTotalTextBox'>" + Resources.Titles.CreditTotal + "</label>";
         }
 
-        private System.Data.DataTable GetTable()
+        private Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> GetTable()
         {
             if(Session[this.ID] != null)
             {
-                return (System.Data.DataTable)Session[this.ID];
+                return Session[this.ID] as Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel>;
             }
 
-            using(System.Data.DataTable table = new System.Data.DataTable())
-            {
-                table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
-
-                table.Columns.Add("AccountCode");
-                table.Columns.Add("Account");
-                table.Columns.Add("CashRepository");
-                table.Columns.Add("StatementReference");
-                table.Columns.Add("Debit");
-                table.Columns.Add("Credit");
-                return table;
-            }
+            return new Collection<Common.Transactions.Models.JournalDetailsModel>();
         }
 
         private void AddRowToTable(string accountCode, string account, string cashRepository, string statementReference, decimal debit, decimal credit)
         {
-            using(System.Data.DataTable table = this.GetTable())
-            {
-                System.Data.DataRow row = table.NewRow();
-                row[0] = accountCode;
-                row[1] = account;
-                row[2] = cashRepository;
-                row[3] = statementReference;
-                row[4] = debit;
-                row[5] = credit;
+            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
 
-                table.Rows.Add(row);
-                Session[this.ID] = table;
-            }
+            MixERP.Net.Common.Transactions.Models.JournalDetailsModel model = new Common.Transactions.Models.JournalDetailsModel();
+            model.AccountCode = accountCode;
+            model.Account = account;
+            model.CashRepository = cashRepository;
+            model.StatementReference = statementReference;
+            model.Debit = debit;
+            model.Credit = credit;
+
+            table.Add(model);
+            Session[this.ID] = table;
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -183,18 +171,17 @@ namespace MixERP.Net.FrontEnd.Finance
                 }
             }
 
-            using(System.Data.DataTable table = this.GetTable())
+            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
+
+            if(table.Count > 0)
             {
-                if(table.Rows.Count > 0)
+                foreach(MixERP.Net.Common.Transactions.Models.JournalDetailsModel row in table)
                 {
-                    foreach(System.Data.DataRow row in table.Rows)
+                    if(row.AccountCode.Equals(accountCode))
                     {
-                        if(row[0].Equals(accountCode))
-                        {
-                            MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(AccountCodeTextBox);
-                            MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(AccountDropDownList);
-                            return;
-                        }
+                        MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(AccountCodeTextBox);
+                        MixERP.Net.BusinessLayer.Helpers.FormHelper.MakeDirty(AccountDropDownList);
+                        return;
                     }
                 }
             }
@@ -224,26 +211,25 @@ namespace MixERP.Net.FrontEnd.Finance
 
         private void BindGridView()
         {
-            using(System.Data.DataTable table = this.GetTable())
+            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
+            TransactionGridView.DataSource = table;
+            TransactionGridView.DataBind();
+
+            if(table.Count > 0)
             {
-                TransactionGridView.DataSource = table;
-                TransactionGridView.DataBind();
+                decimal debit = 0;
+                decimal credit = 0;
 
-                if(table.Rows.Count > 0)
+                foreach(MixERP.Net.Common.Transactions.Models.JournalDetailsModel row in table)
                 {
-                    decimal debit = 0;
-                    decimal credit = 0;
-
-                    foreach(System.Data.DataRow row in table.Rows)
-                    {
-                        debit += Pes.Utility.Conversion.TryCastDecimal(row["Debit"]);
-                        credit += Pes.Utility.Conversion.TryCastDecimal(row["Credit"]);
-                    }
-
-                    DebitTotalTextBox.Text = debit.ToString("G29");
-                    CreditTotalTextBox.Text = credit.ToString("G29");
+                    debit += row.Debit;
+                    credit += row.Credit;
                 }
+
+                DebitTotalTextBox.Text = debit.ToString("G29");
+                CreditTotalTextBox.Text = credit.ToString("G29");
             }
+
         }
 
     }

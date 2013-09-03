@@ -181,7 +181,7 @@ namespace MixERP.Net.DatabaseLayer.Helpers
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        public static bool InsertRecord(string tableSchema, string tableName, System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> data, string imageColumn)
+        public static bool InsertRecord(int userId, string tableSchema, string tableName, System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> data, string imageColumn)
         {
             if(data == null)
             {
@@ -209,7 +209,7 @@ namespace MixERP.Net.DatabaseLayer.Helpers
                 }
             }
 
-            string sql = "INSERT INTO @TableSchema.@TableName(" + columns + ") SELECT " + columnParamters + ";";
+            string sql = "INSERT INTO @TableSchema.@TableName(" + columns + ", audit_user_id) SELECT " + columnParamters + ", @AuditUserId;";
             using(NpgsqlCommand command = new NpgsqlCommand())
             {
                 sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
@@ -243,12 +243,14 @@ namespace MixERP.Net.DatabaseLayer.Helpers
                     }
                 }
 
+                command.Parameters.AddWithValue("@AuditUserId", userId);
+
                 return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.ExecuteNonQuery(command);
             }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        public static bool UpdateRecord(string tableSchema, string tableName, System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> data, string keyColumn, string keyColumnValue, string imageColumn)
+        public static bool UpdateRecord(int userId, string tableSchema, string tableName, System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> data, string keyColumn, string keyColumnValue, string imageColumn)
         {
             if(data == null)
             {
@@ -258,6 +260,10 @@ namespace MixERP.Net.DatabaseLayer.Helpers
             string columns = string.Empty;
 
             int counter = 0;
+            
+            //Adding the current user to the column collection.
+            KeyValuePair<string, string> auditUserId = new KeyValuePair<string, string>("audit_user_id", userId.ToString());
+            data.Add(auditUserId);
 
             foreach(KeyValuePair<string, string> pair in data)
             {

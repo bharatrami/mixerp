@@ -268,6 +268,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audit Timestamp.
+        /// </summary>
+        internal static string audit_ts {
+            get {
+                return ResourceManager.GetString("audit_ts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audit User Id.
+        /// </summary>
+        internal static string audit_user_id {
+            get {
+                return ResourceManager.GetString("audit_user_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Autoanalyze Count.
         /// </summary>
         internal static string autoanalyze_count {
