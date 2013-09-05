@@ -16,9 +16,9 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 {
     public static class Verification
     {
-        public static MixERP.Net.Common.Transactions.Models.VerificationModel GetVerificationStatus(long transactionMasterId)
+        public static MixERP.Net.Common.Models.Transactions.VerificationModel GetVerificationStatus(long transactionMasterId)
         {
-            MixERP.Net.Common.Transactions.Models.VerificationModel model = new MixERP.Net.Common.Transactions.Models.VerificationModel();
+            MixERP.Net.Common.Models.Transactions.VerificationModel model = new MixERP.Net.Common.Models.Transactions.VerificationModel();
             string sql = "SELECT verification_status_id, office.get_user_name_by_user_id(verified_by_user_id) AS verified_by_user_name, verified_by_user_id, last_verified_on, verification_reason FROM transactions.transaction_master WHERE transaction_master_id=@TransactionMasterId;";
 
             using(NpgsqlCommand command = new NpgsqlCommand(sql))
@@ -49,7 +49,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 
         public static bool WithdrawTransaction(long transactionMasterId, int userId, string reason)
         {
-            short status = MixERP.Net.Common.Transactions.Models.VerificationDomain.GetVerification(MixERP.Net.Common.Transactions.Models.VerificationType.Withdrawn);
+            short status = MixERP.Net.Common.Models.Transactions.VerificationDomain.GetVerification(MixERP.Net.Common.Models.Transactions.VerificationType.Withdrawn);
 
             string sql = "UPDATE transactions.transaction_master SET verification_status_id=@Status, verified_by_user_id=@UserId, verification_reason=@Reason WHERE transactions.transaction_master.transaction_master_id=@TransactionMasterId;";
             using(NpgsqlCommand command = new NpgsqlCommand(sql))

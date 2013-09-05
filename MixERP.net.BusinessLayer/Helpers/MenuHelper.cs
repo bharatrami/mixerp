@@ -11,6 +11,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Data;
+using System.Collections.ObjectModel;
 
 namespace MixERP.Net.BusinessLayer.Helpers
 {
@@ -23,34 +24,26 @@ namespace MixERP.Net.BusinessLayer.Helpers
                 try
                 {
                     string menu = string.Empty;
-                    using(DataTable table = MixERP.Net.BusinessLayer.Core.Menu.GetRootMenuTable(path))
+                    Collection<MixERP.Net.Common.Models.Core.Menu> rootMenus = MixERP.Net.BusinessLayer.Core.Menu.GetRootMenuCollection(path);
+
+                    if(rootMenus.Count > 0)
                     {
-                        if(table.Rows.Count > 0)
+                        foreach(MixERP.Net.Common.Models.Core.Menu rootMenu in rootMenus)
                         {
-                            foreach(DataRow row in table.Rows)
+
+                            menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<div class='sub-menu'><div class='menu-title'>{0}</div>", rootMenu.MenuText);
+
+                            Collection<MixERP.Net.Common.Models.Core.Menu> childMenus = MixERP.Net.BusinessLayer.Core.Menu.GetMenuCollection(rootMenu.MenuId, 2);
+
+                            if(childMenus.Count > 0)
                             {
-                                int menuId = Pes.Utility.Conversion.TryCastInteger(row["menu_id"]);
-
-                                string menuText = Pes.Utility.Conversion.TryCastString(row["menu_text"]);
-
-                                menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<div class='sub-menu'><div class='menu-title'>{0}</div>", menuText);
-
-                                using(DataTable childTable = MixERP.Net.BusinessLayer.Core.Menu.GetMenuTable(menuId, 2))
+                                foreach(MixERP.Net.Common.Models.Core.Menu childMenu in childMenus)
                                 {
-                                    if(childTable.Rows.Count > 0)
-                                    {
-                                        foreach(DataRow childTableRow in childTable.Rows)
-                                        {
-                                            string url = Pes.Utility.Conversion.TryCastString(childTableRow["url"]);
-                                            string childMenuText = Pes.Utility.Conversion.TryCastString(childTableRow["menu_text"]);
-
-                                            menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<a href='{0}' title='{1}' class='sub-menu-anchor'>{1}</a>", page.ResolveUrl(url), childMenuText);
-                                        }
-                                    }
+                                    menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<a href='{0}' title='{1}' class='sub-menu-anchor'>{1}</a>", page.ResolveUrl(childMenu.Url), childMenu.MenuText);
                                 }
-
-                                menu += "</div>";
                             }
+
+                            menu += "</div>";
                         }
                     }
 
@@ -72,34 +65,25 @@ namespace MixERP.Net.BusinessLayer.Helpers
                 {
                     string menu = string.Empty;
 
-                    using(DataTable table = MixERP.Net.BusinessLayer.Core.Menu.GetMenuTable(page.Request.Url.AbsolutePath, 1))
+                    Collection<MixERP.Net.Common.Models.Core.Menu> menuCollection = MixERP.Net.BusinessLayer.Core.Menu.GetMenuCollection(page.Request.Url.AbsolutePath, 1);
+
+                    if(menuCollection.Count > 0)
                     {
-                        if(table.Rows.Count > 0)
+                        foreach(MixERP.Net.Common.Models.Core.Menu model in menuCollection)
                         {
-                            foreach(DataRow row in table.Rows)
+                            menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<div class='menu-panel'><div class='menu-header'>{0}</div><ul>", model.MenuText);
+
+                            Collection<MixERP.Net.Common.Models.Core.Menu> childMenus = MixERP.Net.BusinessLayer.Core.Menu.GetMenuCollection(model.MenuId, 2);
+
+                            if(childMenus.Count > 0)
                             {
-                                int menuId = Pes.Utility.Conversion.TryCastInteger(row["menu_id"]);
-
-                                string menuText = Pes.Utility.Conversion.TryCastString(row["menu_text"]);
-
-                                menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<div class='menu-panel'><div class='menu-header'>{0}</div><ul>", menuText);
-
-                                using(DataTable childTable = MixERP.Net.BusinessLayer.Core.Menu.GetMenuTable(menuId, 2))
+                                foreach(MixERP.Net.Common.Models.Core.Menu childMenu in childMenus)
                                 {
-                                    if(childTable.Rows.Count > 0)
-                                    {
-                                        foreach(DataRow childTableRow in childTable.Rows)
-                                        {
-                                            string url = Pes.Utility.Conversion.TryCastString(childTableRow["url"]);
-                                            string childMenuText = Pes.Utility.Conversion.TryCastString(childTableRow["menu_text"]);
-
-                                            menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<li><a href='{0}' title='{1}'>{1}</a></li>", page.ResolveUrl(url), childMenuText);
-                                        }
-                                    }
+                                    menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<li><a href='{0}' title='{1}'>{1}</a></li>", page.ResolveUrl(childMenu.Url), childMenu.MenuText);
                                 }
-
-                                menu += "</ul></div>";
                             }
+
+                            menu += "</ul></div>";
                         }
                     }
 

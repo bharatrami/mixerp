@@ -22,6 +22,7 @@ namespace MixERP.Net.BusinessLayer.Office
 
         public static DataTable GetCashRepositories(int officeId)
         {
+            //TODO: Bind this instance to a collection of entities.
             return MixERP.Net.DatabaseLayer.Office.CashRepositories.GetCashRepositories(officeId);
         }
 

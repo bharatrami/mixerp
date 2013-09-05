@@ -14,7 +14,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
 {
     public static class Verification
     {
-        public static MixERP.Net.Common.Transactions.Models.VerificationModel GetVerificationStatus(long transactionMasterId)
+        public static MixERP.Net.Common.Models.Transactions.VerificationModel GetVerificationStatus(long transactionMasterId)
         {
             return MixERP.Net.DatabaseLayer.Transactions.Verification.GetVerificationStatus(transactionMasterId);
         }

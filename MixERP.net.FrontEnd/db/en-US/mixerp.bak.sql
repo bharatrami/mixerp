@@ -30,8 +30,8 @@ CREATE SCHEMA mrp;
 
 CREATE TABLE core.verification_statuses
 (
-	verification_status_id		smallint NOT NULL PRIMARY KEY,
-	verification_status_name	national character varying(128) NOT NULL
+	verification_status_id			smallint NOT NULL PRIMARY KEY,
+	verification_status_name		national character varying(128) NOT NULL
 );
 
 CREATE UNIQUE INDEX verification_statuses_verification_status_name_uix
@@ -121,20 +121,6 @@ CHECK
 	VALUE > 0
 );
 
-
-DROP DOMAIN IF EXISTS decimal_strict2;
-CREATE DOMAIN decimal_strict2
-AS decimal
-CHECK
-(
-	VALUE >= 0
-);
-
-DROP DOMAIN IF EXISTS image_path;
-CREATE DOMAIN image_path
-AS text;
-
-
 DROP VIEW IF EXISTS db_stat;
 CREATE VIEW db_stat
 AS
@@ -151,18 +137,45 @@ select
 from
    pg_stat_user_tables;
 
+DROP DOMAIN IF EXISTS decimal_strict2;
+CREATE DOMAIN decimal_strict2
+AS decimal
+CHECK
+(
+	VALUE >= 0
+);
+
+DROP DOMAIN IF EXISTS image_path;
+CREATE DOMAIN image_path
+AS text;
+
+
+
+CREATE TABLE office.users
+(
+	user_id 				SERIAL NOT NULL PRIMARY KEY,
+	role_id 				smallint NOT NULL,
+	office_id 				integer NOT NULL,
+	user_name 				national character varying(50) NOT NULL,
+	full_name 				national character varying(100) NOT NULL,
+	password 				text NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
+);
+
 CREATE TABLE core.currencies
 (
-	currency_code national character varying(12) NOT NULL PRIMARY KEY,
-	currency_symbol national character varying(12) NOT NULL,
-	currency_name national character varying(48) NOT NULL UNIQUE,
-	hundredth_name national character varying(48) NOT NULL	
+	currency_code				national character varying(12) NOT NULL PRIMARY KEY,
+	currency_symbol				national character varying(12) NOT NULL,
+	currency_name				national character varying(48) NOT NULL UNIQUE,
+	hundredth_name				national character varying(48) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 INSERT INTO core.currencies
 SELECT 'NPR', 'Rs.', 'Nepali Rupees', 'paisa' UNION ALL
 SELECT 'USD', '$ ', 'United States Dollar', 'cents';
-
 
 CREATE FUNCTION office.is_parent_office(child integer_strict, parent integer_strict)
 RETURNS boolean
@@ -196,7 +209,6 @@ END
 $$
 LANGUAGE plpgsql;
 
-
 CREATE TABLE office.offices
 (
 	office_id				SERIAL NOT NULL PRIMARY KEY,
@@ -220,6 +232,8 @@ CREATE TABLE office.offices
 	url 					national character varying(50) NULL,
 	registration_number 			national character varying(24) NULL,
 	pan_number 				national character varying(24) NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW()),
 	parent_office_id 			integer NULL REFERENCES office.offices(office_id)
 		CHECK
 		(
@@ -228,6 +242,9 @@ CREATE TABLE office.offices
 			parent_office_id != office_id
 		)
 );
+
+ALTER TABLE office.users
+ADD FOREIGN KEY(office_id) REFERENCES office.offices(office_id);
 
 CREATE UNIQUE INDEX offices_office_code_uix
 ON office.offices(UPPER(office_code));
@@ -261,9 +278,9 @@ SELECT 'PES-NY-MEM','Memphis Branch', 'PES Memphis', '06/06/1989', 'Memphis', 'N
 
 CREATE TYPE office.office_type AS
 (
-	office_id	integer_strict,
-	office_code national character varying(12),
-	office_name national character varying(150),
+	office_id				integer_strict,
+	office_code 				national character varying(12),
+	office_name 				national character varying(150),
 	address text
 );
 
@@ -313,9 +330,11 @@ SELECT * FROM office.offices;
 
 CREATE TABLE office.departments
 (
-	department_id SERIAL  NOT NULL PRIMARY KEY,
-	department_code national character varying(12) NOT NULL,
-	department_name national character varying(50) NOT NULL
+	department_id SERIAL			NOT NULL PRIMARY KEY,
+	department_code				national character varying(12) NOT NULL,
+	department_name				national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -335,12 +354,17 @@ SELECT 'CC', 'Customer Care';
 
 CREATE TABLE office.roles
 (
-	role_id SERIAL  NOT NULL PRIMARY KEY,
-	role_code national character varying(12) NOT NULL,
-	role_name national character varying(50) NOT NULL,
-	is_admin boolean NOT NULL CONSTRAINT roles_is_admin_df DEFAULT(false),
-	is_system boolean NOT NULL CONSTRAINT roles_is_system_df DEFAULT(false)
+	role_id SERIAL				NOT NULL PRIMARY KEY,
+	role_code				national character varying(12) NOT NULL,
+	role_name				national character varying(50) NOT NULL,
+	is_admin 				boolean NOT NULL CONSTRAINT roles_is_admin_df DEFAULT(false),
+	is_system 				boolean NOT NULL CONSTRAINT roles_is_system_df DEFAULT(false),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
+
+ALTER TABLE office.users
+ADD FOREIGN KEY(role_id) REFERENCES office.roles(role_id);
 
 
 CREATE UNIQUE INDEX roles_role_code_uix
@@ -367,16 +391,6 @@ SELECT 'HUMR', 'Human Resources' UNION ALL
 SELECT 'INFO', 'Information Technology' UNION ALL
 SELECT 'CUST', 'Customer Service';
 
-
-CREATE TABLE office.users
-(
-	user_id SERIAL NOT NULL PRIMARY KEY,
-	role_id smallint NOT NULL REFERENCES office.roles(role_id),
-	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	user_name national character varying(50) NOT NULL,
-	full_name national character varying(100) NOT NULL,
-	password text NOT NULL
-);
 
 
 CREATE FUNCTION office.get_office_id_by_user_id(user_id integer_strict)
@@ -497,29 +511,6 @@ $$
 LANGUAGE plpgsql;
 
 
-CREATE FUNCTION office.can_login(user_id integer_strict, office_id integer_strict)
-RETURNS boolean
-AS
-$$
-DECLARE "$office_id" integer;
-BEGIN
-	"$office_id":=office.get_office_id_by_user_id($1);
-
-	IF $1 = office.get_sys_user_id() THEN
-		RETURN false;
-	END IF;
-
-	IF $2="$office_id" THEN
-		RETURN true;
-	ELSE
-		IF office.is_parent_office("$office_id",$2) THEN
-			RETURN true;
-		END IF;
-	END IF;
-	RETURN false;
-END;
-$$
-LANGUAGE plpgsql;
 
 CREATE FUNCTION office.create_user
 (
@@ -557,7 +548,19 @@ RETURNS boolean
 AS
 $$
 BEGIN
-	IF EXISTS(SELECT 1 FROM office.users WHERE office.users.user_name=$1 AND office.users.password=$2 AND office.users.role_id != (SELECT office.roles.role_id FROM office.roles WHERE office.roles.role_code='SYST')) THEN
+	IF EXISTS
+	(
+		SELECT 1 FROM office.users 
+		WHERE office.users.user_name=$1 
+		AND office.users.password=$2 
+		--The system user should not be allowed to login.
+		AND office.users.role_id != 
+		(
+			SELECT office.roles.role_id 
+			FROM office.roles 
+			WHERE office.roles.role_code='SYST'
+		)
+	) THEN
 		RETURN true;
 	END IF;
 	RETURN false;
@@ -571,18 +574,15 @@ CREATE UNIQUE INDEX users_user_name_uix
 ON office.users(UPPER(user_name));
 
 
-
-
-
 CREATE TABLE audit.logins
 (
-	login_id BIGSERIAL NOT NULL PRIMARY KEY,
-	user_id integer NOT NULL REFERENCES office.users(user_id),
-	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	browser national character varying(500) NOT NULL,
-	ip_address national character varying(50) NOT NULL,
-	login_date_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	remote_user national character varying(50) NOT NULL
+	login_id 				BIGSERIAL NOT NULL PRIMARY KEY,
+	user_id 				integer NOT NULL REFERENCES office.users(user_id),
+	office_id 				integer NOT NULL REFERENCES office.offices(office_id),
+	browser 				national character varying(500) NOT NULL,
+	ip_address 				national character varying(50) NOT NULL,
+	login_date_time 			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	remote_user 				national character varying(50) NOT NULL
 );
 
 CREATE FUNCTION office.get_login_id(_user_id integer)
@@ -629,26 +629,27 @@ LANGUAGE plpgsql;
 
 CREATE TABLE audit.failed_logins
 (
-	failed_login_id BIGSERIAL NOT NULL PRIMARY KEY,
-	user_id integer NULL REFERENCES office.users(user_id),
-	user_name national character varying(50) NOT NULL,
-	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	browser national character varying(500) NOT NULL,
-	ip_address national character varying(50) NOT NULL,
-	failed_date_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	remote_user national character varying(50) NOT NULL,
-	details national character varying(250) NULL
+	failed_login_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	user_id 				integer NULL REFERENCES office.users(user_id),
+	user_name 				national character varying(50) NOT NULL,
+	office_id 				integer NOT NULL REFERENCES office.offices(office_id),
+	browser 				national character varying(500) NOT NULL,
+	ip_address 				national character varying(50) NOT NULL,
+	failed_date_time 			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	remote_user 				national character varying(50) NOT NULL,
+	details 				national character varying(250) NULL
 );
 
 
 CREATE TABLE policy.lock_outs
 (
-	lock_out_id BIGSERIAL NOT NULL PRIMARY KEY,
-	user_id integer NOT NULL REFERENCES office.users(user_id),
-	lock_out_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW()),
-	lock_out_till TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW() + '5 minutes'::interval)
+	lock_out_id 				BIGSERIAL NOT NULL PRIMARY KEY,
+	user_id 				integer NOT NULL REFERENCES office.users(user_id),
+	lock_out_time 				TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW()),
+	lock_out_till 				TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW() + '5 minutes'::interval)
 );
 
+--TODO: Create a lockout policy.
 CREATE FUNCTION policy.perform_lock_out()
 RETURNS TRIGGER
 AS
@@ -690,50 +691,13 @@ LANGUAGE plpgsql;
 
 
 
-
-CREATE FUNCTION office.sign_in(office_id integer_strict,user_name text, Password text, browser text, ip_address text, remote_user text)
-RETURNS integer
-AS
-$$
-DECLARE "$user_id" integer;
- _LockOutTill TIMESTAMP;
-BEGIN
-	"$user_id":=office.get_user_id_by_user_name($2);
-
-	IF "$user_id" IS NULL THEN
-		INSERT INTO audit.failed_logins(user_name,browser,ip_address,remote_user,details)
-		SELECT $2, $4, $5, $6, 'Invalid user name.';
-	ELSE
-		_LockOutTill:=policy.is_locked_out_till("$user_id");
-		IF NOT ((_LockOutTill IS NOT NULL) AND (_LockOutTill>NOW())) THEN
-			IF office.validate_login($2,$3) THEN
-				IF office.can_login("$user_id",$1) THEN
-					INSERT INTO audit.logins(office_id,user_id,browser,ip_address,remote_user)
-					SELECT $1, "$user_id", $4, $5, $6;
-
-					RETURN CAST(currval('audit.logins_login_id_seq') AS integer);
-				ELSE
-					INSERT INTO audit.failed_logins(office_id,user_id,user_name,browser,ip_address,remote_user,details)
-					SELECT $1, "$user_id", $2, $4, $5, $6, 'User from ' || office.get_office_name_by_id(office.get_office_id_by_user_id("$user_id")) || ' cannot login to ' || office.get_office_name_by_id($1) || '.';
-				END IF;
-			ELSE
-				INSERT INTO audit.failed_logins(office_id,user_id,user_name,browser,ip_address,remote_user,details)
-				SELECT $1, "$user_id", $2, $4, $5, $6, 'Invalid login attempt.';
-			END IF;
-		END IF;
-	END IF;
-
-	RETURN 0;
-END
-$$
-LANGUAGE plpgsql;
-
-
 CREATE TABLE core.price_types
 (
-	price_type_id SERIAL  NOT NULL PRIMARY KEY,
-	price_type_code national character varying(12) NOT NULL,
-	price_type_name national character varying(50) NOT NULL
+	price_type_id 				SERIAL  NOT NULL PRIMARY KEY,
+	price_type_code 			national character varying(12) NOT NULL,
+	price_type_name 			national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -752,12 +716,14 @@ SELECT 'WHO', 'Wholesale';
 
 CREATE TABLE core.menus
 (
-	menu_id SERIAL NOT NULL PRIMARY KEY,
-	menu_text national character varying(250) NOT NULL,
-	url national character varying(250) NULL,
-	menu_code national character varying(12) NOT NULL,
-	level smallint NOT NULL,
-	parent_menu_id integer NULL REFERENCES core.menus(menu_id)
+	menu_id 				SERIAL NOT NULL PRIMARY KEY,
+	menu_text 				national character varying(250) NOT NULL,
+	url 					national character varying(250) NULL,
+	menu_code 				national character varying(12) NOT NULL,
+	level 					smallint NOT NULL,
+	parent_menu_id 				integer NULL REFERENCES core.menus(menu_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX menus_menu_code_uix
@@ -1070,14 +1036,20 @@ WHERE  information_schema.columns.table_schema
 NOT IN 
 	( 
 		'pg_catalog', 'information_schema'
-	);
+	)
+AND 	   information_schema.columns.column_name 
+NOT IN
+	(
+		'audit_user_id', 'audit_ts'
+	)
+;
 	
 	
 CREATE TABLE core.frequencies
 (
-	frequency_id SERIAL NOT NULL PRIMARY KEY,
-	frequency_code national character varying(12) NOT NULL,
-	frequency_name national character varying(50) NOT NULL
+	frequency_id 				SERIAL NOT NULL PRIMARY KEY,
+	frequency_code 				national character varying(12) NOT NULL,
+	frequency_name 				national character varying(50) NOT NULL
 );
 
 
@@ -1096,10 +1068,12 @@ SELECT 5, 'EOY', 'End of Year';
 
 CREATE TABLE core.fiscal_year
 (
-	fiscal_year_code national character varying(12) NOT NULL PRIMARY KEY,
-	fiscal_year_name national character varying(50) NOT NULL,
-	starts_from date NOT NULL,
-	ends_on date NOT NULL
+	fiscal_year_code 			national character varying(12) NOT NULL PRIMARY KEY,
+	fiscal_year_name 			national character varying(50) NOT NULL,
+	starts_from 				date NOT NULL,
+	ends_on 				date NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX fiscal_year_fiscal_year_name_uix
@@ -1114,19 +1088,23 @@ ON core.fiscal_year(ends_on);
 
 CREATE TABLE core.frequency_setups
 (
-	frequency_setup_id SERIAL NOT NULL PRIMARY KEY,
-	fiscal_year_code national character varying(12) NOT NULL REFERENCES core.fiscal_year(fiscal_year_code),
-	value_date date NOT NULL UNIQUE,
-	frequency_id integer NOT NULL REFERENCES core.frequencies(frequency_id)
+	frequency_setup_id			SERIAL NOT NULL PRIMARY KEY,
+	fiscal_year_code 			national character varying(12) NOT NULL REFERENCES core.fiscal_year(fiscal_year_code),
+	value_date 				date NOT NULL UNIQUE,
+	frequency_id 				integer NOT NULL REFERENCES core.frequencies(frequency_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 --TODO: Validation constraints for core.frequency_setups
 
 CREATE TABLE core.units
 (
-	unit_id SERIAL NOT NULL PRIMARY KEY,
-	unit_code national character varying(12) NOT NULL,
-	unit_name national character varying(50) NOT NULL
+	unit_id 				SERIAL NOT NULL PRIMARY KEY,
+	unit_code 				national character varying(12) NOT NULL,
+	unit_name 				national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX units_unit_code_uix
@@ -1183,11 +1161,13 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.compound_units
 (
-	compound_unit_id SERIAL NOT NULL PRIMARY KEY,
-	base_unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	value smallint NOT NULL,
-	compare_unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	CONSTRAINT compound_units_check CHECK(base_unit_id != compare_unit_id)
+	compound_unit_id 			SERIAL NOT NULL PRIMARY KEY,
+	base_unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	value 					smallint NOT NULL,
+	compare_unit_id 			integer NOT NULL REFERENCES core.units(unit_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW()),
+						CONSTRAINT compound_units_check CHECK(base_unit_id != compare_unit_id)
 );
 
 CREATE UNIQUE INDEX compound_units_info_uix
@@ -1459,9 +1439,9 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.account_masters
 (
-	account_master_id SERIAL NOT NULL PRIMARY KEY,
-	account_master_code national character varying(3) NOT NULL,
-	account_master_name national character varying(40) NOT NULL	
+	account_master_id 			SERIAL NOT NULL PRIMARY KEY,
+	account_master_code 			national character varying(3) NOT NULL,
+	account_master_name 			national character varying(40) NOT NULL	
 );
 
 CREATE UNIQUE INDEX account_master_code_uix
@@ -1474,16 +1454,18 @@ ON core.account_masters(UPPER(account_master_name));
 
 CREATE TABLE core.accounts
 (
-	account_id	SERIAL NOT NULL PRIMARY KEY,
-	account_master_id integer NOT NULL REFERENCES core.account_masters(account_master_id),
-	account_code      national character varying(12) NOT NULL,
-	external_code     national character varying(12) NULL CONSTRAINT accounts_external_code_df DEFAULT(''),
-	confidential      boolean NOT NULL CONSTRAINT accounts_confidential_df DEFAULT(false),
-	account_name      national character varying(100) NOT NULL,
-	description	  national character varying(200) NULL,
-	sys_type 	  boolean NOT NULL CONSTRAINT accounts_sys_type_df DEFAULT(false),
-	is_cash		  boolean NOT NULL CONSTRAINT accounts_is_cash_df DEFAULT(false),
-	parent_account_id integer NULL REFERENCES core.accounts(account_id)
+	account_id				SERIAL NOT NULL PRIMARY KEY,
+	account_master_id 			integer NOT NULL REFERENCES core.account_masters(account_master_id),
+	account_code      			national character varying(12) NOT NULL,
+	external_code     			national character varying(12) NULL CONSTRAINT accounts_external_code_df DEFAULT(''),
+	confidential      			boolean NOT NULL CONSTRAINT accounts_confidential_df DEFAULT(false),
+	account_name      			national character varying(100) NOT NULL,
+	description	  			national character varying(200) NULL,
+	sys_type 	  			boolean NOT NULL CONSTRAINT accounts_sys_type_df DEFAULT(false),
+	is_cash		  			boolean NOT NULL CONSTRAINT accounts_is_cash_df DEFAULT(false),
+	parent_account_id 			integer NULL REFERENCES core.accounts(account_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -1836,9 +1818,11 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.account_parameters
 (
-	account_parameter_id SERIAL NOT NULL CONSTRAINT account_parameters_pk PRIMARY KEY,
-	parameter_name national character varying(128) NOT NULL,
-	account_id integer NOT NULL REFERENCES core.accounts(account_id)
+	account_parameter_id 			SERIAL NOT NULL CONSTRAINT account_parameters_pk PRIMARY KEY,
+	parameter_name 				national character varying(128) NOT NULL,
+	account_id 				integer NOT NULL REFERENCES core.accounts(account_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX account_parameters_parameter_name_uix
@@ -1894,16 +1878,18 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.bank_accounts
 (
-	account_id integer NOT NULL CONSTRAINT bank_accounts_pk PRIMARY KEY
+	account_id 				integer NOT NULL CONSTRAINT bank_accounts_pk PRIMARY KEY
 								CONSTRAINT bank_accounts_accounts_fk REFERENCES core.accounts(account_id),
-	maintained_by_user_id integer NOT NULL CONSTRAINT bank_accounts_users_fk REFERENCES office.users(user_id),
-	bank_name national character varying(128) NOT NULL,
-	bank_branch national character varying(128) NOT NULL,
-	bank_contact_number national character varying(128) NULL,
-	bank_address text NULL,
-	bank_account_code national character varying(128) NULL,
-	bank_account_type national character varying(128) NULL,
-	relationship_officer_name national character varying(128) NULL
+	maintained_by_user_id 			integer NOT NULL CONSTRAINT bank_accounts_users_fk REFERENCES office.users(user_id),
+	bank_name 				national character varying(128) NOT NULL,
+	bank_branch 				national character varying(128) NOT NULL,
+	bank_contact_number 			national character varying(128) NULL,
+	bank_address 				text NULL,
+	bank_account_code 			national character varying(128) NULL,
+	bank_account_type 			national character varying(128) NULL,
+	relationship_officer_name		national character varying(128) NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -1928,13 +1914,15 @@ INNER JOIN office.users ON core.bank_accounts.maintained_by_user_id = office.use
 
 CREATE TABLE core.agents
 (
-	agent_id SERIAL NOT NULL PRIMARY KEY,
-	agent_code national character varying(12) NOT NULL,
-	agent_name national character varying(100) NOT NULL,
-	address national character varying(100) NOT NULL,
-	contact_number national character varying(50) NOT NULL,
-	commission_rate decimal_strict2 NOT NULL DEFAULT(0),
-	account_id integer NOT NULL REFERENCES core.accounts(account_id)
+	agent_id				SERIAL NOT NULL PRIMARY KEY,
+	agent_code				national character varying(12) NOT NULL,
+	agent_name 				national character varying(100) NOT NULL,
+	address 				national character varying(100) NOT NULL,
+	contact_number 				national character varying(50) NOT NULL,
+	commission_rate 			decimal_strict2 NOT NULL DEFAULT(0),
+	account_id 				integer NOT NULL REFERENCES core.accounts(account_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX agents_agent_name_uix
@@ -1961,10 +1949,12 @@ WHERE
 
 CREATE TABLE core.bonus_slabs
 (
-	bonus_slab_id SERIAL NOT NULL PRIMARY KEY,
-	bonus_slab_code national character varying(12) NOT NULL,
-	bonus_slab_name national character varying(50) NOT NULL,
-	checking_frequency_id integer NOT NULL REFERENCES core.frequencies(frequency_id)
+	bonus_slab_id 				SERIAL NOT NULL PRIMARY KEY,
+	bonus_slab_code 			national character varying(12) NOT NULL,
+	bonus_slab_name 			national character varying(50) NOT NULL,
+	checking_frequency_id 			integer NOT NULL REFERENCES core.frequencies(frequency_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX bonus_slabs_bonus_slab_code_uix
@@ -1990,12 +1980,14 @@ core.bonus_slabs.checking_frequency_id = core.frequencies.frequency_id;
 
 CREATE TABLE core.bonus_slab_details
 (
-	bonus_slab_detail_id SERIAL NOT NULL PRIMARY KEY,
-	bonus_slab_id integer NOT NULL REFERENCES core.bonus_slabs(bonus_slab_id),
-	amount_from money_strict NOT NULL,
-	amount_to money_strict NOT NULL,
-	bonus_rate decimal_strict NOT NULL,
-	CONSTRAINT bonus_slab_details_amounts_chk CHECK(amount_to>amount_from)
+	bonus_slab_detail_id 			SERIAL NOT NULL PRIMARY KEY,
+	bonus_slab_id 				integer NOT NULL REFERENCES core.bonus_slabs(bonus_slab_id),
+	amount_from 				money_strict NOT NULL,
+	amount_to 				money_strict NOT NULL,
+	bonus_rate 				decimal_strict NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW()),
+						CONSTRAINT bonus_slab_details_amounts_chk CHECK(amount_to>amount_from)
 );
 
 
@@ -2061,10 +2053,12 @@ SELECT 'SLAB 5',366, 999999;
 
 CREATE TABLE core.party_types
 (
-	party_type_id serial NOT NULL PRIMARY KEY,
-	party_type_code national character varying(12) NOT NULL, 
-	party_type_name national character varying(50) NOT NULL,
-	is_supplier boolean NOT NULL CONSTRAINT party_types_is_supplier_df DEFAULT(false)
+	party_type_id 				SERIAL NOT NULL PRIMARY KEY,
+	party_type_code 			national character varying(12) NOT NULL, 
+	party_type_name 			national character varying(50) NOT NULL,
+	is_supplier 				boolean NOT NULL CONSTRAINT party_types_is_supplier_df DEFAULT(false),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 INSERT INTO core.party_types(party_type_code, party_type_name) SELECT 'A', 'Agent';
@@ -2102,7 +2096,9 @@ CREATE TABLE core.parties
 	charge_interest 			boolean NULL,
 	interest_rate 				decimal NULL,
 	interest_compounding_frequency_id	smallint NULL REFERENCES core.frequencies(frequency_id),
-	account_id 				integer NOT NULL REFERENCES core.accounts(account_id)
+	account_id 				integer NOT NULL REFERENCES core.accounts(account_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2287,15 +2283,17 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.shipping_addresses
 (
-	shipping_address_id	BIGSERIAL NOT NULL PRIMARY KEY,
-	shipping_address_code	national character varying(24) NOT NULL,
-	party_id		bigint NOT NULL REFERENCES core.parties(party_id),
-	address_line_1		national character varying(128) NULL,	
-	address_line_2		national character varying(128) NULL,
-	street			national character varying(128) NULL,
-	city			national character varying(128) NOT NULL,
-	state			national character varying(128) NOT NULL,
-	country			national character varying(128) NOT NULL
+	shipping_address_id			BIGSERIAL NOT NULL PRIMARY KEY,
+	shipping_address_code			national character varying(24) NOT NULL,
+	party_id				bigint NOT NULL REFERENCES core.parties(party_id),
+	address_line_1				national character varying(128) NULL,	
+	address_line_2				national character varying(128) NULL,
+	street					national character varying(128) NULL,
+	city					national character varying(128) NOT NULL,
+	state					national character varying(128) NOT NULL,
+	country					national character varying(128) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX shipping_addresses_shipping_address_code_uix
@@ -2393,13 +2391,14 @@ CREATE TABLE core.shippers
 	pan_number 				national character varying(50) NULL,
 	sst_number 				national character varying(50) NULL,
 	cst_number 				national character varying(50) NULL,
-	account_id integer NOT NULL REFERENCES core.accounts(account_id)
+	account_id 				integer NOT NULL REFERENCES core.accounts(account_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
 CREATE UNIQUE INDEX shippers_shipper_code_uix
 ON core.shippers(UPPER(shipper_code));
-
 
 
 /*******************************************************************
@@ -2490,9 +2489,11 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.tax_types
 (
-	tax_type_id SERIAL  NOT NULL PRIMARY KEY,
-	tax_type_code national character varying(12) NOT NULL,
-	tax_type_name national character varying(50) NOT NULL
+	tax_type_id 				SERIAL  NOT NULL PRIMARY KEY,
+	tax_type_code 				national character varying(12) NOT NULL,
+	tax_type_name 				national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX tax_types_tax_type_code_uix
@@ -2506,12 +2507,14 @@ SELECT 'DEF', 'Default';
 
 CREATE TABLE core.taxes
 (
-	tax_id SERIAL  NOT NULL PRIMARY KEY,
-	tax_type_id smallint NOT NULL REFERENCES core.tax_types(tax_type_id),
-	tax_code national character varying(12) NOT NULL,
-	tax_name national character varying(50) NOT NULL,
-	rate decimal NOT NULL,
-	account_id integer NOT NULL REFERENCES core.accounts(account_id)
+	tax_id SERIAL  				NOT NULL PRIMARY KEY,
+	tax_type_id 				smallint NOT NULL REFERENCES core.tax_types(tax_type_id),
+	tax_code 				national character varying(12) NOT NULL,
+	tax_name 				national character varying(50) NOT NULL,
+	rate 					decimal NOT NULL,
+	account_id 				integer NOT NULL REFERENCES core.accounts(account_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2548,12 +2551,14 @@ AND
 
 CREATE TABLE core.item_groups
 (
-	item_group_id SERIAL NOT NULL PRIMARY KEY,
-	item_group_code national character varying(12) NOT NULL,
-	item_group_name national character varying(50) NOT NULL,
-	exclude_from_purchase boolean NOT NULL CONSTRAINT item_groups_exclude_from_purchase_df DEFAULT('No'),
-	exclude_from_sales boolean NOT NULL CONSTRAINT item_groups_exclude_from_sales_df DEFAULT('No'),
-	tax_id smallint NOT NULL REFERENCES core.taxes(tax_id)
+	item_group_id 				SERIAL NOT NULL PRIMARY KEY,
+	item_group_code 			national character varying(12) NOT NULL,
+	item_group_name 			national character varying(50) NOT NULL,
+	exclude_from_purchase 			boolean NOT NULL CONSTRAINT item_groups_exclude_from_purchase_df DEFAULT('No'),
+	exclude_from_sales 			boolean NOT NULL CONSTRAINT item_groups_exclude_from_sales_df DEFAULT('No'),
+	tax_id 					smallint NOT NULL REFERENCES core.taxes(tax_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2569,24 +2574,26 @@ SELECT 'DEF', 'Default', 1;
 
 CREATE TABLE core.items
 (
-	item_id SERIAL NOT NULL PRIMARY KEY,
-	item_code national character varying(12) NOT NULL,
-	item_name national character varying(150) NOT NULL,
-	item_group_id integer NOT NULL REFERENCES core.item_groups(item_group_id),
-	brand_id integer NOT NULL REFERENCES core.brands(brand_id),
-	preferred_supplier_id integer NULL REFERENCES core.parties(party_id) 
-	CONSTRAINT items_preferred_supplier_id_chk CHECK(core.is_supplier(preferred_supplier_id) = true),
-	lead_time_in_days integer NOT NULL DEFAULT(0),
-	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	hot_item boolean NOT NULL,
-	cost_price money_strict NOT NULL,
-	cost_price_includes_tax boolean NOT NULL CONSTRAINT items_cost_price_includes_tax_df DEFAULT('No'),
-	selling_price money_strict NOT NULL,
-	selling_price_includes_tax boolean NOT NULL CONSTRAINT items_selling_price_includes_tax_df DEFAULT('No'),
-	tax_id integer NOT NULL REFERENCES core.taxes(tax_id),
-	reorder_level integer NOT NULL,
-	item_image image_path NULL,
-	maintain_stock boolean NOT NULL DEFAULT(true)
+	item_id 				SERIAL NOT NULL PRIMARY KEY,
+	item_code 				national character varying(12) NOT NULL,
+	item_name 				national character varying(150) NOT NULL,
+	item_group_id 				integer NOT NULL REFERENCES core.item_groups(item_group_id),
+	brand_id 				integer NOT NULL REFERENCES core.brands(brand_id),
+	preferred_supplier_id 			integer NULL REFERENCES core.parties(party_id) 
+						CONSTRAINT items_preferred_supplier_id_chk CHECK(core.is_supplier(preferred_supplier_id) = true),
+	lead_time_in_days 			integer NOT NULL DEFAULT(0),
+	unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	hot_item 				boolean NOT NULL,
+	cost_price 				money_strict NOT NULL,
+	cost_price_includes_tax 		boolean NOT NULL CONSTRAINT items_cost_price_includes_tax_df DEFAULT('No'),
+	selling_price 				money_strict NOT NULL,
+	selling_price_includes_tax 		boolean NOT NULL CONSTRAINT items_selling_price_includes_tax_df DEFAULT('No'),
+	tax_id 					integer NOT NULL REFERENCES core.taxes(tax_id),
+	reorder_level 				integer NOT NULL,
+	item_image 				image_path NULL,
+	maintain_stock 				boolean NOT NULL DEFAULT(true),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX items_item_name_uix
@@ -2652,14 +2659,15 @@ SELECT * FROM core.items;
 
 CREATE TABLE core.item_selling_prices
 (	
-	item_selling_price_id BIGSERIAL NOT NULL PRIMARY KEY,
-	item_id integer NOT NULL REFERENCES core.items(item_id),
-	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	party_type_id smallint NULL REFERENCES core.party_types(party_type_id), 
-	price_type_id smallint NULL REFERENCES core.price_types(price_type_id),
-	includes_tax boolean NOT NULL CONSTRAINT item_selling_prices_includes_tax_df DEFAULT('No'),
-	price money_strict NOT NULL,
-	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now())
+	item_selling_price_id			BIGSERIAL NOT NULL PRIMARY KEY,
+	item_id 				integer NOT NULL REFERENCES core.items(item_id),
+	unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	party_type_id 				smallint NULL REFERENCES core.party_types(party_type_id), 
+	price_type_id 				smallint NULL REFERENCES core.price_types(price_type_id),
+	includes_tax 				boolean NOT NULL CONSTRAINT item_selling_prices_includes_tax_df DEFAULT('No'),
+	price 					money_strict NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2689,14 +2697,16 @@ ON	core.item_selling_prices.party_type_id = core.party_types.party_type_id;
 
 CREATE TABLE core.item_cost_prices
 (	
-	item_cost_price_id BIGSERIAL NOT NULL PRIMARY KEY,
-	item_id integer NOT NULL REFERENCES core.items(item_id),
-	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	party_id bigint NULL REFERENCES core.parties(party_id),
-	lead_time_in_days integer NOT NULL DEFAULT(0),
-	includes_tax boolean NOT NULL CONSTRAINT item_cost_prices_includes_tax_df DEFAULT('No'),
-	price money_strict NOT NULL
+	item_cost_price_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	item_id 				integer NOT NULL REFERENCES core.items(item_id),
+	entry_ts 				TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	party_id 				bigint NULL REFERENCES core.parties(party_id),
+	lead_time_in_days 			integer NOT NULL DEFAULT(0),
+	includes_tax 				boolean NOT NULL CONSTRAINT item_cost_prices_includes_tax_df DEFAULT('No'),
+	price 					money_strict NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2793,9 +2803,11 @@ LANGUAGE plpgsql;
 
 CREATE TABLE office.store_types
 (
-	store_type_id SERIAL NOT NULL PRIMARY KEY,
-	store_type_code national character varying(12) NOT NULL,
-	store_type_name national character varying(50) NOT NULL
+	store_type_id 				SERIAL NOT NULL PRIMARY KEY,
+	store_type_code 			national character varying(12) NOT NULL,
+	store_type_name 			national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX store_types_Code_uix
@@ -2814,13 +2826,15 @@ SELECT 'PRO', 'Production';
 
 CREATE TABLE office.stores
 (
-	store_id SERIAL  NOT NULL PRIMARY KEY,
-	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	store_code national character varying(12) NOT NULL,
-	store_name national character varying(50) NOT NULL,
-	address national character varying(50) NULL,
-	store_type_id integer NOT NULL REFERENCES office.store_types(store_type_id),
-	allow_sales boolean NOT NULL DEFAULT(true)
+	store_id SERIAL 			NOT NULL PRIMARY KEY,
+	office_id 				integer NOT NULL REFERENCES office.offices(office_id),
+	store_code 				national character varying(12) NOT NULL,
+	store_name 				national character varying(50) NOT NULL,
+	address 				national character varying(50) NULL,
+	store_type_id 				integer NOT NULL REFERENCES office.store_types(store_type_id),
+	allow_sales 				boolean NOT NULL DEFAULT(true),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2839,12 +2853,14 @@ SELECT * FROM office.stores;
 
 CREATE TABLE office.cash_repositories
 (
-	cash_repository_id BIGSERIAL NOT NULL PRIMARY KEY,
-	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	cash_repository_code national character varying(12) NOT NULL,
-	cash_repository_name national character varying(50) NOT NULL,
-	parent_cash_repository_id integer NULL REFERENCES office.cash_repositories(cash_repository_id),
-	description national character varying(100) NULL
+	cash_repository_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	office_id 				integer NOT NULL REFERENCES office.offices(office_id),
+	cash_repository_code 			national character varying(12) NOT NULL,
+	cash_repository_name 			national character varying(50) NOT NULL,
+	parent_cash_repository_id 		integer NULL REFERENCES office.cash_repositories(cash_repository_id),
+	description 				national character varying(100) NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2904,11 +2920,13 @@ ON
  
 CREATE TABLE office.counters
 (
-	counter_id SERIAL NOT NULL PRIMARY KEY,
-	store_id smallint NOT NULL REFERENCES office.stores(store_id),
-	cash_repository_id integer NOT NULL REFERENCES office.cash_repositories(cash_repository_id),
-	counter_code national character varying(12) NOT NULL,
-	counter_name national character varying(50) NOT NULL
+	counter_id 				SERIAL NOT NULL PRIMARY KEY,
+	store_id 				smallint NOT NULL REFERENCES office.stores(store_id),
+	cash_repository_id 			integer NOT NULL REFERENCES office.cash_repositories(cash_repository_id),
+	counter_code 				national character varying(12) NOT NULL,
+	counter_name 				national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -2921,9 +2939,11 @@ ON office.counters(UPPER(counter_name));
 
 CREATE TABLE office.cost_centers
 (
-	cost_center_id SERIAL NOT NULL PRIMARY KEY,
-	cost_center_code national character varying(24) NOT NULL,
-	cost_center_name national character varying(50) NOT NULL
+	cost_center_id 				SERIAL NOT NULL PRIMARY KEY,
+	cost_center_code 			national character varying(24) NOT NULL,
+	cost_center_name 			national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX cost_centers_cost_center_code_uix
@@ -2974,53 +2994,59 @@ ON office.cashiers(user_id ASC, transaction_date DESC);
 
 CREATE TABLE policy.store_policies
 (
-	store_policy_id BIGSERIAL NOT NULL PRIMARY KEY,
-	written_by_user_id integer NOT NULL REFERENCES office.users(user_id),
-	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL,
-	status boolean NOT NULL
+	store_policy_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	written_by_user_id 			integer NOT NULL REFERENCES office.users(user_id),
+	status 					boolean NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE TABLE policy.store_policy_details
 (
-	store_policy_detail_id BIGSERIAL NOT NULL PRIMARY KEY,
-	store_policy_id integer NOT NULL REFERENCES policy.store_policies(store_policy_id),
-	user_id integer NOT NULL REFERENCES office.users(user_id),
-	store_id smallint NOT NULL REFERENCES office.stores(store_id)
+	store_policy_detail_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	store_policy_id 			integer NOT NULL REFERENCES policy.store_policies(store_policy_id),
+	user_id 				integer NOT NULL REFERENCES office.users(user_id),
+	store_id 				smallint NOT NULL REFERENCES office.stores(store_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE TABLE core.item_opening_inventory
 (
-	item_opening_inventory_id BIGSERIAL NOT NULL PRIMARY KEY,
-	entry_ts TIMESTAMP WITH TIME ZONE NOT NULL,
-	item_id integer NOT NULL REFERENCES core.items(item_id),
-	store_id smallint NOT NULL REFERENCES office.stores(store_id),
-	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	quantity integer NOT NULL,
-	amount money_strict NOT NULL,
-	base_unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	base_quantity decimal NOT NULL
+	item_opening_inventory_id 		BIGSERIAL NOT NULL PRIMARY KEY,
+	entry_ts 				TIMESTAMP WITH TIME ZONE NOT NULL,
+	item_id 				integer NOT NULL REFERENCES core.items(item_id),
+	store_id 				smallint NOT NULL REFERENCES office.stores(store_id),
+	unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	quantity 				integer NOT NULL,
+	amount 					money_strict NOT NULL,
+	base_unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	base_quantity 				decimal NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
 CREATE TABLE audit.history
 (
-	activity_id BIGSERIAL NOT NULL PRIMARY KEY,
-	event_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW()),
-	principal_user national character varying(50) NOT NULL DEFAULT(current_user),
-	user_id integer /*NOT*/ NULL REFERENCES office.users(user_id),
-	type national character varying(50) NOT NULL,
-	table_schema national character varying(50) NOT NULL,
-	table_name national character varying(50) NOT NULL,
-	primary_key_id national character varying(50) NOT NULL,
-	column_name national character varying(50) NOT NULL,
-	old_val text NULL,
-	new_val text NULL,
-	CONSTRAINT audit_history_val_chk 
-		CHECK(
-				(old_val IS NULL AND new_val IS NOT NULL) OR
-				(old_val IS NOT NULL AND new_val IS NULL) OR
-				(old_val IS NOT NULL AND new_val IS NOT NULL)
-			)
+	activity_id				BIGSERIAL NOT NULL PRIMARY KEY,
+	event_ts 				TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW()),
+	principal_user 				national character varying(50) NOT NULL DEFAULT(current_user),
+	user_id 				integer /*NOT*/ NULL REFERENCES office.users(user_id),
+	type 					national character varying(50) NOT NULL,
+	table_schema 				national character varying(50) NOT NULL,
+	table_name 				national character varying(50) NOT NULL,
+	primary_key_id 				national character varying(50) NOT NULL,
+	column_name 				national character varying(50) NOT NULL,
+	old_val 				text NULL,
+	new_val 				text NULL,
+						CONSTRAINT audit_history_val_chk 
+							CHECK
+							(
+									(old_val IS NULL AND new_val IS NOT NULL) OR
+									(old_val IS NOT NULL AND new_val IS NULL) OR
+									(old_val IS NOT NULL AND new_val IS NOT NULL)
+							)
 );
 
 
@@ -3090,37 +3116,39 @@ LANGUAGE plpgsql;
 
 CREATE TABLE transactions.transaction_master
 (
-	transaction_master_id BIGSERIAL NOT NULL PRIMARY KEY,
-	transaction_counter integer NOT NULL, --Sequence of transactions of a date
-	transaction_code national character varying(50) NOT NULL,
-	book national character varying(50) NOT NULL, --Transaction book. Ex. Sales, Purchase, Journal
-	value_date date NOT NULL,
-	transaction_ts TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	login_id bigint NOT NULL REFERENCES audit.logins(login_id),
-	user_id integer NOT NULL REFERENCES office.users(user_id),
-	sys_user_id integer NULL REFERENCES office.users(user_id)
-		CONSTRAINT transaction_master_sys_user_id_chk CHECK(sys_user_id IS NULL OR office.is_sys_user(sys_user_id)=true),
-	office_id integer NOT NULL REFERENCES office.offices(office_id),
-	cost_center_id integer NULL REFERENCES office.cost_centers(cost_center_id),
-	reference_number national character varying(24) NULL,
-	statement_reference text NULL,
-	last_verified_on TIMESTAMP WITH TIME ZONE NULL, 
-	verified_by_user_id integer NULL REFERENCES office.users(user_id),
-	verification_status_id smallint NOT NULL REFERENCES core.verification_statuses(verification_status_id) DEFAULT(0/*Awaiting verification*/),
-	verification_reason national character varying(128) NOT NULL CONSTRAINT transaction_master_verification_reason_df DEFAULT(''),
-	CONSTRAINT transaction_master_login_id_sys_user_id_chk
-		CHECK
-		(
-			(
-				login_id IS NULL AND sys_user_id IS NOT NULL
-			)
+	transaction_master_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	transaction_counter 			integer NOT NULL, --Sequence of transactions of a date
+	transaction_code 			national character varying(50) NOT NULL,
+	book 					national character varying(50) NOT NULL, --Transaction book. Ex. Sales, Purchase, Journal
+	value_date 				date NOT NULL,
+	transaction_ts 				TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	login_id 				bigint NOT NULL REFERENCES audit.logins(login_id),
+	user_id 				integer NOT NULL REFERENCES office.users(user_id),
+	sys_user_id 				integer NULL REFERENCES office.users(user_id)
+						CONSTRAINT transaction_master_sys_user_id_chk CHECK(sys_user_id IS NULL OR office.is_sys_user(sys_user_id)=true),
+	office_id 				integer NOT NULL REFERENCES office.offices(office_id),
+	cost_center_id 				integer NULL REFERENCES office.cost_centers(cost_center_id),
+	reference_number 			national character varying(24) NULL,
+	statement_reference			text NULL,
+	last_verified_on 			TIMESTAMP WITH TIME ZONE NULL, 
+	verified_by_user_id 			integer NULL REFERENCES office.users(user_id),
+	verification_status_id 			smallint NOT NULL REFERENCES core.verification_statuses(verification_status_id) DEFAULT(0/*Awaiting verification*/),
+	verification_reason 			national character varying(128) NOT NULL CONSTRAINT transaction_master_verification_reason_df DEFAULT(''),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW()),
+						CONSTRAINT transaction_master_login_id_sys_user_id_chk
+							CHECK
+							(
+								(
+									login_id IS NULL AND sys_user_id IS NOT NULL
+								)
 
-			OR
+								OR
 
-			(
-				login_id IS NOT NULL AND sys_user_id IS NULL
-			)
-		)
+								(
+									login_id IS NOT NULL AND sys_user_id IS NULL
+								)
+							)
 );
 
 CREATE UNIQUE INDEX transaction_master_transaction_code_uix
@@ -3130,46 +3158,52 @@ ON transactions.transaction_master(UPPER(transaction_code));
 
 CREATE TABLE transactions.transaction_details
 (
-	transaction_detail_id BIGSERIAL NOT NULL PRIMARY KEY,
-	transaction_master_id bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
-	tran_type transaction_type NOT NULL,
-	account_id integer NOT NULL REFERENCES core.accounts(account_id),
-	statement_reference text NULL,
-	cash_repository_id integer NULL REFERENCES office.cash_repositories(cash_repository_id),
-	amount money_strict NOT NULL
+	transaction_detail_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	transaction_master_id 			bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
+	tran_type 				transaction_type NOT NULL,
+	account_id 				integer NOT NULL REFERENCES core.accounts(account_id),
+	statement_reference 			text NULL,
+	cash_repository_id 			integer NULL REFERENCES office.cash_repositories(cash_repository_id),
+	amount 					money_strict NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE TABLE transactions.stock_master
 (
-	stock_master_id BIGSERIAL NOT NULL PRIMARY KEY,
-	transaction_master_id bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
-	party_id bigint NULL REFERENCES core.parties(party_id),
-	agent_id integer NULL REFERENCES core.agents(agent_id),
-	price_type_id integer NULL REFERENCES core.price_types(price_type_id),
-	is_credit boolean NOT NULL CONSTRAINT stock_master_is_credit_df DEFAULT(false),
-	shipper_id integer NULL REFERENCES core.shippers(shipper_id),
-	shipping_address_id NULL REFERENCES core.shipping_addresses(shipping_address_id),
-	shipping_charge money NOT NULL CONSTRAINT stock_master_shipping_charge_df DEFAULT(0),
-	store_id integer NULL REFERENCES office.stores(store_id),
-	cash_repository_id integer NULL REFERENCES office.cash_repositories(cash_repository_id)
+	stock_master_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	transaction_master_id 			bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
+	party_id 				bigint NULL REFERENCES core.parties(party_id),
+	agent_id 				integer NULL REFERENCES core.agents(agent_id),
+	price_type_id 				integer NULL REFERENCES core.price_types(price_type_id),
+	is_credit 				boolean NOT NULL CONSTRAINT stock_master_is_credit_df DEFAULT(false),
+	shipper_id 				integer NULL REFERENCES core.shippers(shipper_id),
+	shipping_address_id 			integer NULL REFERENCES core.shipping_addresses(shipping_address_id),
+	shipping_charge 			money NOT NULL CONSTRAINT stock_master_shipping_charge_df DEFAULT(0),
+	store_id 				integer NULL REFERENCES office.stores(store_id),
+	cash_repository_id 			integer NULL REFERENCES office.cash_repositories(cash_repository_id),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
 CREATE TABLE transactions.stock_details
 (
-	stock_master_detail_id BIGSERIAL NOT NULL PRIMARY KEY,
-	stock_master_id bigint NOT NULL REFERENCES transactions.stock_master(stock_master_id),
-	tran_type transaction_type NOT NULL,
-	store_id integer NULL REFERENCES office.stores(store_id),
-	item_id integer NOT NULL REFERENCES core.items(item_id),
-	quantity integer NOT NULL,
-	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	base_quantity decimal NOT NULL,
-	base_unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	price money_strict NOT NULL,
-	discount money NOT NULL CONSTRAINT stock_details_discount_df DEFAULT(0),
-	tax_rate decimal NOT NULL CONSTRAINT stock_details_tax_rate_df DEFAULT(0),
-	tax money NOT NULL CONSTRAINT stock_details_tax_df DEFAULT(0)	
+	stock_master_detail_id 			BIGSERIAL NOT NULL PRIMARY KEY,
+	stock_master_id 			bigint NOT NULL REFERENCES transactions.stock_master(stock_master_id),
+	tran_type 				transaction_type NOT NULL,
+	store_id 				integer NULL REFERENCES office.stores(store_id),
+	item_id 				integer NOT NULL REFERENCES core.items(item_id),
+	quantity 				integer NOT NULL,
+	unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	base_quantity 				decimal NOT NULL,
+	base_unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	price 					money_strict NOT NULL,
+	discount money 				NOT NULL CONSTRAINT stock_details_discount_df DEFAULT(0),
+	tax_rate 				decimal NOT NULL CONSTRAINT stock_details_tax_rate_df DEFAULT(0),
+	tax money 				NOT NULL CONSTRAINT stock_details_tax_df DEFAULT(0),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE MATERIALIZED VIEW transactions.trial_balance_view
@@ -3184,41 +3218,47 @@ GROUP BY account_id;
 --TODO
 CREATE TABLE transactions.non_gl_stock_master
 (
-	non_gl_stock_master_id	BIGSERIAL NOT NULL PRIMARY KEY,
-	value_date 		date NOT NULL,
-	book			national character varying(48) NOT NULL,
-	party_id 		bigint NULL REFERENCES core.parties(party_id),
-	price_type_id 		integer NULL REFERENCES core.price_types(price_type_id),
-	transaction_ts 		TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
-	login_id 		bigint NOT NULL REFERENCES audit.logins(login_id),
-	user_id 		integer NOT NULL REFERENCES office.users(user_id),
-	office_id 		integer NOT NULL REFERENCES office.offices(office_id),
-	reference_number	national character varying(24) NULL,
-	statement_reference 	text NULL
+	non_gl_stock_master_id			BIGSERIAL NOT NULL PRIMARY KEY,
+	value_date 				date NOT NULL,
+	book					national character varying(48) NOT NULL,
+	party_id 				bigint NULL REFERENCES core.parties(party_id),
+	price_type_id 				integer NULL REFERENCES core.price_types(price_type_id),
+	transaction_ts 				TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(now()),
+	login_id 				bigint NOT NULL REFERENCES audit.logins(login_id),
+	user_id 				integer NOT NULL REFERENCES office.users(user_id),
+	office_id 				integer NOT NULL REFERENCES office.offices(office_id),
+	reference_number			national character varying(24) NULL,
+	statement_reference 			text NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
 CREATE TABLE transactions.non_gl_stock_details
 (
-	non_gl_stock_details_id BIGSERIAL NOT NULL PRIMARY KEY,
-	non_gl_stock_master_id bigint NOT NULL REFERENCES transactions.non_gl_stock_master(non_gl_stock_master_id),
-	item_id integer NOT NULL REFERENCES core.items(item_id),
-	quantity integer NOT NULL,
-	unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	base_quantity decimal NOT NULL,
-	base_unit_id integer NOT NULL REFERENCES core.units(unit_id),
-	price money_strict NOT NULL,
-	discount money NOT NULL CONSTRAINT non_gl_stock_details_discount_df DEFAULT(0),
-	tax_rate decimal NOT NULL CONSTRAINT non_gl_stock_details_tax_rate_df DEFAULT(0),
-	tax money NOT NULL CONSTRAINT non_gl_stock_details_tax_df DEFAULT(0)	
+	non_gl_stock_details_id 		BIGSERIAL NOT NULL PRIMARY KEY,
+	non_gl_stock_master_id 			bigint NOT NULL REFERENCES transactions.non_gl_stock_master(non_gl_stock_master_id),
+	item_id 				integer NOT NULL REFERENCES core.items(item_id),
+	quantity 				integer NOT NULL,
+	unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	base_quantity 				decimal NOT NULL,
+	base_unit_id 				integer NOT NULL REFERENCES core.units(unit_id),
+	price 					money_strict NOT NULL,
+	discount 				money NOT NULL CONSTRAINT non_gl_stock_details_discount_df DEFAULT(0),
+	tax_rate 				decimal NOT NULL CONSTRAINT non_gl_stock_details_tax_rate_df DEFAULT(0),
+	tax 					money NOT NULL CONSTRAINT non_gl_stock_details_tax_df DEFAULT(0),
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
 CREATE TABLE crm.lead_sources
 (
-	lead_source_id	SERIAL NOT NULL PRIMARY KEY,
-	lead_source_code national character varying(12) NOT NULL,
-	lead_source_name national character varying(128) NOT NULL
+	lead_source_id				SERIAL NOT NULL PRIMARY KEY,
+	lead_source_code 			national character varying(12) NOT NULL,
+	lead_source_name 			national character varying(128) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX lead_sources_lead_source_code_uix
@@ -3238,9 +3278,11 @@ SELECT 'PR', 'Partner';
 
 CREATE TABLE crm.lead_statuses
 (
-	lead_status_id	SERIAL NOT NULL PRIMARY KEY,
-	lead_status_code national character varying(12) NOT NULL,
-	lead_status_name national character varying(128) NOT NULL
+	lead_status_id				SERIAL NOT NULL PRIMARY KEY,
+	lead_status_code 			national character varying(12) NOT NULL,
+	lead_status_name 			national character varying(128) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX lead_statuses_lead_status_code_uix
@@ -3259,9 +3301,11 @@ SELECT 'QF', 'Qualified';
 
 CREATE TABLE crm.opportunity_stages
 (
-	opportunity_stage_id SERIAL  NOT NULL PRIMARY KEY,
-	opportunity_stage_code national character varying(12) NOT NULL,
-	opportunity_stage_name national character varying(50) NOT NULL
+	opportunity_stage_id 			SERIAL  NOT NULL PRIMARY KEY,
+	opportunity_stage_code 			national character varying(12) NOT NULL,
+	opportunity_stage_name 			national character varying(50) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 
@@ -3362,8 +3406,10 @@ LANGUAGE plpgsql;
 
 CREATE TABLE core.switch_categories
 (
-	switch_category_id 	SERIAL NOT NULL PRIMARY KEY,
-	switch_category_name	national character varying(128) NOT NULL
+	switch_category_id 			SERIAL NOT NULL PRIMARY KEY,
+	switch_category_name			national character varying(128) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX switch_categories_switch_category_name_uix
@@ -3389,10 +3435,12 @@ LANGUAGE plpgsql;
 
 CREATE TABLE office.work_centers
 (
-	work_center_id		SERIAL NOT NULL PRIMARY KEY,
-	office_id		integer NOT NULL REFERENCES office.offices(office_id),
-	work_center_code	national character varying(12) NOT NULL,
-	work_center_name	national character varying(128) NOT NULL
+	work_center_id				SERIAL NOT NULL PRIMARY KEY,
+	office_id				integer NOT NULL REFERENCES office.offices(office_id),
+	work_center_code			national character varying(12) NOT NULL,
+	work_center_name			national character varying(128) NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE UNIQUE INDEX work_centers_work_center_code_uix
@@ -3462,7 +3510,9 @@ CREATE TABLE policy.voucher_verification_policy
 	self_verification_limit			money NOT NULL CONSTRAINT voucher_verification_policy_self_verification_limit_df DEFAULT(0),
 	effective_from				date NOT NULL,
 	ends_on					date NOT NULL,
-	is_active				boolean NOT NULL
+	is_active				boolean NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE VIEW policy.voucher_verification_policy_view
@@ -3496,7 +3546,9 @@ CREATE TABLE policy.auto_verification_policy
 	gl_verification_limit			money NOT NULL CONSTRAINT auto_verification_policy_gl_verification_limit_df DEFAULT(0),
 	effective_from				date NOT NULL,
 	ends_on					date NOT NULL,
-	is_active				boolean NOT NULL
+	is_active				boolean NOT NULL,
+	audit_user_id				integer NULL REFERENCES office.users(user_id),
+	audit_ts				TIMESTAMP WITH TIME ZONE NULL DEFAULT(NOW())
 );
 
 CREATE VIEW policy.auto_verification_policy_view

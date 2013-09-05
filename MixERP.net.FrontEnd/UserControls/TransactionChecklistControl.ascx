@@ -80,7 +80,7 @@ http://mozilla.org/MPL/2.0/.
         DateTime transactionDate = DateTime.Now;
         long transactionMasterId = Pes.Utility.Conversion.TryCastLong(this.Request["TranId"]);
 
-        MixERP.Net.Common.Transactions.Models.VerificationModel model = MixERP.Net.BusinessLayer.Transactions.Verification.GetVerificationStatus(transactionMasterId);
+        MixERP.Net.Common.Models.Transactions.VerificationModel model = MixERP.Net.BusinessLayer.Transactions.Verification.GetVerificationStatus(transactionMasterId);
         if(
             model.Verification.Equals(0) //Awaiting verification 
             ||
@@ -131,7 +131,7 @@ http://mozilla.org/MPL/2.0/.
     private void ShowVerificationStatus()
     {
         long transactionMasterId = Pes.Utility.Conversion.TryCastLong(this.Request["TranId"]);
-        MixERP.Net.Common.Transactions.Models.VerificationModel model = MixERP.Net.BusinessLayer.Transactions.Verification.GetVerificationStatus(transactionMasterId);
+        MixERP.Net.Common.Models.Transactions.VerificationModel model = MixERP.Net.BusinessLayer.Transactions.Verification.GetVerificationStatus(transactionMasterId);
 
         switch(model.Verification)
         {

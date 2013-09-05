@@ -17,7 +17,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
     public static class NonGlStockTransaction
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        public static long Add(string book, DateTime valueDate, int officeId, int userId, long logOnId, string referenceNumber, string statementReference, MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details)
+        public static long Add(string book, DateTime valueDate, int officeId, int userId, long logOnId, string referenceNumber, string statementReference, MixERP.Net.Common.Models.Transactions.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Models.Transactions.StockMasterDetailModel> details)
         {
             if(stockMaster == null)
             {
@@ -83,7 +83,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                                 transactions.non_gl_stock_details(non_gl_stock_master_id, item_id, quantity, unit_id, base_quantity, base_unit_id, price, discount, tax_rate, tax) 
                                 SELECT  @NonGlStockMasterId, core.get_item_id_by_item_code(@ItemCode), @Quantity, core.get_unit_id_by_unit_name(@UnitName), core.get_base_quantity_by_unit_name(@UnitName, @Quantity), core.get_base_unit_id_by_unit_name(@UnitName), @Price, @Discount, @TaxRate, @Tax;";
 
-                        foreach(MixERP.Net.Common.Transactions.Models.StockMasterDetailModel model in details)
+                        foreach(MixERP.Net.Common.Models.Transactions.StockMasterDetailModel model in details)
                         {
                             using(NpgsqlCommand stockMasterDetailRow = new NpgsqlCommand(sql, connection))
                             {

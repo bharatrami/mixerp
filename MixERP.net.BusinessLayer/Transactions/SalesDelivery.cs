@@ -18,8 +18,8 @@ namespace MixERP.Net.BusinessLayer.Transactions
     {
         public static long Add(DateTime valueDate, int storeId, string partyCode, int priceTypeId, GridView grid, int shipperId, decimal shippingCharge, int costCenterId, string referenceNumber, string statementReference)
         {
-            MixERP.Net.Common.Transactions.Models.StockMasterModel stockMaster = new MixERP.Net.Common.Transactions.Models.StockMasterModel();
-            Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel> details = new Collection<MixERP.Net.Common.Transactions.Models.StockMasterDetailModel>();
+            MixERP.Net.Common.Models.Transactions.StockMasterModel stockMaster = new MixERP.Net.Common.Models.Transactions.StockMasterModel();
+            Collection<MixERP.Net.Common.Models.Transactions.StockMasterDetailModel> details = new Collection<MixERP.Net.Common.Models.Transactions.StockMasterDetailModel>();
             long transactionMasterId = 0;
 
             stockMaster.PartyCode = partyCode;
@@ -34,7 +34,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
                 {
                     foreach(GridViewRow row in grid.Rows)
                     {
-                        MixERP.Net.Common.Transactions.Models.StockMasterDetailModel detail = new MixERP.Net.Common.Transactions.Models.StockMasterDetailModel();
+                        MixERP.Net.Common.Models.Transactions.StockMasterDetailModel detail = new MixERP.Net.Common.Models.Transactions.StockMasterDetailModel();
 
                         detail.StoreId = storeId;
                         detail.ItemCode = row.Cells[0].Text;

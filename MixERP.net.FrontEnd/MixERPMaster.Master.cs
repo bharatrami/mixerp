@@ -7,6 +7,7 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -26,16 +27,14 @@ namespace MixERP.Net.FrontEnd
         {
             string menu = string.Empty;
 
-            using (DataTable table = MixERP.Net.BusinessLayer.Core.Menu.GetMenuTable(0, 0))
+            Collection<MixERP.Net.Common.Models.Core.Menu> collection = MixERP.Net.BusinessLayer.Core.Menu.GetMenuCollection(0, 0);
+            if(collection.Count > 0)
             {
-                if (table.Rows.Count > 0)
+                foreach(MixERP.Net.Common.Models.Core.Menu model in collection)
                 {
-                    foreach (DataRow row in table.Rows)
-                    {
-                        string menuText = Pes.Utility.Conversion.TryCastString(row["menu_text"]);
-                        string url = Pes.Utility.Conversion.TryCastString(row["url"]);
-                        menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
-                    }
+                    string menuText = model.MenuText;
+                    string url = model.Url;
+                    menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
                 }
             }
 

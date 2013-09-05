@@ -18,7 +18,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
     {
         public static long Add(DateTime valueDate, string referenceNumber, int costCenterId, GridView grid)
         {
-            Collection<MixERP.Net.Common.Transactions.Models.TransactionDetailModel> details = new Collection<MixERP.Net.Common.Transactions.Models.TransactionDetailModel>();
+            Collection<MixERP.Net.Common.Models.Transactions.TransactionDetailModel> details = new Collection<MixERP.Net.Common.Models.Transactions.TransactionDetailModel>();
             long transactionMasterId = 0;
 
             if(grid != null)
@@ -27,7 +27,7 @@ namespace MixERP.Net.BusinessLayer.Transactions
                 {
                     foreach(GridViewRow row in grid.Rows)
                     {
-                        MixERP.Net.Common.Transactions.Models.TransactionDetailModel detail = new MixERP.Net.Common.Transactions.Models.TransactionDetailModel();
+                        MixERP.Net.Common.Models.Transactions.TransactionDetailModel detail = new MixERP.Net.Common.Models.Transactions.TransactionDetailModel();
                         detail.AccountCode = row.Cells[0].Text;
                         detail.CashRepositoryName = row.Cells[2].Text;
                         detail.StatementReference = row.Cells[3].Text.Replace("&nbsp;", " ").Trim();

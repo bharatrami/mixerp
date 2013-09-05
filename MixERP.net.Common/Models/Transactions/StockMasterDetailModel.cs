@@ -10,19 +10,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.Common.Transactions.Models
+namespace MixERP.Net.Common.Models.Transactions
 {
-    public class StockMasterModel
+    public class StockMasterDetailModel
     {
+        public long StockMasterDetailId { get; set; }
         public long StockMasterId { get; set; }
-        public long TransactionMasterId { get; set; }
-        public string PartyCode { get; set; }
-        public int AgentId { get; set; }
-        public int PriceTypeId { get; set; }
-        public bool IsCredit { get; set; }
-        public int ShipperId { get; set; }
-        public decimal ShippingCharge { get; set; }
+        public TransactionType TransactionType { get; set; }
         public int StoreId { get; set; }
-        public int CashRepositoryId { get; set; }
+        public string ItemCode { get; set; }
+        public int Quantity { get; set; }
+        public string UnitName { get; set; }
+        public decimal Price { get; set; }
+        public decimal Discount { get; set; }
+        public decimal TaxRate { get; set; }
+        public decimal Tax { get; set; }
     }
 }

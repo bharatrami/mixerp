@@ -16,7 +16,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 {
     public static class Transaction
     {
-        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int costCenterId, string referenceNumber, Collection<MixERP.Net.Common.Transactions.Models.TransactionDetailModel> details)
+        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int costCenterId, string referenceNumber, Collection<MixERP.Net.Common.Models.Transactions.TransactionDetailModel> details)
         {
             if(details == null)
             {
@@ -66,7 +66,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                             transactionMasterId = Pes.Utility.Conversion.TryCastLong(master.ExecuteScalar());
                         }
 
-                        foreach(MixERP.Net.Common.Transactions.Models.TransactionDetailModel model in details)
+                        foreach(MixERP.Net.Common.Models.Transactions.TransactionDetailModel model in details)
                         {
                             sql = "INSERT INTO transactions.transaction_details(transaction_master_id, tran_type, account_id, statement_reference, cash_repository_id, amount) SELECT @TransactionMasterId, @TranType, core.get_account_id_by_account_code(@AccountCode::text), @StatementReference, office.get_cash_repository_id_by_cash_repository_name(@CashRepositoryName::text), @Amount;";
 

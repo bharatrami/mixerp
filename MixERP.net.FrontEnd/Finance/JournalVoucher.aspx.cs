@@ -41,7 +41,7 @@ namespace MixERP.Net.FrontEnd.Finance
 
         protected void TransactionGridView_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
+            Collection<MixERP.Net.Common.Models.Transactions.JournalDetailsModel> table = this.GetTable();
 
             GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
             int index = row.RowIndex;
@@ -76,21 +76,21 @@ namespace MixERP.Net.FrontEnd.Finance
             CreditTotalLiteral.Text = "<label for='CreditTotalTextBox'>" + Resources.Titles.CreditTotal + "</label>";
         }
 
-        private Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> GetTable()
+        private Collection<MixERP.Net.Common.Models.Transactions.JournalDetailsModel> GetTable()
         {
             if(Session[this.ID] != null)
             {
-                return Session[this.ID] as Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel>;
+                return Session[this.ID] as Collection<MixERP.Net.Common.Models.Transactions.JournalDetailsModel>;
             }
 
-            return new Collection<Common.Transactions.Models.JournalDetailsModel>();
+            return new Collection<Common.Models.Transactions.JournalDetailsModel>();
         }
 
         private void AddRowToTable(string accountCode, string account, string cashRepository, string statementReference, decimal debit, decimal credit)
         {
-            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
+            Collection<MixERP.Net.Common.Models.Transactions.JournalDetailsModel> table = this.GetTable();
 
-            MixERP.Net.Common.Transactions.Models.JournalDetailsModel model = new Common.Transactions.Models.JournalDetailsModel();
+            MixERP.Net.Common.Models.Transactions.JournalDetailsModel model = new Common.Models.Transactions.JournalDetailsModel();
             model.AccountCode = accountCode;
             model.Account = account;
             model.CashRepository = cashRepository;
@@ -171,11 +171,11 @@ namespace MixERP.Net.FrontEnd.Finance
                 }
             }
 
-            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
+            Collection<MixERP.Net.Common.Models.Transactions.JournalDetailsModel> table = this.GetTable();
 
             if(table.Count > 0)
             {
-                foreach(MixERP.Net.Common.Transactions.Models.JournalDetailsModel row in table)
+                foreach(MixERP.Net.Common.Models.Transactions.JournalDetailsModel row in table)
                 {
                     if(row.AccountCode.Equals(accountCode))
                     {
@@ -198,20 +198,12 @@ namespace MixERP.Net.FrontEnd.Finance
 
         private void DataBindControls()
         {
-            using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "cost_centers"))
-            {
-                table.Columns.Add("cost_center", typeof(string), MixERP.Net.BusinessLayer.Office.CostCenters.GetDisplayField());
-
-                CostCenterDropDownList.DataSource = table;
-                CostCenterDropDownList.DataValueField = "cost_center_id";
-                CostCenterDropDownList.DataTextField = "cost_center";
-                CostCenterDropDownList.DataBind();
-            }
+            MixERP.Net.BusinessLayer.Helpers.DropDownListHelper.BindDropDownList(CostCenterDropDownList, "office", "cost_centers", "cost_center_id", MixERP.Net.BusinessLayer.Office.CostCenters.GetDisplayField());
         }
 
         private void BindGridView()
         {
-            Collection<MixERP.Net.Common.Transactions.Models.JournalDetailsModel> table = this.GetTable();
+            Collection<MixERP.Net.Common.Models.Transactions.JournalDetailsModel> table = this.GetTable();
             TransactionGridView.DataSource = table;
             TransactionGridView.DataBind();
 
@@ -220,7 +212,7 @@ namespace MixERP.Net.FrontEnd.Finance
                 decimal debit = 0;
                 decimal credit = 0;
 
-                foreach(MixERP.Net.Common.Transactions.Models.JournalDetailsModel row in table)
+                foreach(MixERP.Net.Common.Models.Transactions.JournalDetailsModel row in table)
                 {
                     debit += row.Debit;
                     credit += row.Credit;

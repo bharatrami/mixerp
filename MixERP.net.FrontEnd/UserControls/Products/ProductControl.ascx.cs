@@ -7,6 +7,7 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -148,16 +149,14 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
         protected void ProductGridView_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            using(System.Data.DataTable table = this.GetTable())
-            {
-                GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
-                int index = row.RowIndex;
+            Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table = this.GetTable();
+            GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
+            int index = row.RowIndex;
 
-                table.Rows.RemoveAt(index);
-                Session[this.ID] = table;
-                this.BindGridView();
-                //UpdatePanel1.Update();
-            }
+            table.RemoveAt(index);
+            Session[this.ID] = table;
+            this.BindGridView();
+            //UpdatePanel1.Update();
         }
 
         protected void ProductGridView_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -194,15 +193,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
         {
             if(this.SubType == SubTranType.Direct || this.SubType == SubTranType.Invoice || this.SubType == SubTranType.Delivery || this.SubType == SubTranType.Receipt)
             {
-                using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "cost_centers"))
-                {
-                    table.Columns.Add("cost_center", typeof(string), MixERP.Net.BusinessLayer.Office.CostCenters.GetDisplayField());
-
-                    CostCenterDropDownList.DataSource = table;
-                    CostCenterDropDownList.DataValueField = "cost_center_id";
-                    CostCenterDropDownList.DataTextField = "cost_center";
-                    CostCenterDropDownList.DataBind();
-                }
+                MixERP.Net.BusinessLayer.Helpers.DropDownListHelper.BindDropDownList(CostCenterDropDownList, "office", "cost_centers", "cost_center_id", MixERP.Net.BusinessLayer.Office.CostCenters.GetDisplayField());
             }
             else
             {
@@ -214,15 +205,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
         {
             if(this.SubType == SubTranType.Direct || this.SubType == SubTranType.Invoice || this.SubType == SubTranType.Delivery || this.SubType == SubTranType.Receipt)
             {
-                using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("office", "stores"))
-                {
-                    table.Columns.Add("store", typeof(string), MixERP.Net.BusinessLayer.Office.Stores.GetDisplayField());
-
-                    StoreDropDownList.DataSource = table;
-                    StoreDropDownList.DataValueField = "store_id";
-                    StoreDropDownList.DataTextField = "store";
-                    StoreDropDownList.DataBind();
-                }
+                MixERP.Net.BusinessLayer.Helpers.DropDownListHelper.BindDropDownList(StoreDropDownList, "office", "stores", "store_id", MixERP.Net.BusinessLayer.Office.Stores.GetDisplayField());
             }
             else
             {
@@ -237,12 +220,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Office.CashRepositories.GetCashRepositories(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId()))
                 {
-                    table.Columns.Add("cash_repository", typeof(string), MixERP.Net.BusinessLayer.Office.CashRepositories.GetDisplayField());
-
-                    CashRepositoryDropDownList.DataSource = table;
-                    CashRepositoryDropDownList.DataValueField = "cash_repository_id";
-                    CashRepositoryDropDownList.DataTextField = "cash_repository";
-                    CashRepositoryDropDownList.DataBind();
+                    MixERP.Net.BusinessLayer.Helpers.DropDownListHelper.BindDropDownList(CashRepositoryDropDownList, table, "cash_repository_id", MixERP.Net.BusinessLayer.Office.CashRepositories.GetDisplayField());
                     this.UpdateRepositoryBalance();
                 }
             }
@@ -303,15 +281,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
         {
             if(this.TransactionType == TranType.Sales)
             {
-                using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "price_types"))
-                {
-                    table.Columns.Add("price_type", typeof(string), MixERP.Net.BusinessLayer.Core.PriceTypes.GetDisplayField());
-
-                    PriceTypeDropDownList.DataSource = table;
-                    PriceTypeDropDownList.DataValueField = "price_type_id";
-                    PriceTypeDropDownList.DataTextField = "price_type";
-                    PriceTypeDropDownList.DataBind();
-                }
+                MixERP.Net.BusinessLayer.Helpers.DropDownListHelper.BindDropDownList(PriceTypeDropDownList, "core", "price_types", "price_type_id", MixERP.Net.BusinessLayer.Core.PriceTypes.GetDisplayField());
             }
             else
             {
@@ -331,16 +301,8 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             if(this.TransactionType == TranType.Sales)
             {
-                using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "agents"))
-                {
-                    table.Columns.Add("agent", typeof(string), MixERP.Net.BusinessLayer.Core.Agents.GetDisplayField());
-
-                    SalesPersonDropDownList.DataSource = table;
-                    SalesPersonDropDownList.DataValueField = "agent_id";
-                    SalesPersonDropDownList.DataTextField = "agent";
-                    SalesPersonDropDownList.DataBind();
-                    SalesPersonRow.Visible = true;
-                }
+                MixERP.Net.BusinessLayer.Helpers.DropDownListHelper.BindDropDownList(SalesPersonDropDownList, "core", "agents", "agent_id", MixERP.Net.BusinessLayer.Core.Agents.GetDisplayField());
+                SalesPersonRow.Visible = true;
             }
         }
 
@@ -354,18 +316,11 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 if(this.SubType == SubTranType.Direct || this.SubType == SubTranType.Delivery)
                 {
-                    using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable("core", "shippers"))
-                    {
-                        table.Columns.Add("shipper", typeof(string), MixERP.Net.BusinessLayer.Core.Shippers.GetDisplayField());
+                    MixERP.Net.BusinessLayer.Helpers.DropDownListHelper.BindDropDownList(ShippingCompanyDropDownList, "core", "shippers", "shipper_id", MixERP.Net.BusinessLayer.Core.Shippers.GetDisplayField());
 
-                        ShippingCompanyDropDownList.DataSource = table;
-                        ShippingCompanyDropDownList.DataValueField = "shipper_id";
-                        ShippingCompanyDropDownList.DataTextField = "shipper";
-                        ShippingCompanyDropDownList.DataBind();
-                        ShippingAddressRow.Visible = true;
-                        ShippingChargeRow.Visible = true;
-                        ShippingCompanyRow.Visible = true;
-                    }
+                    ShippingAddressRow.Visible = true;
+                    ShippingChargeRow.Visible = true;
+                    ShippingCompanyRow.Visible = true;
                 }
             }
         }
@@ -409,11 +364,10 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
         private void BindGridView()
         {
-            using(System.Data.DataTable table = this.GetTable())
-            {
-                ProductGridView.DataSource = table;
-                ProductGridView.DataBind();
-            }
+            Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table = this.GetTable();
+
+            ProductGridView.DataSource = table;
+            ProductGridView.DataBind();
 
             this.ShowTotals();
         }
@@ -439,28 +393,60 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
         private void ShowTotals()
         {
-            using(System.Data.DataTable table = this.GetTable())
-            {
-                RunningTotalTextBox.Text = (this.GetRunningTotal(table, "SubTotal") + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
-                TaxTotalTextBox.Text = this.GetRunningTotal(table, "Tax").ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
-                GrandTotalTextBox.Text = (this.GetRunningTotal(table, "Total") + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
-            }
+            Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table = this.GetTable();
+
+            RunningTotalTextBox.Text = (this.GetRunningTotalOfSubTotal(table) + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+            TaxTotalTextBox.Text = this.GetRunningTotalOfTax(table).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+            GrandTotalTextBox.Text = (this.GetRunningTotalOfTotal(table) + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+
         }
 
-        private decimal GetRunningTotal(System.Data.DataTable table, string columnName)
+        #region "Running Totals"
+        private decimal GetRunningTotalOfSubTotal(Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table)
         {
             decimal retVal = 0;
 
-            if(table.Rows.Count > 0)
+            if(table.Count > 0)
             {
-                foreach(System.Data.DataRow row in table.Rows)
+                foreach(MixERP.Net.Common.Models.Transactions.ProductDetailsModel model in table)
                 {
-                    retVal += Pes.Utility.Conversion.TryCastDecimal(row[columnName]);
+                    retVal += Pes.Utility.Conversion.TryCastDecimal(model.SubTotal);
                 }
             }
 
             return retVal;
         }
+
+        private decimal GetRunningTotalOfTax(Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table)
+        {
+            decimal retVal = 0;
+
+            if(table.Count > 0)
+            {
+                foreach(MixERP.Net.Common.Models.Transactions.ProductDetailsModel model in table)
+                {
+                    retVal += Pes.Utility.Conversion.TryCastDecimal(model.Tax);
+                }
+            }
+
+            return retVal;
+        }
+
+        private decimal GetRunningTotalOfTotal(Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table)
+        {
+            decimal retVal = 0;
+
+            if(table.Count > 0)
+            {
+                foreach(MixERP.Net.Common.Models.Transactions.ProductDetailsModel model in table)
+                {
+                    retVal += Pes.Utility.Conversion.TryCastDecimal(model.Total);
+                }
+            }
+
+            return retVal;
+        }
+        #endregion
 
         protected void CashRepositoryDropDownList_SelectIndexChanged(object sender, EventArgs e)
         {
@@ -610,54 +596,37 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
         private void AddRowToTable(string itemCode, string itemName, int quantity, string unit, decimal price, decimal discount, decimal taxRate, decimal tax)
         {
-            using(System.Data.DataTable table = this.GetTable())
-            {
-                decimal amount = price * quantity;
-                decimal subTotal = amount - discount;
-                decimal total = subTotal + tax;
+            Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table = this.GetTable();
 
-                System.Data.DataRow row = table.NewRow();
-                row[0] = itemCode;
-                row[1] = itemName;
-                row[2] = quantity;
-                row[3] = unit;
-                row[4] = price;
-                row[5] = amount;
-                row[6] = discount;
-                row[7] = subTotal;
-                row[8] = taxRate;
-                row[9] = tax;
-                row[10] = total;
+            decimal amount = price * quantity;
+            decimal subTotal = amount - discount;
+            decimal total = subTotal + tax;
 
-                table.Rows.Add(row);
-                Session[this.ID] = table;
-            }
+            MixERP.Net.Common.Models.Transactions.ProductDetailsModel row = new Common.Models.Transactions.ProductDetailsModel();
+            row.ItemCode = itemCode;
+            row.ItemName = itemName;
+            row.Quantity = quantity;
+            row.Unit = unit;
+            row.Price = price;
+            row.Amount = amount;
+            row.Discount = discount;
+            row.SubTotal = subTotal;
+            row.Rate = taxRate;
+            row.Tax = tax;
+            row.Total = total;
+
+            table.Add(row);
+            Session[this.ID] = table;
         }
 
-        private System.Data.DataTable GetTable()
+        private Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> GetTable()
         {
             if(Session[this.ID] != null)
             {
-                return (System.Data.DataTable)Session[this.ID];
+                return (Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel>)Session[this.ID];
             }
 
-            using(System.Data.DataTable table = new System.Data.DataTable())
-            {
-                table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
-
-                table.Columns.Add("ItemCode");
-                table.Columns.Add("ItemName");
-                table.Columns.Add("Quantity");
-                table.Columns.Add("Unit");
-                table.Columns.Add("Price");
-                table.Columns.Add("Amount");
-                table.Columns.Add("Discount");
-                table.Columns.Add("SubTotal");
-                table.Columns.Add("Rate");
-                table.Columns.Add("Tax");
-                table.Columns.Add("Total");
-                return table;
-            }
+            return new Collection<Common.Models.Transactions.ProductDetailsModel>();
         }
 
         void UnitDropDownList_SelectedIndexChanged(object sender, EventArgs e)
