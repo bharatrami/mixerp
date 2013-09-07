@@ -72,7 +72,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                             tm.Parameters.AddWithValue("@ReferenceNumber", referenceNumber);
                             tm.Parameters.AddWithValue("@StatementReference", statementReference);
 
-                            transactionMasterId = Pes.Utility.Conversion.TryCastLong(tm.ExecuteScalar());
+                            transactionMasterId = MixERP.Net.Common.Conversion.TryCastLong(tm.ExecuteScalar());
                         }
 
                         #region TransactionDetails
@@ -168,7 +168,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 
                             stockMasterRow.Parameters.AddWithValue("@StoreId", stockMaster.StoreId);
 
-                            stockMasterId = Pes.Utility.Conversion.TryCastLong(stockMasterRow.ExecuteScalar());
+                            stockMasterId = MixERP.Net.Common.Conversion.TryCastLong(stockMasterRow.ExecuteScalar());
                         }
 
                         #region StockDetails

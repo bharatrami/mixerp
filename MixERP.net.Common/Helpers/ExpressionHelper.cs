@@ -13,7 +13,7 @@ using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.Reflection;
 
-namespace Pes.Utility.Helpers
+namespace MixERP.Net.Common.Helpers
 {
     public static class ExpressionHelper
     {

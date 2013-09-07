@@ -39,12 +39,12 @@ namespace MixERP.Net.BusinessLayer.Transactions
 
                         detail.StoreId = storeId;
                         detail.ItemCode = row.Cells[0].Text;
-                        detail.Quantity = Pes.Utility.Conversion.TryCastInteger(row.Cells[2].Text);
+                        detail.Quantity = MixERP.Net.Common.Conversion.TryCastInteger(row.Cells[2].Text);
                         detail.UnitName = row.Cells[3].Text;
-                        detail.Price = Pes.Utility.Conversion.TryCastDecimal(row.Cells[4].Text);
-                        detail.Discount = Pes.Utility.Conversion.TryCastDecimal(row.Cells[6].Text);
-                        detail.TaxRate = Pes.Utility.Conversion.TryCastDecimal(row.Cells[8].Text);
-                        detail.Tax = Pes.Utility.Conversion.TryCastDecimal(row.Cells[9].Text);
+                        detail.Price = MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[4].Text);
+                        detail.Discount = MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[6].Text);
+                        detail.TaxRate = MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[8].Text);
+                        detail.Tax = MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[9].Text);
 
                         details.Add(detail);
                     }

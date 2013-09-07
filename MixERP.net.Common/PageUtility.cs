@@ -14,7 +14,7 @@ using System.Web.UI;
 using System.Globalization;
 using System.Net;
 
-namespace Pes.Utility
+namespace MixERP.Net.Common
 {
     public static class PageUtility
     {
@@ -99,7 +99,7 @@ namespace Pes.Utility
             }
             else
             {
-                retVal = Pes.Utility.Conversion.TryCastInteger(page.Session["InvalidPasswordAttempts"]) + increment;
+                retVal = MixERP.Net.Common.Conversion.TryCastInteger(page.Session["InvalidPasswordAttempts"]) + increment;
                 page.Session["InvalidPasswordAttempts"] = retVal;
             }
 
@@ -110,7 +110,7 @@ namespace Pes.Utility
         {
             if(page != null)
             {
-                if(Pes.Utility.PageUtility.InvalidPasswordAttempts(page, 0) >= Pes.Utility.Conversion.TryCastInteger(System.Configuration.ConfigurationManager.AppSettings["MaxInvalidPasswordAttempts"]))
+                if(MixERP.Net.Common.PageUtility.InvalidPasswordAttempts(page, 0) >= MixERP.Net.Common.Conversion.TryCastInteger(System.Configuration.ConfigurationManager.AppSettings["MaxInvalidPasswordAttempts"]))
                 {
                     page.Response.Redirect("~/access-denied");
                 }

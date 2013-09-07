@@ -17,10 +17,10 @@ namespace MixERP.Net.DatabaseLayer.DBFactory
         public static string ConnectionString()
         {
             Npgsql.NpgsqlConnectionStringBuilder connectionStringBuilder = new Npgsql.NpgsqlConnectionStringBuilder();
-            connectionStringBuilder.Host = Pes.Utility.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Server"]);
-            connectionStringBuilder.Database = Pes.Utility.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Database"]);
-            connectionStringBuilder.UserName = Pes.Utility.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["UserId"]);
-            connectionStringBuilder.Password = Pes.Utility.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Password"]);
+            connectionStringBuilder.Host = MixERP.Net.Common.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Server"]);
+            connectionStringBuilder.Database = MixERP.Net.Common.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Database"]);
+            connectionStringBuilder.UserName = MixERP.Net.Common.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["UserId"]);
+            connectionStringBuilder.Password = MixERP.Net.Common.Conversion.TryCastString(System.Configuration.ConfigurationManager.AppSettings["Password"]);
             connectionStringBuilder.Timeout = 600;
 
             return connectionStringBuilder.ConnectionString;

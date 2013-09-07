@@ -16,7 +16,7 @@ namespace MixERP.Net.BusinessLayer.Office
     {
         public static string GetDisplayField()
         {
-            string displayField = Pes.Utility.Helpers.ConfigurationHelper.GetSectionKey("MixERPDbParameters", "CostCenterDisplayField");
+            string displayField = MixERP.Net.Common.Helpers.ConfigurationHelper.GetSectionKey("MixERPDbParameters", "CostCenterDisplayField");
             if(string.IsNullOrWhiteSpace(displayField))
             {
                 displayField = "cost_center_name";

@@ -80,7 +80,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                 {
                     string cellText = e.Row.Cells[i].Text;
 
-                    cellText = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
+                    cellText = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
                     e.Row.Cells[i].Text = cellText;
                 }
             }
@@ -254,7 +254,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
         private void LoadGrid()
         {
-            bool showAll = (Pes.Utility.Conversion.TryCastString(Request.QueryString["show"]).Equals("all"));
+            bool showAll = (MixERP.Net.Common.Conversion.TryCastString(Request.QueryString["show"]).Equals("all"));
 
             this.BindGridView();
             this.FormGridView.Width = this.Width;
@@ -279,7 +279,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
         private void BindGridView()
         {
-            bool showAll = (Pes.Utility.Conversion.TryCastString(Request.QueryString["show"]).Equals("all"));
+            bool showAll = (MixERP.Net.Common.Conversion.TryCastString(Request.QueryString["show"]).Equals("all"));
 
             int limit = 10;
             int offset = 0;
@@ -296,7 +296,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
             if(this.Page.Request["page"] != null)
             {
-                offset = (Pes.Utility.Conversion.TryCastInteger(this.Page.Request["page"]) - 1) * limit;
+                offset = (MixERP.Net.Common.Conversion.TryCastInteger(this.Page.Request["page"]) - 1) * limit;
             }
 
 
@@ -319,21 +319,21 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                 {
                     foreach(System.Data.DataRow row in table.Rows)
                     {
-                        string columnName = Pes.Utility.Conversion.TryCastString(row["column_name"]);
-                        string defaultValue = Pes.Utility.Conversion.TryCastString(row["column_default"]); //nextval('%_seq'::regclass)
+                        string columnName = MixERP.Net.Common.Conversion.TryCastString(row["column_name"]);
+                        string defaultValue = MixERP.Net.Common.Conversion.TryCastString(row["column_default"]); //nextval('%_seq'::regclass)
                         bool isSerial = defaultValue.StartsWith("nextval", StringComparison.OrdinalIgnoreCase);
-                        bool isNullable = Pes.Utility.Conversion.TryCastBoolean(row["is_nullable"]);
-                        string dataType = Pes.Utility.Conversion.TryCastString(row["data_type"]);
-                        string domain = Pes.Utility.Conversion.TryCastString(row["domain_name"]);
-                        int maxLength = Pes.Utility.Conversion.TryCastInteger(row["character_maximum_length"]);
+                        bool isNullable = MixERP.Net.Common.Conversion.TryCastBoolean(row["is_nullable"]);
+                        string dataType = MixERP.Net.Common.Conversion.TryCastString(row["data_type"]);
+                        string domain = MixERP.Net.Common.Conversion.TryCastString(row["domain_name"]);
+                        int maxLength = MixERP.Net.Common.Conversion.TryCastInteger(row["character_maximum_length"]);
 
-                        string parentTableSchema = Pes.Utility.Conversion.TryCastString(row["references_schema"]);
-                        string parentTable = Pes.Utility.Conversion.TryCastString(row["references_table"]);
-                        string parentTableColumn = Pes.Utility.Conversion.TryCastString(row["references_field"]);
+                        string parentTableSchema = MixERP.Net.Common.Conversion.TryCastString(row["references_schema"]);
+                        string parentTable = MixERP.Net.Common.Conversion.TryCastString(row["references_table"]);
+                        string parentTableColumn = MixERP.Net.Common.Conversion.TryCastString(row["references_field"]);
 
                         if(values.Rows.Count.Equals(1))
                         {
-                            defaultValue = Pes.Utility.Conversion.TryCastString(values.Rows[0][columnName]);
+                            defaultValue = MixERP.Net.Common.Conversion.TryCastString(values.Rows[0][columnName]);
                         }
 
                         this.AddField(t, columnName, defaultValue, isSerial, isNullable, dataType, domain, maxLength, parentTableSchema, parentTable, parentTableColumn);
@@ -351,7 +351,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
             GridPanel.Attributes["style"] = "display:block;";
             FormPanel.Attributes["style"] = "display:none;";
-            Pes.Utility.PageUtility.ExecuteJavaScript("resetForm", "$('#form1').each(function(){this.reset();});", this.Page);
+            MixERP.Net.Common.PageUtility.ExecuteJavaScript("resetForm", "$('#form1').each(function(){this.reset();});", this.Page);
         }
 
         #region Form Generator
@@ -370,11 +370,11 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                 {
                     foreach(System.Data.DataRow row in table.Rows)
                     {
-                        string columnName = Pes.Utility.Conversion.TryCastString(row["column_name"]);
-                        string defaultValue = Pes.Utility.Conversion.TryCastString(row["column_default"]);
+                        string columnName = MixERP.Net.Common.Conversion.TryCastString(row["column_name"]);
+                        string defaultValue = MixERP.Net.Common.Conversion.TryCastString(row["column_default"]);
                         bool isSerial = defaultValue.StartsWith("nextval", StringComparison.OrdinalIgnoreCase);
-                        string parentTableColumn = Pes.Utility.Conversion.TryCastString(row["references_field"]);
-                        string dataType = Pes.Utility.Conversion.TryCastString(row["data_type"]);
+                        string parentTableColumn = MixERP.Net.Common.Conversion.TryCastString(row["references_field"]);
+                        string dataType = MixERP.Net.Common.Conversion.TryCastString(row["data_type"]);
 
                         if(skipSerial)
                         {
@@ -546,7 +546,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             string relation = string.Empty;
             string viewRelation = string.Empty;
             string selected = string.Empty;
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
             string schema = string.Empty;
             string view = string.Empty;
             HtmlAnchor itemSelectorAnchor = null;
@@ -730,7 +730,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         private void AddRadioButtonList(HtmlTable t, string columnName, bool isNullable, string keys, string values, string selectedValue)
         {
             RadioButtonList radioButtonList = this.GetRadioButtonList(columnName + "_radiobuttonlist", keys, values, selectedValue);
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             if(!isNullable)
             {
@@ -745,7 +745,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         private void AddCheckBoxList(HtmlTable t, string columnName, bool isNullable, string keys, string values, string selectedValues)
         {
             CheckBoxList checkBoxList = this.GetCheckBoxList(columnName + "_radiobuttonlist", keys, values, selectedValues);
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             if(!isNullable)
             {
@@ -797,7 +797,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         private void AddNumberTextBox(HtmlTable t, string columnName, string defaultValue, bool isSerial, bool isNullable, int maxLength, string domain)
         {
             TextBox textBox = this.GetNumberTextBox(columnName + "_textbox", maxLength);
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             if(!defaultValue.StartsWith("nextVal", StringComparison.OrdinalIgnoreCase))
             {
@@ -827,7 +827,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         private void AddDecimalTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength, string domain)
         {
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             CompareValidator validator = this.GetDecimalValidator(textBox, domain);
             textBox.Text = defaultValue;
@@ -844,7 +844,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
         private void AddDateTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength)
         {
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
             textBox.CssClass = "date";
@@ -859,7 +859,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
             if(!string.IsNullOrWhiteSpace(defaultValue))
             {
-                textBox.Text = Pes.Utility.Conversion.TryCastDate(defaultValue).ToShortDateString();
+                textBox.Text = MixERP.Net.Common.Conversion.TryCastDate(defaultValue).ToShortDateString();
             }
 
 
@@ -876,7 +876,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
         private void AddTextBox(HtmlTable t, string columnName, string defaultValue, bool isNullable, int maxLength)
         {
             TextBox textBox = this.GetTextBox(columnName + "_textbox", maxLength);
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
 
             textBox.Text = defaultValue;
 
@@ -892,7 +892,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
 
         private void AddFileUpload(HtmlTable t, string columnName, bool isNullable)
         {
-            string label = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
+            string label = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", columnName);
             FileUpload fileUpload = this.GetFileUpload(columnName + "_fileupload");
             RegularExpressionValidator validator = this.GetImageValidator(fileUpload);
 

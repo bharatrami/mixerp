@@ -627,4 +627,7 @@
   <data name="ShippingAddress" xml:space="preserve">
     <value>Shipping Address</value>
   </data>
+  <data name="MergeBatchToSalesDelivery" xml:space="preserve">
+    <value>Merge Batch to Sales Delivery</value>
+  </data>
 </root>

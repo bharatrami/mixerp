@@ -754,6 +754,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Merge Batch to Sales Delivery.
+        /// </summary>
+        internal static string MergeBatchToSalesDelivery {
+            get {
+                return ResourceManager.GetString("MergeBatchToSalesDelivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Merge Batch to Sales Order.
         /// </summary>
         internal static string MergeBatchToSalesOrder {

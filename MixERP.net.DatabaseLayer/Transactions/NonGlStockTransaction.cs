@@ -75,7 +75,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 
                             stockMasterRow.Parameters.AddWithValue("@StatementReference", statementReference);
 
-                            nonGlStockMasterId = Pes.Utility.Conversion.TryCastLong(stockMasterRow.ExecuteScalar());
+                            nonGlStockMasterId = MixERP.Net.Common.Conversion.TryCastLong(stockMasterRow.ExecuteScalar());
                         }
 
                         #region NonGLStockDetails

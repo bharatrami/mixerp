@@ -89,10 +89,6 @@
     <Compile Include="Transactions\Verification.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pes.Utility\Pes.Utility.csproj">
-      <Project>{D5F5C51D-250D-4775-8E63-AE792A9A04A0}</Project>
-      <Name>Pes.Utility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{D5A09C22-8F48-4FB2-A14D-C62C8C8FCEC0}</Project>
       <Name>MixERP.Net.Common</Name>

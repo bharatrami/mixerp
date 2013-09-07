@@ -35,7 +35,7 @@ http://mozilla.org/MPL/2.0/.
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:BoundField DataField="id" HeaderText="id" />
-            <asp:BoundField DataField="value_date" HeaderText="value_date" DataFormatString="dd/mm/yyyy" />
+            <asp:BoundField DataField="value_date" HeaderText="value_date" />
             <asp:BoundField DataField="office" HeaderText="office" />
             <asp:BoundField DataField="reference_number" HeaderText="reference_number" />
             <asp:BoundField DataField="party" HeaderText="party" />
@@ -49,11 +49,12 @@ http://mozilla.org/MPL/2.0/.
 
 <script runat="server">
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {        
         using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.GetView("Sales.Quotation"))
         {
-            SalesQuotationGridView.DataSource = table;
+            SalesQuotationGridView.DataSource = table;            
             SalesQuotationGridView.DataBind();
+
         }
     }
 
@@ -67,10 +68,15 @@ http://mozilla.org/MPL/2.0/.
 
                 if(!string.IsNullOrWhiteSpace(cellText))
                 {
-                    cellText = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
+                    cellText = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
                     e.Row.Cells[i].Text = cellText;
                 }
             }
+        }
+
+        if(e.Row.RowType == DataControlRowType.DataRow)
+        {
+            //e.Row.Cells[2].Text = string.Format(e.Row.Cells[2].Text, "{0:dd/MM/yyyy}");
         }
     }    
 </script>

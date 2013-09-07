@@ -23,6 +23,7 @@ http://mozilla.org/MPL/2.0/.
             OnClientClick="window.location='/Sales/Entry/Quotation.aspx';return false;" />
         <asp:LinkButton ID="FlagLinkButton" runat="server" CssClass="menu" Text="<%$Resources:Titles, FlagSelection %>" />
         <asp:LinkButton ID="MergeToSalesOrderLinkButton" runat="server" CssClass="menu" Text="<%$Resources:Titles, MergeBatchToSalesOrder %>" />
+        <asp:LinkButton ID="MergeToSalesDeliveryLinkButton" runat="server" CssClass="menu" Text="<%$Resources:Titles, MergeBatchToSalesDelivery %>" />
     </div>
 
     <mixerp:ProductView runat="server" />

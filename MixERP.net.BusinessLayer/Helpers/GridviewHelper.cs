@@ -7,23 +7,27 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using System.Web.UI.WebControls;
 
-namespace Pes.Utility.Helpers
+namespace MixERP.Net.BusinessLayer.Helpers
 {
-    public static class ConfigurationHelper
-    {
-        public static string GetSectionKey(string sectionName, string keyName)
+    public static class GridviewHelper
+    {        
+        public static void SetFormat(GridView grid, int columnIndex, string format)
         {
-            NameValueCollection parameters = (NameValueCollection)System.Configuration.ConfigurationManager.GetSection(sectionName);
-            if(parameters != null)
+            if(grid == null || columnIndex < 0 || string.IsNullOrWhiteSpace(format))
             {
-                return parameters[keyName];
+                return;
             }
 
-            return string.Empty;
+            BoundField boundField = grid.Columns[columnIndex] as BoundField;
+
+            if(boundField != null)
+            {
+                boundField.DataFormatString = "{0:" + format + "}";
+            }
         }
     }
 }

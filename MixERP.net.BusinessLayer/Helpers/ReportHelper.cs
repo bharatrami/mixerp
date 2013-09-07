@@ -32,7 +32,7 @@ namespace MixERP.Net.BusinessLayer.Helpers
                 return string.Empty;
             }
             
-            expression = expression.Replace("{LogoPath}", Pes.Utility.PageUtility.GetCurrentDomainName() + Pes.Utility.PageUtility.ResolveUrl("~/Themes/purple/mixerp-logo-light.png"));
+            expression = expression.Replace("{LogoPath}", MixERP.Net.Common.PageUtility.GetCurrentDomainName() + MixERP.Net.Common.PageUtility.ResolveUrl("~/Themes/purple/mixerp-logo-light.png"));
             expression = expression.Replace("{PrintDate}", System.DateTime.Now.ToString());
 
             foreach(var match in Regex.Matches(expression, "{.*?}"))
@@ -52,7 +52,7 @@ namespace MixERP.Net.BusinessLayer.Helpers
                     string res = RemoveBraces(word);
                     string[] resource = res.Split('.');
 
-                    expression = expression.Replace(word, Pes.Utility.Helpers.LocalizationHelper.GetResourceString(resource[1], resource[2]));
+                    expression = expression.Replace(word, MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString(resource[1], resource[2]));
                 }
             }
 

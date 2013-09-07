@@ -18,112 +18,112 @@ namespace MixERP.Net.BusinessLayer.Helpers
     {
         public static long LogOnId()
         {
-            return Pes.Utility.Conversion.TryCastLong(HttpContext.Current.Session["LogOnId"]);
+            return MixERP.Net.Common.Conversion.TryCastLong(HttpContext.Current.Session["LogOnId"]);
         }
         
         public static int UserId()
         {
-            return Pes.Utility.Conversion.TryCastInteger(HttpContext.Current.Session["UserId"]);
+            return MixERP.Net.Common.Conversion.TryCastInteger(HttpContext.Current.Session["UserId"]);
         }
 
         public static string UserName()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["UserName"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["UserName"]);
         }
 
         public static string Role()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Role"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["Role"]);
         }
 
         public static bool IsAdmin()
         {
-            return Pes.Utility.Conversion.TryCastBoolean(HttpContext.Current.Session["IsAdmin"]);
+            return MixERP.Net.Common.Conversion.TryCastBoolean(HttpContext.Current.Session["IsAdmin"]);
         }
 
         public static bool IsSystem()
         {
-            return Pes.Utility.Conversion.TryCastBoolean(HttpContext.Current.Session["IsSystem"]);
+            return MixERP.Net.Common.Conversion.TryCastBoolean(HttpContext.Current.Session["IsSystem"]);
         }
 
         public static int OfficeId()
         {
-            return Pes.Utility.Conversion.TryCastInteger(HttpContext.Current.Session["OfficeId"]);
+            return MixERP.Net.Common.Conversion.TryCastInteger(HttpContext.Current.Session["OfficeId"]);
         }
 
         public static string Nickname()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["NickName"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["NickName"]);
         }
 
         public static string OfficeName()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["OfficeName"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["OfficeName"]);
         }
 
         public static DateTime RegistrationDate()
         {
-            return Pes.Utility.Conversion.TryCastDate(HttpContext.Current.Session["RegistrationDate"]);
+            return MixERP.Net.Common.Conversion.TryCastDate(HttpContext.Current.Session["RegistrationDate"]);
         }
 
         public static string RegistrationNumber()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["RegistrationNumber"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["RegistrationNumber"]);
         }
 
         public static string PanNumber()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["PanNumber"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["PanNumber"]);
         }
 
         public static string Street()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Street"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["Street"]);
         }
 
         public static string City()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["City"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["City"]);
         }
 
         public static string State()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["State"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["State"]);
         }
 
         public static string Country()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Country"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["Country"]);
         }
 
         public static string ZipCode()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["ZipCode"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["ZipCode"]);
         }
 
         public static string Phone()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Phone"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["Phone"]);
         }
 
         public static string Fax()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Fax"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["Fax"]);
         }
 
         public static string Email()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Email"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["Email"]);
         }
 
         public static string Url()
         {
-            return Pes.Utility.Conversion.TryCastString(HttpContext.Current.Session["Url"]);
+            return MixERP.Net.Common.Conversion.TryCastString(HttpContext.Current.Session["Url"]);
         }
 
         public static CultureInfo Culture()
         {
-            return Pes.Utility.Helpers.LocalizationHelper.Culture();
+            return MixERP.Net.Common.Helpers.LocalizationHelper.Culture();
         }
     }
 }

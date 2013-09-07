@@ -36,7 +36,7 @@ namespace MixERP.Net.DatabaseLayer.Core
                 command.Parameters.AddWithValue("@PriceTypeId", priceTypeId);
                 command.Parameters.AddWithValue("@UnitId", unitId);
 
-                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return MixERP.Net.Common.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 
@@ -49,7 +49,7 @@ namespace MixERP.Net.DatabaseLayer.Core
                 command.Parameters.AddWithValue("@PartyCode", partyCode);
                 command.Parameters.AddWithValue("@UnitId", unitId);
 
-                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return MixERP.Net.Common.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 
@@ -59,7 +59,7 @@ namespace MixERP.Net.DatabaseLayer.Core
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
-                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return MixERP.Net.Common.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 
@@ -71,7 +71,7 @@ namespace MixERP.Net.DatabaseLayer.Core
                 command.Parameters.AddWithValue("@ItemCode", itemCode);
                 command.Parameters.AddWithValue("@UnitId", unitId);
                 command.Parameters.AddWithValue("@StoreId", storeId);
-                return Pes.Utility.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return MixERP.Net.Common.Conversion.TryCastDecimal(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }        
         }
 

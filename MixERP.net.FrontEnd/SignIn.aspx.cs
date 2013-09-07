@@ -27,7 +27,7 @@ namespace MixERP.Net.FrontEnd
                     string user = User.Identity.Name;
                     if(!string.IsNullOrWhiteSpace(user))
                     {
-                        string sessionUser = Pes.Utility.Conversion.TryCastString(this.Page.Session["UserName"]);
+                        string sessionUser = MixERP.Net.Common.Conversion.TryCastString(this.Page.Session["UserName"]);
 
                         if(string.IsNullOrWhiteSpace(sessionUser))
                         {
@@ -43,7 +43,7 @@ namespace MixERP.Net.FrontEnd
 
         protected void SignInButton_Click(object sender, EventArgs e)
         {
-            int officeId = Pes.Utility.Conversion.TryCastInteger(BranchDropDownList.SelectedItem.Value);
+            int officeId = MixERP.Net.Common.Conversion.TryCastInteger(BranchDropDownList.SelectedItem.Value);
             bool results = MixERP.Net.BusinessLayer.Security.User.SignIn(officeId, UserIdTextBox.Text, PasswordTextBox.Text, RememberMe.Checked, this.Page);
 
             if(!results)

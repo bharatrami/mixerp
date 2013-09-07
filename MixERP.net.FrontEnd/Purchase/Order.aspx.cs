@@ -23,13 +23,13 @@ namespace MixERP.Net.FrontEnd.Purchase
 
         protected void PurchaseOrder_SaveButtonClick(object sender, EventArgs e)
         {
-            DateTime valueDate = Pes.Utility.Conversion.TryCastDate(PurchaseOrder.GetForm.DateTextBox.Text);
+            DateTime valueDate = MixERP.Net.Common.Conversion.TryCastDate(PurchaseOrder.GetForm.DateTextBox.Text);
             string partyCode = PurchaseOrder.GetForm.PartyDropDownList.SelectedItem.Value;
             int priceTypeId = 0;
 
             if(PurchaseOrder.GetForm.PriceTypeDropDownList.SelectedItem != null)
             {
-                priceTypeId = Pes.Utility.Conversion.TryCastInteger(PurchaseOrder.GetForm.PriceTypeDropDownList.SelectedItem.Value);            
+                priceTypeId = MixERP.Net.Common.Conversion.TryCastInteger(PurchaseOrder.GetForm.PriceTypeDropDownList.SelectedItem.Value);            
             }
             
             GridView grid = PurchaseOrder.GetForm.Grid;

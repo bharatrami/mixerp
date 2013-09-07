@@ -5,7 +5,7 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
-namespace Pes.Utility
+namespace MixERP.Net.Common
 {
     using System;
     using System.Collections.Generic;
@@ -37,8 +37,10 @@ namespace Pes.Utility
             if(value != null)
             {
                 short retVal = 0;
+                //string numberToParse = RemoveGroupping(value.ToString());
+                string numberToParse = value.ToString();
 
-                if(short.TryParse(value.ToString(), out retVal))
+                if(short.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
@@ -52,8 +54,10 @@ namespace Pes.Utility
             if(value != null)
             {
                 long retVal = 0;
+                //string numberToParse = RemoveGroupping(value.ToString());
+                string numberToParse = value.ToString();
 
-                if(long.TryParse(value.ToString(), out retVal))
+                if(long.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
@@ -67,7 +71,10 @@ namespace Pes.Utility
             if(value != null)
             {
                 float retVal = 0;
-                if(float.TryParse(value.ToString(), out retVal))
+                //string numberToParse = RemoveGroupping(value.ToString());
+                string numberToParse = value.ToString();
+
+                if(float.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
@@ -81,8 +88,10 @@ namespace Pes.Utility
             if(value != null)
             {
                 double retVal = 0;
+                //string numberToParse = RemoveGroupping(value.ToString());
+                string numberToParse = value.ToString();
 
-                if(double.TryParse(value.ToString(), out retVal))
+                if(double.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
@@ -108,7 +117,10 @@ namespace Pes.Utility
                 }
 
                 int retVal = 0;
-                if(int.TryParse(value.ToString(), out retVal))
+                //string numberToParse = RemoveGroupping(value.ToString());
+                string numberToParse = value.ToString();
+
+                if(int.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
@@ -140,12 +152,32 @@ namespace Pes.Utility
             return DateTime.MinValue;
         }
 
+        //private static string RemoveGroupping(string number)
+        //{
+        //    string thousandSeparator = Helpers.Parameters.ThousandSeparator();
+        //    string decimalSeparator = Helpers.Parameters.DecimalSeparator();
+
+        //    //Remove the thousand separator from the number
+        //    number = number.Replace(thousandSeparator, "");
+
+        //    //Replace the decimal separator with "dot".
+        //    if(!decimalSeparator.Equals("."))
+        //    {
+        //        number = number.Replace(decimalSeparator, ".");
+        //    }
+
+        //    return number;
+        //}
+
         public static decimal TryCastDecimal(object value)
         {
             if(value != null)
             {
-                decimal retVal = default(decimal);
-                if(decimal.TryParse(value.ToString(), out retVal))
+                decimal retVal = 0;
+                //string numberToParse = RemoveGroupping(value.ToString());
+                string numberToParse = value.ToString();
+
+                if(decimal.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }

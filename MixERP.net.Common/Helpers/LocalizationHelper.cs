@@ -11,7 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Pes.Utility.Helpers
+namespace MixERP.Net.Common.Helpers
 {
     public static class LocalizationHelper
     {

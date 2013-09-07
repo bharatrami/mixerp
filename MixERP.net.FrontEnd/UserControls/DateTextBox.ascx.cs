@@ -7,6 +7,7 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -73,6 +74,8 @@ namespace MixERP.Net.FrontEnd.UserControls
             
             TextBox1.Text = this.text;
             CalendarExtender1.ID = this.ID + "CalendarExtender";
+            CalendarExtender1.Format = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+            CalendarExtender1.TodaysDateFormat = CultureInfo.CurrentCulture.DateTimeFormat.LongDatePattern;
             CalendarExtender1.TargetControlID = this.ID;
             CalendarExtender1.PopupButtonID = this.ID;
 

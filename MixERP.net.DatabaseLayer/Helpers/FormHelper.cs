@@ -29,8 +29,8 @@ namespace MixERP.Net.DatabaseLayer.Helpers
                 sql = sql.Replace("@TableSchema", DBFactory.Sanitizer.SanitizeIdentifierName(tableSchema));
                 sql = sql.Replace("@TableName", DBFactory.Sanitizer.SanitizeIdentifierName(tableName));
                 sql = sql.Replace("@OrderBy", DBFactory.Sanitizer.SanitizeIdentifierName(orderBy));
-                sql = sql.Replace("@Limit", Pes.Utility.Conversion.TryCastString(limit));
-                sql = sql.Replace("@Offset", Pes.Utility.Conversion.TryCastString(offset));
+                sql = sql.Replace("@Limit", MixERP.Net.Common.Conversion.TryCastString(limit));
+                sql = sql.Replace("@Offset", MixERP.Net.Common.Conversion.TryCastString(offset));
                 command.CommandText = sql;
 
                 return MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetDataTable(command);
@@ -176,7 +176,7 @@ namespace MixERP.Net.DatabaseLayer.Helpers
 
                 command.CommandText = sql;
 
-                return Pes.Utility.Conversion.TryCastInteger(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
+                return MixERP.Net.Common.Conversion.TryCastInteger(MixERP.Net.DatabaseLayer.DBFactory.DBOperations.GetScalarValue(command));
             }
         }
 

@@ -1469,9 +1469,11 @@
     <Content Include="Scripts\colorbox\images\controls.png" />
     <Content Include="Scripts\colorbox\images\loading.gif" />
     <Content Include="Scripts\colorbox\jquery.colorbox-min.js" />
+    <Content Include="Scripts\date.js" />
     <Content Include="Scripts\gridster\jquery.gridster.js" />
     <Content Include="Scripts\gridster\jquery.gridster.min.css" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jqueryNumber\jquery.number.min.js" />
     <Content Include="Scripts\mixerp.js" />
     <Content Include="Scripts\shortcut.js" />
     <Content Include="Services\AccountData.asmx" />
@@ -1551,11 +1553,11 @@
     <Content Include="Mix Open Foundation.snk" />
     <None Include="Properties\PublishProfiles\MixERP.pubxml" />
     <Content Include="Reports\Assets\ReadMe.txt" />
-    <Content Include="Resource\Configuration\Switches.config" />
-    <Content Include="Resource\Configuration\Parameters.config">
+    <Content Include="Resource\Configuration\Switches.xml" />
+    <Content Include="Resource\Configuration\Parameters.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Resource\Configuration\DbParameters.config" />
+    <Content Include="Resource\Configuration\DbParameters.xml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1571,10 +1573,6 @@
     <Folder Include="Setup\General\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pes.Utility\Pes.Utility.csproj">
-      <Project>{d5f5c51d-250d-4775-8e63-ae792a9a04a0}</Project>
-      <Name>Pes.Utility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MixERP.Net.BusinessLayer\MixERP.Net.BusinessLayer.csproj">
       <Project>{81de04cf-7de9-42ff-8339-d05e2586dcba}</Project>
       <Name>MixERP.Net.BusinessLayer</Name>

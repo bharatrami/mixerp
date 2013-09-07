@@ -92,7 +92,7 @@ namespace MixERP.Net.FrontEnd.UserControls
                 {
                     if(node.Name.Equals("RunningTotalTextColumnIndex"))
                     {
-                        runningTotalTextColumnIndex = Pes.Utility.Conversion.TryCastInteger(node.InnerText);
+                        runningTotalTextColumnIndex = MixERP.Net.Common.Conversion.TryCastInteger(node.InnerText);
                     }
 
                     if(node.Name.Equals("RunningTotalFieldIndices"))
@@ -138,7 +138,7 @@ namespace MixERP.Net.FrontEnd.UserControls
 
                     if(c.Name.Equals("RunningTotalTextColumnIndex"))
                     {
-                        this.RunningTotalTextColumnIndices.Add(Pes.Utility.Conversion.TryCastInteger(c.InnerText));
+                        this.RunningTotalTextColumnIndices.Add(MixERP.Net.Common.Conversion.TryCastInteger(c.InnerText));
                     }
 
                     if(c.Name.Equals("RunningTotalFieldIndices"))
@@ -204,7 +204,7 @@ namespace MixERP.Net.FrontEnd.UserControls
 
                     if(!ds.Contains(' '))
                     {
-                        int index = Pes.Utility.Conversion.TryCastInteger(ds);
+                        int index = MixERP.Net.Common.Conversion.TryCastInteger(ds);
 
                         GridView grid = new GridView();
                         grid.EnableTheming = false;
@@ -238,7 +238,7 @@ namespace MixERP.Net.FrontEnd.UserControls
         {
             GridView grid = (GridView)sender;
 
-            int arg = Pes.Utility.Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
+            int arg = MixERP.Net.Common.Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
 
             if(string.IsNullOrWhiteSpace(this.RunningTotalFieldIndices[arg]))
             {
@@ -264,7 +264,7 @@ namespace MixERP.Net.FrontEnd.UserControls
 
             foreach(string field in this.RunningTotalFieldIndices[arg].Split(','))
             {
-                int index = Pes.Utility.Conversion.TryCastInteger(field.Trim());
+                int index = MixERP.Net.Common.Conversion.TryCastInteger(field.Trim());
 
                 decimal total = 0;
 
@@ -274,7 +274,7 @@ namespace MixERP.Net.FrontEnd.UserControls
                     {
                         if(row.RowType == DataControlRowType.DataRow)
                         {
-                            total += Pes.Utility.Conversion.TryCastDecimal(row.Cells[index].Text);
+                            total += MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[index].Text);
                         }
                     }
 
@@ -292,7 +292,7 @@ namespace MixERP.Net.FrontEnd.UserControls
                 {
                     string cellText = e.Row.Cells[i].Text;
 
-                    cellText = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText, false);
+                    cellText = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText, false);
                     e.Row.Cells[i].Text = cellText;
                     e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Left;
                 }
@@ -308,7 +308,7 @@ namespace MixERP.Net.FrontEnd.UserControls
                 if(word.StartsWith("{DataSource", StringComparison.OrdinalIgnoreCase))
                 {
 
-                    int index = Pes.Utility.Conversion.TryCastInteger(word.Split('.').First().Replace("{DataSource[", "").Replace("]", ""));
+                    int index = MixERP.Net.Common.Conversion.TryCastInteger(word.Split('.').First().Replace("{DataSource[", "").Replace("]", ""));
                     string column = word.Split('.').Last().Replace("}", "");
 
                     if(table[index] != null)

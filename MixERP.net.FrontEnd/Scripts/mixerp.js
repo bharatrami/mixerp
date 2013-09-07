@@ -66,7 +66,6 @@ DATE EXPRESSION START
 $(document).ready(function () {
     $(".date").blur(function () {
         if (today == "") return;
-
         var control = $(this);
         var value = control.val().trim().toLowerCase();
         var result;
@@ -158,7 +157,7 @@ $(document).ready(function () {
 });
 
 function dateAdd(dt, expression, number) {
-    var d = new Date(dt);
+    var d = Date.parseExact(dt, shortDateFormat);
     var ret;
 
     if (expression == "d") {
@@ -173,24 +172,8 @@ function dateAdd(dt, expression, number) {
         ret = new Date(d.getFullYear() + parseInt(number), d.getMonth(), d.getDate());
     }
 
-    return formatDate(ret);
-
+    return ret.toString(shortDateFormat);
 }
-
-function formatDate(obj) {
-
-    var d = new Date(obj);
-
-
-    var day = d.getDate();
-    var month = d.getMonth() + 1;
-    var year = d.getFullYear();
-
-    var date = month + "/" + day + "/" + year;
-
-    return date;
-}
-
 /******************************************************************************************************
 DATE EXPRESSION END
 ******************************************************************************************************/

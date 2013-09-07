@@ -8,7 +8,9 @@ http://mozilla.org/MPL/2.0/.
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -121,8 +123,8 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 this.UpdateRepositoryBalance();
 
-                decimal repositoryBalance = Pes.Utility.Conversion.TryCastDecimal(CashRepositoryBalanceTextBox.Text);
-                decimal grandTotal = Pes.Utility.Conversion.TryCastDecimal(GrandTotalTextBox.Text);
+                decimal repositoryBalance = MixERP.Net.Common.Conversion.TryCastDecimal(CashRepositoryBalanceTextBox.Text);
+                decimal grandTotal = MixERP.Net.Common.Conversion.TryCastDecimal(GrandTotalTextBox.Text);
 
                 if(grandTotal > repositoryBalance)
                 {
@@ -395,9 +397,9 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
         {
             Collection<MixERP.Net.Common.Models.Transactions.ProductDetailsModel> table = this.GetTable();
 
-            RunningTotalTextBox.Text = (this.GetRunningTotalOfSubTotal(table) + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+            RunningTotalTextBox.Text = (this.GetRunningTotalOfSubTotal(table) + MixERP.Net.Common.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
             TaxTotalTextBox.Text = this.GetRunningTotalOfTax(table).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
-            GrandTotalTextBox.Text = (this.GetRunningTotalOfTotal(table) + Pes.Utility.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+            GrandTotalTextBox.Text = (this.GetRunningTotalOfTotal(table) + MixERP.Net.Common.Conversion.TryCastDecimal(ShippingChargeTextBox.Text)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
 
         }
 
@@ -410,7 +412,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 foreach(MixERP.Net.Common.Models.Transactions.ProductDetailsModel model in table)
                 {
-                    retVal += Pes.Utility.Conversion.TryCastDecimal(model.SubTotal);
+                    retVal += MixERP.Net.Common.Conversion.TryCastDecimal(model.SubTotal);
                 }
             }
 
@@ -425,7 +427,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 foreach(MixERP.Net.Common.Models.Transactions.ProductDetailsModel model in table)
                 {
-                    retVal += Pes.Utility.Conversion.TryCastDecimal(model.Tax);
+                    retVal += MixERP.Net.Common.Conversion.TryCastDecimal(model.Tax);
                 }
             }
 
@@ -440,7 +442,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 foreach(MixERP.Net.Common.Models.Transactions.ProductDetailsModel model in table)
                 {
-                    retVal += Pes.Utility.Conversion.TryCastDecimal(model.Total);
+                    retVal += MixERP.Net.Common.Conversion.TryCastDecimal(model.Total);
                 }
             }
 
@@ -459,7 +461,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 if(CashRepositoryDropDownList.SelectedItem != null)
                 {
-                    CashRepositoryBalanceTextBox.Text = MixERP.Net.BusinessLayer.Office.CashRepositories.GetBalance(Pes.Utility.Conversion.TryCastInteger(CashRepositoryDropDownList.SelectedItem.Value)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+                    CashRepositoryBalanceTextBox.Text = MixERP.Net.BusinessLayer.Office.CashRepositories.GetBalance(MixERP.Net.Common.Conversion.TryCastInteger(CashRepositoryDropDownList.SelectedItem.Value)).ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
                 }
             }
         }
@@ -468,19 +470,19 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
         {
             string itemCode = ItemCodeTextBox.Text;
             string itemName = ItemDropDownList.SelectedItem.Text;
-            int quantity = Pes.Utility.Conversion.TryCastInteger(QuantityTextBox.Text);
+            int quantity = MixERP.Net.Common.Conversion.TryCastInteger(QuantityTextBox.Text);
             string unit = UnitDropDownList.SelectedItem.Text;
-            int unitId = Pes.Utility.Conversion.TryCastInteger(UnitDropDownList.SelectedItem.Value);
+            int unitId = MixERP.Net.Common.Conversion.TryCastInteger(UnitDropDownList.SelectedItem.Value);
             decimal itemInStock = 0;
-            decimal price = Pes.Utility.Conversion.TryCastDecimal(PriceTextBox.Text);
-            decimal discount = Pes.Utility.Conversion.TryCastDecimal(DiscountTextBox.Text);
-            decimal taxRate = Pes.Utility.Conversion.TryCastDecimal(TaxRateTextBox.Text);
-            decimal tax = Pes.Utility.Conversion.TryCastDecimal(TaxTextBox.Text);
+            decimal price = MixERP.Net.Common.Conversion.TryCastDecimal(PriceTextBox.Text);
+            decimal discount = MixERP.Net.Common.Conversion.TryCastDecimal(DiscountTextBox.Text);
+            decimal taxRate = MixERP.Net.Common.Conversion.TryCastDecimal(TaxRateTextBox.Text);
+            decimal tax = MixERP.Net.Common.Conversion.TryCastDecimal(TaxTextBox.Text);
             int storeId = 0;
 
             if(StoreDropDownList.SelectedItem != null)
             {
-                storeId = Pes.Utility.Conversion.TryCastInteger(StoreDropDownList.SelectedItem.Value);
+                storeId = MixERP.Net.Common.Conversion.TryCastInteger(StoreDropDownList.SelectedItem.Value);
             }
 
             #region Validation
@@ -640,14 +642,14 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             string itemCode = ItemDropDownList.SelectedItem.Value;
             string party = string.Empty;
 
-            int unitId = Pes.Utility.Conversion.TryCastInteger(UnitDropDownList.SelectedItem.Value);
+            int unitId = MixERP.Net.Common.Conversion.TryCastInteger(UnitDropDownList.SelectedItem.Value);
 
             decimal price = 0;
 
             if(this.TransactionType == TranType.Sales)
             {
                 party = PartyDropDownList.SelectedItem.Value;
-                short priceTypeId = Pes.Utility.Conversion.TryCastShort(PriceTypeDropDownList.SelectedItem.Value);
+                short priceTypeId = MixERP.Net.Common.Conversion.TryCastShort(PriceTypeDropDownList.SelectedItem.Value);
                 price = MixERP.Net.BusinessLayer.Core.Items.GetItemSellingPrice(itemCode, party, priceTypeId, unitId);
             }
             else
@@ -656,7 +658,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
                 price = MixERP.Net.BusinessLayer.Core.Items.GetItemCostPrice(itemCode, party, unitId);
             }
 
-            decimal discount = Pes.Utility.Conversion.TryCastDecimal(DiscountTextBox.Text);
+            decimal discount = MixERP.Net.Common.Conversion.TryCastDecimal(DiscountTextBox.Text);
             decimal taxRate = MixERP.Net.BusinessLayer.Core.Items.GetTaxRate(itemCode);
 
 
@@ -665,7 +667,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             TaxRateTextBox.Text = taxRate.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
             TaxTextBox.Text = (((price - discount) * taxRate) / 100.00m).ToString("#.##", MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
 
-            decimal amount = price * Pes.Utility.Conversion.TryCastInteger(QuantityTextBox.Text);
+            decimal amount = price * MixERP.Net.Common.Conversion.TryCastInteger(QuantityTextBox.Text);
 
             AmountTextBox.Text = amount.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
         }
@@ -680,12 +682,12 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
 
             if(DateTextBox != null)
             {
-                valueDate = Pes.Utility.Conversion.TryCastDate(DateTextBox.Text);
+                valueDate = MixERP.Net.Common.Conversion.TryCastDate(DateTextBox.Text);
             }
 
             if(StoreDropDownList.SelectedItem != null)
             {
-                storeId = Pes.Utility.Conversion.TryCastInteger(StoreDropDownList.SelectedItem.Value);
+                storeId = MixERP.Net.Common.Conversion.TryCastInteger(StoreDropDownList.SelectedItem.Value);
             }
 
             if(TransactionTypeRadioButtonList.SelectedItem != null)

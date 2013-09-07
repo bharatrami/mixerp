@@ -7,8 +7,10 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -40,7 +42,7 @@ namespace MixERP.Net.BusinessLayer
                 OverridePath = this.Page.Request.Url.AbsolutePath;
             }
             
-            Literal menuLiteral = ((Literal)Pes.Utility.PageUtility.FindControlIterative(this.Master, "ContentMenuLiteral"));
+            Literal menuLiteral = ((Literal)MixERP.Net.Common.PageUtility.FindControlIterative(this.Master, "ContentMenuLiteral"));
 
             if(menuLiteral != null)
             {
@@ -50,6 +52,18 @@ namespace MixERP.Net.BusinessLayer
 
             base.OnLoad(e);
         }
+
+        protected override void OnPreInit(EventArgs e)
+        {
+            base.OnPreInit(e);
+        }
+
+        protected override void InitializeCulture()
+        {
+            this.SetCulture();
+            base.InitializeCulture();
+        }
+
 
         protected override void OnInit(EventArgs e)
         {
@@ -77,7 +91,36 @@ namespace MixERP.Net.BusinessLayer
                     }
                 }
             }
+
             base.OnInit(e);
+        }
+
+        private void SetCulture()
+        {
+            //Todo
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(CultureInfo.InvariantCulture.Name);
+            this.LoadCulture(Thread.CurrentThread.CurrentCulture);
+
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(CultureInfo.InvariantCulture.Name);
+            this.LoadCulture(Thread.CurrentThread.CurrentUICulture);
+        }
+
+        private void LoadCulture(CultureInfo c)
+        {
+            NumberFormatInfo numberFormat = c.NumberFormat;
+            numberFormat.NumberGroupSeparator = MixERP.Net.Common.Helpers.Parameters.ThousandSeparator();
+            numberFormat.NumberDecimalSeparator = MixERP.Net.Common.Helpers.Parameters.DecimalSeparator();
+            numberFormat.NumberDecimalDigits = MixERP.Net.Common.Conversion.TryCastInteger(MixERP.Net.Common.Helpers.Parameters.DecimalPlaces());
+            numberFormat.CurrencySymbol = MixERP.Net.Common.Helpers.Parameters.CurrencySymbol();
+            numberFormat.CurrencyGroupSeparator = MixERP.Net.Common.Helpers.Parameters.ThousandSeparator();
+            numberFormat.CurrencyDecimalSeparator = MixERP.Net.Common.Helpers.Parameters.DecimalSeparator();
+            numberFormat.CurrencyDecimalDigits = MixERP.Net.Common.Conversion.TryCastInteger(MixERP.Net.Common.Helpers.Parameters.DecimalPlaces());
+
+            DateTimeFormatInfo dateFormat = c.DateTimeFormat;
+            dateFormat.ShortDatePattern = MixERP.Net.Common.Helpers.Parameters.ShortDateFormat();
+            dateFormat.LongDatePattern = MixERP.Net.Common.Helpers.Parameters.LongDateFormat();
+            dateFormat.ShortTimePattern = MixERP.Net.Common.Helpers.Parameters.ShortTimeFormat();
+            dateFormat.LongTimePattern = MixERP.Net.Common.Helpers.Parameters.LongTimeFormat();                    
         }
 
         private void SetSession()

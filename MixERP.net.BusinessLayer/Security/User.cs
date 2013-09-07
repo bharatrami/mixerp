@@ -28,7 +28,7 @@ namespace MixERP.Net.BusinessLayer.Security
                     {
                         if(table.Rows.Count.Equals(1))
                         {
-                            long LogOnId = Pes.Utility.Conversion.TryCastLong(table.Rows[0]["login_id"]);
+                            long LogOnId = MixERP.Net.Common.Conversion.TryCastLong(table.Rows[0]["login_id"]);
 
                             if(LogOnId.Equals(0))
                             {
@@ -74,7 +74,7 @@ namespace MixERP.Net.BusinessLayer.Security
             {
                 try
                 {
-                    long LogOnId = MixERP.Net.DatabaseLayer.Security.User.SignIn(officeId, userName, Pes.Utility.Conversion.HashSha512(password, userName), page.Request.UserAgent, "0", "");
+                    long LogOnId = MixERP.Net.DatabaseLayer.Security.User.SignIn(officeId, userName, MixERP.Net.Common.Conversion.HashSha512(password, userName), page.Request.UserAgent, "0", "");
 
                     if(LogOnId > 0)
                     {

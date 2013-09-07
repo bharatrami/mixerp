@@ -19,9 +19,9 @@ namespace MixERP.Net.FrontEnd.Finance
     {
         protected void PostTransactionButton_Click(object sender, EventArgs e)
         {
-            DateTime valueDate = Pes.Utility.Conversion.TryCastDate(ValueDateTextBox.Text);
+            DateTime valueDate = MixERP.Net.Common.Conversion.TryCastDate(ValueDateTextBox.Text);
             string referenceNumber = ReferenceNumberTextBox.Text;
-            int costCenterId = Pes.Utility.Conversion.TryCastInteger(CostCenterDropDownList.SelectedItem.Value);
+            int costCenterId = MixERP.Net.Common.Conversion.TryCastInteger(CostCenterDropDownList.SelectedItem.Value);
 
             long transactionId = MixERP.Net.BusinessLayer.Transactions.Transaction.Add(valueDate, referenceNumber, costCenterId, TransactionGridView);
 
@@ -113,8 +113,8 @@ namespace MixERP.Net.FrontEnd.Finance
             string account = AccountDropDownList.SelectedItem.Text;
             string statementReference = StatementReferenceTextBox.Text;
             string cashRepository = CashRepositoryDropDownList.SelectedItem.Text;
-            decimal debit = Pes.Utility.Conversion.TryCastDecimal(DebitTextBox.Text);
-            decimal credit = Pes.Utility.Conversion.TryCastDecimal(CreditTextBox.Text);
+            decimal debit = MixERP.Net.Common.Conversion.TryCastDecimal(DebitTextBox.Text);
+            decimal credit = MixERP.Net.Common.Conversion.TryCastDecimal(CreditTextBox.Text);
 
             #region Validation
             if(string.IsNullOrWhiteSpace(accountCode))

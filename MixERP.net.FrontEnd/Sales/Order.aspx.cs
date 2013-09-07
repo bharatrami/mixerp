@@ -23,9 +23,9 @@ namespace MixERP.Net.FrontEnd.Sales
 
         protected void SalesOrder_SaveButtonClick(object sender, EventArgs e)
         {
-            DateTime valueDate = Pes.Utility.Conversion.TryCastDate(SalesOrder.GetForm.DateTextBox.Text);
+            DateTime valueDate = MixERP.Net.Common.Conversion.TryCastDate(SalesOrder.GetForm.DateTextBox.Text);
             string partyCode = SalesOrder.GetForm.PartyDropDownList.SelectedItem.Value;
-            int priceTypeId = Pes.Utility.Conversion.TryCastInteger(SalesOrder.GetForm.PriceTypeDropDownList.SelectedItem.Value);
+            int priceTypeId = MixERP.Net.Common.Conversion.TryCastInteger(SalesOrder.GetForm.PriceTypeDropDownList.SelectedItem.Value);
             GridView grid = SalesOrder.GetForm.Grid;
             string referenceNumber = SalesOrder.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = SalesOrder.GetForm.StatementReferenceTextBox.Text;

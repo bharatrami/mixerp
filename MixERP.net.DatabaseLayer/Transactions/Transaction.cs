@@ -63,7 +63,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                             master.Parameters.AddWithValue("@CostCenterId", costCenterId);
                             master.Parameters.AddWithValue("@ReferenceNumber", referenceNumber);
 
-                            transactionMasterId = Pes.Utility.Conversion.TryCastLong(master.ExecuteScalar());
+                            transactionMasterId = MixERP.Net.Common.Conversion.TryCastLong(master.ExecuteScalar());
                         }
 
                         foreach(MixERP.Net.Common.Models.Transactions.TransactionDetailModel model in details)
@@ -72,7 +72,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 
                             if(model.Credit > 0 && model.Debit > 0)
                             {
-                                throw new InvalidOperationException(Pes.Utility.Helpers.LocalizationHelper.GetResourceString("Warnings", "BothSidesHaveValue"));
+                                throw new InvalidOperationException(MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("Warnings", "BothSidesHaveValue"));
                             }
                             else
                             {

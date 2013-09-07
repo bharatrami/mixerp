@@ -38,7 +38,7 @@ namespace MixERP.Net.FrontEnd.Reports
                 TextBox textBox = new TextBox();
                 textBox.ID = parameter.Key.Replace("@", "") + "_text_box";
 
-                string label = "<label for='" + textBox.ID + "'>" + Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", parameter.Key.Replace("@", "")) + "</label>";
+                string label = "<label for='" + textBox.ID + "'>" + MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", parameter.Key.Replace("@", "")) + "</label>";
 
                 if(parameter.Value.Equals("Date"))
                 {

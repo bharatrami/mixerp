@@ -31,8 +31,8 @@ namespace MixERP.Net.BusinessLayer.Transactions
                         detail.AccountCode = row.Cells[0].Text;
                         detail.CashRepositoryName = row.Cells[2].Text;
                         detail.StatementReference = row.Cells[3].Text.Replace("&nbsp;", " ").Trim();
-                        detail.Debit = Pes.Utility.Conversion.TryCastDecimal(row.Cells[4].Text);
-                        detail.Credit = Pes.Utility.Conversion.TryCastDecimal(row.Cells[5].Text);
+                        detail.Debit = MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[4].Text);
+                        detail.Credit = MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[5].Text);
 
                         details.Add(detail);
                     }

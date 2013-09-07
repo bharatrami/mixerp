@@ -7,27 +7,23 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
-namespace MixERP.Net.BusinessLayer.Core
+namespace MixERP.Net.Common.Helpers
 {
-    public static class Parties
+    public static class ConfigurationHelper
     {
-        public static bool IsCreditAllowed(string partyCode)
+        public static string GetSectionKey(string sectionName, string keyName)
         {
-            return MixERP.Net.DatabaseLayer.Core.Parties.IsCreditAllowed(partyCode);
-        }
-
-        public static string GetDisplayField()
-        {
-            string displayField = MixERP.Net.Common.Helpers.ConfigurationHelper.GetSectionKey("MixERPDbParameters", "PartyDisplayField");
-            if(string.IsNullOrWhiteSpace(displayField))
+            NameValueCollection parameters = (NameValueCollection)System.Configuration.ConfigurationManager.GetSection(sectionName);
+            if(parameters != null)
             {
-                displayField = "party_name";
+                return parameters[keyName];
             }
 
-            return displayField;
+            return string.Empty;
         }
     }
 }

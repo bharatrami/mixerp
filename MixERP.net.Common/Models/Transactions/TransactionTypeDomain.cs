@@ -23,7 +23,7 @@ namespace MixERP.Net.Common.Models.Transactions
             else if(type == TransactionType.Credit)
                 return "Cr";
             else
-                throw new InvalidOperationException(Pes.Utility.Helpers.LocalizationHelper.GetResourceString("Warnings", "UnknownTransactionType"));
+                throw new InvalidOperationException(MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("Warnings", "UnknownTransactionType"));
         }
 
     }

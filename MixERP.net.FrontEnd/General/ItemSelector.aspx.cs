@@ -20,7 +20,7 @@ namespace MixERP.Net.FrontEnd.General
         {
             foreach(ListItem item in FilterDropDownList.Items)
             {
-                item.Text = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", item.Text);
+                item.Text = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", item.Text);
             }
         }
 
@@ -33,7 +33,7 @@ namespace MixERP.Net.FrontEnd.General
                     string cellText = e.Row.Cells[i].Text;
                     if(!string.IsNullOrWhiteSpace(cellText))
                     {
-                        cellText = Pes.Utility.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
+                        cellText = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText);
                         e.Row.Cells[i].Text = cellText;
                     }
                 }
@@ -48,12 +48,12 @@ namespace MixERP.Net.FrontEnd.General
 
         private string GetSchema()
         {
-            return Pes.Utility.Conversion.TryCastString(this.Request["Schema"]);
+            return MixERP.Net.Common.Conversion.TryCastString(this.Request["Schema"]);
         }
 
         private string GetView()
         {
-            return Pes.Utility.Conversion.TryCastString(this.Request["View"]);
+            return MixERP.Net.Common.Conversion.TryCastString(this.Request["View"]);
         }
 
         protected void GoButton_Click(object sender, EventArgs e)
