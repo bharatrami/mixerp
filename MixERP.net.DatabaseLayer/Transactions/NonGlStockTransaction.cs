@@ -107,10 +107,10 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                         transaction.Commit();
                         return nonGlStockMasterId;
                     }
-                    catch(NpgsqlException ex)
+                    catch(NpgsqlException)
                     {
                         transaction.Rollback();
-                        MixERP.Net.Common.ExceptionManager.HandleException(ex);
+                        throw;
                     }
                 }
 

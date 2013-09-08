@@ -34,7 +34,7 @@ namespace MixERP.Net.FrontEnd
                 {
                     string menuText = model.MenuText;
                     string url = model.Url;
-                    menu += string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
+                    menu += string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "<a href='{0}' title='{1}'>{1}</a>", ResolveUrl(url), menuText);
                 }
             }
 

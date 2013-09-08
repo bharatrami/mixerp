@@ -104,7 +104,7 @@ http://mozilla.org/MPL/2.0/.
                 core.parties.party_code,
                 core.parties.party_name,
                 core.parties.pan_number,
-                core.parties.shipping_address,
+                core.shipping_addresses.address_line_1 || '&lt;br /&gt;' || core.shipping_addresses.address_line_2 || '&lt;br /&gt;' || core.shipping_addresses.street || '&lt;br /&gt;' || core.shipping_addresses.city || '&lt;br /&gt;' || core.shipping_addresses.state || '&lt;br /&gt;' || core.shipping_addresses.country AS shipping_address,
                 core.shippers.shipper_name,
                 transactions.stock_master.shipping_charge,
                 transactions.get_invoice_amount(transactions.transaction_master.transaction_master_id) AS invoice_amount
@@ -119,6 +119,8 @@ http://mozilla.org/MPL/2.0/.
                 ON transactions.stock_master.party_id=core.parties.party_id
                 LEFT JOIN core.shippers
                 ON transactions.stock_master.shipper_id = core.shippers.shipper_id
+                LEFT JOIN core.shipping_addresses
+                ON transactions.stock_master.shipping_address_id = core.shipping_addresses.shipping_address_id
                 WHERE transactions.transaction_master.transaction_master_id=@transaction_master_id;
             </Query>
             <Parameters>
@@ -160,6 +162,7 @@ http://mozilla.org/MPL/2.0/.
             </Parameters>
             <RunningTotalTextColumnIndex>3</RunningTotalTextColumnIndex>
             <RunningTotalFieldIndices>5,6,7,8,9</RunningTotalFieldIndices>
+            <DecimalFieldIndices>4,5,6,7,8,9</DecimalFieldIndices>
         </DataSource>
     </DataSources>
     <Install>

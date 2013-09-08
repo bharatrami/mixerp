@@ -2299,6 +2299,24 @@ CREATE TABLE core.shipping_addresses
 CREATE UNIQUE INDEX shipping_addresses_shipping_address_code_uix
 ON core.shipping_addresses(UPPER(shipping_address_code), party_id);
 
+CREATE FUNCTION core.get_shipping_address_id_by_shipping_address_code(text)
+RETURNS smallint
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT
+			shipping_address_id
+		FROM
+			core.shipping_addresses
+		WHERE 
+			core.shipping_addresses.shipping_address_code=$1
+	);
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE FUNCTION core.update_shipping_address_code_trigger()
 RETURNS TRIGGER
 AS

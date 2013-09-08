@@ -133,7 +133,7 @@ namespace MixERP.Net.BusinessLayer
             FormsAuthentication.SignOut();
             string currentUrl = HttpContext.Current.Request.RawUrl;
             string loginPageUrl = FormsAuthentication.LoginUrl;
-            HttpContext.Current.Response.Redirect(String.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "{0}?ReturnUrl={1}", loginPageUrl, currentUrl));
+            HttpContext.Current.Response.Redirect(String.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "{0}?ReturnUrl={1}", loginPageUrl, currentUrl));
         }
     }
 }

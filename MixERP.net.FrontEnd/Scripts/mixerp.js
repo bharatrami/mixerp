@@ -183,3 +183,18 @@ var showWindow = function (url) {
     newwindow.moveTo(0, 0);
     if (window.focus) { newwindow.focus() }
 }
+
+
+$(document).ready(function () {
+    setNumberFormat();
+    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(Page_EndRequest);
+});
+
+function Page_EndRequest(sender, args) {
+    setNumberFormat();
+}
+
+var setNumberFormat = function () {
+    $('input.number').number(true, decimalPlaces, decimalSeparator, thousandSeparator);
+}
+

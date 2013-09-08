@@ -56,6 +56,9 @@
     <Compile Include="BasePageClass.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="BaseUserControlClass.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Core\Accounts.cs" />
     <Compile Include="Core\Agents.cs" />
     <Compile Include="Core\Customers.cs" />

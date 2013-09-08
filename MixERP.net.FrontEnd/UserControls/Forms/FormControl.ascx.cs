@@ -56,7 +56,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             this.LoadGrid();
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
-                table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
+                table.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
                 this.LoadForm(this.FormContainer, table);
             }
         }
@@ -97,7 +97,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             //Load the form again.
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
-                table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
+                table.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
                 this.LoadForm(this.FormContainer, table);
             }
         }
@@ -205,7 +205,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
                         //Load the form again.
                         using(System.Data.DataTable table = new System.Data.DataTable())
                         {
-                            table.Locale = MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture();
+                            table.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
 
                             this.LoadForm(this.FormContainer, table);
                         }
@@ -469,7 +469,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Forms
             HtmlTableCell controlCell = new HtmlTableCell();
             Literal labelLiteral = new Literal();
 
-            labelLiteral.Text = string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), "<label for='{0}'>{1}</label>", controls[0].ID, label);
+            labelLiteral.Text = string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "<label for='{0}'>{1}</label>", controls[0].ID, label);
             labelCell.Attributes.Add("class", "label-cell");
 
             labelCell.Controls.Add(labelLiteral);

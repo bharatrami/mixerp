@@ -106,19 +106,17 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                         transaction.Commit();
                         return transactionMasterId;
                     }
-                    catch(NpgsqlException ex)
+                    catch(NpgsqlException)
                     {
                         transaction.Rollback();
-                        MixERP.Net.Common.ExceptionManager.HandleException(ex);
+                        throw;
                     }
-                    catch(InvalidOperationException ex)
+                    catch(InvalidOperationException)
                     {
                         transaction.Rollback();
-                        MixERP.Net.Common.ExceptionManager.HandleException(ex);                    
+                        throw;
                     }
                 }
-
-                return 0;
             }
         }
 

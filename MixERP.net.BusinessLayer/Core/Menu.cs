@@ -19,92 +19,65 @@ namespace MixERP.Net.BusinessLayer.Core
     {
         public static Collection<MixERP.Net.Common.Models.Core.Menu> GetMenuCollection(string path, short level)
         {
-            try
+            Collection<MixERP.Net.Common.Models.Core.Menu> collection = new Collection<Common.Models.Core.Menu>();
+
+            foreach(DataRow row in MixERP.Net.DatabaseLayer.Core.Menu.GetMenuTable(path, level).Rows)
             {
-                Collection<MixERP.Net.Common.Models.Core.Menu> collection = new Collection<Common.Models.Core.Menu>();
+                MixERP.Net.Common.Models.Core.Menu model = new Common.Models.Core.Menu();
 
-                foreach(DataRow row in MixERP.Net.DatabaseLayer.Core.Menu.GetMenuTable(path, level).Rows)
-                {
-                    MixERP.Net.Common.Models.Core.Menu model = new Common.Models.Core.Menu();
+                model.MenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["menu_id"]);
+                model.MenuText = MixERP.Net.Common.Conversion.TryCastString(row["menu_text"]);
+                model.Url = MixERP.Net.Common.Conversion.TryCastString(row["url"]);
+                model.MenuCode = MixERP.Net.Common.Conversion.TryCastString(row["menu_code"]);
+                model.Level = MixERP.Net.Common.Conversion.TryCastInteger(row["level"]);
+                model.ParentMenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["parent_menu_id"]);
 
-                    model.MenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["menu_id"]);
-                    model.MenuText = MixERP.Net.Common.Conversion.TryCastString(row["menu_text"]);
-                    model.Url = MixERP.Net.Common.Conversion.TryCastString(row["url"]);
-                    model.MenuCode = MixERP.Net.Common.Conversion.TryCastString(row["menu_code"]);
-                    model.Level = MixERP.Net.Common.Conversion.TryCastInteger(row["level"]);
-                    model.ParentMenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["parent_menu_id"]);
-
-                    collection.Add(model);
-                }
-
-                return collection;
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
+                collection.Add(model);
             }
 
-            return null;
+            return collection;
         }
 
         public static Collection<MixERP.Net.Common.Models.Core.Menu> GetRootMenuCollection(string path)
         {
-            try
+            Collection<MixERP.Net.Common.Models.Core.Menu> collection = new Collection<Common.Models.Core.Menu>();
+
+            foreach(DataRow row in MixERP.Net.DatabaseLayer.Core.Menu.GetRootMenuTable(path).Rows)
             {
-                Collection<MixERP.Net.Common.Models.Core.Menu> collection = new Collection<Common.Models.Core.Menu>();
+                MixERP.Net.Common.Models.Core.Menu model = new Common.Models.Core.Menu();
 
-                foreach(DataRow row in MixERP.Net.DatabaseLayer.Core.Menu.GetRootMenuTable(path).Rows)
-                {
-                    MixERP.Net.Common.Models.Core.Menu model = new Common.Models.Core.Menu();
+                model.MenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["menu_id"]);
+                model.MenuText = MixERP.Net.Common.Conversion.TryCastString(row["menu_text"]);
+                model.Url = MixERP.Net.Common.Conversion.TryCastString(row["url"]);
+                model.MenuCode = MixERP.Net.Common.Conversion.TryCastString(row["menu_code"]);
+                model.Level = MixERP.Net.Common.Conversion.TryCastInteger(row["level"]);
+                model.ParentMenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["parent_menu_id"]);
 
-                    model.MenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["menu_id"]);
-                    model.MenuText = MixERP.Net.Common.Conversion.TryCastString(row["menu_text"]);
-                    model.Url = MixERP.Net.Common.Conversion.TryCastString(row["url"]);
-                    model.MenuCode = MixERP.Net.Common.Conversion.TryCastString(row["menu_code"]);
-                    model.Level = MixERP.Net.Common.Conversion.TryCastInteger(row["level"]);
-                    model.ParentMenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["parent_menu_id"]);
-
-                    collection.Add(model);
-                }
-
-                return collection;
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
+                collection.Add(model);
             }
 
-            return null;
+            return collection;
         }
 
         public static Collection<MixERP.Net.Common.Models.Core.Menu> GetMenuCollection(int parentMenuId, short level)
         {
-            try
+            Collection<MixERP.Net.Common.Models.Core.Menu> collection = new Collection<Common.Models.Core.Menu>();
+
+            foreach(DataRow row in MixERP.Net.DatabaseLayer.Core.Menu.GetMenuTable(parentMenuId, level).Rows)
             {
-                Collection<MixERP.Net.Common.Models.Core.Menu> collection = new Collection<Common.Models.Core.Menu>();
+                MixERP.Net.Common.Models.Core.Menu model = new Common.Models.Core.Menu();
 
-                foreach(DataRow row in MixERP.Net.DatabaseLayer.Core.Menu.GetMenuTable(parentMenuId, level).Rows)
-                {
-                    MixERP.Net.Common.Models.Core.Menu model = new Common.Models.Core.Menu();
+                model.MenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["menu_id"]);
+                model.MenuText = MixERP.Net.Common.Conversion.TryCastString(row["menu_text"]);
+                model.Url = MixERP.Net.Common.Conversion.TryCastString(row["url"]);
+                model.MenuCode = MixERP.Net.Common.Conversion.TryCastString(row["menu_code"]);
+                model.Level = MixERP.Net.Common.Conversion.TryCastInteger(row["level"]);
+                model.ParentMenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["parent_menu_id"]);
 
-                    model.MenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["menu_id"]);
-                    model.MenuText = MixERP.Net.Common.Conversion.TryCastString(row["menu_text"]);
-                    model.Url = MixERP.Net.Common.Conversion.TryCastString(row["url"]);
-                    model.MenuCode = MixERP.Net.Common.Conversion.TryCastString(row["menu_code"]);
-                    model.Level = MixERP.Net.Common.Conversion.TryCastInteger(row["level"]);
-                    model.ParentMenuId = MixERP.Net.Common.Conversion.TryCastInteger(row["parent_menu_id"]);
-
-                    collection.Add(model);
-                }
-
-                return collection;
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
+                collection.Add(model);
             }
 
-            return null;
+            return collection;
         }
     }
 }

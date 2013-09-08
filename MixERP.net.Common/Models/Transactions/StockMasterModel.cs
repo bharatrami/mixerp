@@ -21,6 +21,7 @@ namespace MixERP.Net.Common.Models.Transactions
         public int PriceTypeId { get; set; }
         public bool IsCredit { get; set; }
         public int ShipperId { get; set; }
+        public string ShippingAddressCode { get; set; }
         public decimal ShippingCharge { get; set; }
         public int StoreId { get; set; }
         public int CashRepositoryId { get; set; }

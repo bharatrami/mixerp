@@ -14,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.General
 {
-    public partial class ItemSelector : System.Web.UI.Page
+    public partial class ItemSelector : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void FilterDropDownList_DataBound(object sender, EventArgs e)
         {

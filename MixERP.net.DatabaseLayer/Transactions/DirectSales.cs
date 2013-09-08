@@ -166,7 +166,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 
                         #region StockMaster
 
-                        sql = "INSERT INTO transactions.stock_master(stock_master_id, transaction_master_id, party_id, agent_id, price_type_id, is_credit, shipper_id, shipping_charge, store_id, cash_repository_id) SELECT nextval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id')), @TransactionMasterId, core.get_party_id_by_party_code(@PartyCode), @AgentId, @PriceTypeId, @IsCredit, @ShipperId, @ShippingCharge, @StoreId, @CashRepositoryId; SELECT currval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id'));";
+                        sql = "INSERT INTO transactions.stock_master(stock_master_id, transaction_master_id, party_id, agent_id, price_type_id, is_credit, shipper_id, shipping_address_id, shipping_charge, store_id, cash_repository_id) SELECT nextval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id')), @TransactionMasterId, core.get_party_id_by_party_code(@PartyCode), @AgentId, @PriceTypeId, @IsCredit, @ShipperId, core.get_shipping_address_id_by_shipping_address_code(@ShippingAddressCode), @ShippingCharge, @StoreId, @CashRepositoryId; SELECT currval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id'));";
 
                         using(NpgsqlCommand stockMasterRow = new NpgsqlCommand(sql, connection))
                         {
@@ -186,6 +186,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                                 stockMasterRow.Parameters.AddWithValue("@ShipperId", stockMaster.ShipperId);
                             }
 
+                            stockMasterRow.Parameters.AddWithValue("@ShippingAddressCode", stockMaster.ShippingAddressCode);
                             stockMasterRow.Parameters.AddWithValue("@ShippingCharge", stockMaster.ShippingCharge);
                             stockMasterRow.Parameters.AddWithValue("@StoreId", stockMaster.StoreId);
                             stockMasterRow.Parameters.AddWithValue("@CashRepositoryId", stockMaster.CashRepositoryId);
@@ -224,10 +225,10 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                         transaction.Commit();
                         return transactionMasterId;
                     }
-                    catch(NpgsqlException ex)
+                    catch(NpgsqlException)
                     {
                         transaction.Rollback();
-                        MixERP.Net.Common.ExceptionManager.HandleException(ex);
+                        throw;
                     }
                 }
 

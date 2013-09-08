@@ -18,16 +18,7 @@ namespace MixERP.Net.BusinessLayer.Office
     {
         public static DataTable GetOffices()
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Office.Offices.GetOffices();
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return null;
+            return MixERP.Net.DatabaseLayer.Office.Offices.GetOffices();
         }
     }
 }

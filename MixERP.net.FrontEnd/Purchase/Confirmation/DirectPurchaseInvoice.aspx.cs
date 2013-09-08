@@ -14,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Purchase.Confirmation
 {
-    public partial class DirectPurchaseInvoice : System.Web.UI.Page
+    public partial class DirectPurchaseInvoice : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

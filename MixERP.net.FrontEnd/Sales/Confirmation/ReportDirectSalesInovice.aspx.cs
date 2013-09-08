@@ -14,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.FrontEnd.Sales.Confirmation
 {
-    public partial class ReportDirectSalesInovice : System.Web.UI.Page
+    public partial class ReportDirectSalesInovice : MixERP.Net.BusinessLayer.BasePageClass
     {
         protected void Page_Load(object sender, EventArgs e)
         {

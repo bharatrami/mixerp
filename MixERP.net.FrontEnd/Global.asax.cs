@@ -40,6 +40,20 @@ namespace MixERP.Net.FrontEnd
         void Application_Error(object sender, EventArgs e)
         {
             // Code that runs when an unhandled error occurs
+            Exception ex = Server.GetLastError();
+            
+            if(ex == null)
+            {
+                return;
+            }
+
+            if(ex is System.Threading.ThreadAbortException)
+            {
+                return;
+            }
+
+
+            MixERP.Net.Common.ExceptionManager.HandleException(ex);
 
         }
 

@@ -31,13 +31,14 @@ namespace MixERP.Net.FrontEnd.Sales
             GridView grid = DirectSalesControl.GetForm.Grid;
             int cashRepositoryId = MixERP.Net.Common.Conversion.TryCastInteger(DirectSalesControl.GetForm.CashRepositoryDropDownList.SelectedItem.Value);
             int shipperId = MixERP.Net.Common.Conversion.TryCastInteger(DirectSalesControl.GetForm.ShippingCompanyDropDownList.SelectedItem.Value);
+            string shippingAddressCode = DirectSalesControl.GetForm.ShippingAddressDropDownList.SelectedItem.Text;
             decimal shippingCharge = MixERP.Net.Common.Conversion.TryCastDecimal(DirectSalesControl.GetForm.ShippingChargeTextBox.Text);
             int costCenterId = MixERP.Net.Common.Conversion.TryCastInteger(DirectSalesControl.GetForm.CostCenterDropDownList.SelectedItem.Value);
             int agentId = MixERP.Net.Common.Conversion.TryCastInteger(DirectSalesControl.GetForm.AgentDropDownList.SelectedItem.Value);
             string referenceNumber = DirectSalesControl.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = DirectSalesControl.GetForm.StatementReferenceTextBox.Text;
 
-            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectSales.Add(valueDate, storeId, isCredit, partyCode, agentId, priceTypeId, grid, shipperId, shippingCharge, cashRepositoryId, costCenterId, referenceNumber, statementReference);
+            long transactionMasterId = MixERP.Net.BusinessLayer.Transactions.DirectSales.Add(valueDate, storeId, isCredit, partyCode, agentId, priceTypeId, grid, shipperId, shippingAddressCode, shippingCharge, cashRepositoryId, costCenterId, referenceNumber, statementReference);
             if(transactionMasterId > 0)
             {
                 Response.Redirect("~/Sales/Confirmation/DirectSales.aspx?TranId=" + transactionMasterId, true);

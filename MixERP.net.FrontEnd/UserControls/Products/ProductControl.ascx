@@ -118,13 +118,13 @@ http://mozilla.org/MPL/2.0/.
                         <asp:BoundField DataField="ItemName" HeaderText="<%$ Resources:Titles, ItemName %>" HeaderStyle-Width="315" />
                         <asp:BoundField DataField="Quantity" HeaderText="<%$ Resources:Titles, QuantityAbbreviated %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" />
                         <asp:BoundField DataField="Unit" HeaderText="<%$ Resources:Titles, Unit %>" HeaderStyle-Width="70" />
-                        <asp:BoundField DataField="Price" HeaderText="<%$ Resources:Titles, Price %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" DataFormatString="{0:C}" />
-                        <asp:BoundField DataField="Amount" HeaderText="<%$ Resources:Titles, Amount %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" />
-                        <asp:BoundField DataField="Discount" HeaderText="<%$ Resources:Titles, Discount %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" />
-                        <asp:BoundField DataField="SubTotal" HeaderText="<%$ Resources:Titles, SubTotal %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" />
-                        <asp:BoundField DataField="Rate" HeaderText="<%$ Resources:Titles, Rate %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="40" />
-                        <asp:BoundField DataField="Tax" HeaderText="<%$ Resources:Titles, Tax %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" />
-                        <asp:BoundField DataField="Total" HeaderText="<%$ Resources:Titles, Total %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="80" />
+                        <asp:BoundField DataField="Price" HeaderText="<%$ Resources:Titles, Price %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" DataFormatString="{0:N}" />
+                        <asp:BoundField DataField="Amount" HeaderText="<%$ Resources:Titles, Amount %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" DataFormatString="{0:N}" />
+                        <asp:BoundField DataField="Discount" HeaderText="<%$ Resources:Titles, Discount %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" DataFormatString="{0:N}" />
+                        <asp:BoundField DataField="SubTotal" HeaderText="<%$ Resources:Titles, SubTotal %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="75" DataFormatString="{0:N}" />
+                        <asp:BoundField DataField="Rate" HeaderText="<%$ Resources:Titles, Rate %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="40" DataFormatString="{0:N}" />
+                        <asp:BoundField DataField="Tax" HeaderText="<%$ Resources:Titles, Tax %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="50" DataFormatString="{0:N}" />
+                        <asp:BoundField DataField="Total" HeaderText="<%$ Resources:Titles, Total %>" ItemStyle-CssClass="right" HeaderStyle-CssClass="right" HeaderStyle-Width="80" DataFormatString="{0:N}" />
                         <asp:TemplateField ShowHeader="False" HeaderStyle-Width="50" HeaderText="<%$ Resources:Titles, Action %>">
                             <ItemTemplate>
                                 <asp:ImageButton ID="DeleteImageButton" ClientIDMode="Predictable" runat="server"
@@ -257,7 +257,7 @@ http://mozilla.org/MPL/2.0/.
                             <asp:TableCell>
                                 <asp:Literal ID="ShippingChargeTextBoxLabelLiteral" runat="server" />
                             </asp:TableCell><asp:TableCell>
-                                <asp:TextBox ID="ShippingChargeTextBox" runat="server" AutoPostBack="true" OnTextChanged="ShippingChargeTextBox_TextChanged" Width="100px">
+                                <asp:TextBox ID="ShippingChargeTextBox" runat="server" AutoPostBack="true" CssClass="number" OnTextChanged="ShippingChargeTextBox_TextChanged" Width="100px">
                                 </asp:TextBox>
                             </asp:TableCell></asp:TableRow><asp:TableRow>
                             <asp:TableCell>

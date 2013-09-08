@@ -19,116 +19,44 @@ namespace MixERP.Net.BusinessLayer.Helpers
     {
         public static DataTable GetView(string tableSchema, string tableName, string orderBy, int limit, int offset)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetView(tableSchema, tableName, orderBy, limit, offset);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return null;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetView(tableSchema, tableName, orderBy, limit, offset);
         }
 
         public static DataTable GetTable(string tableSchema, string tableName)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return null;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName);
         }
 
 
         public static DataTable GetTable(string tableSchema, string tableName, string columnNames, string columnValues)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName, columnNames, columnValues);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return null;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName, columnNames, columnValues);
         }
 
 
         public static DataTable GetTable(string tableSchema, string tableName, string columnNames, string columnValuesLike, int limit)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName, columnNames, columnValuesLike, limit);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return null;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(tableSchema, tableName, columnNames, columnValuesLike, limit);
         }
 
         public static int GetTotalRecords(string tableSchema, string tableName)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTotalRecords(tableSchema, tableName);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return 0;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTotalRecords(tableSchema, tableName);
         }
 
         public static bool InsertRecord(string tableSchema, string tableName, System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> data, string imageColumn)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.InsertRecord(MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), tableSchema, tableName, data, imageColumn);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return false;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.InsertRecord(MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), tableSchema, tableName, data, imageColumn);
         }
 
         public static bool UpdateRecord(string tableSchema, string tableName, System.Collections.ObjectModel.Collection<KeyValuePair<string, string>> data, string keyColumn, string keyColumnValue, string imageColumn)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.UpdateRecord(MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), tableSchema, tableName, data, keyColumn, keyColumnValue, imageColumn);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return false;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.UpdateRecord(MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), tableSchema, tableName, data, keyColumn, keyColumnValue, imageColumn);
         }
 
         public static bool DeleteRecord(string tableSchema, string tableName, string keyColumn, string keyColumnValue)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Helpers.FormHelper.DeleteRecord(tableSchema, tableName, keyColumn, keyColumnValue);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return false;
+            return MixERP.Net.DatabaseLayer.Helpers.FormHelper.DeleteRecord(tableSchema, tableName, keyColumn, keyColumnValue);
         }
 
         public static void MakeDirty(WebControl control)

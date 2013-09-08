@@ -8,23 +8,11 @@ http://mozilla.org/MPL/2.0/.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Text;
 
-namespace MixERP.Net.FrontEnd.Items.Setup
+namespace MixERP.Net.BusinessLayer
 {
-    public partial class PartiesPopup : MixERP.Net.BusinessLayer.BasePageClass
+    public class BaseUserControlClass : System.Web.UI.UserControl
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        public string GetPartyNameParameter()
-        {
-            return MixERP.Net.Common.Helpers.Parameters.PartyName();
-        }
-
     }
 }

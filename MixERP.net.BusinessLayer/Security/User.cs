@@ -104,16 +104,7 @@ namespace MixERP.Net.BusinessLayer.Security
 
         public static DataTable GetUserTable(string userName)
         {
-            try
-            {
-                return MixERP.Net.DatabaseLayer.Security.User.GetUserTable(userName);
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
-
-            return null;
+            return MixERP.Net.DatabaseLayer.Security.User.GetUserTable(userName);
         }
 
     }

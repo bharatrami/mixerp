@@ -17,38 +17,17 @@ namespace MixERP.Net.BusinessLayer.Helpers
     {
         public static void Vacuum()
         {
-            try
-            {
-                MixERP.Net.DatabaseLayer.Helpers.Maintenance.Vacuum();
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
+            MixERP.Net.DatabaseLayer.Helpers.Maintenance.Vacuum();
         }
 
         public static void VacuumFull()
         {
-            try
-            {
-                MixERP.Net.DatabaseLayer.Helpers.Maintenance.VacuumFull();
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
+            MixERP.Net.DatabaseLayer.Helpers.Maintenance.VacuumFull();
         }
 
         public static void Analyze()
         {
-            try
-            {
-                MixERP.Net.DatabaseLayer.Helpers.Maintenance.Analyze();
-            }
-            catch(DbException ex)
-            {
-                MixERP.Net.Common.ExceptionManager.HandleException(ex);
-            }
+            MixERP.Net.DatabaseLayer.Helpers.Maintenance.Analyze();
         }
     }
 }

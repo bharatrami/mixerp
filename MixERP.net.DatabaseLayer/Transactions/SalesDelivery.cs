@@ -202,10 +202,10 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                         transaction.Commit();
                         return transactionMasterId;
                     }
-                    catch(NpgsqlException ex)
+                    catch(NpgsqlException)
                     {
                         transaction.Rollback();
-                        MixERP.Net.Common.ExceptionManager.HandleException(ex);
+                        throw;
                     }
                 }
 

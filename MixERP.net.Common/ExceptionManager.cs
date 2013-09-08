@@ -17,7 +17,14 @@ namespace MixERP.Net.Common
     {
         public static void HandleException(Exception ex)
         {
-            System.Web.HttpContext.Current.Session["ex"] = ex;
+            var exception = ex;
+
+            if(ex.GetBaseException() != null)
+            {
+                exception = ex.GetBaseException();
+            }
+            
+            System.Web.HttpContext.Current.Session["ex"] = exception;
             System.Web.HttpContext.Current.Response.Redirect("~/RuntimeError.aspx", true);
         }
     }

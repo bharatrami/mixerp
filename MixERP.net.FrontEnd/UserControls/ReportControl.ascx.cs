@@ -59,10 +59,11 @@ namespace MixERP.Net.FrontEnd.UserControls
             {
                 ReportTitleLiteral.Text = Resources.Titles.ReportNotFound;
                 ReportTitleHidden.Value = ReportTitleLiteral.Text;
-                TopSectionLiteral.Text = string.Format(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture(), Resources.Warnings.InvalidLocation, this.path);
+                TopSectionLiteral.Text = string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, Resources.Warnings.InvalidLocation, this.path);
                 return;
             }
 
+            this.SetDecimalFields();
             this.SetRunningTotalFields();
             this.SetDataSources();
             this.SetTitle();
@@ -72,16 +73,40 @@ namespace MixERP.Net.FrontEnd.UserControls
             this.SetBottomSection();
         }
 
-        private System.Collections.ObjectModel.Collection<int> RunningTotalTextColumnIndices { get; set; }
-        private System.Collections.ObjectModel.Collection<string> RunningTotalFieldIndices { get; set; }
+        private System.Collections.ObjectModel.Collection<string> DecimalFieldIndicesCollection { get; set; }
+        private void SetDecimalFields()
+        {
+            XmlNodeList dataSourceList = XmlHelper.GetNodes(path, "//DataSource");
+            string decimalFieldIndices = string.Empty;
+
+            this.DecimalFieldIndicesCollection = new System.Collections.ObjectModel.Collection<string>();
+
+            foreach(XmlNode dataSource in dataSourceList)
+            {
+                decimalFieldIndices = string.Empty;
+
+                foreach(XmlNode node in dataSource.ChildNodes)
+                {
+                    if(node.Name.Equals("DecimalFieldIndices"))
+                    {
+                        decimalFieldIndices = node.InnerText;
+                    }
+                }
+
+                this.DecimalFieldIndicesCollection.Add(decimalFieldIndices);
+            }        
+        }
+
+        private System.Collections.ObjectModel.Collection<int> RunningTotalTextColumnIndexCollection { get; set; }
+        private System.Collections.ObjectModel.Collection<string> RunningTotalFieldIndicesCollection { get; set; }
         private void SetRunningTotalFields()
         {
             XmlNodeList dataSourceList = XmlHelper.GetNodes(path, "//DataSource");
             int runningTotalTextColumnIndex = 0;
             string runningTotalFieldIndices = string.Empty;
 
-            this.RunningTotalFieldIndices = new System.Collections.ObjectModel.Collection<string>();
-            this.RunningTotalTextColumnIndices = new System.Collections.ObjectModel.Collection<int>();
+            this.RunningTotalFieldIndicesCollection = new System.Collections.ObjectModel.Collection<string>();
+            this.RunningTotalTextColumnIndexCollection = new System.Collections.ObjectModel.Collection<int>();
 
             foreach(XmlNode dataSource in dataSourceList)
             {
@@ -101,10 +126,9 @@ namespace MixERP.Net.FrontEnd.UserControls
                     }
                 }
 
-                this.RunningTotalTextColumnIndices.Add(runningTotalTextColumnIndex);
-                this.RunningTotalFieldIndices.Add(runningTotalFieldIndices);
+                this.RunningTotalTextColumnIndexCollection.Add(runningTotalTextColumnIndex);
+                this.RunningTotalFieldIndicesCollection.Add(runningTotalFieldIndices);
             }
-
         }
 
         private System.Collections.ObjectModel.Collection<System.Data.DataTable> DataSources { get; set; }
@@ -134,16 +158,6 @@ namespace MixERP.Net.FrontEnd.UserControls
                         {
                             this.DataSources.Add(table);
                         }
-                    }
-
-                    if(c.Name.Equals("RunningTotalTextColumnIndex"))
-                    {
-                        this.RunningTotalTextColumnIndices.Add(MixERP.Net.Common.Conversion.TryCastInteger(c.InnerText));
-                    }
-
-                    if(c.Name.Equals("RunningTotalFieldIndices"))
-                    {
-                        this.RunningTotalFieldIndices.Add(c.InnerText);
                     }
                 }
             }
@@ -202,25 +216,25 @@ namespace MixERP.Net.FrontEnd.UserControls
                 if(!string.IsNullOrWhiteSpace(ds))
                 {
 
-                    if(!ds.Contains(' '))
-                    {
-                        int index = MixERP.Net.Common.Conversion.TryCastInteger(ds);
+                    //if(!ds.Contains(' '))
+                    //{
+                    int index = MixERP.Net.Common.Conversion.TryCastInteger(ds);
 
-                        GridView grid = new GridView();
-                        grid.EnableTheming = false;
+                    GridView grid = new GridView();
+                    grid.EnableTheming = false;
 
-                        grid.ID = "GridView" + ds;
-                        grid.CssClass = "report";
+                    grid.ID = "GridView" + ds;
+                    grid.CssClass = "report";
 
-                        grid.Width = Unit.Percentage(100);
-                        grid.GridLines = GridLines.Both;
-                        grid.RowDataBound += GridView_RowDataBound;
-                        grid.DataBound += GridView_DataBound;
-                        BodyPlaceHolder.Controls.Add(grid);
+                    grid.Width = Unit.Percentage(100);
+                    grid.GridLines = GridLines.Both;
+                    grid.RowDataBound += GridView_RowDataBound;
+                    grid.DataBound += GridView_DataBound;
+                    BodyPlaceHolder.Controls.Add(grid);
 
-                        grid.DataSource = this.DataSources[index];
-                        grid.DataBind();
-                    }
+                    grid.DataSource = this.DataSources[index];
+                    grid.DataBind();
+                    //}
                 }
             }
 
@@ -240,7 +254,7 @@ namespace MixERP.Net.FrontEnd.UserControls
 
             int arg = MixERP.Net.Common.Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
 
-            if(string.IsNullOrWhiteSpace(this.RunningTotalFieldIndices[arg]))
+            if(string.IsNullOrWhiteSpace(this.RunningTotalFieldIndicesCollection[arg]))
             {
                 return;
             }
@@ -252,17 +266,17 @@ namespace MixERP.Net.FrontEnd.UserControls
 
             grid.FooterRow.Visible = true;
 
-            for(int i = 0; i < RunningTotalTextColumnIndices[arg]; i++)
+            for(int i = 0; i < this.RunningTotalTextColumnIndexCollection[arg]; i++)
             {
                 grid.FooterRow.Cells[i].Visible = false;
             }
 
-            grid.FooterRow.Cells[RunningTotalTextColumnIndices[arg]].ColumnSpan = RunningTotalTextColumnIndices[arg] + 1;
-            grid.FooterRow.Cells[RunningTotalTextColumnIndices[arg]].Text = Resources.Titles.Total;
-            grid.FooterRow.Cells[RunningTotalTextColumnIndices[arg]].Style.Add("text-align", "right");
-            grid.FooterRow.Cells[RunningTotalTextColumnIndices[arg]].Font.Bold = true;
+            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].ColumnSpan = this.RunningTotalTextColumnIndexCollection[arg] + 1;
+            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].Text = Resources.Titles.Total;
+            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].Style.Add("text-align", "right");
+            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].Font.Bold = true;
 
-            foreach(string field in this.RunningTotalFieldIndices[arg].Split(','))
+            foreach(string field in this.RunningTotalFieldIndicesCollection[arg].Split(','))
             {
                 int index = MixERP.Net.Common.Conversion.TryCastInteger(field.Trim());
 
@@ -278,7 +292,7 @@ namespace MixERP.Net.FrontEnd.UserControls
                         }
                     }
 
-                    grid.FooterRow.Cells[index].Text = total.ToString(MixERP.Net.BusinessLayer.Helpers.SessionHelper.Culture());
+                    grid.FooterRow.Cells[index].Text = string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "{0:N}", total);
                     grid.FooterRow.Cells[index].Font.Bold = true;
                 }
             }
@@ -295,6 +309,27 @@ namespace MixERP.Net.FrontEnd.UserControls
                     cellText = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("FormResource", cellText, false);
                     e.Row.Cells[i].Text = cellText;
                     e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Left;
+                }
+            }
+
+            if(e.Row.RowType == DataControlRowType.DataRow)
+            {
+                GridView grid = (GridView)sender;
+                int arg = MixERP.Net.Common.Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
+
+                //Apply formatting on decimal fields
+                if(string.IsNullOrWhiteSpace(this.DecimalFieldIndicesCollection[arg]))
+                {
+                    return;
+                }
+
+
+                string decimalFields = this.DecimalFieldIndicesCollection[arg];
+                foreach(string fieldIndex in decimalFields.Split(','))
+                {
+                    int index = MixERP.Net.Common.Conversion.TryCastInteger(fieldIndex);
+                    decimal value = MixERP.Net.Common.Conversion.TryCastDecimal(e.Row.Cells[index].Text);
+                    e.Row.Cells[index].Text = string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "{0:N}", value);
                 }
             }
         }
@@ -317,7 +352,8 @@ namespace MixERP.Net.FrontEnd.UserControls
                         {
                             if(table[index].Columns.Contains(column))
                             {
-                                expression = expression.Replace(word, table[index].Rows[0][column].ToString());
+                                string value = table[index].Rows[0][column].ToString();
+                                expression = expression.Replace(word, value);
                             }
                         }
                     }
