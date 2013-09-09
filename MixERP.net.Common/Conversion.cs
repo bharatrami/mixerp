@@ -138,7 +138,7 @@ namespace MixERP.Net.Common
                     return DateTime.MinValue;
                 }
 
-                return Convert.ToDateTime(value);
+                return Convert.ToDateTime(value, System.Threading.Thread.CurrentThread.CurrentCulture);
             }
             catch(FormatException)
             {
@@ -192,12 +192,12 @@ namespace MixERP.Net.Common
             {
                 if(value is string)
                 {
-                    if(value.ToString().ToLower().Equals("yes"))
+                    if(value.ToString().ToLower(System.Threading.Thread.CurrentThread.CurrentCulture).Equals("yes"))
                     {
                         return true;
                     }
 
-                    if(value.ToString().ToLower().Equals("true"))
+                    if(value.ToString().ToLower(System.Threading.Thread.CurrentThread.CurrentCulture).Equals("true"))
                     {
                         return true;
                     }
@@ -371,6 +371,8 @@ namespace MixERP.Net.Common
 
             using(System.Data.DataTable table = new System.Data.DataTable())
             {
+                table.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+
                 for(int i = 0; i < props.Count; i++)
                 {
                     System.ComponentModel.PropertyDescriptor prop = props[i];

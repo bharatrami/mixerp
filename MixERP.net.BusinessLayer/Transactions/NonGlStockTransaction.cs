@@ -14,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.BusinessLayer.Transactions
 {
-    public static class NonGlStockTransaction
+    public static class NonGLStockTransaction
     {
         public static long Add(string book, DateTime valueDate, string partyCode, int priceTypeId, GridView grid, string referenceNumber, string statementReference)
         {
@@ -46,13 +46,13 @@ namespace MixERP.Net.BusinessLayer.Transactions
                 }
             }
 
-            nonGlStockMasterId = MixERP.Net.DatabaseLayer.Transactions.NonGlStockTransaction.Add(book, valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), referenceNumber, statementReference, stockMaster, details);
+            nonGlStockMasterId = MixERP.Net.DatabaseLayer.Transactions.NonGLStockTransaction.Add(book, valueDate, MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.UserId(), MixERP.Net.BusinessLayer.Helpers.SessionHelper.LogOnId(), referenceNumber, statementReference, stockMaster, details);
             return nonGlStockMasterId;
         }
 
         public static System.Data.DataTable GetView(string book)
         {
-            return MixERP.Net.DatabaseLayer.Transactions.NonGlStockTransaction.GetView(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), book);
+            return MixERP.Net.DatabaseLayer.Transactions.NonGLStockTransaction.GetView(MixERP.Net.BusinessLayer.Helpers.SessionHelper.OfficeId(), book);
         }
     }
 }

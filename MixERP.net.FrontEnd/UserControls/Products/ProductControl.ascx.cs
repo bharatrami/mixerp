@@ -412,7 +412,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             {
                 foreach(MixERP.Net.Common.Models.Transactions.ProductDetailsModel model in table)
                 {
-                    retVal += MixERP.Net.Common.Conversion.TryCastDecimal(model.SubTotal);
+                    retVal += MixERP.Net.Common.Conversion.TryCastDecimal(model.Subtotal);
                 }
             }
 
@@ -612,7 +612,7 @@ namespace MixERP.Net.FrontEnd.UserControls.Products
             row.Price = price;
             row.Amount = amount;
             row.Discount = discount;
-            row.SubTotal = subTotal;
+            row.Subtotal = subTotal;
             row.Rate = taxRate;
             row.Tax = tax;
             row.Total = total;

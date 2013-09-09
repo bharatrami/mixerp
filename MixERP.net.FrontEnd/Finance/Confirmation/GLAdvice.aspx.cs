@@ -26,7 +26,7 @@ namespace MixERP.Net.FrontEnd.Finance.Confirmation
             parameters.Add(list);
             parameters.Add(list);
 
-            GLAdviceReport.Parameters = parameters;
+            GLAdviceReport.ParameterCollection = parameters;
         }
 
     }

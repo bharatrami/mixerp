@@ -108,8 +108,19 @@ namespace MixERP.Net.DatabaseLayer.Helpers
         }
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public static DataTable GetTable(string tableSchema, string tableName, string columnNames, string columnValuesLike, int limit)
         {
+            if(columnNames == null)
+            {
+                columnNames = string.Empty;
+            }
+
+            if(columnValuesLike == null)
+            {
+                columnValuesLike = string.Empty;
+            }
+            
             string[] columns = columnNames.Split(',');
             string[] values = columnValuesLike.Split(',');
 
@@ -154,7 +165,7 @@ namespace MixERP.Net.DatabaseLayer.Helpers
                 {
                     if(!string.IsNullOrWhiteSpace(column))
                     {
-                        command.Parameters.AddWithValue(DBFactory.Sanitizer.SanitizeIdentifierName(column.Trim()), "%" + values[counter].ToLower() + "%");
+                        command.Parameters.AddWithValue(DBFactory.Sanitizer.SanitizeIdentifierName(column.Trim()), "%" + values[counter].ToLower(System.Threading.Thread.CurrentThread.CurrentCulture) + "%");
                         counter++;
                     }
                 }
@@ -262,7 +273,7 @@ namespace MixERP.Net.DatabaseLayer.Helpers
             int counter = 0;
             
             //Adding the current user to the column collection.
-            KeyValuePair<string, string> auditUserId = new KeyValuePair<string, string>("audit_user_id", userId.ToString());
+            KeyValuePair<string, string> auditUserId = new KeyValuePair<string, string>("audit_user_id", userId.ToString(System.Threading.Thread.CurrentThread.CurrentCulture));
             data.Add(auditUserId);
 
             foreach(KeyValuePair<string, string> pair in data)

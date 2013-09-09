@@ -25,8 +25,13 @@ namespace MixERP.Net.FrontEnd.UserControls
         public string ReportPath { get; set; }
         public bool AutoInitialize { get; set; }
 
-        public Collection<Collection<KeyValuePair<string, string>>> Parameters { get; set; }
-        private string path { get; set; }
+        /// <summary>
+        /// Collection of each datasources' parameter collection.
+        /// The datasource parameter collection is a collection of
+        /// parameters stored in KeyValuePair.
+        /// </summary>
+        public Collection<Collection<KeyValuePair<string, string>>> ParameterCollection { get; set; }
+        private string path;
 
         private bool IsValid()
         {
@@ -55,6 +60,7 @@ namespace MixERP.Net.FrontEnd.UserControls
 
         public void InitializeReport()
         {
+            //Check if the set report path is a valid file.
             if(!this.IsValid())
             {
                 ReportTitleLiteral.Text = Resources.Titles.ReportNotFound;
@@ -71,28 +77,51 @@ namespace MixERP.Net.FrontEnd.UserControls
             this.SetBodySection();
             this.SetGridViews();
             this.SetBottomSection();
+            this.CleanUp();
+        }
+
+        private void CleanUp()
+        {
+            foreach(System.Data.DataTable table in this.DataTableCollection)
+            {
+                if(table != null)
+                {
+                    table.Dispose();
+                }
+            }
         }
 
         private System.Collections.ObjectModel.Collection<string> DecimalFieldIndicesCollection { get; set; }
         private void SetDecimalFields()
         {
-            XmlNodeList dataSourceList = XmlHelper.GetNodes(path, "//DataSource");
             string decimalFieldIndices = string.Empty;
 
+            //Get the list of datasources for this report.
+            XmlNodeList dataSourceList = XmlHelper.GetNodes(path, "//DataSource");
+
+            //Initializing decimal field indices collection.
             this.DecimalFieldIndicesCollection = new System.Collections.ObjectModel.Collection<string>();
 
+            //Loop through each datasource in the datasource list.
             foreach(XmlNode dataSource in dataSourceList)
             {
+                //Resetting the variable for each iteration.
                 decimalFieldIndices = string.Empty;
 
+                //Loop through each datasource child node.
                 foreach(XmlNode node in dataSource.ChildNodes)
                 {
+                    //Selecting the nodes matching the tag <DecimalFieldIndices>.
                     if(node.Name.Equals("DecimalFieldIndices"))
                     {
                         decimalFieldIndices = node.InnerText;
                     }
                 }
 
+                //Add current "DecimalFieldIndices" to the collection object.
+                //If a child node is found which matches the tag <DecimalFieldIncides> 
+                //under the current node, the variable "decimalFieldIndices" will have
+                //a value. If not, an empty string will be added to the collection.
                 this.DecimalFieldIndicesCollection.Add(decimalFieldIndices);
             }        
         }
@@ -101,62 +130,89 @@ namespace MixERP.Net.FrontEnd.UserControls
         private System.Collections.ObjectModel.Collection<string> RunningTotalFieldIndicesCollection { get; set; }
         private void SetRunningTotalFields()
         {
+            //Get the list of datasources for this report.
             XmlNodeList dataSourceList = XmlHelper.GetNodes(path, "//DataSource");
             int runningTotalTextColumnIndex = 0;
             string runningTotalFieldIndices = string.Empty;
 
-            this.RunningTotalFieldIndicesCollection = new System.Collections.ObjectModel.Collection<string>();
+            //Initializing running total text column index collection.
             this.RunningTotalTextColumnIndexCollection = new System.Collections.ObjectModel.Collection<int>();
 
+            //Initializing running total field indices collection.
+            this.RunningTotalFieldIndicesCollection = new System.Collections.ObjectModel.Collection<string>();
+
+            //Loop through each datasource in the datasource list.
             foreach(XmlNode dataSource in dataSourceList)
             {
+                //Resetting the variables for each iteration.
                 runningTotalTextColumnIndex = 0;
                 runningTotalFieldIndices = string.Empty;
 
+                //Loop through each datasource child node.
                 foreach(XmlNode node in dataSource.ChildNodes)
                 {
+                    //Selecting the nodes matching the tag <RunningTotalTextColumnIndex>.
                     if(node.Name.Equals("RunningTotalTextColumnIndex"))
                     {
                         runningTotalTextColumnIndex = MixERP.Net.Common.Conversion.TryCastInteger(node.InnerText);
                     }
 
+                    //Selecting the nodes matching the tag <RunningTotalFieldIndices>.
                     if(node.Name.Equals("RunningTotalFieldIndices"))
                     {
                         runningTotalFieldIndices = node.InnerText;
                     }
                 }
 
+                //Add current "RunningTotalTextColumnIndexCollection" and "RunningTotalFieldIndicesCollection" 
+                //to the collection object.
+                //If child nodes are found which match the the associated tags 
+                //under the current node, the variable "runningTotalTextColumnIndex" and "runningTotalFieldIndices" will have
+                //values. If not, an empty string for "runningTotalFieldIndices" and zero for "runningTotalTextColumnIndex" 
+                //will be added to the collection.
                 this.RunningTotalTextColumnIndexCollection.Add(runningTotalTextColumnIndex);
                 this.RunningTotalFieldIndicesCollection.Add(runningTotalFieldIndices);
             }
         }
 
-        private System.Collections.ObjectModel.Collection<System.Data.DataTable> DataSources { get; set; }
+        private System.Collections.ObjectModel.Collection<System.Data.DataTable> DataTableCollection { get; set; }
         private void SetDataSources()
         {
-            System.Xml.XmlNodeList dataSources = XmlHelper.GetNodes(path, "//DataSource");
             int index = 0;
-            this.DataSources = new System.Collections.ObjectModel.Collection<System.Data.DataTable>();
 
+            //Get the list of datasources for this report.
+            System.Xml.XmlNodeList dataSources = XmlHelper.GetNodes(path, "//DataSource");
+
+            //Initializing data source collection.
+            this.DataTableCollection = new System.Collections.ObjectModel.Collection<System.Data.DataTable>();
+
+            //Loop through each datasource in the datasource list.
             foreach(System.Xml.XmlNode datasource in dataSources)
             {
+                //Loop through each datasource child node.
                 foreach(System.Xml.XmlNode c in datasource.ChildNodes)
                 {
+                    //Selecting the nodes matching the tag <Query>.
                     if(c.Name.Equals("Query"))
                     {
                         index++;
                         string sql = c.InnerText;
+
+                        //Initializing query parameter collection.
                         Collection<KeyValuePair<string, string>> parameters = new Collection<KeyValuePair<string, string>>();
 
-                        if(this.Parameters != null)
+                        //Check if this report needs has has parameters.
+                        if(this.ParameterCollection != null)
                         {
-                            parameters = this.Parameters[index - 1];
-
+                            //Get the parameter collection for this datasource.
+                            parameters = this.ParameterCollection[index - 1];
                         }
 
+                        //Get DataTable from SQL Query and parameter collection.
                         using(System.Data.DataTable table = MixERP.Net.BusinessLayer.Helpers.ReportHelper.GetDataTable(sql, parameters))
                         {
-                            this.DataSources.Add(table);
+                            //Add this datatable to the collection for later binding.
+                            this.DataTableCollection.Add(table);
                         }
                     }
                 }
@@ -179,7 +235,7 @@ namespace MixERP.Net.FrontEnd.UserControls
         {
             string topSection = XmlHelper.GetNodeText(path, "/PesReport/TopSection");
             topSection = MixERP.Net.BusinessLayer.Helpers.ReportHelper.Parse(topSection);
-            topSection = ParseDataSource(topSection, this.DataSources);
+            topSection = ParseDataSource(topSection, this.DataTableCollection);
             TopSectionLiteral.Text = topSection;
         }
 
@@ -187,7 +243,7 @@ namespace MixERP.Net.FrontEnd.UserControls
         {
             string bodySection = XmlHelper.GetNodeText(path, "/PesReport/Body/Content");
             bodySection = MixERP.Net.BusinessLayer.Helpers.ReportHelper.Parse(bodySection);
-            bodySection = ParseDataSource(bodySection, this.DataSources);
+            bodySection = ParseDataSource(bodySection, this.DataTableCollection);
             ContentLiteral.Text = bodySection;
         }
 
@@ -232,7 +288,7 @@ namespace MixERP.Net.FrontEnd.UserControls
                     grid.DataBound += GridView_DataBound;
                     BodyPlaceHolder.Controls.Add(grid);
 
-                    grid.DataSource = this.DataSources[index];
+                    grid.DataSource = this.DataTableCollection[index];
                     grid.DataBind();
                     //}
                 }
@@ -244,7 +300,7 @@ namespace MixERP.Net.FrontEnd.UserControls
         {
             string bottomSection = XmlHelper.GetNodeText(path, "/PesReport/BottomSection");
             bottomSection = MixERP.Net.BusinessLayer.Helpers.ReportHelper.Parse(bottomSection);
-            bottomSection = ParseDataSource(bottomSection, this.DataSources);
+            bottomSection = ParseDataSource(bottomSection, this.DataTableCollection);
             BottomSectionLiteral.Text = bottomSection;
         }
 

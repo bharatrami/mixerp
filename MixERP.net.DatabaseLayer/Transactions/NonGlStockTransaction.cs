@@ -14,7 +14,7 @@ using Npgsql;
 
 namespace MixERP.Net.DatabaseLayer.Transactions
 {
-    public static class NonGlStockTransaction
+    public static class NonGLStockTransaction
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public static long Add(string book, DateTime valueDate, int officeId, int userId, long logOnId, string referenceNumber, string statementReference, MixERP.Net.Common.Models.Transactions.StockMasterModel stockMaster, Collection<MixERP.Net.Common.Models.Transactions.StockMasterDetailModel> details)
@@ -37,9 +37,9 @@ namespace MixERP.Net.DatabaseLayer.Transactions
             string sql = string.Empty;
             long nonGlStockMasterId = 0;
 
-            decimal total = details.Sum(d => (d.Price * d.Quantity));
-            decimal discountTotal = details.Sum(d => d.Discount);
-            decimal taxTotal = details.Sum(d => d.Tax);
+            //decimal total = details.Sum(d => (d.Price * d.Quantity));
+            //decimal discountTotal = details.Sum(d => d.Discount);
+            //decimal taxTotal = details.Sum(d => d.Tax);
 
             using(NpgsqlConnection connection = new NpgsqlConnection(DBFactory.DBConnection.ConnectionString()))
             {

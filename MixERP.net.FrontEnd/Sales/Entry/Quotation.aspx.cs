@@ -35,7 +35,7 @@ namespace MixERP.Net.FrontEnd.Sales.Entry
             string referenceNumber = SalesQuotation.GetForm.ReferenceNumberTextBox.Text;
             string statementReference = SalesQuotation.GetForm.StatementReferenceTextBox.Text;
 
-            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGlStockTransaction.Add("Sales.Quotation", valueDate, partyCode, priceTypeId, grid, referenceNumber, statementReference);
+            long nonGlStockMasterId = MixERP.Net.BusinessLayer.Transactions.NonGLStockTransaction.Add("Sales.Quotation", valueDate, partyCode, priceTypeId, grid, referenceNumber, statementReference);
             if(nonGlStockMasterId > 0)
             {
                 Response.Redirect("~/Sales/Quotation.aspx?TranId=" + nonGlStockMasterId, true);

@@ -26,8 +26,11 @@ namespace MixERP.Net.BusinessLayer.Transactions
             stockMaster.StoreId = storeId;
             stockMaster.CashRepositoryId = cashRepositoryId;
             stockMaster.IsCredit = isCredit;
-
-            statementReference = statementReference.Replace("&nbsp;", " ").Trim();
+            
+            if(!string.IsNullOrWhiteSpace(statementReference))
+            {
+                statementReference = statementReference.Replace("&nbsp;", " ").Trim();
+            }
 
             if(grid != null)
             {

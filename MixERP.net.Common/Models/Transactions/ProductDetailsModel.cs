@@ -21,7 +21,7 @@ namespace MixERP.Net.Common.Models.Transactions
         public decimal Price { get; set; }
         public decimal Amount { get; set; }
         public decimal Discount { get; set; }
-        public decimal SubTotal { get; set; }
+        public decimal Subtotal { get; set; }
         public decimal Rate { get; set; }
         public decimal Tax { get; set; }
         public decimal Total { get; set; }

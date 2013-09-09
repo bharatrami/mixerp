@@ -60,7 +60,7 @@ namespace MixERP.Net.BusinessLayer
 
         protected override void InitializeCulture()
         {
-            this.SetCulture();
+            SetCulture();
             base.InitializeCulture();
         }
 
@@ -95,17 +95,17 @@ namespace MixERP.Net.BusinessLayer
             base.OnInit(e);
         }
 
-        private void SetCulture()
+        private static void SetCulture()
         {
             //Todo
             Thread.CurrentThread.CurrentCulture = new CultureInfo(CultureInfo.InvariantCulture.Name);
-            this.LoadCulture(Thread.CurrentThread.CurrentCulture);
+            LoadCulture(Thread.CurrentThread.CurrentCulture);
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(CultureInfo.InvariantCulture.Name);
-            this.LoadCulture(Thread.CurrentThread.CurrentUICulture);
+            LoadCulture(Thread.CurrentThread.CurrentUICulture);
         }
 
-        private void LoadCulture(CultureInfo c)
+        private static void LoadCulture(CultureInfo c)
         {
             NumberFormatInfo numberFormat = c.NumberFormat;
             numberFormat.NumberGroupSeparator = MixERP.Net.Common.Helpers.Parameters.ThousandSeparator();

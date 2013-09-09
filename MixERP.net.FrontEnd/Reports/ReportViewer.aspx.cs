@@ -82,7 +82,7 @@ namespace MixERP.Net.FrontEnd.Reports
                 }
             }
             ReportViewer1.ReportPath = this.ReportPath();
-            ReportViewer1.Parameters = MixERP.Net.BusinessLayer.Helpers.ReportHelper.BindParameters(Server.MapPath(this.ReportPath()), list);
+            ReportViewer1.ParameterCollection = MixERP.Net.BusinessLayer.Helpers.ReportHelper.BindParameters(Server.MapPath(this.ReportPath()), list);
             ReportViewer1.InitializeReport();
         }
 

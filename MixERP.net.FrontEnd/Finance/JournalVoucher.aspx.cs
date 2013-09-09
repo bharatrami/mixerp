@@ -218,8 +218,8 @@ namespace MixERP.Net.FrontEnd.Finance
                     credit += row.Credit;
                 }
 
-                DebitTotalTextBox.Text = debit.ToString("G29");
-                CreditTotalTextBox.Text = credit.ToString("G29");
+                DebitTotalTextBox.Text = debit.ToString("G29", System.Threading.Thread.CurrentThread.CurrentCulture);
+                CreditTotalTextBox.Text = credit.ToString("G29", System.Threading.Thread.CurrentThread.CurrentCulture);
             }
 
         }

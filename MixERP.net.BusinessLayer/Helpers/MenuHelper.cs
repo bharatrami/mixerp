@@ -17,7 +17,7 @@ namespace MixERP.Net.BusinessLayer.Helpers
 {
     public static class MenuHelper
     {
-        public static string GetContentPageMenu(System.Web.UI.Page page, string path)
+        public static string GetContentPageMenu(System.Web.UI.Control page, string path)
         {
             if(page != null)
             {

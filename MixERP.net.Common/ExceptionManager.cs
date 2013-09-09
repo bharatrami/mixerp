@@ -17,6 +17,11 @@ namespace MixERP.Net.Common
     {
         public static void HandleException(Exception ex)
         {
+            if(ex == null)
+            {
+                return;
+            }
+            
             var exception = ex;
 
             if(ex.GetBaseException() != null)

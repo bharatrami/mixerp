@@ -23,10 +23,10 @@ namespace MixERP.Net.DatabaseLayer.Helpers
             if (!string.IsNullOrWhiteSpace(exclusion))
             {
                 string[] exclusions = exclusion.Split(',');
-                string[] paramNames = exclusions.Select((s, i) => "@Paramter" + i.ToString().Trim()).ToArray();
+                string[] paramNames = exclusions.Select((s, i) => "@Paramter" + i.ToString(System.Threading.Thread.CurrentThread.CurrentCulture).Trim()).ToArray();
                 string inClause = string.Join(",", paramNames);
 
-                sql= string.Format("select * from core.mixerp_table_view where table_schema=@Schema AND table_name=@TableName AND column_name NOT IN({0});", inClause);
+                sql= string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "select * from core.mixerp_table_view where table_schema=@Schema AND table_name=@TableName AND column_name NOT IN({0});", inClause);
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql))
                 {

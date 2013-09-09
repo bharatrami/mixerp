@@ -44,8 +44,8 @@ namespace MixERP.Net.FrontEnd
 
             if(ex != null)
             {
-                s.Append(string.Format("<hr class='hr' />"));
-                s.Append(string.Format("<h2>{0}</h2>", ex.Message));
+                s.Append(string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "<hr class='hr' />"));
+                s.Append(string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "<h2>{0}</h2>", ex.Message));
 
                 ExceptionLiteral.Text = s.ToString();
             }

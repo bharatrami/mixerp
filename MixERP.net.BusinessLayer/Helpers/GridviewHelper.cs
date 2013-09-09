@@ -13,7 +13,7 @@ using System.Web.UI.WebControls;
 
 namespace MixERP.Net.BusinessLayer.Helpers
 {
-    public static class GridviewHelper
+    public static class GridViewHelper
     {        
         public static void SetFormat(GridView grid, int columnIndex, string format)
         {

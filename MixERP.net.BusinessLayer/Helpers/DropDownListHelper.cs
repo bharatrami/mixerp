@@ -16,8 +16,13 @@ namespace MixERP.Net.BusinessLayer.Helpers
 {
     public static class DropDownListHelper
     {
-        public static void BindDropDownList(DropDownList list, string schemaName, string tableName, string valueField, string displayField)
+        public static void BindDropDownList(ListControl list, string schemaName, string tableName, string valueField, string displayField)
         {
+            if(list == null)
+            {
+                return;
+            }
+            
             using(DataTable table = MixERP.Net.BusinessLayer.Helpers.FormHelper.GetTable(schemaName, tableName))
             {
                 table.Columns.Add("text_field", typeof(string), displayField);
@@ -29,8 +34,18 @@ namespace MixERP.Net.BusinessLayer.Helpers
             }
         }
 
-        public static void BindDropDownList(DropDownList list, DataTable table, string valueField, string displayField)
+        public static void BindDropDownList(ListControl list, DataTable table, string valueField, string displayField)
         {
+            if(list == null)
+            {
+                return;
+            }
+
+            if(table == null)
+            {
+                return;
+            }
+            
             table.Columns.Add("text_field", typeof(string), displayField);
 
             list.DataSource = table;

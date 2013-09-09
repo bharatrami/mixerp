@@ -26,7 +26,7 @@ namespace MixERP.Net.FrontEnd.Sales.Confirmation
             parameters.Add(list);
             parameters.Add(list);
 
-            CustomerInvoiceReport.Parameters = parameters;
+            CustomerInvoiceReport.ParameterCollection = parameters;
         }
     }
 }

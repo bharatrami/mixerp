@@ -26,7 +26,7 @@ namespace MixERP.Net.FrontEnd.Purchase.Confirmation
             parameters.Add(list);
             parameters.Add(list);
 
-            DirectPurchaseInvoiceReport.Parameters = parameters;
+            DirectPurchaseInvoiceReport.ParameterCollection = parameters;
         }
     }
 }
