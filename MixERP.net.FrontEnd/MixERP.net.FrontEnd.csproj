@@ -900,13 +900,6 @@
     <Compile Include="SignIn.aspx.designer.cs">
       <DependentUpon>SignIn.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Core\AccountControl.ascx.cs">
-      <DependentUpon>AccountControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\Core\AccountControl.ascx.designer.cs">
-      <DependentUpon>AccountControl.ascx</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\CurrencyExtender.ascx.cs">
       <DependentUpon>CurrencyExtender.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1131,9 +1124,11 @@
     <Content Include="Resource\Icons\email-16.png" />
     <Content Include="Resource\Icons\excel-16.png" />
     <Content Include="Resource\Icons\filter-16.png" />
+    <Content Include="Resource\Icons\password-16.png" />
     <Content Include="Resource\Icons\pdf-16.png" />
     <Content Include="Resource\Icons\print-16.png" />
     <Content Include="Resource\Icons\search-16.png" />
+    <Content Include="Resource\Icons\signout-16.png" />
     <Content Include="Resource\Icons\top-16.png" />
     <Content Include="Resource\Icons\word-16.png" />
     <Content Include="Resource\TempImages\index.html" />
@@ -1507,7 +1502,6 @@
     <Content Include="Themes\purple\mixerp-logo-light.png" />
     <Content Include="Themes\purple\padding.css" />
     <Content Include="Themes\purple\mixerp-logo.png" />
-    <Content Include="UserControls\Core\AccountControl.ascx" />
     <Content Include="UserControls\CurrencyExtender.ascx" />
     <Content Include="UserControls\DateTextBox.ascx" />
     <Content Include="UserControls\Forms\FormControl.ascx" />

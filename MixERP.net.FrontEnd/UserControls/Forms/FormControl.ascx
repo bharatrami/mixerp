@@ -223,7 +223,7 @@ http://mozilla.org/MPL/2.0/.
         return $('[id^="SelectRadio"]:checked').val();
     }
 
-    var selected = function (id) {
+    var selectNode = function (id) {
         console.log('Selecting the radio button "' + id + '".');
         $('[id^="SelectRadio"]').removeAttr("checked");
         $("#" + id).attr("checked", "checked");
@@ -305,7 +305,7 @@ http://mozilla.org/MPL/2.0/.
             var radio = $(this).find('td input:radio')
             console.log('The radio button was found.');
             //radio.prop('checked', true);
-            selected(radio.attr("id"));
+            selectNode(radio.attr("id"));
         });
     }
 
