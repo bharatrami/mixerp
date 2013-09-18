@@ -12,8 +12,6 @@ using System.Text;
 
 namespace MixERP.Net.Common.Models.Transactions
 {
-    public enum TransactionType { Debit, Credit }
-
     public static class TransactionTypeDomain
     {
         public static string GetDomain(TransactionType type)
