@@ -12,16 +12,5 @@ using System.Text;
 
 namespace MixERP.Net.BusinessLayer.Core
 {
-    public enum DateEnums
-    { 
-        Today,
-        MonthStartDate,
-        MonthEndDate,
-        QuarterStartDate,
-        QuarterEndDate,
-        HalfStartDate,
-        HalfEndDate,
-        FiscalYearStartDate,
-        FiscalYearEndDate
-    }
+
 }
