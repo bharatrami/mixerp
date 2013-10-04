@@ -9,25 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml;
 
-namespace MixERP.Net.BusinessLayer.Helpers
+namespace MixERP.Net.WebControls.ReportEngine.Helpers
 {
-    public static class XmlHelper
+    public class ReportInstaller
     {
-        public static XmlNodeList GetNodes(string path, string name)
+        public static void InstallReport(string menuCode, string parentMenuCode, int level, string menuText, string path)
         {
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
-            doc.Load(path);
-            return doc.SelectNodes(name);
+            MixERP.Net.WebControls.ReportEngine.Data.Installer.InstallReport(menuCode, parentMenuCode, level, menuText, path);
         }
-
-        public static string GetNodeText(string path, string name)
-        {
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
-            doc.Load(path);
-            return doc.SelectSingleNode(name).InnerXml;
-        }
-
     }
 }
