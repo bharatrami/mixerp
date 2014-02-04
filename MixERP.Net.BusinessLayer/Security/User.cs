@@ -89,16 +89,12 @@ namespace MixERP.Net.BusinessLayer.Security
                         page.Session["Culture"] = culture;
                         SetSession(page, userName);
 
-                        DateTime dtNow = DateTime.Now;
-                        DateTime dtExpire = dtNow.Add(FormsAuthentication.Timeout);
-                        if (remember) dtExpire = DateTime.Now.AddDays(30);
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, userName, DateTime.Now, dtExpire, remember, String.Empty, FormsAuthentication.FormsCookiePath);
-                        string encryptedCookie = FormsAuthentication.Encrypt(ticket);
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, userName, DateTime.Now, DateTime.Now.AddMinutes(30), remember, String.Empty, FormsAuthentication.FormsCookiePath);
+                        string encryptedCookie = FormsAuthentication.Encrypt(ticket);  
                    
                         HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedCookie);
                         cookie.Domain = FormsAuthentication.CookieDomain;
                         cookie.Path = ticket.CookiePath;
-                        if (remember) cookie.Expires = ticket.Expiration;
 
                         page.Response.Cookies.Add(cookie);
                         page.Response.Redirect(FormsAuthentication.GetRedirectUrl(userName, remember));
