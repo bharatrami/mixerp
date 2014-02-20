@@ -5,11 +5,9 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Data;
+using MixERP.Net.DBFactory;
 using Npgsql;
 
 namespace MixERP.Net.DatabaseLayer.Core
@@ -28,16 +26,16 @@ namespace MixERP.Net.DatabaseLayer.Core
                 return null;
             }
 
-            string sql = "SELECT * FROM policy.get_menu(@UserId, @OfficeId, @Culture) WHERE parent_menu_id=(SELECT menu_id FROM core.menus WHERE url=@Url) AND level=@Level ORDER BY menu_id;";
+            const string sql = "SELECT * FROM policy.get_menu(@UserId, @OfficeId, @Culture) WHERE parent_menu_id=(SELECT menu_id FROM core.menus WHERE url=@Url) AND level=@Level ORDER BY menu_id;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
-                command.Parameters.Add("@UserId", userId);
-                command.Parameters.Add("@OfficeId", officeId);
-                command.Parameters.Add("@Culture", culture);
-                command.Parameters.Add("@Url", path);
-                command.Parameters.Add("@Level", level);
+                command.Parameters.AddWithValue("@UserId", userId);
+                command.Parameters.AddWithValue("@OfficeId", officeId);
+                command.Parameters.AddWithValue("@Culture", culture);
+                command.Parameters.AddWithValue("@Url", path);
+                command.Parameters.AddWithValue("@Level", level);
 
-                return MixERP.Net.DBFactory.DBOperations.GetDataTable(command);
+                return DbOperations.GetDataTable(command);
             }
         }
 
@@ -53,14 +51,14 @@ namespace MixERP.Net.DatabaseLayer.Core
                 return null;
             }
 
-            string sql = "SELECT * FROM policy.get_menu(@UserId, @OfficeId, @Culture) WHERE parent_menu_id=core.get_root_parent_menu_id(@Url) ORDER BY menu_id;";
+            const string sql = "SELECT * FROM policy.get_menu(@UserId, @OfficeId, @Culture) WHERE parent_menu_id=core.get_root_parent_menu_id(@Url) ORDER BY menu_id;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
-                command.Parameters.Add("@UserId", userId);
-                command.Parameters.Add("@OfficeId", officeId);
-                command.Parameters.Add("@Culture", culture);
-                command.Parameters.Add("@Url", path);
-                return MixERP.Net.DBFactory.DBOperations.GetDataTable(command);
+                command.Parameters.AddWithValue("@UserId", userId);
+                command.Parameters.AddWithValue("@OfficeId", officeId);
+                command.Parameters.AddWithValue("@Culture", culture);
+                command.Parameters.AddWithValue("@Url", path);
+                return DbOperations.GetDataTable(command);
             }
         }
 
@@ -85,18 +83,18 @@ namespace MixERP.Net.DatabaseLayer.Core
 
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
-                command.Parameters.Add("@UserId", userId);
-                command.Parameters.Add("@OfficeId", officeId);
-                command.Parameters.Add("@Culture", culture);
+                command.Parameters.AddWithValue("@UserId", userId);
+                command.Parameters.AddWithValue("@OfficeId", officeId);
+                command.Parameters.AddWithValue("@Culture", culture);
 
                 if (parentMenuId > 0)
                 {
-                    command.Parameters.Add("@ParentMenuId", parentMenuId);
-                    command.Parameters.Add("@Level", level);
+                    command.Parameters.AddWithValue("@ParentMenuId", parentMenuId);
+                    command.Parameters.AddWithValue("@Level", level);
                 }
 
 
-                return MixERP.Net.DBFactory.DBOperations.GetDataTable(command);
+                return DbOperations.GetDataTable(command);
             }
         }
     }

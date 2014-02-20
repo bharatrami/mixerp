@@ -5,20 +5,25 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
+
+using System.ComponentModel;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Threading;
+using System.Web.Configuration;
+using MixERP.Net.Common.Helpers;
+
 namespace MixERP.Net.Common
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Data;
     using System.Drawing;
     using System.Globalization;
-    using System.Linq;
     using System.Text;
     using System.Security.Cryptography;
-    using System.Text.RegularExpressions;
     using System.Web;
-    using MixERP.Net.Common.Models.Transactions;
+    using Models.Transactions;
     using System.Web.UI;
 
     public static class Conversion
@@ -30,37 +35,37 @@ namespace MixERP.Net.Common
             {
                 if (subBook == SubTranBook.Delivery)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("SalesDeliveryAcronym");
+                    return ConfigurationHelper.GetParameter("SalesDeliveryAcronym");
                 }
 
                 if (subBook == SubTranBook.Direct)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("SalesDirectAcronym");
+                    return ConfigurationHelper.GetParameter("SalesDirectAcronym");
                 }
 
                 if (subBook == SubTranBook.Invoice)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("SalesInvoiceAcronym");
+                    return ConfigurationHelper.GetParameter("SalesInvoiceAcronym");
                 }
 
                 if (subBook == SubTranBook.Order)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("SalesOrderAcronym");
+                    return ConfigurationHelper.GetParameter("SalesOrderAcronym");
                 }
 
                 if (subBook == SubTranBook.Quotation)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("SalesQuotationAcronym");
+                    return ConfigurationHelper.GetParameter("SalesQuotationAcronym");
                 }
 
                 if (subBook == SubTranBook.Receipt)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("SalesReceiptAcronym");
+                    return ConfigurationHelper.GetParameter("SalesReceiptAcronym");
                 }
 
                 if (subBook == SubTranBook.Return)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("SaleReturnAcronym");
+                    return ConfigurationHelper.GetParameter("SaleReturnAcronym");
                 }
             }
 
@@ -68,27 +73,27 @@ namespace MixERP.Net.Common
             {
                 if (subBook == SubTranBook.Direct)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("PurchaseDirectAcronym");
+                    return ConfigurationHelper.GetParameter("PurchaseDirectAcronym");
                 }
 
                 if (subBook == SubTranBook.Order)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("PurchaseOrderAcronym");
+                    return ConfigurationHelper.GetParameter("PurchaseOrderAcronym");
                 }
 
                 if (subBook == SubTranBook.Payment)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("PurchasePaymentAcronym");
+                    return ConfigurationHelper.GetParameter("PurchasePaymentAcronym");
                 }
 
                 if (subBook == SubTranBook.Receipt)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("PurchaseGRNAcronym");
+                    return ConfigurationHelper.GetParameter("PurchaseGRNAcronym");
                 }
 
                 if (subBook == SubTranBook.Return)
                 {
-                    return MixERP.Net.Common.Helpers.ConfigurationHelper.GetParameter("PurchaseReturnAcronym");
+                    return ConfigurationHelper.GetParameter("PurchaseReturnAcronym");
                 }
             }
 
@@ -97,7 +102,14 @@ namespace MixERP.Net.Common
 
         public static string ResolveUrl(string url)
         {
-            return (HttpContext.Current.Handler as Page).ResolveUrl(url);        
+            Page page = HttpContext.Current.Handler as Page;
+
+            if (page == null)
+            {
+                return url;
+            }
+
+            return (page).ResolveUrl(url);
         }
 
         public static string MapPathReverse(string fullServerPath)
@@ -106,8 +118,14 @@ namespace MixERP.Net.Common
             {
                 return null;
             }
+            string physicalApplicationPath = HttpContext.Current.Request.PhysicalApplicationPath;
 
-            return @"~/" + fullServerPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty).Replace(@"\", "/");
+            if (string.IsNullOrWhiteSpace(physicalApplicationPath))
+            {
+                return null;
+            }
+
+            return @"~/" + fullServerPath.Replace(physicalApplicationPath, String.Empty).Replace(@"\", "/");
         }
 
         public static string GetRelativePath(string absolutePath)
@@ -124,117 +142,118 @@ namespace MixERP.Net.Common
 
         public static short TryCastShort(object value)
         {
-            if(value != null)
+            short retVal = 0;
+
+            if (value != null)
             {
-                short retVal = 0;
                 //string numberToParse = RemoveGroupping(value.ToString());
                 string numberToParse = value.ToString();
 
-                if(short.TryParse(numberToParse, out retVal))
+                if (short.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return 0;
+            return retVal;
         }
 
         public static long TryCastLong(object value)
         {
-            if(value != null)
+            long retVal = 0;
+
+            if (value != null)
             {
-                long retVal = 0;
                 //string numberToParse = RemoveGroupping(value.ToString());
                 string numberToParse = value.ToString();
 
-                if(long.TryParse(numberToParse, out retVal))
+                if (long.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return 0;
+            return retVal;
         }
 
         public static float TryCastSingle(object value)
         {
-            if(value != null)
+            float retVal = 0;
+
+            if (value != null)
             {
-                float retVal = 0;
                 //string numberToParse = RemoveGroupping(value.ToString());
                 string numberToParse = value.ToString();
 
-                if(float.TryParse(numberToParse, out retVal))
+                if (float.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return 0;
+            return retVal;
         }
 
         public static double TryCastDouble(object value)
         {
-            if(value != null)
+            double retVal = 0;
+
+            if (value != null)
             {
-                double retVal = 0;
                 //string numberToParse = RemoveGroupping(value.ToString());
                 string numberToParse = value.ToString();
 
-                if(double.TryParse(numberToParse, out retVal))
+                if (double.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return 0;
+            return retVal;
         }
 
         public static int TryCastInteger(object value)
         {
-            if(value != null)
+            int retVal = 0;
+
+            if (value != null)
             {
-                if(value is bool)
+                if (value is bool)
                 {
-                    if(Convert.ToBoolean(value, CultureInfo.InvariantCulture))
+                    if (Convert.ToBoolean(value, CultureInfo.InvariantCulture))
                     {
                         return 1;
                     }
-                    else
-                    {
-                        return 0;
-                    }
                 }
 
-                int retVal = 0;
                 //string numberToParse = RemoveGroupping(value.ToString());
                 string numberToParse = value.ToString();
 
-                if(int.TryParse(numberToParse, out retVal))
+                if (int.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return 0;
+            return retVal;
         }
 
         public static DateTime TryCastDate(object value)
         {
             try
             {
-                if(value == DBNull.Value)
+                if (value == DBNull.Value)
                 {
                     return DateTime.MinValue;
                 }
 
-                return Convert.ToDateTime(value, System.Threading.Thread.CurrentThread.CurrentCulture);
+                return Convert.ToDateTime(value, Thread.CurrentThread.CurrentCulture);
             }
-            catch(FormatException)
+            catch (FormatException)
             {
                 //swallow the exception
             }
-            catch(InvalidCastException)
+            catch (InvalidCastException)
             {
                 //swallow the exception
             }
@@ -261,94 +280,88 @@ namespace MixERP.Net.Common
 
         public static decimal TryCastDecimal(object value)
         {
-            if(value != null)
+            decimal retVal = 0;
+
+            if (value != null)
             {
-                decimal retVal = 0;
                 //string numberToParse = RemoveGroupping(value.ToString());
                 string numberToParse = value.ToString();
 
-                if(decimal.TryParse(numberToParse, out retVal))
+                if (decimal.TryParse(numberToParse, out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return 0;
+            return retVal;
         }
 
         public static bool TryCastBoolean(object value)
         {
-            if(value != null)
+            bool retVal = false;
+
+            if (value != null)
             {
-                if(value is string)
+                if (value is string)
                 {
-                    if(value.ToString().ToLower(System.Threading.Thread.CurrentThread.CurrentCulture).Equals("yes"))
+                    if (value.ToString().ToLower(Thread.CurrentThread.CurrentCulture).Equals("yes"))
                     {
                         return true;
                     }
 
-                    if(value.ToString().ToLower(System.Threading.Thread.CurrentThread.CurrentCulture).Equals("true"))
+                    if (value.ToString().ToLower(Thread.CurrentThread.CurrentCulture).Equals("true"))
                     {
                         return true;
                     }
                 }
 
-                bool retVal = false;
-                if(bool.TryParse(value.ToString(), out retVal))
+                if (bool.TryParse(value.ToString(), out retVal))
                 {
                     return retVal;
                 }
             }
 
-            return false;
+            return retVal;
         }
 
         public static bool IsNumeric(string value)
         {
             double number;
-            return double.TryParse(value, out number);        
+            return double.TryParse(value, out number);
         }
 
         public static string TryCastString(object value)
         {
             try
             {
-                if(value != null)
+                if (value != null)
                 {
-                    if(value is bool)
+                    if (value is bool)
                     {
-                        if(Convert.ToBoolean(value, CultureInfo.InvariantCulture) == true)
+                        if (Convert.ToBoolean(value, CultureInfo.InvariantCulture))
                         {
                             return "true";
                         }
-                        else
-                        {
-                            return "false";
-                        }
+
+                        return "false";
                     }
-                    else
+
+                    if (value == DBNull.Value)
                     {
-                        if(value == System.DBNull.Value)
-                        {
-                            return string.Empty;
-                        }
-                        else
-                        {
-                            string retVal = value.ToString();
-                            return retVal;
-                        }
+                        return string.Empty;
                     }
+
+                    string retVal = value.ToString();
+                    return retVal;
                 }
-                else
-                {
-                    return string.Empty;
-                }
+
+                return string.Empty;
             }
-            catch(FormatException)
+            catch (FormatException)
             {
                 //swallow the exception
             }
-            catch(InvalidCastException)
+            catch (InvalidCastException)
             {
                 //swallow the exception            
             }
@@ -358,18 +371,18 @@ namespace MixERP.Net.Common
 
         public static string HashSha512(string password, string salt)
         {
-            if(password == null)
+            if (password == null)
             {
                 return null;
             }
 
-            if(salt == null)
+            if (salt == null)
             {
                 return null;
             }
 
             byte[] bytes = Encoding.Unicode.GetBytes(password + salt);
-            using(SHA512CryptoServiceProvider hash = new SHA512CryptoServiceProvider())
+            using (SHA512CryptoServiceProvider hash = new SHA512CryptoServiceProvider())
             {
                 byte[] inArray = hash.ComputeHash(bytes);
                 return Convert.ToBase64String(inArray);
@@ -377,16 +390,17 @@ namespace MixERP.Net.Common
         }
 
 
-        public static Uri GetBackEndUrl(System.Web.HttpContext context, string relativePath)
+        public static Uri GetBackEndUrl(HttpContext context, string relativePath)
         {
-            string lang = string.Empty;
-            string administrationDirectoryName = System.Web.Configuration.WebConfigurationManager.AppSettings["AdministrationDirectoryName"];
+            string administrationDirectoryName = WebConfigurationManager.AppSettings["AdministrationDirectoryName"];
 
-            if(context != null)
+            if (context != null)
             {
-                if(!string.IsNullOrWhiteSpace(administrationDirectoryName))
+                if (!string.IsNullOrWhiteSpace(administrationDirectoryName))
                 {
-                    if((context.Session == null) || (context.Session["lang"] == null || string.IsNullOrWhiteSpace(context.Session["lang"] as string)))
+                    string lang;
+
+                    if ((context.Session == null) || (context.Session["lang"] == null || string.IsNullOrWhiteSpace(context.Session["lang"] as string)))
                     {
                         lang = "en-US";
                     }
@@ -395,19 +409,19 @@ namespace MixERP.Net.Common
                         lang = context.Session["lang"] as string;
                     }
 
-                    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo(lang);
-                    if(culture.TwoLetterISOLanguageName == "iv")
+                    CultureInfo culture = new CultureInfo(lang);
+                    if (culture.TwoLetterISOLanguageName == "iv")
                     {
-                        culture = new System.Globalization.CultureInfo("en-US");
+                        culture = new CultureInfo("en-US");
                     }
 
                     string virtualDirectory = context.Request.ApplicationPath;
                     bool isSecure = context.Request.IsSecureConnection;
                     string domain = context.Request.Url.DnsSafeHost;
                     int port = context.Request.Url.Port;
-                    string path = string.Empty;
+                    string path;
 
-                    if(virtualDirectory == "/")
+                    if (virtualDirectory == "/")
                     {
                         path = string.Format(CultureInfo.InvariantCulture, "{0}:{1}/{2}/{3}/{4}/", domain, port.ToString(CultureInfo.InvariantCulture), administrationDirectoryName, culture.TwoLetterISOLanguageName, relativePath);
                     }
@@ -416,7 +430,7 @@ namespace MixERP.Net.Common
                         path = string.Format(CultureInfo.InvariantCulture, "{0}:{1}{2}/{3}/{4}/{5}/", domain, port.ToString(CultureInfo.InvariantCulture), virtualDirectory, administrationDirectoryName, culture.TwoLetterISOLanguageName, relativePath);
                     }
 
-                    if(isSecure)
+                    if (isSecure)
                     {
                         path = "https://" + path;
                     }
@@ -456,28 +470,28 @@ namespace MixERP.Net.Common
             return (byte[])converter.ConvertTo(image, typeof(byte[]));
         }
 
-        public static System.Data.DataTable ConvertListToDataTable<T>(System.Collections.Generic.IList<T> list)
+        public static DataTable ConvertListToDataTable<T>(IList<T> list)
         {
-            if(list == null)
+            if (list == null)
             {
                 return null;
             }
 
-            System.ComponentModel.PropertyDescriptorCollection props = System.ComponentModel.TypeDescriptor.GetProperties(typeof(T));
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
 
-            using(System.Data.DataTable table = new System.Data.DataTable())
+            using (DataTable table = new DataTable())
             {
-                table.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                table.Locale = Thread.CurrentThread.CurrentCulture;
 
-                for(int i = 0; i < props.Count; i++)
+                for (int i = 0; i < props.Count; i++)
                 {
-                    System.ComponentModel.PropertyDescriptor prop = props[i];
+                    PropertyDescriptor prop = props[i];
                     table.Columns.Add(prop.Name, prop.PropertyType);
                 }
                 object[] values = new object[props.Count];
-                foreach(T item in list)
+                foreach (T item in list)
                 {
-                    for(int i = 0; i < values.Length; i++)
+                    for (int i = 0; i < values.Length; i++)
                     {
                         values[i] = props[i].GetValue(item);
                     }
@@ -487,14 +501,14 @@ namespace MixERP.Net.Common
             }
         }
 
-        public static byte[] ConvertImageToByteArray(System.Drawing.Image imageToConvert, System.Drawing.Imaging.ImageFormat formatOfImage)
+        public static byte[] ConvertImageToByteArray(Image imageToConvert, ImageFormat formatOfImage)
         {
-            if(imageToConvert == null)
+            if (imageToConvert == null)
             {
                 return null;
             }
 
-            using(System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 imageToConvert.Save(ms, formatOfImage);
                 return ms.ToArray();

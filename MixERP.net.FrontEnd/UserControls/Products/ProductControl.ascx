@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProductControl.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.Products.ProductControl" %>
-<asp:ScriptManager ID="ScriptManager1" runat="server" />
+<%@ Import Namespace="MixERP.Net.Common.Helpers" %>
+
 <div style="width: 1000px; overflow: hidden; margin: 0;">
     <asp:Label ID="TitleLabel" CssClass="title" runat="server" />
     <asp:UpdateProgress ID="UpdateProgress1" runat="server">
@@ -262,22 +263,21 @@
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(AjaxPageLoadHandler);
     });
 
-    function AjaxPageLoadHandler(sender, args) {
+    function AjaxPageLoadHandler() {
         showShippingAddress();
     }
 
-    var getPrice = function () {
-        var itemDropDownList = $('#ItemDropDownList');
+    var getPrice = function() {
+        //var itemDropDownList = $('#ItemDropDownList');
         var unitDropDownList = $('#UnitDropDownList');
 
         if (unitDropDownList.val()) {
             triggerChange(unitDropDownList.attr('id'));
         }
-    }
+    };
 
 
-
-    var calculateAmount = function () {
+    var calculateAmount = function() {
         var quantityTextBox = $("#QuantityTextBox");
         var priceTextBox = $("#PriceTextBox");
         var amountTextBox = $("#AmountTextBox");
@@ -290,9 +290,9 @@
 
         subTotalTextBox.val(parseFloat2(amountTextBox.val()) - parseFloat2(discountTextBox.val()));
         totalTextBox.val(parseFloat2(subTotalTextBox.val()) + parseFloat2(taxTextBox.val()));
-    }
+    };
 
-    var updateTax = function () {
+    var updateTax = function() {
         var taxRateTextBox = $("#TaxRateTextBox");
         var taxTextBox = $("#TaxTextBox");
         var priceTextBox = $("#PriceTextBox");
@@ -302,7 +302,7 @@
         var total = parseFloat2(priceTextBox.val()) * parseFloat2(quantityTextBox.val());
         var subTotal = total - parseFloat2(discountTextBox.val());
         var taxableAmount = total;
-        var taxAfterDiscount = "<%=MixERP.Net.Common.Helpers.Switches.TaxAfterDiscount().ToString()%>";
+        var taxAfterDiscount = "<%=Switches.TaxAfterDiscount().ToString()%>";
 
         if (taxAfterDiscount.toLowerCase() == "true") {
             taxableAmount = subTotal;
@@ -315,17 +315,16 @@
             if (question) {
                 if (tax.toFixed) {
                     taxTextBox.val(getFormattedNumber(tax.toFixed(2)));
-                }
-                else {
+                } else {
                     taxTextBox.val(getFormattedNumber(tax));
                 }
             }
         }
-    }
+    };
 
-    var showShippingAddress = function () {
+    var showShippingAddress = function() {
         $('#ShippingAddressTextBox').val(($('#ShippingAddressDropDownList').val()));
-    }
+    };
 
 
     $(document).ready(function () {
@@ -383,7 +382,7 @@
     });
 
     //Called on Ajax Postback caused by ASP.net
-    function Page_EndRequest(sender, args) {
+    function Page_EndRequest() {
         initializeAjaxData();
     }
 
@@ -406,19 +405,19 @@
 
         $.ajax({
             type: "POST",
-            url: "<%=ResolveUrl("~/Services/PartyData.asmx/GetAddressByPartyCode") %>",
+            url: "<%=this.ResolveUrl("~/Services/PartyData.asmx/GetAddressByPartyCode") %>",
             data: "{partyCode:'" + partyCode + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (msg) {
-                bindAddresses(msg.d)
+                bindAddresses(msg.d);
             },
-            error: function (xhr, status, error) {
+            error: function (xhr) {
                 var err = eval("(" + xhr.responseText + ")");
                 addListItem("ShippingAddressDropDownList", 0, err.Message);
             }
         });
-    }
+    };
 
     function loadUnits() {
         var itemCode = $("#ItemDropDownList").val();
@@ -426,14 +425,14 @@
 
         $.ajax({
             type: "POST",
-            url: "<%=ResolveUrl("~/Services/ItemData.asmx/GetUnits") %>",
+            url: "<%=this.ResolveUrl("~/Services/ItemData.asmx/GetUnits") %>",
             data: "{itemCode:'" + itemCode + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (msg) {
-                bindUnits(msg.d)
+                bindUnits(msg.d);
             },
-            error: function (xhr, status, error) {
+            error: function (xhr) {
                 var err = eval("(" + xhr.responseText + ")");
                 addListItem("UnitDropDownList", 0, err.Message);
             }

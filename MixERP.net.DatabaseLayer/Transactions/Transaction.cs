@@ -6,10 +6,11 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
+using MixERP.Net.Common;
+using MixERP.Net.Common.Helpers;
+using MixERP.Net.Common.Models.Transactions;
 using MixERP.Net.DBFactory;
 using Npgsql;
 
@@ -17,7 +18,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
 {
     public static class Transaction
     {
-        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int costCenterId, string referenceNumber, Collection<MixERP.Net.Common.Models.Transactions.TransactionDetailModel> details)
+        public static long Add(DateTime valueDate, int officeId, int userId, long logOnId, int costCenterId, string referenceNumber, Collection<TransactionDetailModel> details)
         {
             if(details == null)
             {
@@ -29,13 +30,8 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                 return 0;
             }
 
-            string sql = string.Empty;
-            long transactionMasterId = 0;
-
             decimal debitTotal = details.Sum(d => (d.Debit));
             decimal creditTotal = details.Sum(d => (d.Credit));
-            string tranType = string.Empty;
-            decimal amount = 0;
 
 
             if(debitTotal != creditTotal)
@@ -44,7 +40,7 @@ namespace MixERP.Net.DatabaseLayer.Transactions
             }
 
 
-            using(NpgsqlConnection connection = new NpgsqlConnection(DBConnection.ConnectionString()))
+            using(NpgsqlConnection connection = new NpgsqlConnection(DbConnection.ConnectionString()))
             {
                 connection.Open();
 
@@ -53,55 +49,54 @@ namespace MixERP.Net.DatabaseLayer.Transactions
                     try
                     {
 
-                        sql = "INSERT INTO transactions.transaction_master(transaction_master_id, transaction_counter, transaction_code, book, value_date, user_id, login_id, office_id, cost_center_id, reference_number) SELECT nextval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id')), transactions.get_new_transaction_counter(@ValueDate), transactions.get_transaction_code(@ValueDate, @OfficeId, @UserId, @LogOnId), @Book, @ValueDate, @UserId, @LogOnId, @OfficeId, @CostCenterId, @ReferenceNumber;SELECT currval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id'));";
+                        string sql = "INSERT INTO transactions.transaction_master(transaction_master_id, transaction_counter, transaction_code, book, value_date, user_id, login_id, office_id, cost_center_id, reference_number) SELECT nextval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id')), transactions.get_new_transaction_counter(@ValueDate), transactions.get_transaction_code(@ValueDate, @OfficeId, @UserId, @LogOnId), @Book, @ValueDate, @UserId, @LogOnId, @OfficeId, @CostCenterId, @ReferenceNumber;SELECT currval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id'));";
+                        long transactionMasterId;
                         using(NpgsqlCommand master = new NpgsqlCommand(sql, connection))
                         {
-                            master.Parameters.Add("@ValueDate", valueDate);
-                            master.Parameters.Add("@OfficeId", officeId);
-                            master.Parameters.Add("@UserId", userId);
-                            master.Parameters.Add("@LogOnId", logOnId);
-                            master.Parameters.Add("@Book", "Journal");
-                            master.Parameters.Add("@CostCenterId", costCenterId);
-                            master.Parameters.Add("@ReferenceNumber", referenceNumber);
+                            master.Parameters.AddWithValue("@ValueDate", valueDate);
+                            master.Parameters.AddWithValue("@OfficeId", officeId);
+                            master.Parameters.AddWithValue("@UserId", userId);
+                            master.Parameters.AddWithValue("@LogOnId", logOnId);
+                            master.Parameters.AddWithValue("@Book", "Journal");
+                            master.Parameters.AddWithValue("@CostCenterId", costCenterId);
+                            master.Parameters.AddWithValue("@ReferenceNumber", referenceNumber);
 
-                            transactionMasterId = MixERP.Net.Common.Conversion.TryCastLong(master.ExecuteScalar());
+                            transactionMasterId = Conversion.TryCastLong(master.ExecuteScalar());
                         }
 
-                        foreach(MixERP.Net.Common.Models.Transactions.TransactionDetailModel model in details)
+                        foreach(TransactionDetailModel model in details)
                         {
                             sql = "INSERT INTO transactions.transaction_details(transaction_master_id, tran_type, account_id, statement_reference, cash_repository_id, amount) SELECT @TransactionMasterId, @TranType, core.get_account_id_by_account_code(@AccountCode::text), @StatementReference, office.get_cash_repository_id_by_cash_repository_name(@CashRepositoryName::text), @Amount;";
 
                             if(model.Credit > 0 && model.Debit > 0)
                             {
-                                throw new InvalidOperationException(MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("Warnings", "BothSidesHaveValue"));
+                                throw new InvalidOperationException(LocalizationHelper.GetResourceString("Warnings", "BothSidesHaveValue"));
+                            }
+
+                            decimal amount;
+                            string tranType;
+                            if(model.Credit.Equals(0) && model.Debit > 0)
+                            {
+                                tranType = "Dr";
+                                amount = model.Debit;
                             }
                             else
                             {
-                                if(model.Credit.Equals(0) && model.Debit > 0)
-                                {
-                                    tranType = "Dr";
-                                    amount = model.Debit;
-                                }
-                                else
-                                {
-                                    tranType = "Cr";
-                                    amount = model.Credit;
-                                }
-
-
-                                using(NpgsqlCommand transactionDetail = new NpgsqlCommand(sql, connection))
-                                {
-                                    transactionDetail.Parameters.Add("@TransactionMasterId", transactionMasterId);
-                                    transactionDetail.Parameters.Add("@TranType", tranType);
-                                    transactionDetail.Parameters.Add("@AccountCode", model.AccountCode);
-                                    transactionDetail.Parameters.Add("@StatementReference", model.StatementReference);
-                                    transactionDetail.Parameters.Add("@CashRepositoryName", model.CashRepositoryName);
-                                    transactionDetail.Parameters.Add("@Amount", amount);
-                                    transactionDetail.ExecuteNonQuery();
-                                }
-
+                                tranType = "Cr";
+                                amount = model.Credit;
                             }
 
+
+                            using(NpgsqlCommand transactionDetail = new NpgsqlCommand(sql, connection))
+                            {
+                                transactionDetail.Parameters.AddWithValue("@TransactionMasterId", transactionMasterId);
+                                transactionDetail.Parameters.AddWithValue("@TranType", tranType);
+                                transactionDetail.Parameters.AddWithValue("@AccountCode", model.AccountCode);
+                                transactionDetail.Parameters.AddWithValue("@StatementReference", model.StatementReference);
+                                transactionDetail.Parameters.AddWithValue("@CashRepositoryName", model.CashRepositoryName);
+                                transactionDetail.Parameters.AddWithValue("@Amount", amount);
+                                transactionDetail.ExecuteNonQuery();
+                            }
                         }
 
                         transaction.Commit();

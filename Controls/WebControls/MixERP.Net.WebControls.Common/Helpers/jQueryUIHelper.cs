@@ -9,11 +9,11 @@ using MixERP.Net.Common.Helpers;
 
 namespace MixERP.Net.WebControls.Common.Helpers
 {
-    public static class JQueryUIHelper
+    public static class JQueryUiHelper
     {
         public static string GetDatePickerFormat()
         {
-            string datePattern = MixERP.Net.Common.Helpers.LocalizationHelper.GetCurrentCulture().DateTimeFormat.ShortDatePattern;
+            string datePattern = LocalizationHelper.GetCurrentCulture().DateTimeFormat.ShortDatePattern;
             return ConvertDateFormat(datePattern);
         }
 
@@ -21,7 +21,6 @@ namespace MixERP.Net.WebControls.Common.Helpers
         /// Credit to: http://www.rajeeshcv.com/post/details/31/jqueryui-datepicker-in-asp-net-mvc
         /// Converts the .net supported date format current culture format into JQuery Datepicker format.
         /// </summary>
-        /// <param name="html">HtmlHelper object.</param>
         /// <param name="format">Date format supported by .NET.</param>
         /// <returns>Format string that supported in JQuery Datepicker.</returns>
         private static string ConvertDateFormat(string format)
@@ -75,12 +74,12 @@ namespace MixERP.Net.WebControls.Common.Helpers
 
         public static string GetDatePickerLocale()
         {
-            return MixERP.Net.Common.Helpers.LocalizationHelper.GetCurrentCulture().TwoLetterISOLanguageName;
+            return LocalizationHelper.GetCurrentCulture().TwoLetterISOLanguageName;
         }
 
         public static int GetWeekStartDay()
         {
-            return (int)MixERP.Net.Common.Helpers.LocalizationHelper.GetCurrentCulture().DateTimeFormat.FirstDayOfWeek;
+            return (int)LocalizationHelper.GetCurrentCulture().DateTimeFormat.FirstDayOfWeek;
         }
 
         public static bool ShowWeekNumber()

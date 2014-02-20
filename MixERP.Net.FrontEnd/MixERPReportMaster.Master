@@ -4,16 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>MixERP Report</title>
     <asp:PlaceHolder runat="server">
-        <script src="<%=ResolveUrl("~/Scripts/jquery-1.9.1.js") %>"></script>
+        <script src="<%=this.ResolveUrl("~/Scripts/jquery-1.9.1.js") %>"></script>
     </asp:PlaceHolder>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        <asp:ContentPlaceHolder ID="BodyPlaceholder" runat="server">
         </asp:ContentPlaceHolder>
     </form>
 </body>

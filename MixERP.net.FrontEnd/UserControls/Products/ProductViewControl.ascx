@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="ProductViewControl.ascx.cs" Inherits="MixERP.Net.FrontEnd.UserControls.Products.ProductViewControl" %>
-<asp:ScriptManager runat="server" />
+<%@ Import Namespace="Resources" %>
 <h1>
     <asp:Literal ID="TitleLiteral" runat="server" />
 </h1>
@@ -125,7 +125,7 @@
         </tr>
     </table>
 </div>
-<asp:Panel ID="GridPanel" runat="server" Width="1024px" ScrollBars="Auto">
+<asp:Panel ID="GridPanel" runat="server" Width="100px" ScrollBars="Auto">
     <asp:GridView
         ID="ProductViewGridView"
         runat="server"
@@ -137,13 +137,13 @@
             <asp:TemplateField HeaderStyle-Width="56px" HeaderText="actions">
                 <ItemTemplate>
                     <a href="#" id="PreviewAnchor" runat="server" title="Quick Preview" class="preview">
-                        <img runat="server" src="~/Resource/Icons/search-16.png" />
+                        <img runat="server" src="~/Resource/Icons/search-16.png" alt="Search" />
                     </a>
                     <a href="#" id="PrintAnchor" runat="server" title="Print">
-                        <img runat="server" src="~/Resource/Icons/print-16.png" />
+                        <img runat="server" src="~/Resource/Icons/print-16.png" alt="Print" />
                     </a>
                     <a href="#" title="Go To Top" onclick="window.scroll(0);">
-                        <img runat="server" src="~/Resource/Icons/top-16.png" />
+                        <img runat="server" src="~/Resource/Icons/top-16.png" alt="Go to Top" />
                     </a>
                 </ItemTemplate>
             </asp:TemplateField>
@@ -171,6 +171,16 @@
 
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        var contentWidth = $("#content").width();
+        var menuWidth = $("#menu2").width();
+
+        var margin = 20;
+        var width = contentWidth - menuWidth - margin;
+
+        $("#GridPanel").css("width", width + "px");
+
+    });
 
     var updateFlagColor = function () {
         //Get an instance of the form grid.
@@ -209,7 +219,7 @@
                 }
             }
         });
-    }
+    };
 
     updateFlagColor();
 
@@ -239,7 +249,7 @@
 
             if (checkBox) {
                 //Check if the checkbox was selected or checked.
-                if (checkBox.attr("checked") == "checked") {
+                if (checkBox.prop("checked")) {
                     //Get ID from the associated cell.
                     var id = row.find("td:nth-child(" + idColumnPosition + ")").html();
 
@@ -253,14 +263,11 @@
         if (selection.length > 0) {
             $("#SelectedValuesHidden").val(selection.join(','));
             return true;
-        }
-        else {
-            alert("<%= Resources.Labels.NothingSelected %>");
+        } else {
+            alert("<%= Labels.NothingSelected %>");
             return false;
         }
-
-        return false;
-    }
+    };
 
     //Get FlagButton instance.
     var flagButton = $("#flagButton");
@@ -284,23 +291,26 @@
 
 
     $('#ProductViewGridView tr').click(function () {
-        console.log('Grid row was clicked. Now, searching the radio button.');
-        var checkBox = $(this).find('td input:checkbox')
-        console.log('The check box was found.');
+        //console.log('Grid row was clicked. Now, searching the radio button.');
+        var checkBox = $(this).find('td input:checkbox');
+        //console.log('The check box was found.');
         toogleSelection(checkBox.attr("id"));
     });
 
     var toogleSelection = function (id) {
-        var attribute = $("#" + id).attr("checked");
-        if (attribute) {
-            $("#" + id).removeAttr("checked");
-        }
-        else {
-            $("#" + id).attr("checked", "checked");
+
+        var property = $("#" + id).prop("checked");
+
+        if (property) {
+            $("#" + id).prop("checked", false);
+        } else {
+            $("#" + id).prop("checked", true);
         }
 
-        console.log('Radio button "' + id + '" selected.');
-    }
+        console.log(JSON.stringify($("#" + id).attr("checked")));
+
+        console.log('Radio button selection was "' + id + '" toggled.');
+    };
 
 
 
@@ -334,7 +344,7 @@
                 event.stopPropagation();
             });
 
-            obj.opts.on('click', function (e) {
+            obj.opts.on('click', function () {
                 var opt = $(this);
                 obj.val = opt.text();
                 obj.index = opt.index();
@@ -348,12 +358,9 @@
         getIndex: function () {
             return this.index;
         }
-    }
+    };
 
     $(function () {
-
-        var dd = new DropDown($('#dd'));
-
         $(document).click(function () {
             // all dropdowns
             $('.wrapper-dropdown-5').removeClass('active');

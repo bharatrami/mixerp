@@ -6,10 +6,8 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.UI.WebControls;
+using MixERP.Net.Common.Models.Core;
 
 namespace MixERP.Net.WebControls.Common
 {
@@ -19,13 +17,13 @@ namespace MixERP.Net.WebControls.Common
         {
             get
             {
-                EnsureChildControls();
-                return textBox.Width;
+                this.EnsureChildControls();
+                return this.textBox.Width;
             }
             set
             {
-                EnsureChildControls();
-                textBox.Width = value;
+                this.EnsureChildControls();
+                this.textBox.Width = value;
             }
         }
 
@@ -33,13 +31,13 @@ namespace MixERP.Net.WebControls.Common
         {
             get
             {
-                EnsureChildControls();
-                return textBox.CssClass;
+                this.EnsureChildControls();
+                return this.textBox.CssClass;
             }
             set
             {
-                EnsureChildControls();
-                textBox.CssClass = value;
+                this.EnsureChildControls();
+                this.textBox.CssClass = value;
             }
         }
 
@@ -47,13 +45,13 @@ namespace MixERP.Net.WebControls.Common
         {
             get
             {
-                EnsureChildControls();
-                return !textBox.Enabled;
+                this.EnsureChildControls();
+                return !this.textBox.Enabled;
             }
             set
             {
-                EnsureChildControls();
-                textBox.Enabled = !value;
+                this.EnsureChildControls();
+                this.textBox.Enabled = !value;
             }
         }
         public bool EnableValidation { get; set; }
@@ -62,13 +60,13 @@ namespace MixERP.Net.WebControls.Common
         {
             get
             {
-                EnsureChildControls();
-                return textBox.Text;
+                this.EnsureChildControls();
+                return this.textBox.Text;
             }
             set
             {
-                EnsureChildControls();
-                textBox.Text = value;
+                this.EnsureChildControls();
+                this.textBox.Text = value;
             }
         }
 
@@ -80,8 +78,8 @@ namespace MixERP.Net.WebControls.Common
         public bool Required { get; set; }
 
 
-        private MixERP.Net.Common.Models.Core.Frequency mode;
-        public MixERP.Net.Common.Models.Core.Frequency Mode 
+        private Frequency mode;
+        public Frequency Mode 
         {
             get
             {
@@ -90,7 +88,7 @@ namespace MixERP.Net.WebControls.Common
             set
             {
                 this.mode = value;
-                EnsureChildControls();
+                this.EnsureChildControls();
                 this.InitializeDate(this.mode);
             }
         }

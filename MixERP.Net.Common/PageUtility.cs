@@ -6,9 +6,7 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Configuration;
 using System.Web;
 using System.Web.UI;
 using System.Globalization;
@@ -18,7 +16,7 @@ namespace MixERP.Net.Common
 {
     public static class PageUtility
     {
-        public static void RefreshPage(System.Web.UI.Page page)
+        public static void RefreshPage(Page page)
         {
             if(page != null)
             {
@@ -26,27 +24,33 @@ namespace MixERP.Net.Common
             }
         }
 
-        public static string GetUserIPAddress()
+        public static string GetUserIpAddress()
         {
             Page page = HttpContext.Current.Handler as Page;
-            string ip = page.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-            if(!string.IsNullOrEmpty(ip))
+
+            if (page != null)
             {
-                string[] ipRange = ip.Split(',');
-                ip = ipRange[0];
+                string ip = page.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                if(!string.IsNullOrEmpty(ip))
+                {
+                    string[] ipRange = ip.Split(',');
+                    ip = ipRange[0];
+                }
+                else
+                {
+                    ip = page.Request.ServerVariables["REMOTE_ADDR"];
+                }
+                return ip.Trim();
             }
-            else
-            {
-                ip = page.Request.ServerVariables["REMOTE_ADDR"];
-            }
-            return ip.Trim();
+
+            return string.Empty;
         }
 
         public static void ExecuteJavaScript(string key, string javaScript, Page page)
         {
             if (page == null)
             {
-                page = HttpContext.Current.Handler as System.Web.UI.Page;
+                page = HttpContext.Current.Handler as Page;
             }
 
             if (page == null)
@@ -54,14 +58,14 @@ namespace MixERP.Net.Common
                 throw new InvalidOperationException("Could not register javascript on this page because the page instance was invalid or empty.");
             }
 
-            ScriptManager.RegisterStartupScript(page, typeof(System.Web.UI.Page), key, javaScript, true);
+            ScriptManager.RegisterStartupScript(page, typeof(Page), key, javaScript, true);
         }
 
         public static string ResolveUrl(string relativeUrl)
         {
             if(HttpContext.Current != null)
             {
-                System.Web.UI.Page p = HttpContext.Current.Handler as System.Web.UI.Page;
+                Page p = HttpContext.Current.Handler as Page;
                 if(p != null)
                 {
                     return p.ResolveUrl(relativeUrl);
@@ -70,7 +74,7 @@ namespace MixERP.Net.Common
             return relativeUrl;
         }
 
-        public static bool IsLocalUrl(Uri url, System.Web.UI.Page page)
+        public static bool IsLocalUrl(Uri url, Page page)
         {
             if(page == null)
             {
@@ -94,7 +98,7 @@ namespace MixERP.Net.Common
             return false;
         }
 
-        public static int InvalidPasswordAttempts(System.Web.UI.Page page, int increment)
+        public static int InvalidPasswordAttempts(Page page, int increment)
         {
             if(page == null)
             {
@@ -109,31 +113,31 @@ namespace MixERP.Net.Common
             }
             else
             {
-                retVal = MixERP.Net.Common.Conversion.TryCastInteger(page.Session["InvalidPasswordAttempts"]) + increment;
+                retVal = Conversion.TryCastInteger(page.Session["InvalidPasswordAttempts"]) + increment;
                 page.Session["InvalidPasswordAttempts"] = retVal;
             }
 
             return retVal;
         }
 
-        public static void CheckInvalidAttempts(System.Web.UI.Page page)
+        public static void CheckInvalidAttempts(Page page)
         {
             if(page != null)
             {
-                if(MixERP.Net.Common.PageUtility.InvalidPasswordAttempts(page, 0) >= MixERP.Net.Common.Conversion.TryCastInteger(System.Configuration.ConfigurationManager.AppSettings["MaxInvalidPasswordAttempts"]))
+                if(InvalidPasswordAttempts(page, 0) >= Conversion.TryCastInteger(ConfigurationManager.AppSettings["MaxInvalidPasswordAttempts"]))
                 {
-                    page.Response.Redirect("~/access-denied");
+                    page.Response.Redirect("~/Static/AcessIsDenied.html");
                 }
             }
         }
 
         public static string GetCurrentDomainName()
         {
-            string url = System.Web.HttpContext.Current.Request.Url.Scheme + "://" + System.Web.HttpContext.Current.Request.Url.Host;
+            string url = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host;
 
-            if(System.Web.HttpContext.Current.Request.Url.Port != 80)
+            if(HttpContext.Current.Request.Url.Port != 80)
             {
-                url += ":" + System.Web.HttpContext.Current.Request.Url.Port.ToString(CultureInfo.InvariantCulture);
+                url += ":" + HttpContext.Current.Request.Url.Port.ToString(CultureInfo.InvariantCulture);
             }
 
             return url;
@@ -167,7 +171,7 @@ namespace MixERP.Net.Common
                 return string.Empty;
             }
 
-            string prefix = "http";
+            const string prefix = "http";
 
             if(url.Substring(0, prefix.Length) != prefix)
             {
@@ -193,12 +197,13 @@ namespace MixERP.Net.Common
 
         private class MyClient : WebClient
         {
-            public bool HeadOnly { get; set; }
+            public bool HeadOnly { private get; set; }
 
             protected override WebRequest GetWebRequest(Uri address)
             {
                 WebRequest req = base.GetWebRequest(address);
-                if(HeadOnly && req.Method == "GET")
+                
+                if(req != null && (this.HeadOnly && req.Method == "GET"))
                 {
                     req.Method = "HEAD";
                 }

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using MixERP.Net.BusinessLayer;
 
 namespace MixERP.Net.FrontEnd.Setup.Policy
 {
-    public partial class MenuAccess : MixERP.Net.BusinessLayer.MixERPWebPage
+    public partial class MenuAccess : MixERPWebpage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

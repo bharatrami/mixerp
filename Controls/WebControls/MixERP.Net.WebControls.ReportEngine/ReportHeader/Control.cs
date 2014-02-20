@@ -5,11 +5,10 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using System.IO;
 using System.Web.UI;
+using MixERP.Net.WebControls.ReportEngine.Helpers;
 using System.Web.UI.WebControls;
 
 namespace MixERP.Net.WebControls.ReportEngine
@@ -21,17 +20,29 @@ namespace MixERP.Net.WebControls.ReportEngine
 
         public string GetHtml()
         {
-            return html;
+            return this.html;
+        }
+
+        private string GetPath()
+        {
+            if (!string.IsNullOrWhiteSpace(this.path))
+            {
+                return this.path;
+            }
+
+            return Common.Helpers.ConfigurationHelper.GetReportParameter("HeaderPath");
         }
 
         private bool IsValid()
         {
-            if(string.IsNullOrWhiteSpace(this.path))
+            string headerPath = this.GetPath();
+
+            if (string.IsNullOrWhiteSpace(headerPath))
             {
                 return false;
             }
 
-            if(!System.IO.File.Exists(this.Page.Server.MapPath(this.path)))
+            if (!File.Exists(this.Page.Server.MapPath(headerPath)))
             {
                 return false;
             }
@@ -42,23 +53,18 @@ namespace MixERP.Net.WebControls.ReportEngine
         private void PrepareReportHeader()
         {
 
-            string header = System.IO.File.ReadAllText(this.Page.Server.MapPath(this.Path));
-            html = MixERP.Net.WebControls.ReportEngine.Helpers.ReportParser.ParseExpression(header);
+            string header = File.ReadAllText(this.Page.Server.MapPath(this.GetPath()));
+            this.html = ReportParser.ParseExpression(header);
         }
 
         protected override void RecreateChildControls()
         {
-            EnsureChildControls();
+            this.EnsureChildControls();
         }
 
         protected override void Render(HtmlTextWriter w)
         {
-            if(!this.IsValid())
-            {
-                return;
-            }
-
-            if (w == null)
+            if (!this.IsValid())
             {
                 return;
             }

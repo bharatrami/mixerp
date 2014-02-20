@@ -6,11 +6,10 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using System.IO;
+using System.Xml;
 
 namespace MixERP.Net.WebControls.ReportEngine.Helpers
 {
@@ -18,7 +17,7 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
     {
         public static Collection<Collection<KeyValuePair<string, string>>> BindParameters(string reportPath, Collection<KeyValuePair<string, string>> parameterCollection)
         {
-            if(!System.IO.File.Exists(reportPath))
+            if(!File.Exists(reportPath))
             {
                 return null;
             }
@@ -26,17 +25,20 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
             Collection<Collection<KeyValuePair<string, string>>> collection = new Collection<Collection<KeyValuePair<string, string>>>();
             Collection<KeyValuePair<string, string>> parameters = new Collection<KeyValuePair<string, string>>();
             
-            System.Xml.XmlNodeList dataSources = XmlHelper.GetNodes(reportPath, "//DataSource");
+            XmlNodeList dataSources = XmlHelper.GetNodes(reportPath, "//DataSource");
 
-            foreach(System.Xml.XmlNode datasource in dataSources)
+            foreach(XmlNode datasource in dataSources)
             {
-                foreach(System.Xml.XmlNode parameterNodes in datasource.ChildNodes)
+                foreach(XmlNode parameterNodes in datasource.ChildNodes)
                 {
                     if(parameterNodes.Name.Equals("Parameters"))
                     {
-                        foreach(System.Xml.XmlNode parameterNode in parameterNodes.ChildNodes)
+                        foreach(XmlNode parameterNode in parameterNodes.ChildNodes)
                         {
-                            parameters.Add(new KeyValuePair<string, string>(parameterNode.Attributes["Name"].Value, GetParameterValue(parameterNode.Attributes["Name"].Value, parameterCollection)));
+                            if (parameterNode.Attributes != null)
+                            {
+                                parameters.Add(new KeyValuePair<string, string>(parameterNode.Attributes["Name"].Value, GetParameterValue(parameterNode.Attributes["Name"].Value, parameterCollection)));
+                            }
                         }
                     }
                 }
@@ -47,7 +49,7 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
             return collection;
         }
 
-        private static string GetParameterValue(string key, Collection<KeyValuePair<string, string>> collection)
+        private static string GetParameterValue(string key, IEnumerable<KeyValuePair<string, string>> collection)
         {
             if(string.IsNullOrWhiteSpace(key))
             {
@@ -72,23 +74,23 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
 
         public static Collection<KeyValuePair<string, string>> GetParameters(string reportPath)
         {
-            if(!System.IO.File.Exists(reportPath))
+            if(!File.Exists(reportPath))
             {
                 return null;
             }
 
             Collection<KeyValuePair<string, string>> parameterCollection = new Collection<KeyValuePair<string, string>>();
-            System.Xml.XmlNodeList dataSources = XmlHelper.GetNodes(reportPath, "//DataSource");
+            XmlNodeList dataSources = XmlHelper.GetNodes(reportPath, "//DataSource");
 
-            foreach(System.Xml.XmlNode datasource in dataSources)
+            foreach(XmlNode datasource in dataSources)
             {
-                foreach(System.Xml.XmlNode parameters in datasource.ChildNodes)
+                foreach(XmlNode parameters in datasource.ChildNodes)
                 {
                     if(parameters.Name.Equals("Parameters"))
                     {
-                        foreach(System.Xml.XmlNode parameter in parameters.ChildNodes)
+                        foreach(XmlNode parameter in parameters.ChildNodes)
                         {
-                            if(!KeyExists(parameter.Attributes["Name"].Value, parameterCollection))
+                            if(parameter.Attributes != null && !KeyExists(parameter.Attributes["Name"].Value, parameterCollection))
                             {
                                 parameterCollection.Add(new KeyValuePair<string, string>(parameter.Attributes["Name"].Value, parameter.Attributes["Type"].Value));
                             }
@@ -100,7 +102,7 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
             return parameterCollection;
         }
 
-        private static bool KeyExists(string key, Collection<KeyValuePair<string, string>> collection)
+        private static bool KeyExists(string key, IEnumerable<KeyValuePair<string, string>> collection)
         {
             foreach(KeyValuePair<string, string> item in collection)
             {

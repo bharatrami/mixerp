@@ -6,12 +6,8 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+using System.Threading;
+using System.Web;
 using System.Resources;
 using System.Collections;
 using System.Globalization;
@@ -23,13 +19,22 @@ namespace MixERP.Net.Common.Helpers
     {
         public static string GetResourceString(string className, string key)
         {
-            if (string.IsNullOrWhiteSpace(key) || System.Web.HttpContext.Current == null)
+            if (string.IsNullOrWhiteSpace(key) || HttpContext.Current == null)
             {
                 return string.Empty;
             }
+
             try
             {
-                return System.Web.HttpContext.GetGlobalResourceObject(className, key, GetCurrentCulture()).ToString();
+
+                var globalResourceObject = HttpContext.GetGlobalResourceObject(className, key, GetCurrentCulture());
+
+                if (globalResourceObject != null)
+                {
+                    return globalResourceObject.ToString();
+                }
+
+                return string.Empty;
             }
             catch
             {
@@ -39,13 +44,19 @@ namespace MixERP.Net.Common.Helpers
 
         public static string GetResourceString(string className, string key, bool throwError)
         {
-            if (string.IsNullOrWhiteSpace(key) || System.Web.HttpContext.Current == null)
+            if (string.IsNullOrWhiteSpace(key) || HttpContext.Current == null)
             {
                 return string.Empty;
             }
             try
             {
-                return System.Web.HttpContext.GetGlobalResourceObject(className, key, GetCurrentCulture()).ToString();
+                var globalResourceObject = HttpContext.GetGlobalResourceObject(className, key, GetCurrentCulture());
+                if (globalResourceObject != null)
+                {
+                    return globalResourceObject.ToString();
+                }
+
+                return string.Empty;
             }
             catch
             {
@@ -70,40 +81,38 @@ namespace MixERP.Net.Common.Helpers
                 {
                     ITypeResolutionService iResoulution = null;
 
-                    if (reader != null)
+                    foreach (DictionaryEntry entry in reader)
                     {
-                        foreach (DictionaryEntry entry in reader)
+
+                        if (entry.Value == null)
                         {
-
-                            if (entry.Value == null)
-                            {
-                                resources.Add(entry.Key.ToString(), "");
-                            }
-                            else
-                            {
-                                resources.Add(entry.Key.ToString(), ((ResXDataNode)entry.Value).GetValue(iResoulution).ToString());
-                            }
-
-                            ResXDataNode dataNode = (ResXDataNode)entry.Value;
-
-                            writer.AddResource(dataNode);
+                            resources.Add(entry.Key.ToString(), "");
+                        }
+                        else
+                        {
+                            // ReSharper disable once ExpressionIsAlwaysNull
+                            resources.Add(entry.Key.ToString(), ((ResXDataNode)entry.Value).GetValue(iResoulution).ToString());
                         }
 
+                        ResXDataNode dataNode = (ResXDataNode)entry.Value;
 
-                        if (!resources.ContainsKey(key))
-                        {
-                            writer.AddResource(key, value);
-                        }
-                        
-                        writer.Generate();
+                        if (dataNode != null) writer.AddResource(dataNode);
                     }
+
+
+                    if (!resources.ContainsKey(key))
+                    {
+                        writer.AddResource(key, value);
+                    }
+
+                    writer.Generate();
                 }
             }
         }
 
         public static CultureInfo GetCurrentCulture()
         {
-            CultureInfo culture = System.Threading.Thread.CurrentThread.CurrentUICulture;
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
             return culture;
         }
 

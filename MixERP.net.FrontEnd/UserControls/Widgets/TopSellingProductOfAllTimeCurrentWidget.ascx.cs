@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using MixERP.Net.BusinessLayer;
 
 namespace MixERP.Net.FrontEnd.UserControls.Widgets
 {
-    public partial class TopSellingProductOfAllTimeCurrentWidget : System.Web.UI.UserControl
+    public partial class TopSellingProductOfAllTimeCurrentWidget : MixERPWidget
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
-
         }
     }
 }

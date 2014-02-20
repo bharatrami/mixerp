@@ -5,11 +5,10 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using System.IO;
 using System.Web.UI.WebControls;
+using MixERP.Net.Common.Helpers;
 
 namespace MixERP.Net.WebControls.ReportEngine
 {
@@ -41,7 +40,7 @@ namespace MixERP.Net.WebControls.ReportEngine
 
             this.reportPath = this.Page.Server.MapPath(this.Path);
 
-            if(!System.IO.File.Exists(this.reportPath))
+            if(!File.Exists(this.reportPath))
             {
                 return false;
             }
@@ -53,29 +52,29 @@ namespace MixERP.Net.WebControls.ReportEngine
 
         private void AddReportBody(Panel container)
         {
-            reportBody = new Panel();
-            reportBody.ID = "report";
+            this.reportBody = new Panel();
+            this.reportBody.ID = "report";
 
-            header = new ReportHeader();
-            header.Path = MixERP.Net.Common.Helpers.ConfigurationHelper.GetReportParameter( "HeaderPath");                
-            reportBody.Controls.Add(header);
+            this.header = new ReportHeader();
+            this.header.Path = ConfigurationHelper.GetReportParameter( "HeaderPath");                
+            this.reportBody.Controls.Add(this.header);
 
-            reportTitleLiteral = new Literal();
-            reportBody.Controls.Add(reportTitleLiteral);
+            this.reportTitleLiteral = new Literal();
+            this.reportBody.Controls.Add(this.reportTitleLiteral);
 
-            topSectionLiteral = new Literal();
-            reportBody.Controls.Add(topSectionLiteral);
+            this.topSectionLiteral = new Literal();
+            this.reportBody.Controls.Add(this.topSectionLiteral);
             
-            gridPlaceHolder = new PlaceHolder();
-            reportBody.Controls.Add(gridPlaceHolder);
+            this.gridPlaceHolder = new PlaceHolder();
+            this.reportBody.Controls.Add(this.gridPlaceHolder);
             
-            bodyContentsLiteral  = new Literal();
-            reportBody.Controls.Add(bodyContentsLiteral);
+            this.bodyContentsLiteral  = new Literal();
+            this.reportBody.Controls.Add(this.bodyContentsLiteral);
             
-            bottomSectionLiteral = new Literal();
-            reportBody.Controls.Add(bottomSectionLiteral);
+            this.bottomSectionLiteral = new Literal();
+            this.reportBody.Controls.Add(this.bottomSectionLiteral);
            
-            container.Controls.Add(reportBody);
+            container.Controls.Add(this.reportBody);
         }
 
     }

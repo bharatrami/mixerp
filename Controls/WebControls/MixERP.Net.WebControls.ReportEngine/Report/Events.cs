@@ -6,25 +6,24 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+using MixERP.Net.Common;
+using MixERP.Net.Common.Helpers;
 
 namespace MixERP.Net.WebControls.ReportEngine
 {
-    public partial class Report : CompositeControl
+    public partial class Report //: CompositeControl
     {
         public void ExcelImageButton_Click(object sender, EventArgs e)
         {
             //EnsureChildControls();
-            string html = reportHidden.Value;
+            string html = this.reportHidden.Value;
             if(!string.IsNullOrWhiteSpace(html))
             {
                 this.Page.Response.ContentType = "application/force-download";
-                this.Page.Response.AddHeader("content-disposition", "attachment; filename=" + reportTitleHidden.Value + ".xls");
+                this.Page.Response.AddHeader("content-disposition", "attachment; filename=" + this.reportTitleHidden.Value + ".xls");
                 this.Page.Response.Charset = "";
                 this.Page.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 this.Page.Response.ContentType = "application/vnd.ms-excel";
@@ -37,11 +36,11 @@ namespace MixERP.Net.WebControls.ReportEngine
         public void WordImageButton_Click(object sender, EventArgs e)
         {
             //EnsureChildControls();
-            string html = reportHidden.Value;
+            string html = this.reportHidden.Value;
             if(!string.IsNullOrWhiteSpace(html))
             {
                 this.Page.Response.ContentType = "application/force-download";
-                this.Page.Response.AddHeader("content-disposition", "attachment; filename=" + reportTitleHidden.Value + ".doc");
+                this.Page.Response.AddHeader("content-disposition", "attachment; filename=" + this.reportTitleHidden.Value + ".doc");
                 this.Page.Response.Charset = "";
                 this.Page.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 this.Page.Response.ContentType = "application/vnd.ms-word";
@@ -58,9 +57,9 @@ namespace MixERP.Net.WebControls.ReportEngine
         {
             GridView grid = (GridView)sender;
 
-            int arg = MixERP.Net.Common.Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
+            int arg = Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
 
-            if(string.IsNullOrWhiteSpace(this.RunningTotalFieldIndicesCollection[arg]))
+            if(string.IsNullOrWhiteSpace(this.runningTotalFieldIndicesCollection[arg]))
             {
                 return;
             }
@@ -72,19 +71,19 @@ namespace MixERP.Net.WebControls.ReportEngine
 
             grid.FooterRow.Visible = true;
 
-            for(int i = 0; i < this.RunningTotalTextColumnIndexCollection[arg]; i++)
+            for(int i = 0; i < this.runningTotalTextColumnIndexCollection[arg]; i++)
             {
                 grid.FooterRow.Cells[i].Visible = false;
             }
 
-            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].ColumnSpan = this.RunningTotalTextColumnIndexCollection[arg] + 1;
-            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].Text = this.RunningTotalText;
-            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].Style.Add("text-align", "right");
-            grid.FooterRow.Cells[this.RunningTotalTextColumnIndexCollection[arg]].Font.Bold = true;
+            grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].ColumnSpan = this.runningTotalTextColumnIndexCollection[arg] + 1;
+            grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].Text = this.RunningTotalText;
+            grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].Style.Add("text-align", "right");
+            grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].Font.Bold = true;
 
-            foreach(string field in this.RunningTotalFieldIndicesCollection[arg].Split(','))
+            foreach(string field in this.runningTotalFieldIndicesCollection[arg].Split(','))
             {
-                int index = MixERP.Net.Common.Conversion.TryCastInteger(field.Trim());
+                int index = Conversion.TryCastInteger(field.Trim());
 
                 decimal total = 0;
 
@@ -94,11 +93,11 @@ namespace MixERP.Net.WebControls.ReportEngine
                     {
                         if(row.RowType == DataControlRowType.DataRow)
                         {
-                            total += MixERP.Net.Common.Conversion.TryCastDecimal(row.Cells[index].Text);
+                            total += Conversion.TryCastDecimal(row.Cells[index].Text);
                         }
                     }
 
-                    grid.FooterRow.Cells[index].Text = string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "{0:N}", total);
+                    grid.FooterRow.Cells[index].Text = string.Format(Thread.CurrentThread.CurrentCulture, "{0:N}", total);
                     grid.FooterRow.Cells[index].Font.Bold = true;
                 }
             }
@@ -112,7 +111,7 @@ namespace MixERP.Net.WebControls.ReportEngine
                 {
                     string cellText = e.Row.Cells[i].Text;
 
-                    cellText = MixERP.Net.Common.Helpers.LocalizationHelper.GetResourceString("ScrudResource", cellText, false);
+                    cellText = LocalizationHelper.GetResourceString("ScrudResource", cellText, false);
                     e.Row.Cells[i].Text = cellText;
                     e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Left;
                 }
@@ -121,21 +120,21 @@ namespace MixERP.Net.WebControls.ReportEngine
             if(e.Row.RowType == DataControlRowType.DataRow)
             {
                 GridView grid = (GridView)sender;
-                int arg = MixERP.Net.Common.Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
+                int arg = Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
 
                 //Apply formatting on decimal fields
-                if(string.IsNullOrWhiteSpace(this.DecimalFieldIndicesCollection[arg]))
+                if(string.IsNullOrWhiteSpace(this.decimalFieldIndicesCollection[arg]))
                 {
                     return;
                 }
 
 
-                string decimalFields = this.DecimalFieldIndicesCollection[arg];
+                string decimalFields = this.decimalFieldIndicesCollection[arg];
                 foreach(string fieldIndex in decimalFields.Split(','))
                 {
-                    int index = MixERP.Net.Common.Conversion.TryCastInteger(fieldIndex);
-                    decimal value = MixERP.Net.Common.Conversion.TryCastDecimal(e.Row.Cells[index].Text);
-                    e.Row.Cells[index].Text = string.Format(System.Threading.Thread.CurrentThread.CurrentCulture, "{0:N}", value);
+                    int index = Conversion.TryCastInteger(fieldIndex);
+                    decimal value = Conversion.TryCastDecimal(e.Row.Cells[index].Text);
+                    e.Row.Cells[index].Text = string.Format(Thread.CurrentThread.CurrentCulture, "{0:N}", value);
                 }
             }
         }

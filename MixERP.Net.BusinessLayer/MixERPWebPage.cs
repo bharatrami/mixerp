@@ -6,19 +6,18 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using MixERP.Net.BusinessLayer.Helpers;
+using MixERP.Net.Common;
 
 namespace MixERP.Net.BusinessLayer
 {
-    public class MixERPWebPage : System.Web.UI.Page
+    public class MixERPWebpage : Page
     {
         /// <summary>
         /// Use this parameter on the Page_Init event of member pages.
@@ -37,25 +36,20 @@ namespace MixERP.Net.BusinessLayer
 
         protected override void OnLoad(EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(OverridePath))
+            if (string.IsNullOrWhiteSpace(this.OverridePath))
             {
-                OverridePath = this.Page.Request.Url.AbsolutePath;
+                this.OverridePath = this.Page.Request.Url.AbsolutePath;
             }
 
-            Literal menuLiteral = ((Literal)MixERP.Net.Common.PageUtility.FindControlIterative(this.Master, "ContentMenuLiteral"));
+            Literal menuLiteral = ((Literal)PageUtility.FindControlIterative(this.Master, "ContentMenuLiteral"));
 
             if (menuLiteral != null)
             {
-                string menu = MixERP.Net.BusinessLayer.Helpers.MenuHelper.GetContentPageMenu(this.Page, this.OverridePath);
+                string menu = MenuHelper.GetContentPageMenu(this.Page, this.OverridePath);
                 menuLiteral.Text = menu;
             }
 
             base.OnLoad(e);
-        }
-
-        protected override void OnPreInit(EventArgs e)
-        {
-            base.OnPreInit(e);
         }
 
         protected override void InitializeCulture()
@@ -66,19 +60,19 @@ namespace MixERP.Net.BusinessLayer
 
         protected override void OnInit(EventArgs e)
         {
-            if (!IsPostBack)
+            if (!this.IsPostBack)
             {
-                if (Request.IsAuthenticated)
+                if (this.Request.IsAuthenticated)
                 {
-                    if (Context.Session == null)
+                    if (this.Context.Session == null)
                     {
-                        SetSession();
+                        this.SetSession();
                     }
                     else
                     {
-                        if (Context.Session["UserId"] == null)
+                        if (this.Context.Session["UserId"] == null)
                         {
-                            SetSession();
+                            this.SetSession();
                         }
                     }
                 }
@@ -110,7 +104,7 @@ namespace MixERP.Net.BusinessLayer
 
         private void SetSession()
         {
-            MixERP.Net.BusinessLayer.Security.User.SetSession(this.Page, User.Identity.Name);
+            Security.User.SetSession(this.Page, this.User.Identity.Name);
         }
 
         public static void RequestLogOnPage()
@@ -123,7 +117,15 @@ namespace MixERP.Net.BusinessLayer
             }
 
             string currentPage = HttpContext.Current.Request.Url.AbsolutePath;
-            string loginUrl = (HttpContext.Current.Handler as Page).ResolveUrl(FormsAuthentication.LoginUrl);
+
+            Page page = HttpContext.Current.Handler as Page;
+
+            if (page == null)
+            {
+                return;
+            }
+
+            string loginUrl = (page).ResolveUrl(FormsAuthentication.LoginUrl);
 
             if (currentPage != loginUrl)
             {

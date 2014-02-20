@@ -5,13 +5,13 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="StyleSheetContentPlaceholder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyContentPlaceholder" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server" />
+    <asp:PlaceHolder ID="ScrudPlaceholder" runat="server" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BottomScriptContentPlaceholder" runat="server">
     <script type="text/javascript">
         //This event will be called by ASP.net AJAX during
         //asynchronous partial page rendering.
-        function pageLoad(sender, args) {
+        function pageLoad() {
             //At this point, the GridView should have already been reloaded.
             //So, load color information on the grid once again.
             loadColor();
@@ -21,8 +21,7 @@
             loadColor();
         });
 
-        var loadColor = function ()
-        {
+        var loadColor = function() {
             //Get an instance of the form grid.
 
             var grid = $("#FormGridView");
@@ -32,7 +31,7 @@
             var fgColorColumnPos = "5";
 
             //Iterate through all the rows of the grid.
-            grid.find("tr").each(function () {
+            grid.find("tr").each(function() {
 
                 //Get the current row instance from the loop.
                 var row = $(this);
@@ -50,12 +49,12 @@
                 }
 
                 //Iterate through all the columns of the current row.
-                row.find("td").each(function () {
+                row.find("td").each(function() {
                     //Prevent border display by unsetting the border information for each cell.
                     $(this).css("border", "none");
                 });
 
             });
-        }
+        };
     </script>
 </asp:Content>

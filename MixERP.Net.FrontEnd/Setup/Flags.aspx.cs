@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Diagnostics.CodeAnalysis;
+using MixERP.Net.BusinessLayer;
 using MixERP.Net.WebControls.ScrudFactory;
+using Resources;
 
 namespace MixERP.Net.FrontEnd.Setup
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags")]
-    public partial class Flags : MixERP.Net.BusinessLayer.MixERPWebPage
+    [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags")]
+    public partial class Flags : MixERPWebpage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,9 +20,9 @@ namespace MixERP.Net.FrontEnd.Setup
                 scrud.ViewSchema = "core";
                 scrud.View = "flag_types";
 
-                scrud.Text = Resources.Titles.Flags;
+                scrud.Text = Titles.Flags;
 
-                ScriptManager1.NamingContainer.Controls.Add(scrud);
+                this.ScrudPlaceholder.Controls.Add(scrud);
             }
         }
     }

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 namespace MixERP.Net.DatabaseLayer.Helpers
 {
     public static class ConversionHelper
     {
-        public static object GetColumnValue(System.Data.DataRow row, string columnName)
+        public static object GetColumnValue(DataRow row, string columnName)
         {
             object value = new object();
 

@@ -5,12 +5,9 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 If a copy of the MPL was not distributed  with this file, You can obtain one at 
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using System.Diagnostics.CodeAnalysis;
 using System.Xml;
-using System.Xml.XPath;
 
 namespace MixERP.Net.WebControls.ReportEngine.Helpers
 {
@@ -18,22 +15,29 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
     {
         public static XmlNodeList GetNodes(string path, string name)
         {
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            XmlDocument doc = new XmlDocument();
             doc.Load(path);
             return doc.SelectNodes(name);
         }
 
         public static string GetNodeText(string path, string name)
         {
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            XmlDocument doc = new XmlDocument();
             doc.Load(path);
-            return doc.SelectSingleNode(name).InnerXml;
+            var selectSingleNode = doc.SelectSingleNode(name);
+
+            if (selectSingleNode != null)
+            {
+                return selectSingleNode.InnerXml;
+            }
+
+            return string.Empty;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
+        [SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public static XmlNode GetNode(string path, string name)
         {
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            XmlDocument doc = new XmlDocument();
             doc.Load(path);
             return doc.SelectSingleNode(name);
         }

@@ -9,23 +9,15 @@ http://mozilla.org/MPL/2.0/.
 <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MixERPMaster.Master.cs"
     Inherits="MixERP.Net.FrontEnd.MixERPMaster" %>
 
+<%-- ReSharper disable once AspUnusedRegisterDirectiveHighlighting --%>
+<%@ Register TagPrefix="asp" Assembly="System.Web.Extensions" Namespace="System.Web.UI" %><%--Added for Xamarin Studio Compatibility on Mac OSX Mavericks.--%>
+
 <!DOCTYPE html>
 <html>
 <head runat="server">
     <asp:PlaceHolder ID="HeadHolder" runat="server">
-        <link href="<%=ResolveUrl("~/themes/purple/main.css") %>" rel="stylesheet" type="text/css" />
-        <link href="<%=ResolveUrl("~/Scripts/colorbox/colorbox.css") %>" rel="stylesheet" />
-        <link href="<%=ResolveUrl("~/Scripts/jquery-ui/css/custom-theme/jquery-ui-1.10.3.custom.min.css") %>" rel="stylesheet" type="text/css" />
-
-        <script src="<%=ResolveUrl("~/Scripts/jquery-1.9.1.js") %>"></script>
-        <script src="<%=ResolveUrl("~/Scripts/jquery-ui.js") %>"></script>
-
-        <script src="<%=ResolveUrl("~/Scripts/shortcut.js") %>"></script>
-        <script src="<%=ResolveUrl("~/Scripts/colorbox/jquery.colorbox-min.js") %>"></script>
-        <script src="<%=ResolveUrl("~/Scripts/jqueryNumber/jquery.number.min.js") %>"></script>
-        <script src="<%=ResolveUrl("~/Scripts/date.js") %>"></script>
-        <script src="<%=ResolveUrl("~/Scripts/chartjs/Chart.min.js") %>"></script>
-        <script src="<%=ResolveUrl("~/Scripts/chartjs/legend.js") %>"></script>
+        <link href="/bundles/stylesheets/master-page.min.css" rel="stylesheet" />
+        <script src="<%=this.ResolveUrl("~/Scripts/jquery-1.9.1.js") %>"></script>
 
     </asp:PlaceHolder>
     <title>MixERP® Beta</title>
@@ -44,7 +36,7 @@ http://mozilla.org/MPL/2.0/.
 </head>
 <body>
     <script type="text/javascript">
-        var today = "<%= System.DateTime.Now.ToShortDateString() %>";
+        var today = "<%= DateTime.Now.ToShortDateString() %>";
         var shortDateFormat = "<%= MixERP.Net.Common.Helpers.LocalizationHelper.GetShortDateFormat() %>";
         var thousandSeparator = "<%= MixERP.Net.Common.Helpers.LocalizationHelper.GetThousandSeparator() %>";
         var decimalSeparator = "<%= MixERP.Net.Common.Helpers.LocalizationHelper.GetDecimalSeparator() %>";
@@ -52,21 +44,22 @@ http://mozilla.org/MPL/2.0/.
         var localizedAreYouSure = "<%= Resources.Questions.AreYouSure %>";
         var localizedUpdateTax = "<%= Resources.Questions.UpdateTax %>";
     </script>
-    <script src="<%=ResolveUrl("~/Scripts/mixerp.js") %>" type="text/javascript"></script>
 
     <form id="form1" runat="server" enctype="multipart/form-data" method="post" submitdisabledcontrols="true" defaultbutton="SwallowSubmitButton">
+        <asp:ScriptManager runat="server" ID="MixERPMasterScriptManager" />
+
         <div id="page">
             <a href="~/Dashboard/Index.aspx" runat="server">
-                <img runat="server" src="~/themes/purple/mixerp-logo.png" height="50" width="250" />
+                <img runat="server" src="~/Themes/purple/images/mixerp-logo.png" height="50" width="250" alt="MixERP" />
             </a>
             <div id="menu">
                 <asp:Literal ID="MenuLiteral" runat="server" />
                 <div style="float: right;">
                     <a runat="server" href="~/Account/SignOut.aspx" class="icon">
-                        <img runat="server" src="~/Resource/Icons/signout-16.png" />
+                        <img runat="server" src="~/Resource/Icons/signout-16.png" alt="Sign Out" />
                     </a>
                     <a runat="server" href="~/Account/ChangePassword.aspx" class="icon">
-                        <img runat="server" src="~/Resource/Icons/password-16.png" />
+                        <img runat="server" src="~/Resource/Icons/password-16.png" alt="Change Password" />
                     </a>
                 </div>
             </div>
@@ -77,7 +70,7 @@ http://mozilla.org/MPL/2.0/.
             </div>
             <div id="footer">
                 Powered by
-            <a href="http://MixERP.Net" target="_blank">MixErp® Beta</a>
+            <a href="http://MixERP.Net" target="_blank">MixERP® Beta</a>
             </div>
         </div>
         <script type="text/javascript">
@@ -87,16 +80,16 @@ http://mozilla.org/MPL/2.0/.
                     event.preventDefault();
                     return false;
                 }
+
+                return true;
             });
 
-            function pageLoad(sender, args) {
+            function pageLoad() {
                 $(".item-selector").colorbox({ iframe: true, innerWidth: 1024, innerHeight: 450, overlayClose: false });
                 $(".preview").colorbox({ iframe: true, innerWidth: 1024, innerHeight: 450, overlayClose: false });
-            }
-
-
-
+            };
         </script>
+        <script src="/bundles/scripts/master-page.min.js"></script>
         <asp:ContentPlaceHolder ID="BottomScriptContentPlaceholder" runat="server">
         </asp:ContentPlaceHolder>
     </form>

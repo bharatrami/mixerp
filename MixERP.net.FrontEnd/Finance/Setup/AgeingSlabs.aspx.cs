@@ -6,16 +6,13 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using MixERP.Net.BusinessLayer;
 using MixERP.Net.WebControls.ScrudFactory;
+using Resources;
 
 namespace MixERP.Net.FrontEnd.Finance.Setup
 {
-    public partial class AgeingSlabs : MixERP.Net.BusinessLayer.MixERPWebPage
+    public partial class AgeingSlabs : MixERPWebpage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,8 +25,8 @@ namespace MixERP.Net.FrontEnd.Finance.Setup
                 scrud.ViewSchema = "core";
                 scrud.View = "ageing_slabs";
 
-                scrud.Text = Resources.Titles.AgeingSlabSetup;
-                ScriptManager1.NamingContainer.Controls.Add(scrud);
+                scrud.Text = Titles.AgeingSlabSetup;
+                this.ScrudPlaceholder.Controls.Add(scrud);
             }
         }
     }

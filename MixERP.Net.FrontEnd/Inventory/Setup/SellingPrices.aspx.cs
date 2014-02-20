@@ -7,17 +7,15 @@ http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using MixERP.Net.BusinessLayer;
 using MixERP.Net.BusinessLayer.Helpers;
 using MixERP.Net.Common.Helpers;
 using MixERP.Net.WebControls.ScrudFactory;
+using Resources;
 
 namespace MixERP.Net.FrontEnd.Inventory.Setup
 {
-    public partial class SellingPrices : MixERP.Net.BusinessLayer.MixERPWebPage
+    public partial class SellingPrices : MixERPWebpage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,9 +30,9 @@ namespace MixERP.Net.FrontEnd.Inventory.Setup
                 scrud.DisplayFields = GetDisplayFields();
                 scrud.DisplayViews = GetDisplayViews();
 
-                scrud.Text = Resources.Titles.ItemSellingPrices;
+                scrud.Text = Titles.ItemSellingPrices;
 
-                ScriptManager1.NamingContainer.Controls.Add(scrud);
+                this.ScrudPlaceholder.Controls.Add(scrud);
             }
         }
 

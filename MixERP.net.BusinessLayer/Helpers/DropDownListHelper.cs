@@ -6,10 +6,7 @@ If a copy of the MPL was not distributed  with this file, You can obtain one at
 http://mozilla.org/MPL/2.0/.
 ***********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Web.UI.WebControls;
 
 namespace MixERP.Net.BusinessLayer.Helpers
@@ -23,7 +20,7 @@ namespace MixERP.Net.BusinessLayer.Helpers
                 return;
             }
 
-            using(DataTable table = MixERP.Net.DatabaseLayer.Helpers.FormHelper.GetTable(schemaName, tableName))
+            using(DataTable table = DatabaseLayer.Helpers.FormHelper.GetTable(schemaName, tableName))
             {
                 table.Columns.Add("text_field", typeof(string), displayField);
 
