@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.FrontEnd.Sales {
+namespace MixERP.Net.FrontEnd.Sales.Entry {
     
     
-    public partial class DeliveryWithoutOrder {
+    public partial class Delivery {
         
         /// <summary>
         /// SalesDeliveryControl control.

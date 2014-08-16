@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.FrontEnd.Sales {
+namespace MixERP.Net.FrontEnd.Sales.Entry {
     
     
-    public partial class DeliveryWithoutOrder {
+    public partial class DirectSales {
         
         /// <summary>
-        /// SalesDeliveryControl control.
+        /// DirectSalesControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::MixERP.Net.FrontEnd.UserControls.Products.ProductControl SalesDeliveryControl;
+        protected global::MixERP.Net.FrontEnd.UserControls.Products.ProductControl DirectSalesControl;
     }
 }
