@@ -55,9 +55,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DateTextBox\Events.cs" />
+    <Compile Include="DateTextBox\IDisposable.cs" />
     <Compile Include="DateTextBox\Properties.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\DatePersister.cs" />
     <Compile Include="Helpers\jQueryUIHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\CommonResource.Designer.cs">
@@ -86,6 +88,10 @@
     <ProjectReference Include="..\..\..\Logic\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>
       <Name>MixERP.Net.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\MixERP.Net.WebControls.Common.Data\MixERP.Net.WebControls.Common.Data.csproj">
+      <Project>{8d2a81fa-579b-499f-a151-7dd49d759a91}</Project>
+      <Name>MixERP.Net.WebControls.Common.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
