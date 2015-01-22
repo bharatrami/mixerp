@@ -259,6 +259,15 @@ namespace MixERP.Net.Core.Modules.Sales.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compound Item.
+        /// </summary>
+        internal static string compound_item {
+            get {
+                return ResourceManager.GetString("compound_item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compound Item Id.
         /// </summary>
         internal static string compound_item_id {
@@ -403,6 +412,15 @@ namespace MixERP.Net.Core.Modules.Sales.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        internal static string item {
+            get {
+                return ResourceManager.GetString("item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Code.
         /// </summary>
         internal static string item_code {
@@ -426,6 +444,15 @@ namespace MixERP.Net.Core.Modules.Sales.Resources {
         internal static string item_name {
             get {
                 return ResourceManager.GetString("item_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Late Fee.
+        /// </summary>
+        internal static string late_fee {
+            get {
+                return ResourceManager.GetString("late_fee", resourceCulture);
             }
         }
         
@@ -502,11 +529,29 @@ namespace MixERP.Net.Core.Modules.Sales.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Party.
+        /// </summary>
+        internal static string party {
+            get {
+                return ResourceManager.GetString("party", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Party Id.
         /// </summary>
         internal static string party_id {
             get {
                 return ResourceManager.GetString("party_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Term.
+        /// </summary>
+        internal static string payment_term {
+            get {
+                return ResourceManager.GetString("payment_term", resourceCulture);
             }
         }
         
@@ -574,11 +619,29 @@ namespace MixERP.Net.Core.Modules.Sales.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recurring Frequency.
+        /// </summary>
+        internal static string recurring_frequency {
+            get {
+                return ResourceManager.GetString("recurring_frequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recurring Frequency Id.
         /// </summary>
         internal static string recurring_frequency_id {
             get {
                 return ResourceManager.GetString("recurring_frequency_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring Invoice.
+        /// </summary>
+        internal static string recurring_invoice {
+            get {
+                return ResourceManager.GetString("recurring_invoice", resourceCulture);
             }
         }
         

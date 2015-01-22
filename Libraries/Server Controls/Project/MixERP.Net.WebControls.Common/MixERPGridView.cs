@@ -21,11 +21,33 @@ using System;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using MixERP.Net.Common;
+using MixERP.Net.WebControls.Common.Resources;
 
 namespace MixERP.Net.WebControls.Common
 {
-    public class MixERPGridView : GridView
+    public sealed class MixERPGridView : GridView
     {
+        private readonly bool htmlEncode;
+
+        public MixERPGridView()
+        {
+            this.htmlEncode = true;
+            this.Initialize();
+        }
+
+        public MixERPGridView(bool htmlEncode)
+        {
+            this.htmlEncode = htmlEncode;
+            this.Initialize();
+        }
+
+        private void Initialize()
+        {
+            this.CssClass += "ui striped table ";
+            this.GridLines = GridLines.None;
+            this.EmptyDataText = CommonResource.NoRecordFound;
+        }
+
         protected override void OnDataBound(EventArgs e)
         {
             if (this.Rows.Count.Equals(0))
@@ -54,15 +76,20 @@ namespace MixERP.Net.WebControls.Common
 
                     if (field != null)
                     {
+
                         field.HeaderStyle.CssClass = "text left";
 
                         switch (field.DataType.FullName)
                         {
+                            case "System.String":
+                                field.HtmlEncode = this.htmlEncode;
+                            break;
                             case "System.Decimal":
                             case "System.Double":
                             case "System.Single":
                                 cell.CssClass = "text right";
                                 field.HeaderStyle.CssClass = "text right";
+
                                 if (e.Row.RowType == DataControlRowType.DataRow)
                                 {
                                     decimal value = Conversion.TryCastDecimal(cell.Text);
@@ -90,6 +117,7 @@ namespace MixERP.Net.WebControls.Common
 
                                 break;
                         }
+
                     }
                 }
             }
