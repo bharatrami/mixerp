@@ -79,6 +79,24 @@ namespace MixERP.Net.Core.Modules.Sales.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Effective from  date should not be greater than the ends on..
+        /// </summary>
+        internal static string DateErrorMessage {
+            get {
+                return ResourceManager.GetString("DateErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Due days can only be 0 if due frequency id is selected..
+        /// </summary>
+        internal static string DueFrequencyErrorMessage {
+            get {
+                return ResourceManager.GetString("DueFrequencyErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only {0} {1} of {2} left in stock..
         /// </summary>
         internal static string InsufficientStockWarning {
@@ -102,6 +120,33 @@ namespace MixERP.Net.Core.Modules.Sales.Resources {
         internal static string InvalidStockTransaction {
             get {
                 return ResourceManager.GetString("InvalidStockTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have to select either item id or  compound id..
+        /// </summary>
+        internal static string ItemErrorMessage {
+            get {
+                return ResourceManager.GetString("ItemErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TODO.
+        /// </summary>
+        internal static string LateFeeErrorMessage {
+            get {
+                return ResourceManager.GetString("LateFeeErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring amount should not be less than or equal to 0.
+        /// </summary>
+        internal static string RecurringAmountErrorMessage {
+            get {
+                return ResourceManager.GetString("RecurringAmountErrorMessage", resourceCulture);
             }
         }
     }
