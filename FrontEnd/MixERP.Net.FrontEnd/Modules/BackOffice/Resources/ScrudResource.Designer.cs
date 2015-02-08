@@ -97,6 +97,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow Transaction Posting.
+        /// </summary>
+        internal static string allow_transaction_posting {
+            get {
+                return ResourceManager.GetString("allow_transaction_posting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analyze Count.
         /// </summary>
         internal static string analyze_count {
@@ -817,6 +826,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Office.
+        /// </summary>
+        internal static string office {
+            get {
+                return ResourceManager.GetString("office", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Office Code.
         /// </summary>
         internal static string office_code {
@@ -849,6 +867,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         internal static string pan_number {
             get {
                 return ResourceManager.GetString("pan_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent Cash Repository.
+        /// </summary>
+        internal static string parent_cash_repository {
+            get {
+                return ResourceManager.GetString("parent_cash_repository", resourceCulture);
             }
         }
         
