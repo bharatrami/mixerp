@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.Core.Modules.BackOffice.Resources {
+namespace MixERP.Net.WebControls.AttachmentFactory.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Warnings {
+    internal class Titles {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Warnings() {
+        internal Titles() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MixERP.Net.Core.Modules.BackOffice.Resources.Warnings", typeof(Warnings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MixERP.Net.WebControls.AttachmentFactory.Resources.Titles", typeof(Titles).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,74 +61,65 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Access is denied..
+        ///   Looks up a localized string similar to Browse.
         /// </summary>
-        internal static string AccessIsDenied {
+        internal static string Browse {
             get {
-                return ResourceManager.GetString("AccessIsDenied", resourceCulture);
+                return ResourceManager.GetString("Browse", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, cannot create a database backup at this time..
+        ///   Looks up a localized string similar to Comment.
         /// </summary>
-        internal static string CannotCreateABackup {
+        internal static string Comment {
             get {
-                return ResourceManager.GetString("CannotCreateABackup", resourceCulture);
+                return ResourceManager.GetString("Comment", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Price from should be less than price to..
+        ///   Looks up a localized string similar to File Path.
         /// </summary>
-        internal static string ComparePriceErrorMessage {
+        internal static string FilePath {
             get {
-                return ResourceManager.GetString("ComparePriceErrorMessage", resourceCulture);
+                return ResourceManager.GetString("FilePath", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot continue the task. Please correct configuration issues..
+        ///   Looks up a localized string similar to Progress.
         /// </summary>
-        internal static string ConfigurationError {
+        internal static string Progress {
             get {
-                return ResourceManager.GetString("ConfigurationError", resourceCulture);
+                return ResourceManager.GetString("Progress", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected date is invalid..
+        ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string DateErrorMessage {
+        internal static string Save {
             get {
-                return ResourceManager.GetString("DateErrorMessage", resourceCulture);
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid user..
+        ///   Looks up a localized string similar to Undo.
         /// </summary>
-        internal static string InvalidUser {
+        internal static string Undo {
             get {
-                return ResourceManager.GetString("InvalidUser", resourceCulture);
+                return ResourceManager.GetString("Undo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file specified..
+        ///   Looks up a localized string similar to Upload.
         /// </summary>
-        internal static string NoFileSpecified {
+        internal static string Upload {
             get {
-                return ResourceManager.GetString("NoFileSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password cannot be empty..
-        /// </summary>
-        internal static string PasswordCannotBeEmpty {
-            get {
-                return ResourceManager.GetString("PasswordCannotBeEmpty", resourceCulture);
+                return ResourceManager.GetString("Upload", resourceCulture);
             }
         }
     }

@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using MixERP.Net.Common.Domains;
 using MixERP.Net.Common.Helpers;
+using MixERP.Net.Core.Modules.BackOffice.Resources;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.WebControls.ScrudFactory;
 
@@ -38,7 +39,7 @@ namespace MixERP.Net.Core.Modules.BackOffice
         {
             using (ScrudForm scrud = new ScrudForm())
             {
-                scrud.Text = "Users";
+                scrud.Text = Titles.Users;
                 scrud.TableSchema = "office";
                 scrud.Table = "users";
                 scrud.ViewSchema = "office";
@@ -70,8 +71,8 @@ namespace MixERP.Net.Core.Modules.BackOffice
         private static string GetDisplayViews()
         {
             List<string> displayViews = new List<string>();
-            ScrudHelper.AddDisplayView(displayViews, "office.offices.office_id", "office.offices");
-            ScrudHelper.AddDisplayView(displayViews, "office.roles.role_id", "office.roles");
+            ScrudHelper.AddDisplayView(displayViews, "office.offices.office_id", "office.office_scrud_view");
+            ScrudHelper.AddDisplayView(displayViews, "office.roles.role_id", "office.role_scrud_view");
             return string.Join(",", displayViews);
         }
     }

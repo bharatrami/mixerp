@@ -70,6 +70,15 @@ namespace MixERP.Net.WebControls.Flag.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flag This Transaction.
+        /// </summary>
+        internal static string FlagThisTransaction {
+            get {
+                return ResourceManager.GetString("FlagThisTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         internal static string Update {
