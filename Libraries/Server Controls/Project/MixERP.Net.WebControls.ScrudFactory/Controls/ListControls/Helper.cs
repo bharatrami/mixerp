@@ -43,6 +43,8 @@ namespace MixERP.Net.WebControls.ScrudFactory.Controls.ListControls
                 return;
             }
 
+            var separator = ",".ToString(Sytem.Threading.Thread.CurrentThread);
+
             string[] key = keys.Split(',');
             string[] value = values.Split(',');
 
