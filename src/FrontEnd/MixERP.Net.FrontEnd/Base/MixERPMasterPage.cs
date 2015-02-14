@@ -19,7 +19,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Globalization;
-using System.Text;
+using System.Threading;
 using System.Web.UI;
 using MixERP.Net.Common;
 using MixERP.Net.Common.Helpers;
@@ -37,6 +37,10 @@ namespace MixERP.Net.FrontEnd.Base
         private void RegisterJavascript()
         {
             string script = "var searchInput = $('#SearchInput');";
+
+            script += JSUtility.GetVar("culture", Thread.CurrentThread.CurrentCulture.Name);
+            script += JSUtility.GetVar("language", Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName);
+            script += JSUtility.GetVar("jqueryUIi18nPath", this.Page.ResolveUrl("~/Scripts/jquery-ui/i18n/"));
 
             script += JSUtility.GetVar("today", DateTime.Now.ToShortDateString());
             script += JSUtility.GetVar("now", DateTime.Now.ToString(CultureInfo.InvariantCulture));
@@ -92,9 +96,7 @@ namespace MixERP.Net.FrontEnd.Base
 
             script += JSUtility.GetVar("taskCompletedSuccessfullyLocalized", Resources.Labels.TaskCompletedSuccessfully);
 
-            PageUtility.RegisterJavascript("MixERP_MasterBase", script, this.Page, true);
-
+            PageUtility.RegisterJavascript("MixERPMasterPage", script, this.Page, true);
         }
-
     }
 }

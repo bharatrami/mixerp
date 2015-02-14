@@ -223,6 +223,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created On.
+        /// </summary>
+        internal static string CreatedOn {
+            get {
+                return ResourceManager.GetString("CreatedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current IP.
         /// </summary>
         internal static string CurrentIP {
@@ -430,6 +439,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last Accessed On.
+        /// </summary>
+        internal static string LastAccessedOn {
+            get {
+                return ResourceManager.GetString("LastAccessedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Login IP.
         /// </summary>
         internal static string LastLoginIP {
@@ -444,6 +462,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         internal static string LastLoginOn {
             get {
                 return ResourceManager.GetString("LastLoginOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Written On.
+        /// </summary>
+        internal static string LastWrittenOn {
+            get {
+                return ResourceManager.GetString("LastWrittenOn", resourceCulture);
             }
         }
         
@@ -520,6 +547,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Office Information.
         /// </summary>
         internal static string OfficeInformation {
@@ -579,6 +615,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         internal static string Quantity {
             get {
                 return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference Number.
+        /// </summary>
+        internal static string ReferenceNumber {
+            get {
+                return ResourceManager.GetString("ReferenceNumber", resourceCulture);
             }
         }
         
@@ -678,6 +723,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         internal static string Show {
             get {
                 return ResourceManager.GetString("Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statement Reference.
+        /// </summary>
+        internal static string StatementReference {
+            get {
+                return ResourceManager.GetString("StatementReference", resourceCulture);
             }
         }
         
@@ -849,6 +903,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Resources {
         internal static string VacuumFullDatabase {
             get {
                 return ResourceManager.GetString("VacuumFullDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value Date.
+        /// </summary>
+        internal static string ValueDate {
+            get {
+                return ResourceManager.GetString("ValueDate", resourceCulture);
             }
         }
         

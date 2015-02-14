@@ -20,6 +20,8 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -46,7 +48,7 @@ namespace MixERP.Net.FrontEnd
 
             this.Session["Challenge"] = challenge;
 
-            PageUtility.RegisterJavascript("challenge", "var challenge = '" + challenge + "';", this.Page, true);
+            PageUtility.RegisterJavascript("SignInChallenge", "var challenge = '" + challenge + "';", this.Page, true);
         }
 
         private void CreateDimmer(Control container)
@@ -76,14 +78,14 @@ namespace MixERP.Net.FrontEnd
 
                             using (Literal literal = new Literal())
                             {
-                                literal.Text = Resources.Titles.SigningIn;
+                                literal.Text = Titles.SigningIn;
                                 header.Controls.Add(literal);
                             }
 
                             using (HtmlGenericControl subHeader = new HtmlGenericControl("div"))
                             {
                                 subHeader.Attributes.Add("class", "ui yellow sub header");
-                                subHeader.InnerText = Resources.Labels.JustAMomentPlease;
+                                subHeader.InnerText = Labels.JustAMomentPlease;
                                 header.Controls.Add(subHeader);
                             }
 
@@ -422,21 +424,19 @@ namespace MixERP.Net.FrontEnd
 
         private Collection<ListItem> GetLanguages()
         {
+            string[] c = ConfigurationManager.AppSettings["cultures"].Split(',');
             Collection<ListItem> items = new Collection<ListItem>();
-            items.Add(new ListItem("English (United States)", "en-US"));
-            items.Add(new ListItem("English (Great Britain)", "en-GB"));
-            items.Add(new ListItem("Deutsch (Deutschland)", "de-DE"));
-            items.Add(new ListItem("español (España, alfabetización internacional)", "es-ES"));
-            items.Add(new ListItem("Filipino (Pilipinas)", "fil-PH"));
-            items.Add(new ListItem("français (France)", "fr-FR"));
-            items.Add(new ListItem("Bahasa Indonesia (Indonesia)", "id-ID"));
-            items.Add(new ListItem("日本語 (日本)", "ja-JP"));
-            items.Add(new ListItem("Bahasa Melayu (Malaysia)", "ms-MY"));
-            items.Add(new ListItem("Nederlands (Nederland)", "nl-NL"));
-            items.Add(new ListItem("português (Portugal)", "pt-PT"));
-            items.Add(new ListItem("русский (Россия)", "ru-RU"));
-            items.Add(new ListItem("svenska (Sverige)", "sv-SE"));
-            items.Add(new ListItem("中文(中华人民共和国)", "zh-CN"));
+
+
+            foreach (string culture in c)
+            {
+                string cultureName = culture.Trim();
+
+                foreach (CultureInfo infos in CultureInfo.GetCultures(CultureTypes.AllCultures).Where(x => x.TwoLetterISOLanguageName.Equals(cultureName)))
+                {
+                    items.Add(new ListItem(infos.NativeName, infos.Name));
+                }
+            }
 
             return items;
         }

@@ -21,8 +21,7 @@ using System.Collections.ObjectModel;
 using System.Web.Script.Serialization;
 using MixERP.Net.Common;
 using MixERP.Net.Entities.Core;
-using MixERP.Net.Entities.Transactions;
-using StockDetail = MixERP.Net.Entities.Models.Transactions.StockDetail;
+using MixERP.Net.Entities.Models.Transactions;
 
 namespace MixERP.Net.WebControls.StockTransactionFactory.Helpers
 {
@@ -51,7 +50,6 @@ namespace MixERP.Net.WebControls.StockTransactionFactory.Helpers
             return details;
         }
 
-
         public static Collection<StockDetail> GetStockMasterDetailCollection(string json, int storeId)
         {
             Collection<StockDetail> details = new Collection<StockDetail>();
@@ -59,7 +57,7 @@ namespace MixERP.Net.WebControls.StockTransactionFactory.Helpers
 
             dynamic result = jss.Deserialize<dynamic>(json);
 
-            foreach (var item in result)
+            foreach (dynamic item in result)
             {
                 StockDetail detail = new StockDetail();
                 detail.ItemCode = item[0];
