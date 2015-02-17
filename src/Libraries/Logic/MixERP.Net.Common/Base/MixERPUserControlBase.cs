@@ -32,5 +32,13 @@ namespace MixERP.Net.Common.Base
         public bool RemoveTheme { get; set; }
         public string OverridePath { get; set; }
 
+        private ValidateRequestMode validDateRequest = ValidateRequestMode.Inherit;
+
+        public ValidateRequestMode ValidDateRequest
+        {
+            get { return this.validDateRequest; }
+            set { this.validDateRequest = value; }
+        }
+
     }
 }

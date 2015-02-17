@@ -88,6 +88,7 @@
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System" />
@@ -378,7 +379,10 @@
     <Compile Include="Base\MixERPWidget.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\Srud.cs" />
+    <Compile Include="Base\TransactionCheckListControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Scrud.cs" />
     <Compile Include="Dashboard\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -412,6 +416,7 @@
     <Compile Include="MixERPReportMaster.Master.designer.cs">
       <DependentUpon>MixERPReportMaster.Master</DependentUpon>
     </Compile>
+    <Compile Include="Cache\CurrentUser.cs" />
     <Compile Include="Modules\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

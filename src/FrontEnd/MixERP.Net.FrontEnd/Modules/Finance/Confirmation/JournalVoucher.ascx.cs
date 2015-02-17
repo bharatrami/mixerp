@@ -17,13 +17,15 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 
-using MixERP.Net.FrontEnd.Base;
-using MixERP.Net.WebControls.TransactionChecklist;
 using System;
+using MixERP.Net.Common.Extensions;
+using MixERP.Net.FrontEnd.Base;
+using MixERP.Net.FrontEnd.Cache;
+using MixERP.Net.WebControls.TransactionChecklist;
 
 namespace MixERP.Net.Core.Modules.Finance.Confirmation
 {
-    public partial class JournalVoucher : MixERPUserControl
+    public partial class JournalVoucher : TransactionCheckListControl
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
@@ -39,10 +41,10 @@ namespace MixERP.Net.Core.Modules.Finance.Confirmation
                 checklist.ViewPath = "~/Modules/Finance/JournalVoucher.mix";
                 checklist.AddNewPath = "~/Modules/Finance/Entry/JournalVoucher.mix";
                 checklist.GlAdvicePath = "~/Modules/Finance/Reports/GLAdviceReport.mix";
+                checklist.UserId = CurrentUser.GetSignInView().UserId.ToInt();
+
                 this.Placeholder1.Controls.Add(checklist);
             }
-
-            
         }
     }
 }

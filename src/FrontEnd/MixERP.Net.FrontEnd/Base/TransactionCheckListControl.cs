@@ -17,29 +17,15 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 
-using System.Web.UI.HtmlControls;
-using MixERP.Net.Common.Helpers;
-using MixERP.Net.Entities;
-using MixERP.Net.WebControls.Common;
+using System.Web.UI;
 
-namespace MixERP.Net.WebControls.StockTransactionViewFactory
+namespace MixERP.Net.FrontEnd.Base
 {
-    public partial class StockTransactionView
+    public abstract class TransactionCheckListControl : MixERPUserControl
     {
-        private void CreateDateToField(HtmlGenericControl container)
+        protected TransactionCheckListControl()
         {
-            using (HtmlGenericControl field = HtmlControlHelper.GetField())
-            {
-                this.dateToDateTextBox = new DateTextBox();
-                this.dateToDateTextBox.ID = "DateToDateTextBox";
-                this.dateToDateTextBox.CssClass = "date";
-                this.dateToDateTextBox.Mode = FrequencyType.MonthEndDate;
-                this.dateToDateTextBox.Required = true;
-                this.dateToDateTextBox.OfficeId = this.OfficeId;
-
-                field.Controls.Add(this.dateToDateTextBox);
-                container.Controls.Add(field);
-            }
+            this.ValidDateRequest = ValidateRequestMode.Disabled;
         }
     }
 }

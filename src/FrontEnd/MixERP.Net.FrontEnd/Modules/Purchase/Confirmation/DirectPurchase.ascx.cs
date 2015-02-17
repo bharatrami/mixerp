@@ -19,13 +19,15 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using MixERP.Net.Common;
+using MixERP.Net.Common.Extensions;
 using MixERP.Net.Entities;
 using MixERP.Net.FrontEnd.Base;
+using MixERP.Net.FrontEnd.Cache;
 using MixERP.Net.WebControls.TransactionChecklist;
 
 namespace MixERP.Net.Core.Modules.Purchase.Confirmation
 {
-    public partial class DirectPurchase : MixERPUserControl
+    public partial class DirectPurchase : TransactionCheckListControl
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
@@ -48,6 +50,7 @@ namespace MixERP.Net.Core.Modules.Purchase.Confirmation
                 checklist.GlAdvicePath = "~/Modules/Finance/Reports/GLAdviceReport.mix";
                 checklist.ViewPath = "/Modules/Purchase/DirectPurchase.mix";
                 checklist.AddNewPath = "/Modules/Purchase/Entry/DirectPurchase.mix";
+                checklist.UserId = CurrentUser.GetSignInView().UserId.ToInt();
 
                 this.Placeholder1.Controls.Add(checklist);
             }
