@@ -22,6 +22,7 @@ using System.IO;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading;
+using System.Web.Mvc;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
@@ -41,7 +42,8 @@ namespace MixERP.Net.FrontEnd
             if (routes != null)
             {
                 Log.Information("Registering routes.");
-
+                routes.IgnoreRoute("{*asmx}", new { asmx = @".*\.asmx(/.*)?" });
+                routes.IgnoreRoute("{*ashx}", new { ashx = @".*\.ashx(/.*)?" });
                 routes.Ignore("{resource}.axd");
                 routes.MapPageRoute("DefaultRoute", "", "~/SignIn.aspx");
                 routes.MapPageRoute("Reporting", "Reports/{path}", "~/Reports/ReportMaster.aspx");
@@ -97,11 +99,13 @@ namespace MixERP.Net.FrontEnd
         {
             this.IntializeLogger();
 
+            RegisterRoutes(RouteTable.Routes);
 
             GlobalConfiguration.Configure(config =>
             {
                 //Configure routing as defined in respective class attributes.
                 config.MapHttpAttributeRoutes();
+               
 
                 config.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("type", "json",
                     new MediaTypeHeaderValue("application/json")));
@@ -111,7 +115,6 @@ namespace MixERP.Net.FrontEnd
                 config.EnsureInitialized();
             });
 
-            RegisterRoutes(RouteTable.Routes);
         }
 
         private string GetLogDirectory()

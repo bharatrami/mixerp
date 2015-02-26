@@ -1,4 +1,4 @@
-﻿/********************************************************************************
+﻿<%-- 
 Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
 
 This file is part of MixERP.
@@ -15,18 +15,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
+--%>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ApiAccess.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Policy.ApiAccess" %>
+<asp:PlaceHolder runat="server" ID="ScrudPlaceholder"></asp:PlaceHolder>
 
-using System.Collections.Generic;
-using MixERP.Net.Entities;
-
-namespace MixERP.Net.FrontEnd.Data.Core
-{
-    public static class Menu
-    {
-        public static IEnumerable<Entities.Core.Menu> GetMenuCollection(int officeId, int userId, string culture)
-        {
-            return Factory.Get<Entities.Core.Menu>("SELECT * FROM policy.get_menu(@0, @1, @2) ORDER BY menu_id;", userId, officeId, culture);
-        }
-    }
-}
