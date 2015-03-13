@@ -27963,6 +27963,771 @@ COMMENT ON COLUMN core.zip_codes.audit_ts IS 'Contains the date and timestamp of
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v1/src/refresh-materialized-views.sql --<--<--
 SELECT * FROM transactions.refresh_materialized_views(1);
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/00.db core/plpgunit/install/0.uninstall-unit-test.sql --<--<--
+
+/********************************************************************************
+The PostgreSQL License
+
+Copyright (c) 2014, Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+Permission to use, copy, modify, and distribute this software and its documentation 
+for any purpose, without fee, and without a written agreement is hereby granted, 
+provided that the above copyright notice and this paragraph and 
+the following two paragraphs appear in all copies.
+
+IN NO EVENT SHALL MIX OPEN FOUNDATION BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, 
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, 
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF 
+MIX OPEN FOUNDATION HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+MIX OPEN FOUNDATION SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, 
+BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, 
+AND MIX OPEN FOUNDATION HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, 
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+***********************************************************************************/
+
+DROP SCHEMA IF EXISTS assert CASCADE;
+DROP SCHEMA IF EXISTS unit_tests CASCADE;
+DROP DOMAIN IF EXISTS public.test_result CASCADE;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/00.db core/plpgunit/install/1.install-unit-test.sql --<--<--
+/********************************************************************************
+The PostgreSQL License
+
+Copyright (c) 2014, Binod Nepal, Mix Open Foundation (http://mixof.org).
+
+Permission to use, copy, modify, and distribute this software and its documentation 
+for any purpose, without fee, and without a written agreement is hereby granted, 
+provided that the above copyright notice and this paragraph and 
+the following two paragraphs appear in all copies.
+
+IN NO EVENT SHALL MIX OPEN FOUNDATION BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, 
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, 
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF 
+MIX OPEN FOUNDATION HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+MIX OPEN FOUNDATION SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, 
+BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, 
+AND MIX OPEN FOUNDATION HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, 
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+***********************************************************************************/
+
+CREATE SCHEMA IF NOT EXISTS assert;
+CREATE SCHEMA IF NOT EXISTS unit_tests;
+
+DO 
+$$
+BEGIN
+    IF NOT EXISTS 
+    (
+        SELECT * FROM pg_type
+        WHERE 
+            typname ='test_result'
+        AND 
+            typnamespace = 
+            (
+                SELECT oid FROM pg_namespace 
+                WHERE nspname ='public'
+            )
+    ) THEN
+        CREATE DOMAIN public.test_result AS text;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+
+DROP TABLE IF EXISTS unit_tests.test_details CASCADE;
+DROP TABLE IF EXISTS unit_tests.tests CASCADE;
+CREATE TABLE unit_tests.tests
+(
+    test_id                                 SERIAL NOT NULL PRIMARY KEY,
+    started_on                              TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT(CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
+    completed_on                            TIMESTAMP WITHOUT TIME ZONE NULL,
+    total_tests                             integer NULL DEFAULT(0),
+    failed_tests                            integer NULL DEFAULT(0)
+);
+
+CREATE INDEX unit_tests_tests_started_on_inx
+ON unit_tests.tests(started_on);
+
+CREATE INDEX unit_tests_tests_completed_on_inx
+ON unit_tests.tests(completed_on);
+
+CREATE INDEX unit_tests_tests_failed_tests_inx
+ON unit_tests.tests(failed_tests);
+
+CREATE TABLE unit_tests.test_details
+(
+    id                                      BIGSERIAL NOT NULL PRIMARY KEY,
+    test_id                                 integer NOT NULL REFERENCES unit_tests.tests(test_id),
+    function_name                           text NOT NULL,
+    message                                 text NOT NULL,
+    ts                                      TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT(CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
+    status                                  boolean NOT NULL
+);
+
+CREATE INDEX unit_tests_test_details_test_id_inx
+ON unit_tests.test_details(test_id);
+
+CREATE INDEX unit_tests_test_details_status_inx
+ON unit_tests.test_details(status);
+
+
+DROP FUNCTION IF EXISTS assert.fail(message text);
+CREATE FUNCTION assert.fail(message text)
+RETURNS text
+AS
+$$
+BEGIN
+    IF $1 IS NULL OR trim($1) = '' THEN
+        message := 'NO REASON SPECIFIED';
+    END IF;
+    
+    RAISE WARNING 'ASSERT FAILED : %', message;
+    RETURN message;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.pass(message text);
+CREATE FUNCTION assert.pass(message text)
+RETURNS text
+AS
+$$
+BEGIN
+    RAISE NOTICE 'ASSERT PASSED : %', message;
+    RETURN '';
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.ok(message text);
+CREATE FUNCTION assert.ok(message text)
+RETURNS text
+AS
+$$
+BEGIN
+    RAISE NOTICE 'OK : %', message;
+    RETURN '';
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_equal(IN have anyelement, IN want anyelement, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_equal(IN have anyelement, IN want anyelement, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 = $2) THEN
+        message := 'Assert is equal.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+
+    message := E'ASSERT IS_EQUAL FAILED.\n\nHave -> ' || $1::text || E'\nWant -> ' || $2::text || E'\n';    
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+
+DROP FUNCTION IF EXISTS assert.are_equal(VARIADIC anyarray, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.are_equal(VARIADIC anyarray, OUT message text, OUT result boolean)
+AS
+$$
+    DECLARE count integer=0;
+BEGIN
+    SELECT COUNT(DISTINCT $1[s.i]) INTO count
+    FROM generate_series(array_lower($1,1), array_upper($1,1)) AS s(i)
+    ORDER BY 1;
+
+    IF count <> 1 THEN
+        MESSAGE := 'ASSERT ARE_EQUAL FAILED.';  
+        PERFORM assert.fail(MESSAGE);
+        RESULT := FALSE;
+        RETURN;
+    END IF;
+
+    message := 'Asserts are equal.';
+    PERFORM assert.ok(message);
+    result := true;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_not_equal(IN already_have anyelement, IN dont_want anyelement, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_not_equal(IN already_have anyelement, IN dont_want anyelement, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 != $2) THEN
+        message := 'Assert is not equal.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+    
+    message := E'ASSERT IS_NOT_EQUAL FAILED.\n\nAlready Have -> ' || $1::text || E'\nDon''t Want   -> ' || $2::text || E'\n';   
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.are_not_equal(VARIADIC anyarray, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.are_not_equal(VARIADIC anyarray, OUT message text, OUT result boolean)
+AS
+$$
+    DECLARE count integer=0;
+BEGIN
+    SELECT COUNT(DISTINCT $1[s.i]) INTO count
+    FROM generate_series(array_lower($1,1), array_upper($1,1)) AS s(i)
+    ORDER BY 1;
+
+    IF count <> array_upper($1,1) THEN
+        MESSAGE := 'ASSERT ARE_NOT_EQUAL FAILED.';  
+        PERFORM assert.fail(MESSAGE);
+        RESULT := FALSE;
+        RETURN;
+    END IF;
+
+    message := 'Asserts are not equal.';
+    PERFORM assert.ok(message);
+    result := true;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_null(IN anyelement, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_null(IN anyelement, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 IS NULL) THEN
+        message := 'Assert is NULL.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+    
+    message := E'ASSERT IS_NULL FAILED. NULL value was expected.\n\n\n';    
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_not_null(IN anyelement, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_not_null(IN anyelement, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 IS NOT NULL) THEN
+        message := 'Assert is not NULL.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+    
+    message := E'ASSERT IS_NOT_NULL FAILED. The value is NULL.\n\n\n';  
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_true(IN boolean, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_true(IN boolean, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 = true) THEN
+        message := 'Assert is true.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+    
+    message := E'ASSERT IS_TRUE FAILED. A true condition was expected.\n\n\n';  
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_false(IN boolean, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_false(IN boolean, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 = false) THEN
+        message := 'Assert is false.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+    
+    message := E'ASSERT IS_FALSE FAILED. A false condition was expected.\n\n\n';    
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_greater_than(IN x anyelement, IN y anyelement, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_greater_than(IN x anyelement, IN y anyelement, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 > $2) THEN
+        message := 'Assert greater than condition is satisfied.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+    
+    message := E'ASSERT IS_GREATER_THAN FAILED.\n\n X : -> ' || $1::text || E'\n is not greater than Y:   -> ' || $2::text || E'\n';    
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.is_less_than(IN x anyelement, IN y anyelement, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.is_less_than(IN x anyelement, IN y anyelement, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF($1 < $2) THEN
+        message := 'Assert less than condition is satisfied.';
+        PERFORM assert.ok(message);
+        result := true;
+        RETURN;
+    END IF;
+    
+    message := E'ASSERT IS_LESS_THAN FAILED.\n\n X : -> ' || $1::text || E'\n is not  than Y:   -> ' || $2::text || E'\n';  
+    PERFORM assert.fail(message);
+    result := false;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE STRICT;
+
+DROP FUNCTION IF EXISTS assert.function_exists(function_name text, OUT message text, OUT result boolean);
+CREATE FUNCTION assert.function_exists(function_name text, OUT message text, OUT result boolean)
+AS
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT  1
+        FROM    pg_catalog.pg_namespace n
+        JOIN    pg_catalog.pg_proc p
+        ON      pronamespace = n.oid
+        WHERE replace(nspname || '.' || proname || '(' || oidvectortypes(proargtypes) || ')', ' ' , '')::text=$1
+    ) THEN
+        message := 'The function % does not exist.', $1;
+        PERFORM assert.fail(message);
+
+        result := false;
+        RETURN;
+    END IF;
+
+    message := 'OK. The function ' || $1 || ' exists.';
+    PERFORM assert.ok(message);
+    result := true;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS assert.if_functions_compile(VARIADIC _schema_name text[], OUT message text, OUT result boolean);
+CREATE OR REPLACE FUNCTION assert.if_functions_compile
+(
+    VARIADIC _schema_name text[],
+    OUT message text, 
+    OUT result boolean
+)
+AS
+$$
+    DECLARE all_parameters              text;
+    DECLARE current_function            RECORD;
+    DECLARE current_function_name       text;
+    DECLARE current_type                text;
+    DECLARE current_type_schema         text;
+    DECLARE current_parameter           text;
+    DECLARE functions_count             smallint := 0;
+    DECLARE current_parameters_count    int;
+    DECLARE i                           int;
+    DECLARE command_text                text;
+    DECLARE failed_functions            text;
+BEGIN
+    FOR current_function IN 
+        SELECT proname, proargtypes, nspname 
+        FROM pg_proc 
+        INNER JOIN pg_namespace 
+        ON pg_proc.pronamespace = pg_namespace.oid 
+        WHERE pronamespace IN 
+        (
+            SELECT oid FROM pg_namespace 
+            WHERE nspname = ANY($1) 
+            AND nspname NOT IN
+            (
+                'assert', 'unit_tests', 'information_schema'
+            ) 
+            AND proname NOT IN('if_functions_compile')
+        ) 
+    LOOP
+        current_parameters_count := array_upper(current_function.proargtypes, 1) + 1;
+
+        i := 0;
+        all_parameters := '';
+
+        LOOP
+        IF i < current_parameters_count THEN
+            IF i > 0 THEN
+                all_parameters := all_parameters || ', ';
+            END IF;
+
+            SELECT 
+                nspname, typname 
+            INTO 
+                current_type_schema, current_type 
+            FROM pg_type 
+            INNER JOIN pg_namespace 
+            ON pg_type.typnamespace = pg_namespace.oid
+            WHERE pg_type.oid = current_function.proargtypes[i];
+
+            IF(current_type IN('int4', 'int8', 'numeric', 'integer_strict', 'money_strict','decimal_strict', 'integer_strict2', 'money_strict2','decimal_strict2', 'money','decimal', 'numeric', 'bigint')) THEN
+                current_parameter := '1::' || current_type_schema || '.' || current_type;
+            ELSIF(substring(current_type, 1, 1) = '_') THEN
+                current_parameter := 'NULL::' || current_type_schema || '.' || substring(current_type, 2, length(current_type)) || '[]';
+            ELSIF(current_type in ('date')) THEN            
+                current_parameter := '''1-1-2000''::' || current_type;
+            ELSIF(current_type = 'bool') THEN
+                current_parameter := 'false';            
+            ELSE
+                current_parameter := '''''::' || quote_ident(current_type_schema) || '.' || quote_ident(current_type);
+            END IF;
+            
+            all_parameters = all_parameters || current_parameter;
+
+            i := i + 1;
+        ELSE
+            EXIT;
+        END IF;
+    END LOOP;
+
+    BEGIN
+        current_function_name := quote_ident(current_function.nspname)  || '.' || quote_ident(current_function.proname);
+        command_text := 'SELECT * FROM ' || current_function_name || '(' || all_parameters || ');';
+
+        EXECUTE command_text;
+        functions_count := functions_count + 1;
+
+        EXCEPTION WHEN OTHERS THEN
+            IF(failed_functions IS NULL) THEN 
+                failed_functions := '';
+            END IF;
+            
+            IF(SQLSTATE IN('42702', '42704')) THEN
+                failed_functions := failed_functions || E'\n' || command_text || E'\n' || SQLERRM || E'\n';                
+            END IF;
+    END;
+
+
+    END LOOP;
+
+    IF(failed_functions != '') THEN
+        message := E'The test if_functions_compile failed. The following functions failed to compile : \n\n' || failed_functions;
+        result := false;
+        PERFORM assert.fail(message);
+        RETURN;
+    END IF;
+END;
+$$
+LANGUAGE plpgsql 
+VOLATILE;
+
+DROP FUNCTION IF EXISTS assert.if_views_compile(VARIADIC _schema_name text[], OUT message text, OUT result boolean);
+CREATE FUNCTION assert.if_views_compile
+(
+    VARIADIC _schema_name text[],
+    OUT message text, 
+    OUT result boolean    
+)
+AS
+$$
+
+    DECLARE message                     test_result;
+    DECLARE current_view                RECORD;
+    DECLARE current_view_name           text;
+    DECLARE command_text                text;
+    DECLARE failed_views                text;
+BEGIN
+    FOR current_view IN 
+        SELECT table_name, table_schema 
+        FROM information_schema.views
+        WHERE table_schema = ANY($1) 
+    LOOP
+
+    BEGIN
+        current_view_name := quote_ident(current_view.table_schema)  || '.' || quote_ident(current_view.table_name);
+        command_text := 'SELECT * FROM ' || current_view_name || ' LIMIT 1;';
+
+        RAISE NOTICE '%', command_text;
+        
+        EXECUTE command_text;
+
+        EXCEPTION WHEN OTHERS THEN
+            IF(failed_views IS NULL) THEN 
+                failed_views := '';
+            END IF;
+
+            failed_views := failed_views || E'\n' || command_text || E'\n' || SQLERRM || E'\n';                
+    END;
+
+
+    END LOOP;
+
+    IF(failed_views != '') THEN
+        message := E'The test if_views_compile failed. The following views failed to compile : \n\n' || failed_views;
+        result := false;
+        PERFORM assert.fail(message);
+        RETURN;
+    END IF;
+
+    RETURN;
+END;
+$$
+LANGUAGE plpgsql 
+VOLATILE;
+
+DROP FUNCTION IF EXISTS unit_tests.begin(verbosity integer, format text);
+CREATE FUNCTION unit_tests.begin(verbosity integer DEFAULT 9, format text DEFAULT '')
+RETURNS TABLE(message text, result character(1))
+AS
+$$
+    DECLARE this                    record;
+    DECLARE _function_name          text;
+    DECLARE _sql                    text;
+    DECLARE _message                text;
+    DECLARE _result                 character(1);
+    DECLARE _test_id                integer;
+    DECLARE _status                 boolean;
+    DECLARE _total_tests            integer                         = 0;
+    DECLARE _failed_tests           integer                         = 0;
+    DECLARE _list_of_failed_tests   text;
+    DECLARE _started_from           TIMESTAMP WITHOUT TIME ZONE;
+    DECLARE _completed_on           TIMESTAMP WITHOUT TIME ZONE;
+    DECLARE _delta                  integer;
+    DECLARE _ret_val                text                            = '';
+    DECLARE _verbosity              text[]                          = 
+                                    ARRAY['debug5', 'debug4', 'debug3', 'debug2', 'debug1', 'log', 'notice', 'warning', 'error', 'fatal', 'panic'];
+BEGIN
+    _started_from := clock_timestamp() AT TIME ZONE 'UTC';
+
+    RAISE INFO 'Test started from : %', _started_from; 
+
+    IF($1 > 11) THEN
+        $1 := 9;
+    END IF;
+    
+    EXECUTE 'SET CLIENT_MIN_MESSAGES TO ' || _verbosity[$1];
+    RAISE WARNING 'CLIENT_MIN_MESSAGES set to : %' , _verbosity[$1];
+    
+    SELECT nextval('unit_tests.tests_test_id_seq') INTO _test_id;
+
+    INSERT INTO unit_tests.tests(test_id)
+    SELECT _test_id;
+
+    FOR this IN
+        SELECT 
+            nspname AS ns_name,
+            proname AS function_name
+        FROM    pg_catalog.pg_namespace n
+        JOIN    pg_catalog.pg_proc p
+        ON      pronamespace = n.oid
+        WHERE
+            prorettype='test_result'::regtype::oid
+        ORDER BY p.oid ASC
+    LOOP
+        BEGIN
+            _status := false;
+            _total_tests := _total_tests + 1;
+            
+            _function_name = this.ns_name|| '.' || this.function_name || '()';
+            _sql := 'SELECT ' || _function_name || ';';
+            
+            RAISE NOTICE 'RUNNING TEST : %.', _function_name;
+
+            EXECUTE _sql INTO _message;
+
+            IF _message = '' THEN
+                _status := true;
+            END IF;
+
+            
+            INSERT INTO unit_tests.test_details(test_id, function_name, message, status, ts)
+            SELECT _test_id, _function_name, _message, _status, clock_timestamp();
+
+            IF NOT _status THEN
+                _failed_tests := _failed_tests + 1;         
+                RAISE WARNING 'TEST % FAILED.', _function_name;
+                RAISE WARNING 'REASON: %', _message;
+            ELSE
+                RAISE NOTICE 'TEST % COMPLETED WITHOUT ERRORS.', _function_name;
+            END IF;
+
+        EXCEPTION WHEN OTHERS THEN
+            _message := 'ERR' || SQLSTATE || ': ' || SQLERRM;
+            INSERT INTO unit_tests.test_details(test_id, function_name, message, status)
+            SELECT _test_id, _function_name, _message, false;
+
+            _failed_tests := _failed_tests + 1;         
+            RAISE WARNING 'TEST % FAILED.', _function_name;
+            RAISE WARNING 'REASON: %', _message;
+        END;
+    END LOOP;
+
+    _completed_on := clock_timestamp() AT TIME ZONE 'UTC';
+    _delta := extract(millisecond from _completed_on - _started_from)::integer;
+    
+    UPDATE unit_tests.tests
+    SET total_tests = _total_tests, failed_tests = _failed_tests, completed_on = _completed_on
+    WHERE test_id = _test_id;
+
+    IF format='junit' THEN
+        SELECT 
+            '<?xml version="1.0" encoding="UTF-8"?>'||
+            xmlelement
+            (
+                name testsuites,
+                xmlelement
+                (
+                    name                    testsuite,
+                    xmlattributes
+                    (
+                        'plpgunit'          AS name, 
+                        t.total_tests       AS tests, 
+                        t.failed_tests      AS failures, 
+                        0                   AS errors, 
+                        EXTRACT
+                        (
+                            EPOCH FROM t.completed_on - t.started_on
+                        )                   AS time
+                    ),
+                    xmlagg
+                    (
+                        xmlelement
+                        (
+                            name testcase, 
+                            xmlattributes
+                            (
+                                td.function_name
+                                            AS name, 
+                                EXTRACT
+                                (
+                                    EPOCH FROM td.ts - t.started_on
+                                )           AS time
+                            ),
+                            CASE 
+                                WHEN td.status=false 
+                                THEN 
+                                    xmlelement
+                                    (
+                                        name failure, 
+                                        td.message
+                                    ) 
+                                END
+                        )
+                    )
+                )
+            ) INTO _ret_val
+        FROM unit_tests.test_details td, unit_tests.tests t
+        WHERE
+            t.test_id=_test_id
+        AND 
+            td.test_id=t.test_id
+        GROUP BY t.test_id;
+    ELSE
+        WITH failed_tests AS
+        (
+            SELECT row_number() OVER (ORDER BY id) AS id, 
+                unit_tests.test_details.function_name,
+                unit_tests.test_details.message
+            FROM unit_tests.test_details 
+            WHERE test_id = _test_id
+            AND status= false
+        )
+        SELECT array_to_string(array_agg(f.id::text || '. ' || f.function_name || ' --> ' || f.message), E'\n') INTO _list_of_failed_tests 
+        FROM failed_tests f;
+
+        _ret_val := _ret_val ||  'Test completed on : ' || _completed_on::text || E' UTC. \nTotal test runtime: ' || _delta::text || E' ms.\n';
+        _ret_val := _ret_val || E'\nTotal tests run : ' || COALESCE(_total_tests, '0')::text;
+        _ret_val := _ret_val || E'.\nPassed tests    : ' || (COALESCE(_total_tests, '0') - COALESCE(_failed_tests, '0'))::text;
+        _ret_val := _ret_val || E'.\nFailed tests    : ' || COALESCE(_failed_tests, '0')::text;
+        _ret_val := _ret_val || E'.\n\nList of failed tests:\n' || '----------------------';
+        _ret_val := _ret_val || E'\n' || COALESCE(_list_of_failed_tests, '<NULL>')::text;
+        _ret_val := _ret_val || E'\n' || E'End of plpgunit test.\n\n';
+    END IF;
+    
+    IF _failed_tests > 0 THEN
+        _result := 'N';
+        RAISE INFO '%', _ret_val;
+    ELSE
+        _result := 'Y';
+        RAISE INFO '%', _ret_val;
+    END IF;
+
+    SET CLIENT_MIN_MESSAGES TO notice;
+    
+    RETURN QUERY SELECT _ret_val, _result;
+END
+$$
+LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS unit_tests.begin_junit(verbosity integer);
+CREATE FUNCTION unit_tests.begin_junit(verbosity integer DEFAULT 9)
+RETURNS TABLE(message text, result character(1))
+AS
+$$
+BEGIN
+    RETURN QUERY 
+    SELECT * FROM unit_tests.begin($1, 'junit');
+END
+$$
+LANGUAGE plpgsql;
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
 DO
 $$
@@ -28071,12 +28836,14 @@ CREATE TABLE core.recurring_invoices
     total_duration                              integer NOT NULL DEFAULT(365),
     recurrence_type_id                          integer REFERENCES core.recurrence_types(recurrence_type_id),
     recurring_frequency_id                      integer NOT NULL REFERENCES core.frequencies(frequency_id),
-    recurring_duration                          public.integer_strict2 NOT NULL DEFAULT(0),
+    recurring_duration                          public.integer_strict2 NOT NULL DEFAULT(30),
     recurs_on_same_calendar_date                boolean NOT NULL DEFAULT(true),
-    recurring_amount                            money_strict NOT NULL,
+    recurring_amount                            public.money_strict NOT NULL,
+    account_id                                  bigint REFERENCES core.accounts(account_id),
     payment_term_id                             integer NOT NULL REFERENCES core.payment_terms(payment_term_id),
     auto_trigger_on_sales                       boolean NOT NULL,
     is_active                                   boolean NOT NULL DEFAULT(true),
+    statement_reference                         national character varying(100) NOT NULL DEFAULT(''),
     audit_user_id                               integer NULL REFERENCES office.users(user_id),
     audit_ts                                    TIMESTAMP WITH TIME ZONE NULL 
                                                 DEFAULT(NOW())    
@@ -28102,9 +28869,11 @@ CREATE TABLE core.recurring_invoice_setup
     recurring_frequency_id                      integer NULL REFERENCES core.frequencies(frequency_id),
     recurring_duration                          public.integer_strict2 NOT NULL DEFAULT(0),
     recurs_on_same_calendar_date                boolean NOT NULL DEFAULT(true),
-    recurring_amount                            money_strict NOT NULL,
+    recurring_amount                            public.money_strict NOT NULL,
+    account_id                                  bigint REFERENCES core.accounts(account_id),
     payment_term_id                             integer NOT NULL REFERENCES core.payment_terms(payment_term_id),
     is_active                                   boolean NOT NULL DEFAULT(true),
+    statement_reference                         national character varying(100) NOT NULL DEFAULT(''),
     audit_user_id                               integer NULL REFERENCES office.users(user_id),
     audit_ts                                    TIMESTAMP WITH TIME ZONE NULL 
                                                 DEFAULT(NOW())    
@@ -28169,6 +28938,17 @@ SELECT
     audit_ts
 FROM core.recurring_invoice_setup_temp;
 
+UPDATE core.recurring_invoices
+SET account_id = core.get_account_id_by_account_number('30100');
+
+UPDATE core.recurring_invoice_setup
+SET account_id = core.get_account_id_by_account_number('30100');
+
+ALTER TABLE core.recurring_invoices
+ALTER COLUMN account_id SET NOT NULL;
+
+ALTER TABLE core.recurring_invoice_setup
+ALTER COLUMN account_id SET NOT NULL;
 
 SELECT setval
 (
@@ -28382,29 +29162,29 @@ RETURNS VOID
 VOLATILE
 AS
 $$
-    DECLARE _transaction_master_id bigint;
-    DECLARE _transaction_posted_by integer;
-    DECLARE _verifier integer;
-    DECLARE _status integer;
-    DECLARE _reason national character varying(128);
-    DECLARE _rejected smallint=-3;
-    DECLARE _closed smallint=-2;
-    DECLARE _withdrawn smallint=-1;
-    DECLARE _unapproved smallint = 0;
-    DECLARE _auto_approved smallint = 1;
-    DECLARE _approved smallint=2;
-    DECLARE _book text;
-    DECLARE _auto_verify_sales boolean;
-    DECLARE _sales_verification_limit money_strict2;
-    DECLARE _auto_verify_purchase boolean;
-    DECLARE _purchase_verification_limit money_strict2;
-    DECLARE _auto_verify_gl boolean;
-    DECLARE _gl_verification_limit money_strict2;
-    DECLARE _posted_amount money_strict2;
-    DECLARE _auto_verification boolean=true;
-    DECLARE _has_policy boolean=false;
-    DECLARE _voucher_date date;
-    DECLARE _value_date date=transactions.get_value_date(_office_id);
+    DECLARE _transaction_master_id          bigint;
+    DECLARE _transaction_posted_by          integer;
+    DECLARE _verifier                       integer;
+    DECLARE _status                         integer;
+    DECLARE _reason                         national character varying(128);
+    DECLARE _rejected                       smallint=-3;
+    DECLARE _closed                         smallint=-2;
+    DECLARE _withdrawn                      smallint=-1;
+    DECLARE _unapproved                     smallint = 0;
+    DECLARE _auto_approved                  smallint = 1;
+    DECLARE _approved                       smallint=2;
+    DECLARE _book                           text;
+    DECLARE _auto_verify_sales              boolean;
+    DECLARE _sales_verification_limit       public.money_strict2;
+    DECLARE _auto_verify_purchase           boolean;
+    DECLARE _purchase_verification_limit    public.money_strict2;
+    DECLARE _auto_verify_gl                 boolean;
+    DECLARE _gl_verification_limit          public.money_strict2;
+    DECLARE _posted_amount                  public.money_strict2;
+    DECLARE _auto_verification              boolean=true;
+    DECLARE _has_policy                     boolean=false;
+    DECLARE _voucher_date                   date;
+    DECLARE _value_date                     date=transactions.get_value_date(_office_id);
 BEGIN
     _transaction_master_id := $1;
 
@@ -28480,7 +29260,7 @@ BEGIN
             _auto_verification := false;
         END IF;
         IF(_auto_verify_sales = true) THEN
-            IF(_posted_amount > _sales_verification_limit AND _sales_verification_limit > 0::money_strict2) THEN
+            IF(_posted_amount > _sales_verification_limit AND _sales_verification_limit > 0::public.money_strict2) THEN
                 _auto_verification := false;
             END IF;
         END IF;         
@@ -28492,7 +29272,7 @@ BEGIN
             _auto_verification := false;
         END IF;
         IF(_auto_verify_purchase = true) THEN
-            IF(_posted_amount > _purchase_verification_limit AND _purchase_verification_limit > 0::money_strict2) THEN
+            IF(_posted_amount > _purchase_verification_limit AND _purchase_verification_limit > 0::public.money_strict2) THEN
                 _auto_verification := false;
             END IF;
         END IF;         
@@ -28504,7 +29284,7 @@ BEGIN
             _auto_verification := false;
         END IF;
         IF(_auto_verify_gl = true) THEN
-            IF(_posted_amount > _gl_verification_limit AND _gl_verification_limit > 0::money_strict2) THEN
+            IF(_posted_amount > _gl_verification_limit AND _gl_verification_limit > 0::public.money_strict2) THEN
                 _auto_verification := false;
             END IF;
         END IF;         
@@ -28520,6 +29300,8 @@ BEGIN
                 verification_reason=_reason
             WHERE
                 transactions.transaction_master.transaction_master_id=_transaction_master_id;
+
+            PERFORM transactions.create_recurring_invoices(_transaction_master_id);
         END IF;
     ELSE
         RAISE NOTICE 'No auto verification policy found for this user.';
@@ -28697,8 +29479,8 @@ BEGIN
     WHERE transaction_master_id = _tran_id;
 
     IF(_verification_status_id > 0) THEN
-            SELECT assert.fail('This transaction should not have been verified.') INTO message;
-            RETURN message;
+        SELECT assert.fail('This transaction should not have been verified.') INTO message;
+        RETURN message;
     END IF;
 
     SELECT assert.ok('End of test.') INTO message;  
@@ -29038,6 +29820,159 @@ END
 $$
 LANGUAGE plpgsql;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.create_recurring_invoices.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.create_recurring_invoices(bigint);
+
+CREATE FUNCTION transactions.create_recurring_invoices(bigint)
+RETURNS void
+VOLATILE
+AS
+$$
+    DECLARE _party_id       bigint;
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT * FROM transactions.transaction_master WHERE book IN('Sales.Direct', 'Sales.Delivery')
+        AND transaction_master_id=$1
+        AND verification_status_id > 0
+    ) THEN
+        RETURN;
+    END IF;
+
+    SELECT party_id INTO _party_id 
+    FROM transactions.stock_master
+    WHERE transaction_master_id = $1;
+
+    IF(COALESCE(_party_id, 0) = 0) THEN
+        RETURN;
+    END IF;
+    
+    DROP TABLE IF EXISTS recurring_invoices_temp;
+
+    CREATE TEMPORARY TABLE recurring_invoices_temp
+    (
+        recurring_invoice_id            integer,
+        party_id                        bigint,
+        total_duration                  integer,
+        starts_from                     date,
+        ends_on                         date,
+        recurrence_type_id              integer,
+        recurring_frequency_id          integer,
+        recurring_duration              integer,
+        recurs_on_same_calendar_date    boolean,
+        recurring_amount                public.money_strict,
+        account_id                      bigint,
+        payment_term_id                 integer,
+        is_active                       boolean DEFAULT(true),
+        statement_reference             national character varying(100)
+    ) ON COMMIT DROP;
+
+    INSERT INTO recurring_invoices_temp
+    (
+        recurring_invoice_id,
+        total_duration,
+        recurrence_type_id,
+        recurring_frequency_id,
+        recurring_duration,
+        recurs_on_same_calendar_date,
+        recurring_amount,
+        account_id,
+        payment_term_id,
+        is_active,
+        statement_reference
+    )
+    SELECT
+        recurring_invoice_id,
+        total_duration,
+        recurrence_type_id,
+        recurring_frequency_id,
+        recurring_duration,
+        recurs_on_same_calendar_date,
+        recurring_amount,
+        account_id,
+        payment_term_id,
+        is_active,
+        statement_reference
+    FROM core.recurring_invoices
+    WHERE is_active
+    AND auto_trigger_on_sales
+    AND item_id
+    IN
+    (
+        SELECT item_id FROM transactions.stock_details
+        INNER JOIN transactions.stock_master
+        ON transactions.stock_master.stock_master_id = transactions.stock_details.stock_master_id
+        WHERE 1 = 1
+        AND transactions.stock_master.transaction_master_id = $1
+        AND tran_type='Cr'
+    );
+
+    UPDATE recurring_invoices_temp
+    SET 
+        party_id        = _party_id, 
+        starts_from     = now()::date,
+        ends_on         = now()::date + total_duration;
+
+    INSERT INTO core.recurring_invoice_setup
+    (
+        recurring_invoice_id,
+        party_id,
+        starts_from,
+        ends_on,
+        recurrence_type_id,
+        recurring_frequency_id,
+        recurring_duration,
+        recurs_on_same_calendar_date,
+        recurring_amount,
+        account_id,
+        payment_term_id,
+        is_active,
+        statement_reference
+    )
+    SELECT
+        recurring_invoice_id,
+        party_id,
+        starts_from,
+        ends_on,
+        recurrence_type_id,
+        recurring_frequency_id,
+        recurring_duration,
+        recurs_on_same_calendar_date,
+        recurring_amount,
+        account_id,
+        payment_term_id,
+        is_active,
+        statement_reference
+    FROM recurring_invoices_temp;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.create_routine.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.create_routine(_routine_code national character varying(12), _routine regproc, _order integer);
+
+CREATE FUNCTION transactions.create_routine(_routine_code national character varying(12), _routine regproc, _order integer)
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT * FROM transactions.routines WHERE routine_code=_routine_code) THEN
+        INSERT INTO transactions.routines(routine_code, routine_name, "order")
+        SELECT $1, $2, $3;
+        RETURN;
+    END IF;
+
+    UPDATE transactions.routines
+    SET
+        routine_name = _routine,
+        "order" = _order
+    WHERE routine_code=_routine_code;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.get_cash_repository_balance.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_cash_repository_balance(_cash_repository_id integer, _currency_code national character varying(12));
 CREATE FUNCTION transactions.get_cash_repository_balance(_cash_repository_id integer, _currency_code national character varying(12))
@@ -29158,457 +30093,304 @@ $$
 LANGUAGE plpgsql;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.post_recurring_invoices.sql --<--<--
-DROP FUNCTION IF EXISTS transactions.post_recurring_invoices(bigint);
+DROP FUNCTION IF EXISTS transactions.post_recurring_invoices(_office_id integer);
 
-CREATE FUNCTION transactions.post_recurring_invoices(bigint)
-RETURNS void
-VOLATILE
+CREATE FUNCTION transactions.post_recurring_invoices(_office_id integer)
+RETURNS TABLE
+(
+        id                      integer,
+        party_id                bigint,
+        recurring_amount        public.money_strict2,
+        account_id              bigint,
+        statement_reference     national character varying(100)
+)
 AS
 $$
-    DECLARE _party_id       bigint;
+    DECLARE _value_date         date='5/7/2015';
+    DECLARE _frequency_id       integer; 
+    DECLARE _day                double precision;
 BEGIN
-    IF NOT EXISTS
-    (
-        SELECT * FROM transactions.transaction_master WHERE book IN('Sales.Direct', 'Sales.Delivery')
-        AND transaction_master_id=$1
-    ) THEN
-        RETURN;
-    END IF;
-
-    SELECT party_id INTO _party_id 
-    FROM transactions.stock_master
-    WHERE transaction_master_id = $1;
-
-    IF(COALESCE(_party_id, 0) = 0) THEN
-        RETURN;
-    END IF;
-    
     DROP TABLE IF EXISTS recurring_invoices_temp;
-
     CREATE TEMPORARY TABLE recurring_invoices_temp
     (
-        recurring_invoice_id            integer,
-        party_id                        bigint,
-        total_duration                  integer,
-        starts_from                     date,
-        ends_on                         date,
-        recurrence_type_id              integer,
-        recurring_frequency_id          integer,
-        recurring_duration              integer,
-        recurs_on_same_calendar_date    boolean,
-        recurring_amount                public.money_strict,
-        payment_term_id                 integer,
-        is_active                       boolean DEFAULT(true)
+        id                      SERIAL,
+        party_id                bigint,
+        recurring_amount        public.money_strict2,
+        account_id              bigint,
+        statement_reference     national character varying(100)
     ) ON COMMIT DROP;
 
-    INSERT INTO recurring_invoices_temp
+    SELECT frequency_id INTO _frequency_id
+    FROM core.frequency_setups
+    WHERE value_date = _value_date;
+
+    _frequency_id   := COALESCE(_frequency_id, 0);
+    _day            := EXTRACT(DAY FROM _value_date);
+
+    --INSERT RECURRING INVOICES THAT :
+    -->RECUR BASED ON SAME CALENDAR DATE 
+    -->AND OCCUR TODAY 
+    -->AND HAVE DURATION RECURRENCE TYPE
+    INSERT INTO recurring_invoices_temp(party_id, recurring_amount, account_id, statement_reference)
+    SELECT 
+        core.recurring_invoice_setup.party_id, 
+        core.recurring_invoice_setup.recurring_amount, 
+        core.recurring_invoice_setup.account_id,
+        core.recurring_invoice_setup.statement_reference
+    FROM core.recurring_invoice_setup
+    WHERE 1 = 1
+    AND is_active                                   --IS ACTIVE
+    AND _value_date > starts_from                   --HAS NOT STARTED YET
+    AND _value_date <= ends_on                      --HAS NOT ENDED YET
+    AND recurs_on_same_calendar_date                --RECURS ON THE SAME CALENDAR DATE
+    AND _day = EXTRACT(DAY FROM starts_from) - 1    --OCCURS TODAY
+    AND recurrence_type_id IN                       --HAS DURATION RECURRENCE TYPE
     (
-        recurring_invoice_id,
-        total_duration,
-        recurrence_type_id,
-        recurring_frequency_id,
-        recurring_duration,
-        recurs_on_same_calendar_date,
-        recurring_amount,
-        payment_term_id,
-        is_active
-    )
-    SELECT
-        recurring_invoice_id,
-        total_duration,
-        recurrence_type_id,
-        recurring_frequency_id,
-        recurring_duration,
-        recurs_on_same_calendar_date,
-        recurring_amount,
-        payment_term_id,
-        is_active
-    FROM core.recurring_invoices
-    WHERE is_active
-    AND item_id
+        SELECT recurrence_type_id FROM core.recurrence_types
+        WHERE NOT is_frequency
+    );
+   
+    --INSERT RECURRING INVOICES THAT :
+    -->DO NOT RECUR BASED ON SAME CALENDAR DATE, BUT RECURRING DAYS
+    -->AND OCCUR TODAY
+    -->AND HAVE DURATION RECURRENCE TYPE
+    INSERT INTO recurring_invoices_temp(party_id, recurring_amount, account_id, statement_reference)
+    SELECT 
+        core.recurring_invoice_setup.party_id, 
+        core.recurring_invoice_setup.recurring_amount, 
+        core.recurring_invoice_setup.account_id,
+        core.recurring_invoice_setup.statement_reference
+    FROM core.recurring_invoice_setup
+    WHERE 1 = 1
+    AND is_active                                   --IS ACTIVE
+    AND _value_date > starts_from                   --HAS NOT STARTED YET
+    AND _value_date <= ends_on                      --HAS NOT ENDED YET
+    AND NOT recurs_on_same_calendar_date            --DOES NOT RECUR ON THE SAME CALENDAR DATE, BUT RECURRING DAYS
+    --OCCURS TODAY
+    AND _value_date
     IN
     (
-        SELECT item_id FROM transactions.stock_details
-        INNER JOIN transactions.stock_master
-        ON transactions.stock_master.stock_master_id = transactions.stock_details.stock_master_id
-        WHERE 1 = 1
-        AND transactions.stock_master.transaction_master_id = $1
-        AND tran_type='Cr'
+        SELECT 
+        GENERATE_SERIES
+        (
+            starts_from::timestamp, 
+            ends_on::timestamp, 
+            (
+                recurring_duration::text || 'days'
+            )::interval
+        )::date - INTERVAL '1 DAY'
+    )
+    AND recurrence_type_id IN                       --HAS DURATION RECURRENCE TYPE
+    (
+        SELECT recurrence_type_id FROM core.recurrence_types
+        WHERE NOT is_frequency
+    );
+   
+    --INSERT RECURRING INVOICES THAT :
+    -->OCCUR TODAY 
+    -->AND RECUR BASED ON FREQUENCIES
+    INSERT INTO recurring_invoices_temp(party_id, recurring_amount, account_id, statement_reference)
+    SELECT
+        core.recurring_invoice_setup.party_id, 
+        core.recurring_invoice_setup.recurring_amount, 
+        core.recurring_invoice_setup.account_id,
+        core.recurring_invoice_setup.statement_reference    
+    FROM core.recurring_invoice_setup
+    WHERE 1 = 1
+    AND is_active                                   --IS ACTIVE
+    AND _value_date > starts_from                   --HAS NOT STARTED YET
+    AND _value_date <= ends_on                      --HAS NOT ENDED YET
+    AND recurring_frequency_id = _frequency_id      --OCCURS TODAY
+    AND recurrence_type_id IN                       --RECURS BASED ON FREQUENCIES
+    (
+        SELECT recurrence_type_id FROM core.recurrence_types
+        WHERE is_frequency
     );
 
     UPDATE recurring_invoices_temp
-    SET 
-        party_id        = _party_id, 
-        starts_from     = now()::date,
-        ends_on         = now()::date + total_duration;
+    SET statement_reference = REPLACE(recurring_invoices_temp.statement_reference, '{RIMonth}', to_char(date_trunc('month', _value_date), 'MON'));
 
-    INSERT INTO core.recurring_invoice_setup
-    (
-        recurring_invoice_id,
-        party_id,
-        starts_from,
-        ends_on,
-        
-    )
+    UPDATE recurring_invoices_temp
+    SET statement_reference = REPLACE(recurring_invoices_temp.statement_reference, '{RIYear}', to_char(date_trunc('year', _value_date), 'YYYY'));
+
+
+
+    RETURN QUERY
+    SELECT *
+    FROM recurring_invoices_temp;
 END
 $$
 LANGUAGE plpgsql;
 
 
-BEGIN;
-SELECT * FROM transactions.post_recurring_invoices(19);
-ROLLBACK;
+SELECT transactions.create_routine('REF-PORCIV', 'transactions.post_recurring_invoices', 200);
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.post_sales.sql --<--<--
-DROP FUNCTION IF EXISTS transactions.post_sales
+--SELECT  * FROM transactions.post_recurring_invoices(2);
+--SELECT to_char(to_timestamp (now()::text, 'DD'), 'MON')
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.verify_transaction.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/FrontEnd/MixERP.Net.FrontEnd/db/src/02. functions and logic/logic/functions/transactions/transactions.verify_transaction.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.verify_transaction
 (
-    _book_name                              national character varying(12),
+    _transaction_master_id                  bigint,
     _office_id                              integer,
     _user_id                                integer,
     _login_id                               bigint,
-    _value_date                             date,
-    _cost_center_id                         integer,
-    _reference_number                       national character varying(24),
-    _statement_reference                    text,
-    _is_credit                              boolean,
-    _payment_term_id                        integer,
-    _party_code                             national character varying(12),
-    _price_type_id                          integer,
-    _salesperson_id                         integer,
-    _shipper_id                             integer,
-    _shipping_address_code                  national character varying(12),
-    _store_id                               integer,
-    _is_non_taxable_sales                   boolean,
-    _details                                transactions.stock_detail_type[],
-    _attachments                            core.attachment_type[]
-);
+    _verification_status_id                 smallint,
+    _reason                                 national character varying
+) 
+CASCADE;
 
-CREATE FUNCTION transactions.post_sales
+CREATE FUNCTION transactions.verify_transaction
 (
-    _book_name                              national character varying(12),
+    _transaction_master_id                  bigint,
     _office_id                              integer,
     _user_id                                integer,
     _login_id                               bigint,
-    _value_date                             date,
-    _cost_center_id                         integer,
-    _reference_number                       national character varying(24),
-    _statement_reference                    text,
-    _is_credit                              boolean,
-    _payment_term_id                        integer,
-    _party_code                             national character varying(12),
-    _price_type_id                          integer,
-    _salesperson_id                         integer,
-    _shipper_id                             integer,
-    _shipping_address_code                  national character varying(12),
-    _store_id                               integer,
-    _is_non_taxable_sales                   boolean,
-    _details                                transactions.stock_detail_type[],
-    _attachments                            core.attachment_type[]
+    _verification_status_id                 smallint,
+    _reason                                 national character varying
 )
-RETURNS bigint
+RETURNS VOID
+VOLATILE
 AS
 $$
-    DECLARE _party_id                       bigint;
-    DECLARE _transaction_master_id          bigint;
-    DECLARE _stock_master_id                bigint;
-    DECLARE _stock_detail_id                bigint;
-    DECLARE _shipping_address_id            integer;
-    DECLARE _grand_total                    money_strict;
-    DECLARE _discount_total                 money_strict2;
-    DECLARE _tax_total                      money_strict2;
-    DECLARE _receivable                     money_strict2;
-    DECLARE _default_currency_code          national character varying(12);
-    DECLARE _is_periodic                    boolean = office.is_periodic_inventory(_office_id);
-    DECLARE _cost_of_goods                  money_strict;
-    DECLARE _tran_counter                   integer;
-    DECLARE _transaction_code               text;
-    DECLARE _shipping_charge                money_strict2;
-    DECLARE this                            RECORD;
-    DECLARE _cash_repository_id             integer;
-    DECLARE _cash_account_id                bigint;
-    DECLARE _is_cash                        boolean;
-BEGIN        
-    IF(policy.can_post_transaction(_login_id, _user_id, _office_id, _book_name, _value_date) = false) THEN
-        RETURN 0;
+    DECLARE _transaction_posted_by          integer;
+    DECLARE _can_approve                    boolean=true;
+    DECLARE _book                           text;
+    DECLARE _verify_sales                   boolean;
+    DECLARE _sales_verification_limit       public.money_strict2;
+    DECLARE _verify_purchase                boolean;
+    DECLARE _purchase_verification_limit    public.money_strict2;
+    DECLARE _verify_gl                      boolean;
+    DECLARE _gl_verification_limit          public.money_strict2;
+    DECLARE _posted_amount                  public.money_strict2;
+    DECLARE _has_policy                     boolean=false;
+    DECLARE _voucher_date                   date;
+    DECLARE _voucher_office_id              integer;
+    DECLARE _value_date                     date=transactions.get_value_date(_office_id);
+BEGIN
+
+    SELECT
+        transactions.transaction_master.book,
+        transactions.transaction_master.value_date,
+        transactions.transaction_master.office_id,
+        transactions.transaction_master.user_id
+    INTO
+        _book,
+        _voucher_date,
+        _voucher_office_id,
+        _transaction_posted_by  
+    FROM
+    transactions.transaction_master
+    WHERE transactions.transaction_master.transaction_master_id=_transaction_master_id;
+
+
+    IF(_voucher_office_id <> _office_id) THEN
+        RAISE EXCEPTION 'Access is denied. You cannot verify a transaction of another office.'
+        USING ERRCODE='P9014';
     END IF;
-
-    _party_id                               := core.get_party_id_by_party_code(_party_code);
-    _default_currency_code                  := transactions.get_default_currency_code_by_office_id(_office_id);
-    _cash_account_id                        := core.get_cash_account_id_by_store_id(_store_id);
-    _cash_repository_id                     := core.get_cash_repository_id_by_store_id(_store_id);
-    _is_cash                                := core.is_cash_account_id(_cash_account_id);
-
-    IF(NOT _is_cash) THEN
-        _cash_repository_id                 := NULL;
-    END IF;
-
-    DROP TABLE IF EXISTS temp_stock_details CASCADE;
-    CREATE TEMPORARY TABLE temp_stock_details
-    (
-        id                              SERIAL PRIMARY KEY,
-        stock_master_id                 bigint, 
-        tran_type                       transaction_type, 
-        store_id                        integer,
-        item_code                       text,
-        item_id                         integer, 
-        quantity                        integer_strict,
-        unit_name                       text,
-        unit_id                         integer,
-        base_quantity                   decimal,
-        base_unit_id                    integer,                
-        price                           money_strict,
-        cost_of_goods_sold              money_strict2 DEFAULT(0),
-        discount                        money_strict2,
-        shipping_charge                 money_strict2,
-        tax_form                        text,
-        sales_tax_id                    integer,
-        tax                             money_strict2,
-        sales_account_id                integer,
-        sales_discount_account_id       integer,
-        inventory_account_id            integer,
-        cost_of_goods_sold_account_id   integer
-    ) ON COMMIT DROP;
-
-
-    DROP TABLE IF EXISTS temp_stock_tax_details;
-    CREATE TEMPORARY TABLE temp_stock_tax_details
-    (
-        id                                      SERIAL,
-        temp_stock_detail_id                    integer REFERENCES temp_stock_details(id),
-        sales_tax_detail_code                   text,
-        stock_detail_id                         bigint,
-        sales_tax_detail_id                     integer,
-        state_sales_tax_id                      integer,
-        county_sales_tax_id                     integer,
-        account_id                              integer,
-        principal                               money_strict,
-        rate                                    decimal_strict,
-        tax                                     money_strict
-    ) ON COMMIT DROP;
     
-
-
-    INSERT INTO temp_stock_details(store_id, item_code, quantity, unit_name, price, discount, shipping_charge, tax_form, tax)
-    SELECT store_id, item_code, quantity, unit_name, price, discount, shipping_charge, tax_form, tax
-    FROM explode_array(_details);
-
-
-    UPDATE temp_stock_details 
-    SET
-        tran_type                       = 'Cr',
-        sales_tax_id                    = core.get_sales_tax_id_by_sales_tax_code(tax_form),
-        item_id                         = core.get_item_id_by_item_code(item_code),
-        unit_id                         = core.get_unit_id_by_unit_name(unit_name),
-        base_quantity                   = core.get_base_quantity_by_unit_name(unit_name, quantity),
-        base_unit_id                    = core.get_base_unit_id_by_unit_name(unit_name);
-
-    UPDATE temp_stock_details
-    SET
-        sales_account_id                = core.get_sales_account_id(item_id),
-        sales_discount_account_id       = core.get_sales_discount_account_id(item_id),
-        inventory_account_id            = core.get_inventory_account_id(item_id),
-        cost_of_goods_sold_account_id   = core.get_cost_of_goods_sold_account_id(item_id);
-            
-    IF EXISTS
-    (
-            SELECT 1 FROM temp_stock_details AS details
-            WHERE core.is_valid_unit_id(details.unit_id, details.item_id) = false
-            LIMIT 1
-    ) THEN
-        RAISE EXCEPTION 'Item/unit mismatch.'
-        USING ERRCODE='P3201';
+    IF(_voucher_date <> _value_date) THEN
+        RAISE EXCEPTION 'Access is denied. You cannot verify past or futuer dated transaction.'
+        USING ERRCODE='P9015';
     END IF;
+    
+    SELECT
+        SUM(amount_in_local_currency)
+    INTO
+        _posted_amount
+    FROM
+        transactions.transaction_details
+    WHERE transactions.transaction_details.transaction_master_id = _transaction_master_id
+    AND transactions.transaction_details.tran_type='Cr';
 
-    IF(_is_non_taxable_sales) THEN
-        IF EXISTS(SELECT * FROM temp_stock_details WHERE sales_tax_id IS NOT NULL LIMIT 1) THEN
-            RAISE EXCEPTION 'You cannot provide sales tax information for non taxable sales.'
-            USING ERRCODE='P5110';
+
+    SELECT
+        true,
+        can_verify_sales_transactions,
+        sales_verification_limit,
+        can_verify_purchase_transactions,
+        purchase_verification_limit,
+        can_verify_gl_transactions,
+        gl_verification_limit
+    INTO
+        _has_policy,
+        _verify_sales,
+        _sales_verification_limit,
+        _verify_purchase,
+        _purchase_verification_limit,
+        _verify_gl,
+        _gl_verification_limit
+    FROM
+    policy.voucher_verification_policy
+    WHERE user_id=_user_id
+    AND is_active=true
+    AND now() >= effective_from
+    AND now() <= ends_on;
+
+
+    IF(lower(_book) LIKE 'sales%') THEN
+        IF(_verify_sales = false) THEN
+            _can_approve := false;
         END IF;
+        IF(_verify_sales = true) THEN
+            IF(_posted_amount > _sales_verification_limit AND _sales_verification_limit > 0::public.money_strict2) THEN
+                _can_approve := false;
+            END IF;
+        END IF;         
     END IF;
 
-    FOR this IN SELECT * FROM temp_stock_details ORDER BY id
-    LOOP
-        INSERT INTO temp_stock_tax_details
-        (
-            temp_stock_detail_id,
-            sales_tax_detail_code,
-            account_id, 
-            sales_tax_detail_id, 
-            state_sales_tax_id, 
-            county_sales_tax_id, 
-            principal, 
-            rate, 
-            tax
-        )
-        SELECT 
-            this.id, 
-            sales_tax_detail_code,
-            account_id, 
-            sales_tax_detail_id, 
-            state_sales_tax_id, 
-            county_sales_tax_id, 
-            taxable_amount, 
-            rate, 
-            tax
-        FROM transactions.get_sales_tax('Sales', _store_id, _party_code, _shipping_address_code, _price_type_id, this.item_code, this.price, this.quantity, this.discount, this.shipping_charge, this.sales_tax_id);
-    END LOOP;
 
-    UPDATE temp_stock_details
-    SET tax =
-    (SELECT SUM(COALESCE(temp_stock_tax_details.tax, 0)) FROM temp_stock_tax_details
-    WHERE temp_stock_tax_details.temp_stock_detail_id = temp_stock_details.id);
-
-
-    SELECT SUM(COALESCE(tax, 0))                                INTO _tax_total FROM temp_stock_tax_details;
-    SELECT SUM(COALESCE(discount, 0))                           INTO _discount_total FROM temp_stock_details;
-    SELECT SUM(COALESCE(price, 0) * COALESCE(quantity, 0))      INTO _grand_total FROM temp_stock_details;
-    SELECT SUM(COALESCE(shipping_charge, 0))                    INTO _shipping_charge FROM temp_stock_details;
-    
-     _receivable                    := _grand_total - COALESCE(_discount_total, 0) + COALESCE(_tax_total, 0) + COALESCE(_shipping_charge, 0);
-    
-    DROP TABLE IF EXISTS temp_transaction_details;
-    CREATE TEMPORARY TABLE temp_transaction_details
-    (
-        transaction_master_id       BIGINT, 
-        tran_type                   transaction_type, 
-        account_id                  integer, 
-        statement_reference         text, 
-        cash_repository_id          integer, 
-        currency_code               national character varying(12), 
-        amount_in_currency          money_strict, 
-        local_currency_code         national character varying(12), 
-        er                          decimal_strict, 
-        amount_in_local_currency    money_strict
-    ) ON COMMIT DROP;
-
-
-    INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-    SELECT 'Cr', sales_account_id, _statement_reference, _default_currency_code, SUM(COALESCE(price, 0) * COALESCE(quantity, 0)), 1, _default_currency_code, SUM(COALESCE(price, 0) * COALESCE(quantity, 0))
-    FROM temp_stock_details
-    GROUP BY sales_account_id;
-
-    IF(_is_periodic = false) THEN
-        --Perpetutal Inventory Accounting System
-
-        UPDATE temp_stock_details SET cost_of_goods_sold = transactions.get_cost_of_goods_sold(item_id, unit_id, store_id, quantity);
-        
-        SELECT SUM(cost_of_goods_sold) INTO _cost_of_goods
-        FROM temp_stock_details;
-
-        IF(_cost_of_goods > 0) THEN
-            INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-            SELECT 'Dr', cost_of_goods_sold_account_id, _statement_reference, _default_currency_code, SUM(COALESCE(cost_of_goods_sold, 0)), 1, _default_currency_code, SUM(COALESCE(cost_of_goods_sold, 0))
-            FROM temp_stock_details
-            GROUP BY cost_of_goods_sold_account_id;
-
-            INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-            SELECT 'Cr', inventory_account_id, _statement_reference, _default_currency_code, SUM(COALESCE(cost_of_goods_sold, 0)), 1, _default_currency_code, SUM(COALESCE(cost_of_goods_sold, 0))
-            FROM temp_stock_details
-            GROUP BY inventory_account_id;
+    IF(lower(_book) LIKE 'purchase%') THEN
+        IF(_verify_purchase = false) THEN
+            _can_approve := false;
         END IF;
-    END IF;
-
-    IF(_tax_total > 0) THEN
-        FOR this IN 
-        SELECT 
-            format('P: %s x R: %s %% = %s (%s)/', SUM(principal)::text, rate::text, SUM(tax)::text, sales_tax_detail_code) as statement_reference,
-            account_id,
-            SUM(tax) AS tax 
-        FROM temp_stock_tax_details
-        GROUP BY account_id, rate, sales_tax_detail_code
-        LOOP
-            INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-            SELECT 'Cr', this.account_id, this.statement_reference || _statement_reference, _default_currency_code, this.tax, 1, _default_currency_code, this.tax;
-        END LOOP;    
-    END IF;
-
-    IF(COALESCE(_shipping_charge, 0) > 0) THEN
-        INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-        SELECT 'Cr', core.get_account_id_by_shipper_id(_shipper_id), _statement_reference, _default_currency_code, _shipping_charge, 1, _default_currency_code, _shipping_charge;                
+        IF(_verify_purchase = true) THEN
+            IF(_posted_amount > _purchase_verification_limit AND _purchase_verification_limit > 0::public.money_strict2) THEN
+                _can_approve := false;
+            END IF;
+        END IF;         
     END IF;
 
 
-    IF(_discount_total > 0) THEN
-        INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-        SELECT 'Dr', sales_discount_account_id, _statement_reference, _default_currency_code, SUM(COALESCE(discount, 0)), 1, _default_currency_code, SUM(COALESCE(discount, 0))
-        FROM temp_stock_details
-        GROUP BY sales_discount_account_id;
+    IF(lower(_book) LIKE 'journal%') THEN
+        IF(_verify_gl = false) THEN
+            _can_approve := false;
+        END IF;
+        IF(_verify_gl = true) THEN
+            IF(_posted_amount > _gl_verification_limit AND _gl_verification_limit > 0::public.money_strict2) THEN
+                _can_approve := false;
+            END IF;
+        END IF;         
     END IF;
 
-    IF(_is_credit = true) THEN
-        INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-        SELECT 'Dr', core.get_account_id_by_party_id(_party_id), _statement_reference, _default_currency_code, _receivable, 1, _default_currency_code, _receivable;
+    IF(_has_policy=true) THEN
+        IF(_can_approve = true) THEN
+            UPDATE transactions.transaction_master
+            SET 
+                last_verified_on = now(),
+                verified_by_user_id=_user_id,
+                verification_status_id=_verification_status_id,
+                verification_reason=_reason
+            WHERE
+                transactions.transaction_master.transaction_master_id=_transaction_master_id;
+
+            PERFORM transactions.create_recurring_invoices(_transaction_master_id);
+
+            RAISE NOTICE 'Done.';
+        END IF;
     ELSE
-        INSERT INTO temp_transaction_details(tran_type, account_id, statement_reference, cash_repository_id, currency_code, amount_in_currency, er, local_currency_code, amount_in_local_currency)
-        SELECT 'Dr', _cash_account_id, _statement_reference, _cash_repository_id, _default_currency_code, _receivable, 1, _default_currency_code, _receivable;
+        RAISE EXCEPTION 'No verification policy found for this user.'
+        USING ERRCODE='P4030';
     END IF;
-
-    _transaction_master_id  := nextval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id'));
-    _stock_master_id        := nextval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id'));    
-    _tran_counter           := transactions.get_new_transaction_counter(_value_date);
-    _transaction_code       := transactions.get_transaction_code(_value_date, _office_id, _user_id, _login_id);
-    _shipping_address_id    := core.get_shipping_address_id_by_shipping_address_code(_shipping_address_code, _party_id);
-
-    UPDATE temp_transaction_details     SET transaction_master_id   = _transaction_master_id;
-    UPDATE temp_stock_details           SET stock_master_id         = _stock_master_id;
-    
-    INSERT INTO transactions.transaction_master(transaction_master_id, transaction_counter, transaction_code, book, value_date, user_id, login_id, office_id, cost_center_id, reference_number, statement_reference) 
-    SELECT _transaction_master_id, _tran_counter, _transaction_code, _book_name, _value_date, _user_id, _login_id, _office_id, _cost_center_id, _reference_number, _statement_reference;
-
-
-    INSERT INTO transactions.transaction_details(value_date, transaction_master_id, tran_type, account_id, statement_reference, cash_repository_id, currency_code, amount_in_currency, local_currency_code, er, amount_in_local_currency)
-    SELECT _value_date, transaction_master_id, tran_type, account_id, statement_reference, cash_repository_id, currency_code, amount_in_currency, local_currency_code, er, amount_in_local_currency
-    FROM temp_transaction_details
-    ORDER BY tran_type DESC;
-
-
-    INSERT INTO transactions.stock_master(value_date, stock_master_id, transaction_master_id, party_id, salesperson_id, price_type_id, is_credit, payment_term_id, shipper_id, shipping_address_id, shipping_charge, store_id, cash_repository_id, non_taxable)
-    SELECT _value_date, _stock_master_id, _transaction_master_id, _party_id, _salesperson_id, _price_type_id, _is_credit, _payment_term_id, _shipper_id, _shipping_address_id, _shipping_charge, _store_id, _cash_repository_id, _is_non_taxable_sales;
-            
-
-    FOR this IN SELECT * FROM temp_stock_details ORDER BY id
-    LOOP
-        _stock_detail_id        := nextval(pg_get_serial_sequence('transactions.stock_details', 'stock_detail_id'));
-
-        INSERT INTO transactions.stock_details(stock_detail_id, value_date, stock_master_id, tran_type, store_id, item_id, quantity, unit_id, base_quantity, base_unit_id, price, cost_of_goods_sold, discount, shipping_charge, sales_tax_id, tax)
-        SELECT _stock_detail_id, _value_date, this.stock_master_id, this.tran_type, this.store_id, this.item_id, this.quantity, this.unit_id, this.base_quantity, this.base_unit_id, this.price, COALESCE(this.cost_of_goods_sold, 0), this.discount, this.shipping_charge, this.sales_tax_id, COALESCE(this.tax, 0) 
-        FROM temp_stock_details
-        WHERE id = this.id;
-
-
-        INSERT INTO transactions.stock_tax_details(stock_detail_id, sales_tax_detail_id, state_sales_tax_id, county_sales_tax_id, principal, rate, tax)
-        SELECT _stock_detail_id, sales_tax_detail_id, state_sales_tax_id, county_sales_tax_id, principal, rate, tax
-        FROM temp_stock_tax_details
-        WHERE temp_stock_detail_id = this.id;
-        
-    END LOOP;
-
-
-
-    IF(array_length(_attachments, 1) > 0 AND _attachments != ARRAY[NULL::core.attachment_type]) THEN
-        INSERT INTO core.attachments(user_id, resource, resource_key, resource_id, original_file_name, file_extension, file_path, comment)
-        SELECT _user_id, 'transactions.transaction_master', 'transaction_master_id', _transaction_master_id, original_file_name, file_extension, file_path, comment 
-        FROM explode_array(_attachments);
-    END IF;
-    
-    PERFORM transactions.auto_verify(_transaction_master_id, _office_id);
-    PERFORM transactions.post_recurring_invoices(_transaction_master_id);
-    
-    RETURN _transaction_master_id;
+    RETURN;
 END
 $$
 LANGUAGE plpgsql;
 
 
-
---       SELECT * FROM transactions.post_sales('Sales.Direct', 2, 2, 5, '1-1-2020', 1, 'asdf', 'Test', false, NULL, 'JASMI-0002', 1, 1, 1, NULL, 1, false,
---       ARRAY[
---                  ROW(1, 'RMBP', 1, 'Piece',180000, 0, 200, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
---                  ROW(1, '13MBA', 1, 'Dozen',130000, 300, 30, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
---                  ROW(1, '11MBA', 1, 'Piece',110000, 5000, 50, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type], 
---       ARRAY[NULL::core.attachment_type]);
-
-
+--SELECT * FROM transactions.verify_transaction(65::bigint, 2, 2, 51::bigint, -3::smallint, '');
 
 /**************************************************************************************************************************
 --------------------------------------------------------------------------------------------------------------------------
@@ -29624,9 +30406,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
 **************************************************************************************************************************/
-
-
-
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/triggers/transactions.verification_trigger.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.verification_trigger() CASCADE;
@@ -29654,7 +30433,7 @@ $$
     DECLARE _can_verify_sales_transactions      boolean;
     DECLARE _sales_verification_limit           public.money_strict2;
     DECLARE _can_verify_purchase_transactions   boolean;
-    DECLARE _purchase_verification_limit        money_strict2;
+    DECLARE _purchase_verification_limit        public.money_strict2;
     DECLARE _can_verify_gl_transactions         boolean;
     DECLARE _gl_verification_limit              public.money_strict2;
     DECLARE _can_verify_self                    boolean;
@@ -29817,7 +30596,7 @@ BEGIN
                 USING ERRCODE='P5901';                
             END IF;
             IF(_can_verify_self = true) THEN
-                IF(_posted_amount > _self_verification_limit AND _self_verification_limit > 0::money_strict2) THEN
+                IF(_posted_amount > _self_verification_limit AND _self_verification_limit > 0::public.money_strict2) THEN
                     RAISE EXCEPTION 'Self verification limit exceeded. The transaction was not verified.'
                     USING ERRCODE='P5910';
                 END IF;
@@ -29830,7 +30609,7 @@ BEGIN
                 USING ERRCODE='P9001';
             END IF;
             IF(_can_verify_sales_transactions = true) THEN
-                IF(_posted_amount > _sales_verification_limit AND _sales_verification_limit > 0::money_strict2) THEN
+                IF(_posted_amount > _sales_verification_limit AND _sales_verification_limit > 0::public.money_strict2) THEN
                     RAISE EXCEPTION 'Sales verification limit exceeded. The transaction was not verified.'
                     USING ERRCODE='P5911';
                 END IF;
@@ -29844,7 +30623,7 @@ BEGIN
                 USING ERRCODE='P9001';
             END IF;
             IF(_can_verify_purchase_transactions = true) THEN
-                IF(_posted_amount > _purchase_verification_limit AND _purchase_verification_limit > 0::money_strict2) THEN
+                IF(_posted_amount > _purchase_verification_limit AND _purchase_verification_limit > 0::public.money_strict2) THEN
                     RAISE EXCEPTION 'Purchase verification limit exceeded. The transaction was not verified.'
                     USING ERRCODE='P5912';
                 END IF;
@@ -29858,7 +30637,7 @@ BEGIN
                 USING ERRCODE='P9001';
             END IF;
             IF(_can_verify_gl_transactions = true) THEN
-                IF(_posted_amount > _gl_verification_limit AND _gl_verification_limit > 0::money_strict2) THEN
+                IF(_posted_amount > _gl_verification_limit AND _gl_verification_limit > 0::public.money_strict2) THEN
                     RAISE EXCEPTION 'GL verification limit exceeded. The transaction was not verified.'
                     USING ERRCODE='P5913';
                 END IF;
@@ -29885,6 +30664,44 @@ BEFORE DELETE
 ON transactions.transaction_master
 FOR EACH ROW 
 EXECUTE PROCEDURE transactions.verification_trigger();
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/office/office.create_user.sql --<--<--
+DROP FUNCTION IF EXISTS office.create_user
+(
+    _role_id		integer,
+    _department_id	integer,
+    _office_id		integer,
+    _user_name 		text,
+    _password 		text,
+    _full_name 		text,
+    _elevated 		boolean
+);
+
+CREATE FUNCTION office.create_user
+(
+    _role_id		integer,
+    _department_id	integer,
+    _office_id		integer,
+    _user_name 		text,
+    _password 		text,
+    _full_name 		text,
+    _elevated 		boolean = false
+)
+RETURNS VOID
+AS
+$$
+BEGIN
+    IF(COALESCE(_user_name, '')) THEN
+        RETURN;
+    END IF;
+
+    INSERT INTO office.users(role_id, department_id, office_id, user_name, password, full_name, elevated)
+    SELECT _role_id, _department_id, _office_id, _user_name, _password, _full_name, _elevated;
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
 
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/office/office.get_department_id_by_department_code.sql --<--<--
@@ -29966,9 +30783,9 @@ SELECT
   core.recurring_invoices.auto_trigger_on_sales
 FROM 
   core.recurring_invoices
-LEFT JOIN core.items 
+INNER JOIN core.items 
 ON core.recurring_invoices.item_id = core.items.item_id
-INNER JOIN core.frequencies
+LEFT JOIN core.frequencies
 ON core.recurring_invoices.recurring_frequency_id = core.frequencies.frequency_id;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/05.scrud-views/core/core.recurring_invoice_setup_scrud_view.sql --<--<--
@@ -30043,6 +30860,244 @@ DELETE FROM core.menus
 WHERE menu_code = 'TRA';
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests/core/parties/unit_tests.check_party_currency_code_mismatch.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.check_party_currency_code_mismatch();
+
+CREATE FUNCTION unit_tests.check_party_currency_code_mismatch()
+RETURNS public.test_result
+AS
+$$
+    DECLARE message public.test_result;
+BEGIN
+    IF EXISTS
+    (
+        SELECT party_code FROM core.parties
+        INNER JOIN core.accounts
+        ON core.parties.account_id = core.accounts.account_id
+        WHERE core.parties.currency_code != core.accounts.currency_code
+        LIMIT 1
+    ) THEN
+        SELECT assert.fail('Some party accounts have different currency setup on their mapped GL heads.') INTO message;
+        RETURN message;
+    END IF;
+
+    SELECT assert.ok('End of test.') INTO message;  
+    RETURN message;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests/core/parties/unit_tests.check_party_null_account_id.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.check_party_null_account_id();
+
+CREATE FUNCTION unit_tests.check_party_null_account_id()
+RETURNS public.test_result
+AS
+$$
+    DECLARE message public.test_result;
+BEGIN
+    IF EXISTS
+    (
+        SELECT party_code FROM core.parties
+        WHERE core.parties.account_id IS NULL
+        LIMIT 1
+    ) THEN
+        SELECT assert.fail('Some party accounts don''t have mapped GL heads.') INTO message;
+        RETURN message;
+    END IF;
+
+    SELECT assert.ok('End of test.') INTO message;  
+    RETURN message;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests/core/parties/unit_tests.test_transactions_post_receipt_function.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.test_transactions_post_receipt_function();
+
+CREATE FUNCTION unit_tests.test_transactions_post_receipt_function()
+RETURNS public.test_result
+AS
+$$
+    DECLARE message                 public.test_result;
+    DECLARE _user_id                integer;
+    DECLARE _office_id              integer; 
+    DECLARE _login_id               bigint;
+    DECLARE _party_code             national character varying(12); 
+    DECLARE _currency_code          national character varying(12); 
+    DECLARE _amount                 public.money_strict; 
+    DECLARE _exchange_rate_debit    public.decimal_strict; 
+    DECLARE _exchange_rate_credit   public.decimal_strict;
+    DECLARE _reference_number       national character varying(24); 
+    DECLARE _statement_reference    national character varying(128); 
+    DECLARE _cost_center_id         integer;
+    DECLARE _cash_repository_id     integer;
+    DECLARE _posted_date            date;
+    DECLARE _bank_account_id        integer;
+    DECLARE _bank_instrument_code   national character varying(128);
+    DECLARE _bank_tran_code         national character varying(128);
+    DECLARE _result                 bigint;
+BEGIN
+    PERFORM unit_tests.create_mock();
+    PERFORM unit_tests.sign_in_test();
+
+    _office_id                      := office.get_office_id_by_office_code('dummy-off01');
+    _user_id                        := office.get_user_id_by_user_name('plpgunit-test-user-000001');
+    _login_id                       := office.get_login_id(_user_id);
+    _party_code                     := 'dummy-pr01';
+    _currency_code                  := 'USD';
+    _amount                         := 1000.00;
+    _exchange_rate_debit            := 100.00;
+    _exchange_rate_credit           := 100.00;
+    _reference_number               := 'PL-PG-UNIT-TEST';
+    _statement_reference            := 'This transaction should have been rollbacked already.';
+    _cost_center_id                 := office.get_cost_center_id_by_cost_center_code('dummy-cs01');
+    _cash_repository_id             := office.get_cash_repository_id_by_cash_repository_code('dummy-cr01');
+    _posted_date                    := NULL;
+    _bank_account_id                := NULL;
+    _bank_instrument_code           := NULL;
+    _bank_tran_code                 := NULL;
+                                                        
+    _result                         := transactions.post_receipt_function
+                                    (
+                                        _user_id, 
+                                        _office_id, 
+                                        _login_id,
+                                        _party_code, 
+                                        _currency_code, 
+                                        _amount, 
+                                        _exchange_rate_debit, 
+                                        _exchange_rate_credit,
+                                        _reference_number, 
+                                        _statement_reference, 
+                                        _cost_center_id,
+                                        _cash_repository_id,
+                                        _posted_date,
+                                        _bank_account_id,
+                                        _bank_instrument_code,
+                                        _bank_tran_code 
+                                    );
+
+    IF(_result <= 0) THEN
+        SELECT assert.fail('Cannot compile transactions.post_receipt_function.') INTO message;
+        RETURN message;
+    END IF;
+
+    SELECT assert.ok('End of test.') INTO message;  
+    RETURN message;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests/office/unit_tests.sign_in_test.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.sign_in_test();
+
+CREATE FUNCTION unit_tests.sign_in_test()
+RETURNS public.test_result
+AS
+$$
+    DECLARE _office_id          integer;
+    DECLARE _user_name          text='plpgunit-test-user-000001';
+    DECLARE _password           text = encode(digest(encode(digest('plpgunit-test-user-000001thoushaltnotlogin', 'sha512'), 'hex') || 'common', 'sha512'), 'hex');
+    DECLARE _culture            text='en-US';
+    DECLARE _login_id           bigint;
+    DECLARE _sing_in_message    text;
+    DECLARE message             public.test_result;
+BEGIN
+    PERFORM unit_tests.create_dummy_offices();
+    PERFORM unit_tests.create_dummy_users();
+
+    _office_id := office.get_office_id_by_office_code('dummy-off01');
+    
+    SELECT * FROM office.sign_in(_office_id, _user_name, _password, 'Plpgunit', '127.0.0.1', 'Plpgunit/plpgunit-test-user-000001', _culture, 'common')    
+    INTO _login_id, _sing_in_message;
+    
+    IF(COALESCE(_login_id, 0) = 0) THEN
+        SELECT assert.fail(_sing_in_message) INTO message;
+        RETURN message;
+    END IF;
+
+    SELECT assert.ok('End of test.') INTO message;  
+    RETURN message;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests/others/unit_tests.if_functions_compile.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.if_functions_compile();
+
+CREATE FUNCTION unit_tests.if_functions_compile()
+RETURNS public.test_result
+AS
+$$
+    DECLARE schemas text[];
+    DECLARE message public.test_result;
+    DECLARE result  boolean;
+BEGIN
+
+    schemas := ARRAY(
+                SELECT nspname::text
+                FROM pg_namespace
+                WHERE nspname NOT LIKE 'pg%'
+                AND nspname NOT IN('assert', 'unit_tests', 'information_schema')
+                ORDER BY nspname
+                );
+
+
+    SELECT * FROM assert.if_functions_compile(VARIADIC schemas) INTO message, result;
+    
+    IF(result=false) THEN
+        RETURN message;
+    END IF;
+
+    SELECT assert.ok('End of test.') INTO message;  
+    RETURN message; 
+END
+$$
+LANGUAGE plpgsql;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests/others/unit_tests.if_views_compile.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.if_views_compile();
+
+CREATE FUNCTION unit_tests.if_views_compile()
+RETURNS public.test_result
+AS
+$$
+    DECLARE schemas text[];
+    DECLARE message public.test_result;
+    DECLARE result  boolean;
+BEGIN
+
+    schemas := ARRAY(
+                SELECT nspname::text
+                FROM pg_namespace
+                WHERE nspname NOT LIKE 'pg%'
+                AND nspname NOT IN('assert', 'unit_tests', 'information_schema')
+                ORDER BY nspname
+                );
+
+
+    SELECT * FROM assert.if_views_compile(VARIADIC schemas) INTO message, result;
+    
+    IF(result=false) THEN
+        RETURN message;
+    END IF;
+
+    SELECT assert.ok('End of test.') INTO message;  
+    RETURN message; 
+END
+$$
+LANGUAGE plpgsql;
+
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests/transactions/unit_tests.balance_sheet_test.sql --<--<--
 DROP FUNCTION IF EXISTS unit_tests.balance_sheet_test();
 
@@ -30055,7 +31110,7 @@ $$
     DECLARE _period_to      date;
     DECLARE _counter        date;
     DECLARE _bs_unequal     bool=false;
-    DECLARE _message        test_result;
+    DECLARE _message        public.test_result;
     DECLARE _difference     numeric;
     DECLARE _amount         numeric;
     DECLARE _office_id      integer;
@@ -30163,6 +31218,184 @@ END
 $$
 LANGUAGE plpgsql;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_accounts.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_accounts();
+
+CREATE FUNCTION unit_tests.create_dummy_accounts()
+RETURNS void 
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.accounts WHERE account_number = 'dummy-acc01') THEN
+        INSERT INTO core.accounts(account_master_id, account_number, currency_code, account_name)
+        SELECT core.get_account_master_id_by_account_master_code('BSA'), 'dummy-acc01', 'NPR', 'Test Mock Account 1';
+    END IF;
+
+    IF NOT EXISTS(SELECT 1 FROM core.accounts WHERE account_number = 'dummy-acc02') THEN
+        INSERT INTO core.accounts(account_master_id, account_number, currency_code, account_name)
+        SELECT core.get_account_master_id_by_account_master_code('BSA'), 'dummy-acc02', 'NPR', 'Test Mock Account 2';
+    END IF;
+
+    IF NOT EXISTS(SELECT 1 FROM core.accounts WHERE account_number = 'dummy-acc03') THEN
+        INSERT INTO core.accounts(account_master_id, account_number, currency_code, account_name)
+        SELECT core.get_account_master_id_by_account_master_code('BSA'), 'dummy-acc03', 'NPR', 'Test Mock Account 3';
+    END IF;
+
+    IF NOT EXISTS(SELECT 1 FROM core.accounts WHERE account_number = 'dummy-acc04') THEN
+        INSERT INTO core.accounts(account_master_id, account_number, currency_code, account_name)
+        SELECT core.get_account_master_id_by_account_master_code('BSA'), 'dummy-acc04', 'NPR', 'Test Mock Account 4';
+    END IF;
+
+    IF NOT EXISTS(SELECT 1 FROM core.accounts WHERE account_number = 'dummy-acc05') THEN
+        INSERT INTO core.accounts(account_master_id, account_number, currency_code, account_name)
+        SELECT core.get_account_master_id_by_account_master_code('BSA'), 'dummy-acc05', 'NPR', 'Test Mock Account 5';
+    END IF;
+
+    IF NOT EXISTS(SELECT 1 FROM core.accounts WHERE account_number = 'dummy-acc06') THEN
+        INSERT INTO core.accounts(account_master_id, account_number, currency_code, account_name)
+        SELECT core.get_account_master_id_by_account_master_code('CAS'), 'dummy-acc06', 'NPR', 'Test Mock Account 6';
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_auto_verification_policy.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_auto_verification_policy
+(
+        _user_id integer, 
+        _verify_sales_transactions      boolean, 
+        _sales_verification_limit       public.money_strict2, 
+        _verify_purchase_transactions   boolean, 
+        _purchase_verification_limit    public.money_strict2, 
+        _verify_gl_transactions         boolean,
+        _gl_verification_limit          public.money_strict2,
+        _effective_from                 date,
+        _ends_on                        date,
+        _is_active                      boolean
+);
+
+CREATE FUNCTION unit_tests.create_dummy_auto_verification_policy
+(
+        _user_id                        integer, 
+        _verify_sales_transactions      boolean, 
+        _sales_verification_limit       public.money_strict2, 
+        _verify_purchase_transactions   boolean, 
+        _purchase_verification_limit    public.money_strict2, 
+        _verify_gl_transactions         boolean,
+        _gl_verification_limit          public.money_strict2,
+        _effective_from                 date,
+        _ends_on                        date,
+        _is_active                      boolean
+)
+RETURNS void 
+AS
+$$
+BEGIN
+        IF NOT EXISTS(SELECT 1 FROM policy.auto_verification_policy WHERE user_id=_user_id) THEN
+                INSERT INTO policy.auto_verification_policy(user_id, verify_sales_transactions, sales_verification_limit, verify_purchase_transactions, purchase_verification_limit, verify_gl_transactions, gl_verification_limit, effective_from, ends_on, is_active)
+                SELECT _user_id, _verify_sales_transactions, _sales_verification_limit, _verify_purchase_transactions, _purchase_verification_limit, _verify_gl_transactions, _gl_verification_limit, _effective_from, _ends_on, _is_active;
+                RETURN;
+        END IF;
+
+        UPDATE policy.auto_verification_policy
+        SET 
+                verify_sales_transactions = _verify_sales_transactions,
+                sales_verification_limit = _sales_verification_limit,
+                verify_purchase_transactions = _verify_purchase_transactions,
+                purchase_verification_limit = _purchase_verification_limit,
+                verify_gl_transactions = _verify_gl_transactions, 
+                gl_verification_limit = _gl_verification_limit, 
+                effective_from = _effective_from, 
+                ends_on = _ends_on, 
+                is_active = _is_active                
+        WHERE user_id=_user_id;
+        
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_brands.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_brands();
+
+CREATE FUNCTION unit_tests.create_dummy_brands()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.brands WHERE brand_code='dummy-br01') THEN        
+        INSERT INTO core.brands(brand_code, brand_name)
+        SELECT 'dummy-br01', 'Test Mock Brand';
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_cash_repositories.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_cash_repositories();
+
+CREATE FUNCTION unit_tests.create_dummy_cash_repositories()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM office.cash_repositories WHERE cash_repository_code='dummy-cr01') THEN        
+        INSERT INTO office.cash_repositories(cash_repository_code, cash_repository_name, office_id)
+        SELECT 'dummy-cr01', 'Test Mock Cash Repository', office.get_office_id_by_office_code('dummy-off01');
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_cost_centers.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_cost_centers();
+
+CREATE FUNCTION unit_tests.create_dummy_cost_centers()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM office.cost_centers WHERE cost_center_code='dummy-cs01') THEN        
+        INSERT INTO office.cost_centers(cost_center_code, cost_center_name)
+        SELECT 'dummy-cs01', 'Test Mock Cost Center';
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_countries.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_countries();
+
+CREATE FUNCTION unit_tests.create_dummy_countries()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.countries WHERE country_code='dummy-co01') THEN        
+        INSERT INTO core.countries(country_code, country_name)
+        SELECT 'dummy-co01', 'Test Mock Country';
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_departments.sql --<--<--
 DROP FUNCTION IF EXISTS unit_tests.create_dummy_departments();
 
@@ -30180,6 +31413,424 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_item_groups.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_item_groups();
+
+CREATE FUNCTION unit_tests.create_dummy_item_groups()
+RETURNS void
+AS
+$$
+    DECLARE _dummy_account_id bigint;
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.item_groups WHERE item_group_code='dummy-ig01') THEN
+
+        _dummy_account_id := core.get_account_id_by_account_number('dummy-acc01');
+        
+        INSERT INTO core.item_groups(item_group_code, item_group_name, sales_tax_id, sales_account_id, sales_discount_account_id, sales_return_account_id, purchase_account_id, purchase_discount_account_id, inventory_account_id, cost_of_goods_sold_account_id)
+        SELECT 'dummy-ig01', 'Test Mock Item Group', core.get_sales_tax_id_by_sales_tax_code('dummy-stx01'), _dummy_account_id, _dummy_account_id, _dummy_account_id, _dummy_account_id, _dummy_account_id, _dummy_account_id, _dummy_account_id;
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_item_types.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_item_types();
+
+CREATE FUNCTION unit_tests.create_dummy_item_types()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.item_types WHERE item_type_code='dummy-it01') THEN
+        INSERT INTO core.item_types(item_type_code, item_type_name)
+        SELECT 'dummy-it01', 'Test Mock Item Type';
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_items.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_items();
+
+CREATE FUNCTION unit_tests.create_dummy_items()
+RETURNS void
+AS
+$$
+    DECLARE _dummy_unit_id integer;
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.items WHERE item_code='dummy-it01') THEN
+
+        _dummy_unit_id := core.get_unit_id_by_unit_code('dummy-uni01');
+    
+        INSERT INTO core.items
+        (
+            item_code, 
+            item_name, 
+            item_group_id,
+            item_type_id,
+            brand_id,
+            preferred_supplier_id,
+            lead_time_in_days,
+            unit_id,
+            hot_item,
+            cost_price,
+            selling_price,
+            sales_tax_id,
+            reorder_unit_id,
+            reorder_level,
+            reorder_quantity,
+            maintain_stock
+        )
+        SELECT 
+            'dummy-it01'                                            AS item_code, 
+            'Test Mock Item'                                        AS item_name,
+            core.get_item_group_id_by_item_group_code('dummy-ig01') AS item_group_id,
+            core.get_item_type_id_by_item_type_code('dummy-it01')   AS item_type_id,
+            core.get_brand_id_by_brand_code('dummy-br01')           AS brand_id, 
+            core.get_party_id_by_party_code('dummy-pr01')           AS preferred_supplier_id,
+            10                                                      AS lead_time,
+            _dummy_unit_id                                          AS unit_id,
+            false                                                   AS hot_item,
+            3000                                                    AS cost_price,
+            4000                                                    AS selling_price,
+            core.get_sales_tax_id_by_sales_tax_code('dummy-stx01')  AS sales_tax_id,
+            _dummy_unit_id                                          AS reorder_unit_id,
+            10                                                      AS reorder_level,
+            100                                                     AS reorder_quantity,
+            false                                                   AS maintain_stock
+        UNION ALL
+        SELECT 
+            'dummy-it02'                                            AS item_code, 
+            'Test Mock Item2'                                       AS item_name,
+            core.get_item_group_id_by_item_group_code('dummy-ig01') AS item_group_id,
+            core.get_item_type_id_by_item_type_code('dummy-it01')   AS item_type_id,
+            core.get_brand_id_by_brand_code('dummy-br01')           AS brand_id, 
+            core.get_party_id_by_party_code('dummy-pr01')           AS preferred_supplier_id,
+            17                                                      AS lead_time,
+            _dummy_unit_id                                          AS unit_id,
+            false                                                   AS hot_item,
+            1400                                                    AS cost_price,
+            1800                                                    AS selling_price,
+            core.get_sales_tax_id_by_sales_tax_code('dummy-stx01')  AS sales_tax_id,
+            _dummy_unit_id                                          AS reorder_unit_id,
+            10                                                      AS reorder_level,
+            50                                                      AS reorder_quantity,
+            false                                                   AS maintain_stock;        
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_late_fees.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_late_fees();
+
+CREATE FUNCTION unit_tests.create_dummy_late_fees()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.late_fee WHERE late_fee_code='dummy-lf01') THEN        
+        INSERT INTO core.late_fee(late_fee_code, late_fee_name, is_flat_amount, rate)
+        SELECT 'dummy-lf01', 'Test Mock Late Fee', false, 22;
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_offices.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_offices();
+
+CREATE FUNCTION unit_tests.create_dummy_offices()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM office.offices WHERE office_code='dummy-off01') THEN
+        INSERT INTO office.offices(office_code, office_name, nick_name, registration_date, currency_code, allow_transaction_posting)
+        SELECT 'dummy-off01', 'PLPGUnit Test Office', 'PTO-DUMMY-0001', NOW()::date, 'NPR', true;
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_parties.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_parties();
+
+CREATE FUNCTION unit_tests.create_dummy_parties()
+RETURNS void
+AS
+$$
+    DECLARE _dummy_account_id   bigint;
+    DECLARE _party_id           bigint;
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.parties WHERE party_code='dummy-pr01') THEN        
+        _dummy_account_id := core.get_account_id_by_account_number('dummy-acc01');
+
+        INSERT INTO core.parties(party_type_id, first_name, last_name, country_id, state_id, currency_code, account_id)
+        SELECT            
+            core.get_party_type_id_by_party_type_code('dummy-pt01'), 
+            'Test Mock party', 
+            'Test', 
+            core.get_country_id_by_country_code('dummy-co01'),
+            core.get_state_id_by_state_code('dummy-st01'),
+            'NPR',
+            _dummy_account_id
+       RETURNING party_id INTO _party_id;
+
+    UPDATE core.parties
+    SET party_code = 'dummy-pr01'
+    WHERE party_id = _party_id;
+       
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_party_types.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_party_types();
+
+CREATE FUNCTION unit_tests.create_dummy_party_types()
+RETURNS void
+AS
+$$
+    DECLARE _dummy_account_id bigint;
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.party_types WHERE party_type_code='dummy-pt01') THEN        
+        _dummy_account_id := core.get_account_id_by_account_number('dummy-acc01');
+
+        INSERT INTO core.party_types(party_type_code, party_type_name, is_supplier, account_id)
+        SELECT 'dummy-pt01', 'Test Mock Party Type', false, _dummy_account_id;
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_payment_terms.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_payment_terms();
+
+CREATE FUNCTION unit_tests.create_dummy_payment_terms()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.payment_terms WHERE payment_term_code='dummy-pt01') THEN        
+        INSERT INTO core.payment_terms(payment_term_code, payment_term_name, due_on_date, due_days, grace_peiod, late_fee_id, late_fee_posting_frequency_id)
+        SELECT 'dummy-pt01', 'Test Mock Payment Term', false, 10, 5, core.get_late_fee_id_by_late_fee_code('dummy-lf01'), core.get_frequency_id_by_frequency_code('EOM');
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_sales_taxes.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_sales_taxes();
+
+CREATE FUNCTION unit_tests.create_dummy_sales_taxes()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.tax_master WHERE tax_master_code='dummy-tm01') THEN
+        INSERT INTO core.tax_master(tax_master_code, tax_master_name)
+        SELECT 'dummy-tm01', 'Dummy Tax Master';
+    END IF;
+    
+    IF NOT EXISTS(SELECT 1 FROM core.sales_taxes WHERE sales_tax_code='dummy-stx01') THEN
+        INSERT INTO core.sales_taxes(tax_master_id, office_id, sales_tax_code, sales_tax_name, is_exemption, tax_base_amount_type_code, rate)
+        SELECT 
+            core.get_tax_master_id_by_tax_master_code('dummy-tm01'), 
+            office.get_office_id_by_office_code('dummy-off01'),
+            'dummy-stx01',
+            'Dummy Sales Tax',
+            false,
+            'P',
+            12.4;
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+--SELECT * FROM unit_tests.create_dummy_sales_tax()
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_sales_teams.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_sales_teams();
+
+CREATE FUNCTION unit_tests.create_dummy_sales_teams()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.sales_teams WHERE sales_team_code='dummy-st01') THEN        
+        INSERT INTO core.sales_teams(sales_team_code, sales_team_name)
+        SELECT 'dummy-st01', 'Test Mock Sales Team';
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_salespersons.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_salespersons();
+
+CREATE FUNCTION unit_tests.create_dummy_salespersons()
+RETURNS void
+AS
+$$
+    DECLARE _dummy_account_id bigint;
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.salespersons WHERE salesperson_code='dummy-sp01') THEN        
+        _dummy_account_id := core.get_account_id_by_account_number('dummy-acc01');
+
+        INSERT INTO core.salespersons(salesperson_code, salesperson_name, sales_team_id, address, contact_number, account_id)
+        SELECT 'dummy-sp01', 'Test Mock Salesperson', core.get_sales_team_id_by_sales_team_code('dummy-st01'), '', '', _dummy_account_id;
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_shippers.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_shippers();
+
+CREATE FUNCTION unit_tests.create_dummy_shippers()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.shippers WHERE shipper_code='dummy-sh01') THEN        
+        INSERT INTO core.shippers(shipper_code, shipper_name, company_name, account_id)
+        SELECT 'dummy-sh01', 'Test Mock Shipper', 'Test Mock Shipper', core.get_account_id_by_account_number('dummy-acc01');
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_states.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_states();
+
+CREATE FUNCTION unit_tests.create_dummy_states()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.states WHERE state_code='dummy-st01') THEN        
+        INSERT INTO core.states(state_code, state_name, country_id)
+        SELECT 'dummy-st01', 'Test Mock State', core.get_country_id_by_country_code('dummy-co01');
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_store_types.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_store_types();
+
+CREATE FUNCTION unit_tests.create_dummy_store_types()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM office.store_types WHERE store_type_code='dummy-st01') THEN
+        INSERT INTO office.store_types(store_type_code, store_type_name)
+        SELECT 'dummy-st01', 'Test Mock Store Type';
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_stores.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_stores();
+
+CREATE FUNCTION unit_tests.create_dummy_stores()
+RETURNS void
+AS
+$$
+    DECLARE _cash_account_id bigint;
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM office.stores WHERE store_code='dummy-st01') THEN
+        INSERT INTO office.stores(store_code, store_name, office_id, store_type_id, allow_sales, sales_tax_id, default_cash_account_id, default_cash_repository_id)
+        SELECT 
+            'dummy-st01', 
+            'Test Mock Store',
+            office.get_office_id_by_office_code('dummy-off01'),
+            office.get_store_type_id_by_store_type_code('dummy-st01'),
+            true,
+            core.get_sales_tax_id_by_sales_tax_code('dummy-stx01'),
+            core.get_account_id_by_account_number('dummy-acc06'),
+            office.get_cash_repository_id_by_cash_repository_code('dummy-cr01');
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_units.sql --<--<--
+DROP FUNCTION IF EXISTS unit_tests.create_dummy_units();
+
+CREATE FUNCTION unit_tests.create_dummy_units()
+RETURNS void
+AS
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM core.units WHERE unit_code='dummy-uni01') THEN        
+        INSERT INTO core.units(unit_code, unit_name)
+        SELECT 'dummy-uni01', 'Test Mock Unit';
+    END IF;
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/12.plpgunit-tests-mock/unit_tests.create_dummy_users.sql --<--<--
 DROP FUNCTION IF EXISTS unit_tests.create_dummy_users();
