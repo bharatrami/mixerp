@@ -734,7 +734,7 @@ var setNumberFormat = function () {
         return;
     };
 
-    $('input.decimal').number(true, 6, decimalSeparator, thousandSeparator);
+    $('input.decimal').number(true, currencyDecimalPlaces, decimalSeparator, thousandSeparator);
     $('input.integer').number(true, 0, decimalSeparator, thousandSeparator);
 };
 
@@ -971,7 +971,7 @@ var ajaxDataBind = function (url, targetControl, data, selectedValue, associated
 
 var getAjaxErrorMessage = function (xhr) {
     if (xhr) {
-        var err = $.parseJSON(xhr.responseText).Message;
+        var err = xhr.responseText;
         return err;
     }
 
