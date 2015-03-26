@@ -201,6 +201,144 @@ QUnit.test("visibility.js -> triggerClick", function (assert) {
 
     assert.equal(actual, true, "The element was unhidden again.");
 });
+///#source 1 1 /Tests/dom/select.js
+///<reference path="../bundles/scripts/master-page.min.js"/>
+var select = $("<select id='ItemSelect'/>").hide();
+QUnit.test("select.js -> getSelectedText", function (assert) {
+    var items = ['Macbook', 'Ipad', 'Mobile', 'Laptop'];
+    $.each(items, function (index, value) {
+        select.append($('<option/>', {
+            value: value,
+            text: value
+        }));
+    });
+    $('body').append(select);
+
+    $.each(items, function (index, value) {
+        shouldEqualByItemSelect(value, assert, select);
+    });
+});
+
+function shouldEqualByItemSelect(expected, assert, select) {
+    select.val(expected);
+    select.trigger('change');
+
+    actual = select.getSelectedText();
+    assert.equal(expected, actual, "The function returned the expected value \"" + expected + "\".");
+
+
+};
+
+
+
+
+///#source 1 1 /Tests/grid/cell.js
+///<reference path="../bundles/scripts/master-page.min.js"/>
+window.currencySymbol = "Rs. ";
+window.currencyDecimalPlaces = "2";
+var item;
+var table = $("<table id='ItemDetail'> " +
+            "    <thead> " +
+            "        <tr> " +
+            "           <th>Item Name</th> " +
+            "           <th>Qty</th> " +
+            "           <th>Price</th> " +
+            "	</tr> " +
+            "    </thead> " +
+            "    <tbody > " +
+            "	<tr> " +
+            "	    <td>Item 1</td> " +
+            "	    <td>100</td> " +
+            "	    <td>Rs. 4000.00</td> " +
+            "	</tr> " +
+            "	<tr> " +
+            "	    <td>Item 2</td> " +
+            "	    <td>2</td> " +
+            "	    <td>Rs. 13000.00</td> " +
+            "	</tr> " +
+            "	<tr> " +
+            "	    <td>Item 3</td> " +
+            "	    <td>55</td> " +
+            "	    <td>Rs. 3708.00</td> " +
+            "	</tr> " +
+            "	<tr> " +
+            "	    <td>Item 4</td> " +
+            "	    <td>102</td> " +
+            "	    <td>Rs. 12490.00</td> " +
+            "	</tr> " +
+            "    </tbody> " +
+            "</table> ");
+
+QUnit.test("cell.js -> sumOfColumn", function (assert) {
+    var expected = 259;
+    var actual = parseFloat2(sumOfColumn(table, 1));
+
+    assert.equal(actual, expected, "The function returned expected value \"" + expected + "\".");
+
+    expected = 33198;
+    actual = parseFloat2(sumOfColumn(table, 2));
+
+    assert.equal(actual, expected, "The function returned expected \"" + expected + "\".");
+});
+QUnit.test("cell.js -> getColumnText", function (assert) {
+    var expected = 100;
+    var actual = parseFloat2(getColumnText(table, 1));
+    assert.equal(actual, expected, "The function returned expected value \"" + expected + "\".");
+
+    expected = 4000;
+    actual = parseFloat2(getColumnText(table, 2));
+
+    assert.equal(actual, expected, "The function returned expected value \"" + expected + "\".");
+
+    expected = 2;
+    actual = parseFloat2(getColumnText(table, 4));
+
+    assert.equal(actual, expected, "The function returned expected value\"" + expected + "\".");
+
+});
+
+
+///#source 1 1 /Tests/grid/grid.js
+///<reference path="../bundles/scripts/master-page.min.js"/>
+QUnit.test("grid.js, ->getSelectedCheckBoxItemIds", function (assert) {
+    var table = $("<table> " +
+            "    <thead> " +
+            "        <tr> " +
+            "           <th>Select</th> " +
+            "           <th>Id</th> " +
+           "	     </tr> " +
+            "    </thead> " +
+            "   <tbody > " +
+            "	<tr> " +
+            "	    <td><input type='checkbox'/></td> " +
+            "	    <td>100</td> " +
+            "	</tr> " +
+            "	<tr> " +
+            "	    <td><input type='checkbox'/></td> " +
+            "	    <td>2</td> " +
+            "	</tr> " +
+            "   </tbody> " +
+            "</table> ").hide();
+
+    $('body').append(table);
+
+    var firstRow = $("tbody tr:eq(0) :checkbox");
+    var secondRow = $("tbody tr:eq(1) :checkbox");
+
+    firstRow.prop('checked', true);// First row checked
+    var expected = 100;
+    var actual = parseFloat(getSelectedCheckBoxItemIds(1, 2, table));
+    assert.equal(actual, expected, "The function returned the expected id \"" + expected + "\".");
+
+    firstRow.prop('checked', false);// First row unchecked
+
+    secondRow.prop('checked', true);// Second row checked
+    expected = 2;
+    actual = parseFloat(getSelectedCheckBoxItemIds(1, 2, table));
+    assert.equal(actual, expected, "The function returned the expected id \"" + expected + "\".");
+});
+
+
 ///#source 1 1 /Tests/localization.js
 ///<reference path="../bundles/scripts/master-page.min.js"/>
 QUnit.test("localization.js -> getFormattedNumber (Case 1)", function (assert) {

@@ -29150,7 +29150,25 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-
+ 
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'office.offices'::regclass
+        AND    attname = 'income_tax_rate'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE office.offices
+        ADD COLUMN income_tax_rate public.decimal_strict2 NOT NULL
+        DEFAULT(0);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
 
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/audit/audit.get_office_id_by_login_id.sql --<--<--
@@ -29317,6 +29335,26 @@ $$
 LANGUAGE plpgsql;
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/core/core.get_income_tax_provison_amount.sql --<--<--
+DROP FUNCTION IF EXISTS core.get_income_tax_provison_amount(_office_id integer, _profit  decimal(24, 4), _balance  decimal(24, 4));
+
+CREATE FUNCTION core.get_income_tax_provison_amount(_office_id integer, _profit decimal(24, 4), _balance decimal(24, 4))
+RETURNS  decimal(24, 4)
+AS
+$$
+    DECLARE _rate real;
+BEGIN
+    _rate := office.get_income_tax_rate(_office_id);
+
+    RETURN
+    (
+        (_profit * _rate/100) - _balance
+    );
+END
+$$
+LANGUAGE plpgsql;
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/core/core.get_menu_id_by_menu_code.sql --<--<--
 DROP FUNCTION IF EXISTS core.get_menu_id_by_menu_code(national character varying(250));
 
@@ -29422,6 +29460,83 @@ WITH FUNCTION core.cast_frequency(text) AS ASSIGNMENT;
 
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/core/core.count_purchases.sql --<--<--
+DROP FUNCTION IF EXISTS core.count_purchases(_item_id integer, _unit_id integer, _store_id integer);
+
+CREATE FUNCTION core.count_purchases(_item_id integer, _unit_id integer, _store_id integer)
+RETURNS decimal
+STABLE
+AS
+$$
+        DECLARE _base_unit_id integer;
+        DECLARE _debit decimal;
+        DECLARE _factor decimal;
+BEGIN
+    --Get the base item unit
+    SELECT 
+        core.get_root_unit_id(core.items.unit_id) 
+    INTO _base_unit_id
+    FROM core.items
+    WHERE core.items.item_id=$1;
+
+    SELECT
+        COALESCE(SUM(base_quantity), 0)
+    INTO _debit
+    FROM transactions.stock_details
+    INNER JOIN transactions.stock_master
+    ON transactions.stock_master.stock_master_id = transactions.stock_details.stock_master_id
+    INNER JOIN transactions.transaction_master
+    ON transactions.stock_master.transaction_master_id = transactions.transaction_master.transaction_master_id
+    WHERE transactions.transaction_master.verification_status_id > 0
+    AND transactions.stock_details.item_id=$1
+    AND transactions.stock_details.store_id=$3
+    AND transactions.stock_details.tran_type='Dr';
+
+    _factor = core.convert_unit(_base_unit_id, $2);    
+    RETURN _debit * _factor;
+END
+$$
+LANGUAGE plpgsql;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/core/core.count_sales.sql --<--<--
+DROP FUNCTION IF EXISTS core.count_sales(_item_id integer, _unit_id integer, _store_id integer);
+CREATE FUNCTION core.count_sales(_item_id integer, _unit_id integer, _store_id integer)
+RETURNS decimal
+STABLE
+AS
+$$
+        DECLARE _base_unit_id integer;
+        DECLARE _credit decimal;
+        DECLARE _factor decimal;
+BEGIN
+    --Get the base item unit
+    SELECT 
+        core.get_root_unit_id(core.items.unit_id) 
+    INTO _base_unit_id
+    FROM core.items
+    WHERE core.items.item_id=$1;
+
+    SELECT 
+        COALESCE(SUM(base_quantity), 0)
+    INTO _credit
+    FROM transactions.stock_details
+    INNER JOIN transactions.stock_master
+    ON transactions.stock_master.stock_master_id = transactions.stock_details.stock_master_id
+    INNER JOIN transactions.transaction_master
+    ON transactions.stock_master.transaction_master_id = transactions.transaction_master.transaction_master_id
+    WHERE transactions.transaction_master.verification_status_id > 0
+    AND transactions.stock_details.item_id=$1
+    AND transactions.stock_details.store_id=$3
+    AND transactions.stock_details.tran_type='Cr';
+
+    _factor = core.convert_unit(_base_unit_id, $2);
+    RETURN _credit * _factor;
+END
+$$
+LANGUAGE plpgsql;
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/core/core.get_frequency_end_date.sql --<--<--
 DROP FUNCTION IF EXISTS core.get_frequency_end_date(_frequency_id integer, _value_date date);
 
@@ -29522,6 +29637,71 @@ $$
 LANGUAGE plpgsql;
 
 --SELECT * FROM core.get_periods('1-1-2000', '1-1-2020');
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/office/office.get_income_tax_rate.sql --<--<--
+DROP FUNCTION IF EXISTS core.get_income_tax_rate(_office_id integer);
+DROP FUNCTION IF EXISTS office.get_income_tax_rate(_office_id integer);
+
+CREATE FUNCTION office.get_income_tax_rate(_office_id integer)
+RETURNS real
+AS
+$$
+BEGIN
+    RETURN income_tax_rate
+    FROM office.offices
+    WHERE office_id = $1;
+END
+$$
+LANGUAGE plpgsql;
+
+--SELECT * FROM office.get_income_tax_rate(2);
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/policy/policy.save_menu_policy.sql --<--<--
+DROP FUNCTION IF EXISTS policy.save_menu_policy
+(
+    _user_id        integer,
+    _office_id      integer,
+    _menu_ids       int[]
+);
+
+CREATE FUNCTION policy.save_menu_policy
+(
+    _user_id        integer,
+    _office_id      integer,
+    _menu_ids       int[]
+)
+RETURNS void
+VOLATILE AS
+$$
+BEGIN
+    DELETE FROM policy.menu_access
+    WHERE policy.menu_access.menu_id NOT IN(SELECT * from explode_array(_menu_ids))
+    AND user_id = _user_id
+    AND office_id = _office_id;
+
+    WITH menus
+    AS
+    (
+        SELECT explode_array(_menu_ids) AS _menu_id
+    )
+    
+    INSERT INTO policy.menu_access(user_id, office_id, menu_id)
+    SELECT _user_id, _office_id, _menu_id
+    FROM menus
+    WHERE _menu_id NOT IN
+    (
+        SELECT menu_id
+        FROM policy.menu_access
+        WHERE policy.menu_access.user_id = _user_id
+        AND policy.menu_access.office_id = _office_id
+    );
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+--SELECT * FROM policy.save_menu_policy(2, 2, string_to_array('106, 107', ',')::varchar[]::int[]);
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/public/public.add_column.sql --<--<--
 DROP FUNCTION IF EXISTS public.add_column(regclass, text, regtype, text, text);
@@ -30427,6 +30607,12 @@ $$
 LANGUAGE plpgsql;
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.get_accrued_interest-todo.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_accrued_interest(office_id integer, party_id bigint);
+
+
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.get_cash_flow_statement.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_cash_flow_statement
 (
@@ -30825,6 +31011,253 @@ END
 $$
 LANGUAGE plpgsql;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.get_party_transaction_summary.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_party_transaction_summary
+(
+    office_id integer, 
+    party_id bigint
+);
+
+CREATE FUNCTION transactions.get_party_transaction_summary
+(
+    office_id integer, 
+    party_id bigint, 
+    OUT currency_code text, 
+    OUT currency_symbol text, 
+    OUT total_due_amount decimal(24, 4), 
+    OUT office_due_amount decimal(24, 4), 
+    OUT last_receipt_date date, 
+    OUT transaction_value decimal(24, 4)
+)
+AS
+$$
+    DECLARE root_office_id integer = 0;
+BEGIN
+    currency_code := core.get_currency_code_by_party_id(party_id);
+
+    SELECT core.currencies.currency_symbol into $4
+    FROM core.currencies
+    WHERE core.currencies.currency_code = $3;
+
+    SELECT office.offices.office_id INTO root_office_id
+    FROM office.offices
+    WHERE parent_office_id IS NULL;
+
+    total_due_amount := transactions.get_total_due(root_office_id, party_id);
+    office_due_amount := transactions.get_total_due(office_id, party_id);
+    last_receipt_date := transactions.get_last_receipt_date(office_id, party_id);
+    transaction_value := transactions.get_average_party_transaction(party_id, office_id);
+
+    RETURN;
+END
+$$
+LANGUAGE plpgsql;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.get_retained_earnings_statement.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_retained_earnings_statement
+(
+    _date_to                        date,
+    _office_id                      integer,
+    _factor                         integer    
+);
+
+CREATE FUNCTION transactions.get_retained_earnings_statement
+(
+    _date_to                        date,
+    _office_id                      integer,
+    _factor                         integer    
+)
+RETURNS TABLE
+(
+    id                              integer,
+    value_date                      date,
+    tran_code                       text,
+    statement_reference             text,
+    debit                           decimal(24, 4),
+    credit                          decimal(24, 4),
+    balance                         decimal(24, 4),
+    office                          text,
+    book                            text,
+    account_id                      integer,
+    account_number                  text,
+    account                         text,
+    posted_on                       TIMESTAMP WITH TIME ZONE,
+    posted_by                       text,
+    approved_by                     text,
+    verification_status             integer
+)
+AS
+$$
+    DECLARE _accounts               integer[];
+    DECLARE _date_from              date;
+    DECLARE _net_profit             decimal(24, 4)  = 0;
+    DECLARE _income_tax_rate        real            = 0;
+    DECLARE _itp                    decimal(24, 4)  = 0;
+BEGIN
+    _date_from                      := core.get_fiscal_year_start_date(_office_id);
+    _net_profit                     := transactions.get_net_profit(_date_from, _date_to, _office_id, _factor);
+    _income_tax_rate                := office.get_income_tax_rate(_office_id);
+
+    IF(COALESCE(_factor , 0) = 0) THEN
+        _factor                         := 1;
+    END IF; 
+
+    IF(_income_tax_rate != 0) THEN
+        _itp                            := (_net_profit * _income_tax_rate) / (100 - _income_tax_rate);
+    END IF;
+
+    DROP TABLE IF EXISTS temp_account_statement;
+    CREATE TEMPORARY TABLE temp_account_statement
+    (
+        id                          SERIAL,
+        value_date                  date,
+        tran_code                   text,
+        statement_reference         text,
+        debit                       decimal(24, 4),
+        credit                      decimal(24, 4),
+        balance                     decimal(24, 4),
+        office                      text,
+        book                        text,
+        account_id                  integer,
+        account_number              text,
+        account                     text,
+        posted_on                   TIMESTAMP WITH TIME ZONE,
+        posted_by                   text,
+        approved_by                 text,
+        verification_status         integer
+    ) ON COMMIT DROP;
+
+    SELECT array_agg(core.accounts.account_id) INTO _accounts
+    FROM core.accounts
+    WHERE core.accounts.account_master_id BETWEEN 15300 AND 15400;
+
+    INSERT INTO temp_account_statement(value_date, tran_code, statement_reference, debit, credit, office, book, account_id, posted_on, posted_by, approved_by, verification_status)
+    SELECT
+        _date_from,
+        NULL,
+        'Beginning balance on this fiscal year.',
+        NULL,
+        SUM
+        (
+            CASE transactions.transaction_details.tran_type
+            WHEN 'Cr' THEN amount_in_local_currency
+            ELSE amount_in_local_currency * -1 
+            END            
+        ) as credit,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL
+    FROM transactions.transaction_master
+    INNER JOIN transactions.transaction_details
+    ON transactions.transaction_master.transaction_master_id = transactions.transaction_details.transaction_master_id
+    WHERE
+        transactions.transaction_master.verification_status_id > 0
+    AND
+        transactions.transaction_master.value_date < _date_from
+    AND
+       transactions.transaction_master.office_id IN (SELECT * FROM office.get_office_ids(_office_id)) 
+    AND
+       transactions.transaction_details.account_id = ANY(_accounts);
+
+    INSERT INTO temp_account_statement(value_date, tran_code, statement_reference, debit, credit)
+    SELECT _date_to, '', format('Add: Net Profit as on %1$s.', _date_to::text), 0, _net_profit;
+
+    INSERT INTO temp_account_statement(value_date, tran_code, statement_reference, debit, credit)
+    SELECT _date_to, '', 'Add: Income Tax provison.', 0, _itp;
+
+--     DELETE FROM temp_account_statement
+--     WHERE COALESCE(temp_account_statement.debit, 0) = 0
+--     AND COALESCE(temp_account_statement.credit, 0) = 0;
+    
+
+    UPDATE temp_account_statement SET 
+    debit = temp_account_statement.credit * -1,
+    credit = 0
+    WHERE temp_account_statement.credit < 0;
+
+
+    INSERT INTO temp_account_statement(value_date, tran_code, statement_reference, debit, credit, office, book, account_id, posted_on, posted_by, approved_by, verification_status)
+    SELECT
+        transactions.transaction_master.value_date,
+        transactions.transaction_master. transaction_code,
+        transactions.transaction_details.statement_reference,
+        CASE transactions.transaction_details.tran_type
+        WHEN 'Dr' THEN amount_in_local_currency / _factor
+        ELSE NULL END,
+        CASE transactions.transaction_details.tran_type
+        WHEN 'Cr' THEN amount_in_local_currency / _factor
+        ELSE NULL END,
+        office.get_office_name_by_id(transactions.transaction_master.office_id),
+        transactions.transaction_master.book,
+        transactions.transaction_details.account_id,
+        transactions.transaction_master.transaction_ts,
+        office.get_user_name_by_user_id(COALESCE(transactions.transaction_master.user_id, transactions.transaction_master.sys_user_id)),
+        office.get_user_name_by_user_id(transactions.transaction_master.verified_by_user_id),
+        transactions.transaction_master.verification_status_id
+    FROM transactions.transaction_master
+    INNER JOIN transactions.transaction_details
+    ON transactions.transaction_master.transaction_master_id = transactions.transaction_details.transaction_master_id
+    WHERE
+        transactions.transaction_master.verification_status_id > 0
+    AND
+        transactions.transaction_master.value_date >= _date_from
+    AND
+        transactions.transaction_master.value_date <= _date_to
+    AND
+       transactions.transaction_master.office_id IN (SELECT * FROM office.get_office_ids(_office_id)) 
+    AND
+       transactions.transaction_details.account_id = ANY(_accounts)
+    ORDER BY 
+        transactions.transaction_master.value_date,
+        transactions.transaction_master.last_verified_on;
+
+
+    UPDATE temp_account_statement
+    SET balance = c.balance
+    FROM
+    (
+        SELECT
+            temp_account_statement.id, 
+            SUM(COALESCE(c.credit, 0)) 
+            - 
+            SUM(COALESCE(c.debit,0)) As balance
+        FROM temp_account_statement
+        LEFT JOIN temp_account_statement AS c 
+            ON (c.id <= temp_account_statement.id)
+        GROUP BY temp_account_statement.id
+        ORDER BY temp_account_statement.id
+    ) AS c
+    WHERE temp_account_statement.id = c.id;
+
+    UPDATE temp_account_statement SET 
+        account_number = core.accounts.account_number,
+        account = core.accounts.account_name
+    FROM core.accounts
+    WHERE temp_account_statement.account_id = core.accounts.account_id;
+
+
+    UPDATE temp_account_statement SET debit = NULL WHERE temp_account_statement.debit = 0;
+    UPDATE temp_account_statement SET credit = NULL WHERE temp_account_statement.credit = 0;
+
+    RETURN QUERY
+    SELECT * FROM temp_account_statement
+    ORDER BY id;    
+END
+$$
+LANGUAGE plpgsql;
+
+
+--SELECT * FROM transactions.get_retained_earnings_statement('7/16/2015', 2, 1000);
+
+--SELECT * FROM transactions.get_retained_earnings('7/16/2015', 2, 100);
+
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.get_sales_by_offices.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_sales_by_offices(office_id integer, divide_by integer);
 
@@ -30929,6 +31362,58 @@ LANGUAGE plpgsql;
 
 --SELECT * FROM transactions.get_sales_by_offices(1, 1);
 --SELECT * FROM transactions.get_sales_by_offices(1000);
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.get_total_due.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_total_due(office_id integer, party_id bigint);
+
+CREATE FUNCTION transactions.get_total_due(office_id integer, party_id bigint)
+RETURNS DECIMAL(24, 4)
+AS
+$$
+    DECLARE _account_id bigint= core.get_account_id_by_party_id($2);
+    DECLARE _debit DECIMAL(24, 4) = 0;
+    DECLARE _credit DECIMAL(24, 4) = 0;
+    DECLARE _local_currency_code national character varying(12) = core.get_currency_code_by_office_id($1); 
+    DECLARE _base_currency_code  national character varying(12) = core.get_currency_code_by_party_id($2);
+    DECLARE _amount_in_local_currency DECIMAL(24, 4)= 0;
+    DECLARE _amount_in_base_currency DECIMAL(24, 4)= 0;
+    DECLARE _er decimal_strict2 = 0;
+BEGIN
+
+    SELECT SUM(amount_in_local_currency)
+    INTO _debit
+    FROM transactions.verified_transaction_view
+    WHERE transactions.verified_transaction_view.account_id IN (SELECT * FROM core.get_account_ids(_account_id))
+    AND transactions.verified_transaction_view.office_id IN (SELECT * FROM office.get_office_ids($1))
+    AND tran_type='Dr';
+
+    SELECT SUM(amount_in_local_currency)
+    INTO _credit
+    FROM transactions.verified_transaction_view
+    WHERE transactions.verified_transaction_view.account_id IN (SELECT * FROM core.get_account_ids(_account_id))
+    AND transactions.verified_transaction_view.office_id IN (SELECT * FROM office.get_office_ids($1))
+    AND tran_type='Cr';
+
+    _er := COALESCE(transactions.get_exchange_rate($1, _local_currency_code, _base_currency_code), 0);
+
+    IF(_er = 0) THEN
+        RAISE EXCEPTION 'Exchange rate between % and % was not found.', _local_currency_code, _base_currency_code
+        USING ERRCODE='P4010';
+    END IF;
+
+
+    _amount_in_local_currency = COALESCE(_credit, 0) - COALESCE(_debit, 0);
+
+
+    _amount_in_base_currency = _amount_in_local_currency * _er; 
+
+    RETURN _amount_in_base_currency;
+END
+$$
+LANGUAGE plpgsql;
+
 
 
 
@@ -32333,6 +32818,16 @@ BEGIN
     _local_currency_code                    := core.get_currency_code_by_office_id(_office_id);
     _base_currency_code                     := core.get_currency_code_by_party_id(_party_id);
 
+    IF(_local_currency_code = _currency_code AND _exchange_rate_debit != 1) THEN
+        RAISE EXCEPTION 'Invalid exchange rate.'
+        USING ERRCODE='P3055';
+    END IF;
+
+    IF(_base_currency_code = _currency_code AND _exchange_rate_credit != 1) THEN
+        RAISE EXCEPTION 'Invalid exchange rate.'
+        USING ERRCODE='P3055';
+    END IF;
+    
     _debit                                  := _amount;
     _lc_debit                               := _amount * _exchange_rate_debit;
 
@@ -32669,6 +33164,30 @@ DROP FUNCTION IF EXISTS transactions.post_sales
     _attachments                            core.attachment_type[]
 );
 
+DROP FUNCTION IF EXISTS transactions.post_sales
+(
+    _book_name                              national character varying(12),
+    _office_id                              integer,
+    _user_id                                integer,
+    _login_id                               bigint,
+    _value_date                             date,
+    _cost_center_id                         integer,
+    _reference_number                       national character varying(24),
+    _statement_reference                    text,
+    _is_credit                              boolean,
+    _payment_term_id                        integer,
+    _party_code                             national character varying(12),
+    _price_type_id                          integer,
+    _salesperson_id                         integer,
+    _shipper_id                             integer,
+    _shipping_address_code                  national character varying(12),
+    _store_id                               integer,
+    _is_non_taxable_sales                   boolean,
+    _details                                transactions.stock_detail_type[],
+    _attachments                            core.attachment_type[],
+    _non_gl_tran_ids                        bigint[]    
+);
+
 CREATE FUNCTION transactions.post_sales
 (
     _book_name                              national character varying(12),
@@ -32689,7 +33208,8 @@ CREATE FUNCTION transactions.post_sales
     _store_id                               integer,
     _is_non_taxable_sales                   boolean,
     _details                                transactions.stock_detail_type[],
-    _attachments                            core.attachment_type[]
+    _attachments                            core.attachment_type[],
+    _non_gl_tran_ids                        bigint[]
 )
 RETURNS bigint
 AS
@@ -32737,9 +33257,10 @@ BEGIN
         store_id                        integer,
         item_code                       text,
         item_id                         integer, 
-        quantity                        integer_strict,
+        quantity                        integer_strict,        
         unit_name                       text,
         unit_id                         integer,
+        in_stock                        numeric,
         base_quantity                   decimal,
         base_unit_id                    integer,                
         price                           money_strict,
@@ -32754,8 +33275,7 @@ BEGIN
         inventory_account_id            integer,
         cost_of_goods_sold_account_id   integer
     ) ON COMMIT DROP;
-
-
+    
     DROP TABLE IF EXISTS temp_stock_tax_details;
     CREATE TEMPORARY TABLE temp_stock_tax_details
     (
@@ -32794,7 +33314,20 @@ BEGIN
         sales_discount_account_id       = core.get_sales_discount_account_id(item_id),
         inventory_account_id            = core.get_inventory_account_id(item_id),
         cost_of_goods_sold_account_id   = core.get_cost_of_goods_sold_account_id(item_id);
-            
+
+    UPDATE temp_stock_details
+    SET in_stock = core.count_item_in_stock(temp_stock_details.item_id, temp_stock_details.unit_id, temp_stock_details.store_id);
+
+    IF EXISTS
+    (
+        SELECT 0 FROM temp_stock_details
+        WHERE quantity > in_stock
+        LIMIT 1
+    ) THEN
+        RAISE EXCEPTION 'Insufficient item quantity'
+        USING ERRCODE='P5500';
+    END IF;
+    
     IF EXISTS
     (
             SELECT 1 FROM temp_stock_details AS details
@@ -32970,6 +33503,11 @@ BEGIN
         SELECT _user_id, 'transactions.transaction_master', 'transaction_master_id', _transaction_master_id, original_file_name, file_extension, file_path, comment 
         FROM explode_array(_attachments);
     END IF;
+
+    IF(array_length(_non_gl_tran_ids, 1) > 0 AND _non_gl_tran_ids != ARRAY[NULL::bigint]) THEN
+        INSERT INTO transactions.stock_master_non_gl_relations(stock_master_id, non_gl_stock_master_id)
+        SELECT _stock_master_id, explode_array(_non_gl_tran_ids);
+    END IF;
     
     PERFORM transactions.auto_verify(_transaction_master_id, _office_id);
 
@@ -32991,7 +33529,7 @@ LANGUAGE plpgsql;
 --                  ROW(1, 'RMBP', 1, 'Piece',180000, 0, 200, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
 --                  ROW(1, '13MBA', 1, 'Dozen',130000, 300, 30, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
 --                  ROW(1, '11MBA', 1, 'Piece',110000, 5000, 50, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type], 
---       ARRAY[NULL::core.attachment_type]);
+--       ARRAY[NULL::core.attachment_type], NULL::bigint[]);
 
 
 
@@ -33295,7 +33833,7 @@ BEGIN
     INSERT INTO transactions.stock_return(transaction_master_id, return_transaction_master_id)
     SELECT _transaction_master_id, _tran_master_id;
 
-    PERFORM transactions.auto_verify(_transaction_master_id, _office_id);
+    PERFORM transactions.auto_verify(_tran_master_id, _office_id);
     RETURN _tran_master_id;
 END
 $$
@@ -33336,6 +33874,189 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
 **************************************************************************************************************************/
+
+
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/beta-1/v2/src/02.functions-and-logic/logic/transactions/transactions.post_stock_journal.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.post_stock_journal
+(
+    _office_id                              integer,
+    _user_id                                integer,
+    _login_id                               bigint,
+    _value_date                             date,
+    _reference_number                       national character varying(24),
+    _statement_reference                    text,
+    _details                                transactions.stock_adjustment_type[]
+);
+
+
+CREATE FUNCTION transactions.post_stock_journal
+(
+    _office_id                              integer,
+    _user_id                                integer,
+    _login_id                               bigint,
+    _value_date                             date,
+    _reference_number                       national character varying(24),
+    _statement_reference                    text,
+    _details                                transactions.stock_adjustment_type[]
+)
+RETURNS bigint
+AS
+$$
+    DECLARE _transaction_master_id                  bigint;
+    DECLARE _stock_master_id                        bigint;
+    DECLARE _book_name                              text='Inventory.Transfer';
+BEGIN
+    IF(policy.can_post_transaction(_login_id, _user_id, _office_id, _book_name, _value_date) = false) THEN
+        RETURN 0;
+    END IF;
+
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_stock_details
+    (
+        tran_type       transaction_type,
+        store_id        integer,
+        store_name      national character varying(50),
+        item_id         integer,
+        item_code       national character varying(12),
+        unit_id         integer,
+        base_unit_id    integer,
+        unit_name       national character varying(50),
+        quantity        integer_strict,
+        base_quantity   integer,                
+        price           money_strict                             
+    ) 
+    ON COMMIT DROP; 
+
+    INSERT INTO temp_stock_details(tran_type, store_name, item_code, unit_name, quantity)
+    SELECT tran_type, store_name, item_code, unit_name, quantity FROM explode_array(_details);
+
+    IF EXISTS
+    (
+        SELECT 1 FROM temp_stock_details
+        GROUP BY item_code, store_name
+        HAVING COUNT(item_code) <> 1
+    ) THEN
+        RAISE EXCEPTION 'An item can appear only once in a store.'
+        USING ERRCODE='P5202';
+    END IF;
+
+    IF EXISTS
+    (
+        SELECT item_code FROM temp_stock_details
+        GROUP BY item_code
+        HAVING SUM(CASE WHEN tran_type='Dr' THEN quantity ELSE quantity *-1 END) <> 0
+    ) THEN
+        RAISE EXCEPTION 'Referencing sides are not equal.'
+        USING ERRCODE='P5000';        
+    END IF;
+
+
+    UPDATE temp_stock_details SET 
+    item_id         = core.get_item_id_by_item_code(item_code),
+    unit_id         = core.get_unit_id_by_unit_name(unit_name),
+    store_id        = office.get_store_id_by_store_name(store_name);
+
+    IF EXISTS
+    (
+        SELECT * FROM temp_stock_details
+        WHERE item_id IS NULL OR unit_id IS NULL OR store_id IS NULL
+    ) THEN
+        RAISE EXCEPTION 'Invalid data supplied.'
+        USING ERRCODE='P3000';
+    END IF;
+
+    UPDATE temp_stock_details SET
+    base_unit_id    = core.get_root_unit_id(unit_id),
+    base_quantity   = core.get_base_quantity_by_unit_id(unit_id, quantity),
+    price           = core.get_item_cost_price(item_id, unit_id, NULL);
+
+
+
+    IF EXISTS
+    (
+            SELECT 1
+            FROM 
+            office.stores
+            WHERE office.stores.store_id
+            IN
+            (
+                SELECT temp_stock_details.store_id
+                FROM temp_stock_details
+            )
+            HAVING COUNT(DISTINCT office.stores.office_id) > 1
+
+    ) THEN
+        RAISE EXCEPTION E'Access is denied!\nA stock journal transaction cannot references multiple branches.'
+        USING ERRCODE='P9013';
+    END IF;
+
+    IF EXISTS
+    (
+            SELECT 1
+            FROM 
+            temp_stock_details
+            WHERE tran_type = 'Cr'
+            AND quantity > core.count_item_in_stock(item_id, unit_id, store_id)
+    ) THEN
+        RAISE EXCEPTION 'Negative stock is not allowed.'
+        USING ERRCODE='P5001';
+    END IF;
+
+    INSERT INTO transactions.transaction_master
+    (
+            transaction_master_id,
+            transaction_counter,
+            transaction_code,
+            book,
+            value_date,
+            login_id,
+            user_id,
+            office_id,
+            reference_number,
+            statement_reference
+    )
+    SELECT
+            nextval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id')), 
+            transactions.get_new_transaction_counter(_value_date), 
+            transactions.get_transaction_code(_value_date, _office_id, _user_id, _login_id),
+            _book_name,
+            _value_date,
+            _login_id,
+            _user_id,
+            _office_id,
+            _reference_number,
+            _statement_reference;
+
+
+    _transaction_master_id                          := currval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id'));
+
+
+    INSERT INTO transactions.stock_master(stock_master_id, transaction_master_id, value_date)
+    SELECT nextval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id')), _transaction_master_id, _value_date;
+
+    _stock_master_id                                := currval(pg_get_serial_sequence('transactions.stock_master', 'stock_master_id'));
+
+    INSERT INTO transactions.stock_details(stock_master_id, value_date, tran_type, store_id, item_id, quantity, unit_id, base_quantity, base_unit_id, price)
+    SELECT _stock_master_id, _value_date, tran_type, store_id, item_id, quantity, unit_id, base_quantity, base_unit_id, price
+    FROM temp_stock_details;
+    
+    
+    PERFORM transactions.auto_verify(_transaction_master_id, _office_id);
+    RETURN _transaction_master_id;
+END
+$$
+LANGUAGE plpgsql;
+
+
+-- SELECT * FROM transactions.post_stock_journal(2, 2, 5, '1-1-2020', '22', 'Test', 
+-- ARRAY[
+-- ROW('Cr', 'Store 1', 'RMBP', 'Piece', 1)::transactions.stock_adjustment_type,
+-- ROW('Dr', 'Godown 1', 'RMBP', 'Piece', 1)::transactions.stock_adjustment_type,
+-- ROW('Cr', 'Store 1', '11MBA', 'Piece', 1)::transactions.stock_adjustment_type,
+-- ROW('Dr', 'Godown 1', '11MBA', 'Piece', 1)::transactions.stock_adjustment_type
+-- ]
+-- );
 
 
 
@@ -33501,7 +34222,7 @@ $$
     DECLARE _item_code                      text;
     DECLARE _unit_name                      text;
     DECLARE _unit_id                        integer = 0;
-    DECLARE _factor_to_base_unit            numeric;
+    DECLARE _factor_to_base_unit            numeric(24, 4);
     DECLARE _returned_in_previous_batch     public.decimal_strict2 = 0;
     DECLARE _in_verification_queue          public.decimal_strict2 = 0;
     DECLARE _actual_price_in_root_unit      public.money_strict2 = 0;
@@ -33518,7 +34239,7 @@ BEGIN
         store_id            integer,
         item_id             integer,
         item_code           national character varying(12),
-        item_in_stock       numeric,
+        item_in_stock       numeric(24, 4),
         quantity            integer_strict,        
         unit_id             integer,
         unit_name           national character varying(50),
@@ -33528,7 +34249,7 @@ BEGIN
         tax_form            national character varying(24),
         tax                 money_strict2,
         root_unit_id        integer,
-        base_quantity       numeric
+        base_quantity       numeric(24, 4)
     ) ON COMMIT DROP;
 
     INSERT INTO details_temp(store_id, item_code, quantity, unit_name, price, discount, shipping_charge, tax_form, tax)
@@ -33555,10 +34276,10 @@ BEGIN
         store_id                    integer,
         item_id                     integer,
         root_unit_id                integer,
-        returned_quantity           numeric,
-        actual_quantity             numeric,
-        returned_in_previous_batch  numeric,
-        in_verification_queue       numeric
+        returned_quantity           numeric(24, 4),
+        actual_quantity             numeric(24, 4),
+        returned_in_previous_batch  numeric(24, 4),
+        in_verification_queue       numeric(24, 4)
     ) ON COMMIT DROP;
     
     INSERT INTO item_summary_temp(store_id, item_id, root_unit_id, returned_quantity)
@@ -33635,8 +34356,8 @@ BEGIN
     CREATE TEMPORARY TABLE cumulative_pricing_temp
     (
         item_id                     integer,
-        base_price                  numeric,
-        allowed_returns             numeric
+        base_price                  numeric(24, 4),
+        allowed_returns             numeric(24, 4)
     ) ON COMMIT DROP;
 
     INSERT INTO cumulative_pricing_temp
@@ -33742,15 +34463,15 @@ BEGIN
     END IF;
 
     FOR this IN
-    SELECT item_id, base_quantity, price / base_quantity AS base_price
+    SELECT item_id, base_quantity, (price / base_quantity * quantity)::numeric(24, 4) as price
     FROM details_temp
-    LOOP    
+    LOOP
         IF NOT EXISTS
         (
             SELECT 0
             FROM cumulative_pricing_temp
             WHERE item_id = this.item_id
-            AND base_price >=  this.base_price
+            AND base_price >=  this.price
             AND allowed_returns >= this.base_quantity
         ) THEN
             RAISE EXCEPTION 'The returned amount cannot be greater than actual amount.'
@@ -33767,10 +34488,10 @@ LANGUAGE plpgsql;
 
 -- SELECT * FROM transactions.validate_items_for_return
 -- (
---     125,
+--     127,
 --     ARRAY[
---         ROW(1, 'RMBP', 1, 'Piece', 225000.0000, 0, 200, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
---         ROW(1, 'RMBP', 12, 'Piece', 2565000.0000, 5000, 50, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type
+--         ROW(1, 'RMBP', 2, 'Dozen', 1000, 0, 200, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type
+--        
 --     ]
 -- );
 

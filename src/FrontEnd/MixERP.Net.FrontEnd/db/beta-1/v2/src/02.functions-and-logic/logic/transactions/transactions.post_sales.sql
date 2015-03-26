@@ -114,7 +114,7 @@ BEGIN
         store_id                        integer,
         item_code                       text,
         item_id                         integer, 
-        quantity                        integer_strict,
+        quantity                        integer_strict,        
         unit_name                       text,
         unit_id                         integer,
         base_quantity                   decimal,
@@ -131,8 +131,7 @@ BEGIN
         inventory_account_id            integer,
         cost_of_goods_sold_account_id   integer
     ) ON COMMIT DROP;
-
-
+    
     DROP TABLE IF EXISTS temp_stock_tax_details;
     CREATE TEMPORARY TABLE temp_stock_tax_details
     (
@@ -149,12 +148,9 @@ BEGIN
         tax                                     money_strict
     ) ON COMMIT DROP;
     
-
-
     INSERT INTO temp_stock_details(store_id, item_code, quantity, unit_name, price, discount, shipping_charge, tax_form, tax)
     SELECT store_id, item_code, quantity, unit_name, price, discount, shipping_charge, tax_form, tax
     FROM explode_array(_details);
-
 
     UPDATE temp_stock_details 
     SET
@@ -171,7 +167,35 @@ BEGIN
         sales_discount_account_id       = core.get_sales_discount_account_id(item_id),
         inventory_account_id            = core.get_inventory_account_id(item_id),
         cost_of_goods_sold_account_id   = core.get_cost_of_goods_sold_account_id(item_id);
-            
+
+    DROP TABLE IF EXISTS item_quantities_temp;
+    CREATE TEMPORARY TABLE item_quantities_temp
+    (
+        item_id             integer,
+        base_unit_id        integer,
+        store_id            integer,
+        total_sales         numeric,
+        in_stock            numeric
+    ) ON COMMIT DROP;
+
+    INSERT INTO item_quantities_temp(item_id, base_unit_id, store_id, total_sales)
+    SELECT item_id, base_unit_id, store_id, SUM(base_quantity)
+    FROM temp_stock_details
+    GROUP BY item_id, base_unit_id, store_id;
+
+    UPDATE item_quantities_temp
+    SET in_stock = core.count_item_in_stock(item_quantities_temp.item_id, item_quantities_temp.base_unit_id, item_quantities_temp.store_id);    
+
+    IF EXISTS
+    (
+        SELECT 0 FROM item_quantities_temp
+        WHERE total_sales > in_stock
+        LIMIT 1
+    ) THEN
+        RAISE EXCEPTION 'Insufficient item quantity'
+        USING ERRCODE='P5500';
+    END IF;
+    
     IF EXISTS
     (
             SELECT 1 FROM temp_stock_details AS details
@@ -250,7 +274,7 @@ BEGIN
     FROM temp_stock_details
     GROUP BY sales_account_id;
 
-    IF(_is_periodic = false) THEN
+    IF(NOT _is_periodic) THEN
         --Perpetutal Inventory Accounting System
 
         UPDATE temp_stock_details SET cost_of_goods_sold = transactions.get_cost_of_goods_sold(item_id, unit_id, store_id, quantity);
@@ -355,7 +379,7 @@ BEGIN
     
     PERFORM transactions.auto_verify(_transaction_master_id, _office_id);
 
-    IF(_is_credit = false) THEN
+    IF(NOT _is_credit) THEN
         PERFORM transactions.post_receipt(_user_id, _office_id, _login_id, _party_code, _default_currency_code, _receivable, 1, 1, _reference_number, _statement_reference, _cost_center_id, _cash_repository_id, NULL, NULL, NULL, NULL, _transaction_master_id);
     ELSE
         PERFORM transactions.settle_party_due(_party_id, _office_id);
@@ -371,9 +395,9 @@ LANGUAGE plpgsql;
 --       SELECT * FROM transactions.post_sales('Sales.Direct', 2, 2, 5, '1-1-2020', 1, 'asdf', 'Test', false, NULL, 'JASMI-0002', 1, 1, 1, NULL, 1, false,
 --       ARRAY[
 --                  ROW(1, 'RMBP', 1, 'Piece',180000, 0, 200, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
---                  ROW(1, '13MBA', 1, 'Dozen',130000, 300, 30, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
---                  ROW(1, '11MBA', 1, 'Piece',110000, 5000, 50, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type], 
---       ARRAY[NULL::core.attachment_type]);
+--                  ROW(1, 'RMBP', 1, 'Dozen',130000, 300, 30, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type,
+--                  ROW(1, 'RMBP', 1, 'Box',110000, 5000, 50, 'MoF-NY-BK-STX', 0)::transactions.stock_detail_type], 
+--       ARRAY[NULL::core.attachment_type], NULL::bigint[]);
 
 
 

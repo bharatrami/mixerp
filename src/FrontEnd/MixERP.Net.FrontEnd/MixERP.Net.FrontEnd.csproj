@@ -722,7 +722,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Resource\Configuration\TransactionChecklistParameters.xml" />
-    <Content Include="Resource\Configuration\PartyControlParameters.xml" />
     <Content Include="Resource\Icons\checklist-16.png" />
     <Content Include="Resource\Icons\index.html" />
     <Content Include="Resource\Icons\insert-16.png" />
@@ -950,6 +949,7 @@
     <Content Include="Tests\dom\select.js" />
     <Content Include="Tests\dom\visibility.js" />
     <Content Include="Tests\grid\cell.js" />
+    <Content Include="Tests\grid\grid.js" />
     <Content Include="Tests\localization.js" />
     <Content Include="Tests\mixerp-core.test.html" />
     <Content Include="Scripts\mixerp\mixerp-core.js">

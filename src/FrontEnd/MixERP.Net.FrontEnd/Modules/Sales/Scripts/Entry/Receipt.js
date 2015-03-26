@@ -64,10 +64,10 @@ receiptTypeDiv.find(".button").click(function () {
 //GoButton's click event
 //in PartyControl.
 var goButtonCallBack = function () {
-    var totalDueAmountHidden = $("#TotalDueAmountHidden");
+    var totalOfficeDueAmountHidden = $("#OfficeDueAmountHidden");
     var defaultCurrencySpan = $("#DefaultCurrencySpan");
 
-    dueAmountInputText.val(totalDueAmountHidden.val());
+    dueAmountInputText.val(totalOfficeDueAmountHidden.val());
     currencyInputText.val(defaultCurrencySpan.html());
 
     var ajaxGetHomeCurrency = getHomeCurrency();
@@ -171,7 +171,20 @@ debitExchangeRateInputText.keyup(function () {
     updateTotal();
 });
 
+creditExchangeRateInputText.keyup(function () {
+    updateTotal();
+});
+
+
 function updateTotal() {
+    if (currencySelect.getSelectedValue() === homeCurrency) {
+        debitExchangeRateInputText.val("1");
+    };
+
+    if (currencyInputText.val() === homeCurrency) {
+        creditExchangeRateInputText.val("1");
+    };
+
     var due = parseFloat2(dueAmountInputText.val());
     var amount = parseFloat2(amountInputText.val());
     var er = parseFloat2(debitExchangeRateInputText.val());

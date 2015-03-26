@@ -376,4 +376,25 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+ 
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'office.offices'::regclass
+        AND    attname = 'income_tax_rate'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE office.offices
+        ADD COLUMN income_tax_rate public.decimal_strict2 NOT NULL
+        DEFAULT(0);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
 
+ALTER TABLE core.parties
+ALTER COLUMN party_name SET NOT NULL;

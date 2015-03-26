@@ -15,15 +15,10 @@ Tell us what you like to see in the CRM Module! Not sure? Then what about review
 
 We have a few demo servers to access the project:
 
-**Denver**
+**United States**
 
 * [chamlang.mixerp.org](http://chamlang.mixerp.org)
 * [nemjung.mixerp.org](http://) 
-
-**New Jersey**
-
-* [nuptse.mixerp.org](http://nuptse.mixerp.org)
-* [langtang.mixerp.org](http://langtang.mixerp.org)
 
 **Kathmandu**
 
@@ -42,6 +37,14 @@ All transactions posted to the **v1** is supported and will be automatically upd
 
 #Where Can I Get Support?
 Please create an account in [MixERP Forums](http://mixerp.org/forum) and post your questions there. We will be happy to help.
+
+#Where is getting started guide?
+The getting started guide can be found under the directory:
+
+* src/docs (WebForms)
+* src-beta2/docs (MVC)
+
+NB, we are moving to MVC in the next version. Till then, WebForms will be fully supported.
 
 ##Why Betas?
 
