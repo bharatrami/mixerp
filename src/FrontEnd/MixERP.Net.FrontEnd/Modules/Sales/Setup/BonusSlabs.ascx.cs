@@ -43,6 +43,8 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
 
                 scrud.DisplayFields = GetDisplayFields();
                 scrud.DisplayViews = GetDisplayViews();
+                scrud.UseDisplayViewsAsParents = true;
+
                 scrud.Text = Titles.AgentBonusSlabs;
                 scrud.ResourceAssembly = Assembly.GetAssembly(typeof (BonusSlabs));
 
@@ -71,7 +73,7 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
         {
             List<string> displayViews = new List<string>();
             ScrudHelper.AddDisplayView(displayViews, "core.frequencies.frequency_id", "core.frequency_selector_view");
-            ScrudHelper.AddDisplayView(displayViews, "core.accounts.account_id", "core.account_scrud_view");
+            ScrudHelper.AddDisplayView(displayViews, "core.accounts.account_id", "core.bonus_slab_account_selector_view");
             return string.Join(",", displayViews);
         }
     }
