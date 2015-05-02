@@ -23,6 +23,7 @@ using MixERP.Net.Common.Extensions;
 using MixERP.Net.Entities;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
+using MixERP.Net.i18n.Resources;
 using MixERP.Net.WebControls.TransactionChecklist;
 
 namespace MixERP.Net.Core.Modules.Sales.Confirmation
@@ -35,10 +36,10 @@ namespace MixERP.Net.Core.Modules.Sales.Confirmation
 
             using (TransactionChecklistForm checklist = new TransactionChecklistForm())
             {
-                checklist.ViewReportButtonText = Resources.Titles.ViewThisDelivery;
-                checklist.EmailReportButtonText = Resources.Titles.EmailThisDelivery;
-                checklist.CustomerReportButtonText = Resources.Titles.ViewCustomerCopy;
-                checklist.Text = Resources.Titles.SalesDelivery;
+                checklist.ViewReportButtonText = Titles.ViewThisDelivery;
+                checklist.EmailReportButtonText = Titles.EmailThisDelivery;
+                checklist.CustomerReportButtonText = Titles.ViewCustomerCopy;
+                checklist.Text = Titles.SalesDelivery;
                 checklist.AttachmentBookName = "transaction";
                 checklist.OverridePath = "/Modules/Sales/Delivery.mix";
                 checklist.DisplayWithdrawButton = true;
@@ -54,8 +55,8 @@ namespace MixERP.Net.Core.Modules.Sales.Confirmation
                 checklist.ViewPath = "/Modules/Sales/Delivery.mix";
                 checklist.AddNewPath = "/Modules/Sales/Entry/Delivery.mix";
                 checklist.UserId = CurrentUser.GetSignInView().UserId.ToInt();
-
                 checklist.PartyEmailAddress = Data.Helpers.Parties.GetEmailAddress(TranBook.Sales, SubTranBook.Delivery, transactionMasterId);
+                checklist.RestrictedTransactionMode = this.IsRestrictedMode;
 
                 this.Placeholder1.Controls.Add(checklist);
             }

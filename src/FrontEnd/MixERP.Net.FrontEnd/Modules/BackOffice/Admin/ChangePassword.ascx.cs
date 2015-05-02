@@ -26,9 +26,9 @@ using MixERP.Net.Common.Domains;
 using MixERP.Net.Common.Extensions;
 using MixERP.Net.Common.Helpers;
 using MixERP.Net.Core.Modules.BackOffice.Data.Admin;
-using MixERP.Net.Core.Modules.BackOffice.Resources;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
+using MixERP.Net.i18n.Resources;
 using Serilog;
 
 namespace MixERP.Net.Core.Modules.BackOffice.Admin
@@ -37,7 +37,10 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
     {
         public override AccessLevel AccessLevel
         {
-            get { return AccessLevel.LocalhostAdmin; }
+            get
+            {
+                return AccessLevel.LocalhostAdmin;
+            }
         }
 
         public override void OnControlLoad(object sender, EventArgs e)
@@ -55,7 +58,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
 
         protected override void CreateChildControls()
         {
-            this.panel = new HtmlGenericControl();                        
+            this.panel = new HtmlGenericControl();
             this.CreateHeader(this.panel);
             this.CreateDivider(this.panel);
             this.CreateFormSegment(this.panel);

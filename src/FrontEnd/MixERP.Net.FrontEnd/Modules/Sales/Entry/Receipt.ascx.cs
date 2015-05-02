@@ -20,8 +20,8 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.WebControls.PartyControl;
 using System;
-using MixERP.Net.Core.Modules.Sales.Resources;
 using MixERP.Net.Entities.Contracts;
+using MixERP.Net.i18n.Resources;
 
 namespace MixERP.Net.Core.Modules.Sales.Entry
 {
@@ -60,6 +60,12 @@ namespace MixERP.Net.Core.Modules.Sales.Entry
             this.CashRepositoryLiteral.Text = Titles.CashRepository;
             this.WhichBankLiteral.Text = Titles.WhichBank;
             this.PostedDateLiteral.Text = Titles.PostedDate;
+
+            this.PaymentCardLiteral.Text = Titles.SelectPaymentCard;
+            this.MerchantFeeLiteral.Text = Titles.MerchantFeeInPercent;
+            this.CustomerPaysFeesLiteral.Text = Titles.CustomerPaysFees;
+            this.YesLiteral.Text = Titles.Yes;
+            
             this.InstrumentCodeLiteral.Text = Titles.InstrumentCode;
             this.BankTransactionCodeLiteral.Text = Titles.BankTransactionCode;
             this.ReferenceNumberLiteral.Text = Titles.ReferenceNumber;

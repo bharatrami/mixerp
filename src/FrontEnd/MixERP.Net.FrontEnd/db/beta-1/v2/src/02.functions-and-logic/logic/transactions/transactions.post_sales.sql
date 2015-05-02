@@ -1,4 +1,4 @@
-DROP FUNCTION IF EXISTS transactions.post_sales
+﻿DROP FUNCTION IF EXISTS transactions.post_sales
 (
     _book_name                              national character varying(12),
     _office_id                              integer,
@@ -23,7 +23,7 @@ DROP FUNCTION IF EXISTS transactions.post_sales
 
 DROP FUNCTION IF EXISTS transactions.post_sales
 (
-    _book_name                              national character varying(12),
+    _book_name                              national character varying(48),
     _office_id                              integer,
     _user_id                                integer,
     _login_id                               bigint,
@@ -47,7 +47,7 @@ DROP FUNCTION IF EXISTS transactions.post_sales
 
 CREATE FUNCTION transactions.post_sales
 (
-    _book_name                              national character varying(12),
+    _book_name                              national character varying(48),
     _office_id                              integer,
     _user_id                                integer,
     _login_id                               bigint,
@@ -175,7 +175,8 @@ BEGIN
         base_unit_id        integer,
         store_id            integer,
         total_sales         numeric,
-        in_stock            numeric
+        in_stock            numeric,
+        maintain_stock      boolean
     ) ON COMMIT DROP;
 
     INSERT INTO item_quantities_temp(item_id, base_unit_id, store_id, total_sales)
@@ -184,12 +185,20 @@ BEGIN
     GROUP BY item_id, base_unit_id, store_id;
 
     UPDATE item_quantities_temp
-    SET in_stock = core.count_item_in_stock(item_quantities_temp.item_id, item_quantities_temp.base_unit_id, item_quantities_temp.store_id);    
+    SET maintain_stock = core.items.maintain_stock
+    FROM core.items
+    WHERE item_quantities_temp.item_id = core.items.item_id;
+    
+    UPDATE item_quantities_temp
+    SET in_stock = core.count_item_in_stock(item_quantities_temp.item_id, item_quantities_temp.base_unit_id, item_quantities_temp.store_id)
+    WHERE maintain_stock;
+
 
     IF EXISTS
     (
         SELECT 0 FROM item_quantities_temp
         WHERE total_sales > in_stock
+        AND maintain_stock
         LIMIT 1
     ) THEN
         RAISE EXCEPTION 'Insufficient item quantity'
@@ -380,7 +389,7 @@ BEGIN
     PERFORM transactions.auto_verify(_transaction_master_id, _office_id);
 
     IF(NOT _is_credit) THEN
-        PERFORM transactions.post_receipt(_user_id, _office_id, _login_id, _party_code, _default_currency_code, _receivable, 1, 1, _reference_number, _statement_reference, _cost_center_id, _cash_repository_id, NULL, NULL, NULL, NULL, _transaction_master_id);
+        PERFORM transactions.post_receipt(_user_id, _office_id, _login_id, _party_code, _default_currency_code, _receivable, 1, 1, _reference_number, _statement_reference, _cost_center_id, _cash_repository_id, NULL, NULL, NULL, NULL, NULL, _transaction_master_id);
     ELSE
         PERFORM transactions.settle_party_due(_party_id, _office_id);
     END IF;

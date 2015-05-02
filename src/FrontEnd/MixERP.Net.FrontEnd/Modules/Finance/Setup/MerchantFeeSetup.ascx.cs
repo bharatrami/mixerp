@@ -16,17 +16,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using MixERP.Net.Common.Helpers;
-using MixERP.Net.Core.Modules.Finance.Resources;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Controls;
+using MixERP.Net.i18n.Resources;
 
 namespace MixERP.Net.Core.Modules.Finance.Setup
 {
@@ -47,7 +44,6 @@ namespace MixERP.Net.Core.Modules.Finance.Setup
                 scrud.DisplayViews = GetDisplayViews();
                 scrud.UseDisplayViewsAsParents = true;
 
-                scrud.ResourceAssembly = Assembly.GetAssembly(typeof(PaymentCards));
                 this.ScrudPlaceholder.Controls.Add(scrud);
             }
         }
@@ -57,6 +53,7 @@ namespace MixERP.Net.Core.Modules.Finance.Setup
             List<string> displayFields = new List<string>();
             ScrudHelper.AddDisplayField(displayFields, "core.bank_accounts.account_id", ConfigurationHelper.GetDbParameter("BankAccountDisplayField"));
             ScrudHelper.AddDisplayField(displayFields, "core.payment_cards.payment_card_id", ConfigurationHelper.GetDbParameter("PaymentCardDisplayField"));
+            ScrudHelper.AddDisplayField(displayFields, "core.accounts.account_id", ConfigurationHelper.GetDbParameter("AccountDisplayField"));
             return string.Join(",", displayFields);
         }
 
@@ -65,6 +62,7 @@ namespace MixERP.Net.Core.Modules.Finance.Setup
             List<string> displayViews = new List<string>();
             ScrudHelper.AddDisplayView(displayViews, "core.bank_accounts.account_id", "core.merchant_account_selector_view");
             ScrudHelper.AddDisplayView(displayViews, "core.payment_cards.payment_card_id", "core.payment_cards");
+            ScrudHelper.AddDisplayView(displayViews, "core.accounts.account_id", "core.merchant_fee_setup_account_selector_view");
             return string.Join(",", displayViews);
         }
     }

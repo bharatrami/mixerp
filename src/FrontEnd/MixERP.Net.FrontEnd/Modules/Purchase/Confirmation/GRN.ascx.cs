@@ -21,10 +21,10 @@ using System;
 using MixERP.Net.Common;
 using MixERP.Net.Common.Extensions;
 using MixERP.Net.Core.Modules.Purchase.Data.Helpers;
-using MixERP.Net.Core.Modules.Purchase.Resources;
 using MixERP.Net.Entities;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
+using MixERP.Net.i18n.Resources;
 using MixERP.Net.WebControls.TransactionChecklist;
 
 namespace MixERP.Net.Core.Modules.Purchase.Confirmation
@@ -54,6 +54,7 @@ namespace MixERP.Net.Core.Modules.Purchase.Confirmation
                 checklist.ViewPath = "/Modules/Purchase/GRN.mix";
                 checklist.AddNewPath = "/Modules/Purchase/Entry/GRN.mix";
                 checklist.UserId = CurrentUser.GetSignInView().UserId.ToInt();
+                checklist.RestrictedTransactionMode = this.IsRestrictedMode;
 
                 this.Placeholder1.Controls.Add(checklist);
             }

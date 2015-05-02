@@ -557,6 +557,8 @@ BEGIN
             payment_card_id                     integer NOT NULL REFERENCES core.payment_cards(payment_card_id),
             rate                                public.decimal_strict NOT NULL,
             customer_pays_fee                   boolean NOT NULL DEFAULT(false),
+            account_id                          bigint NOT NULL REFERENCES core.accounts(account_id),
+            statement_reference                 national character varying(128) NOT NULL DEFAULT(''),
             audit_user_id                       integer NULL REFERENCES office.users(user_id),            
             audit_ts                            TIMESTAMP WITH TIME ZONE NULL 
                                                 DEFAULT(NOW())            
@@ -568,3 +570,66 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+ALTER TABLE core.item_cost_prices
+DROP COLUMN IF EXISTS includes_tax;
+
+ALTER TABLE core.items
+DROP COLUMN IF EXISTS cost_price_includes_tax CASCADE;
+
+DO
+$$
+BEGIN
+    IF EXISTS
+    (
+        SELECT * FROM information_schema.check_constraints
+        WHERE constraint_name = 'payment_terms_check'
+    ) THEN
+        ALTER TABLE core.payment_terms
+        RENAME CONSTRAINT payment_terms_check TO payment_terms_chk;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+
+ALTER TABLE core.ageing_slabs
+DROP CONSTRAINT IF EXISTS ageing_slabs_to_days_check;
+
+DROP VIEW IF EXISTS core.ageing_slab_scrud_view;
+
+ALTER TABLE core.ageing_slabs
+ALTER COLUMN to_days TYPE public.integer_strict2;
+
+
+DO
+$$
+BEGIN
+    IF EXISTS
+    (
+        SELECT TRUE
+        FROM   pg_attribute 
+        WHERE  attrelid = 'localization.resources'::regclass
+        AND    attname = 'path'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE localization.resources
+        RENAME COLUMN path TO resource_class;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+DROP TABLE IF EXISTS localization.localized_resources CASCADE;
+
+CREATE TABLE localization.localized_resources
+(
+    resource_id             integer NOT NULL REFERENCES localization.resources(resource_id),
+    culture_code            text NOT NULL REFERENCES localization.cultures(culture_code),
+    value                   text NOT NULL
+);
+
+CREATE UNIQUE INDEX localized_resources_culture_key_uix
+ON localization.localized_resources
+(resource_id, UPPER(culture_code));
+

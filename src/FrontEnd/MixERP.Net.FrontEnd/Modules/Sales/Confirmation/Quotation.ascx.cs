@@ -23,6 +23,7 @@ using MixERP.Net.Common.Extensions;
 using MixERP.Net.Entities;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
+using MixERP.Net.i18n.Resources;
 using MixERP.Net.WebControls.TransactionChecklist;
 
 namespace MixERP.Net.Core.Modules.Sales.Confirmation
@@ -35,9 +36,9 @@ namespace MixERP.Net.Core.Modules.Sales.Confirmation
 
             using (TransactionChecklistForm checklist = new TransactionChecklistForm())
             {
-                checklist.ViewReportButtonText = Resources.Titles.ViewThisQuotation;
-                checklist.EmailReportButtonText = Resources.Titles.EmailThisQuotation;
-                checklist.Text = Resources.Titles.SalesQuotation;
+                checklist.ViewReportButtonText = Titles.ViewThisQuotation;
+                checklist.EmailReportButtonText = Titles.EmailThisQuotation;
+                checklist.Text = Titles.SalesQuotation;
                 checklist.PartyEmailAddress = Data.Helpers.Parties.GetEmailAddress(TranBook.Sales, SubTranBook.Quotation, transactionMasterId);
                 checklist.AttachmentBookName = "non-gl-transaction";
                 checklist.OverridePath = "/Modules/Sales/Quotation.mix";
@@ -49,6 +50,7 @@ namespace MixERP.Net.Core.Modules.Sales.Confirmation
                 checklist.ViewPath = "/Modules/Sales/Quotation.mix";
                 checklist.AddNewPath = "/Modules/Sales/Entry/Quotation.mix";
                 checklist.UserId = CurrentUser.GetSignInView().UserId.ToInt();
+                checklist.RestrictedTransactionMode = this.IsRestrictedMode;
 
                 this.Placeholder1.Controls.Add(checklist);
             }

@@ -31,7 +31,7 @@ using MixERP.Net.Entities.Office;
 using MixERP.Net.FrontEnd.Cache;
 using MixERP.Net.FrontEnd.Data.Helpers;
 using MixERP.Net.FrontEnd.Data.Office;
-using Resources;
+using MixERP.Net.i18n.Resources;
 using Serilog;
 
 namespace MixERP.Net.FrontEnd
@@ -64,6 +64,10 @@ namespace MixERP.Net.FrontEnd
                 return;
             }
 
+            if (branchSelect.Items.Count.Equals(0))
+            {
+                this.Response.Redirect("~/Install.aspx");
+            }
 
             if (!this.IsPostBack)
             {
@@ -83,6 +87,7 @@ namespace MixERP.Net.FrontEnd
         private void BindBranchDropDownList()
         {
             IEnumerable<DbGetOfficesResult> offices = Offices.GetOffices();
+
             this.branchSelect.DataSource = offices;
             this.branchSelect.DataBind();
         }
