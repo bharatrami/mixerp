@@ -21,8 +21,8 @@ using System;
 using MixERP.Net.Common.Extensions;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
+using MixERP.Net.FrontEnd.Controls;
 using MixERP.Net.i18n.Resources;
-using MixERP.Net.WebControls.TransactionChecklist;
 
 namespace MixERP.Net.Core.Modules.Finance.Confirmation
 {
@@ -30,7 +30,7 @@ namespace MixERP.Net.Core.Modules.Finance.Confirmation
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (TransactionChecklistForm checklist = new TransactionChecklistForm())
+            using (CheckList checklist = new CheckList())
             {
                 checklist.Text = Titles.JournalVoucherEntry;
                 checklist.DisplayWithdrawButton = true;
@@ -42,7 +42,7 @@ namespace MixERP.Net.Core.Modules.Finance.Confirmation
                 checklist.ViewPath = "~/Modules/Finance/JournalVoucher.mix";
                 checklist.AddNewPath = "~/Modules/Finance/Entry/JournalVoucher.mix";
                 checklist.GlAdvicePath = "~/Modules/Finance/Reports/GLAdviceReport.mix";
-                checklist.UserId = CurrentUser.GetSignInView().UserId.ToInt();
+                checklist.UserId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
                 checklist.RestrictedTransactionMode = this.IsRestrictedMode;
 
                 this.Placeholder1.Controls.Add(checklist);

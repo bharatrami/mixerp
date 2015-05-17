@@ -81,7 +81,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Policy
                     this.userSelect.ID = "UserSelect";
                     field.Controls.Add(this.userSelect);
 
-                    this.userSelect.DataSource = User.GetUserSelectorView();
+                    this.userSelect.DataSource = User.GetUserSelectorView(AppUsers.GetCurrentUserDB());
                     this.userSelect.DataTextField = "UserName";
                     this.userSelect.DataValueField = "UserId";
                     this.userSelect.DataBind();
@@ -100,7 +100,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Policy
                     this.officeSelect.ID = "OfficeSelect";
                     field.Controls.Add(this.officeSelect);
 
-                    this.officeSelect.DataSource = Office.GetOffices();
+                    this.officeSelect.DataSource = Office.GetOffices(AppUsers.GetCurrentUserDB());
                     this.officeSelect.DataTextField = "OfficeName";
                     this.officeSelect.DataValueField = "OfficeId";
                     this.officeSelect.DataBind();
@@ -167,7 +167,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Policy
                 return;
             }
 
-            Menu.SaveMenuPolicy(userId, officeId, menus);
+            Menu.SaveMenuPolicy(AppUsers.GetCurrentUserDB(), userId, officeId, menus);
             this.BindGrid();
         }
 
@@ -189,14 +189,14 @@ namespace MixERP.Net.Core.Modules.BackOffice.Policy
         {
             int userId = Conversion.TryCastInteger(this.userSelect.SelectedValue);
             int officeId = Conversion.TryCastInteger(this.officeSelect.SelectedValue);
-            string culture = CurrentUser.GetSignInView().Culture;
+            string culture = AppUsers.GetCurrentLogin().View.Culture;
 
             if (userId.Equals(0) || officeId.Equals(0))
             {
                 return;
             }
 
-            grid.DataSource = Menu.GetMenuPolicy(userId, officeId, culture);
+            grid.DataSource = Menu.GetMenuPolicy(AppUsers.GetCurrentUserDB(), userId, officeId, culture);
             grid.DataBind();
         }
 

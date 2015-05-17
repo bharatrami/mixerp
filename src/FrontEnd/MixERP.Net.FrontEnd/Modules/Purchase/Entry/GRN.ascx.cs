@@ -39,7 +39,8 @@ namespace MixERP.Net.Core.Modules.Purchase.Entry
                 product.Text = Titles.GoodsReceiptNote;
                 product.ShowStore = true;
                 product.ShowCostCenter = true;
-                product.OfficeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+                product.Catalog = AppUsers.GetCurrentUserDB();
+                product.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
                 this.Placeholder1.Controls.Add(product);
             }

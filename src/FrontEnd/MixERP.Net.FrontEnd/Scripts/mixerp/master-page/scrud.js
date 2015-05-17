@@ -1,4 +1,5 @@
 ﻿function pageLoad() {
+    initializeItemSelector();
     $(".item-selector").colorbox({ iframe: true, innerWidth: 1024, innerHeight: 450, overlayClose: false });
     $(".preview").colorbox({ iframe: true, innerWidth: 1024, innerHeight: 450, overlayClose: false });
 };
@@ -9,10 +10,6 @@ if (typeof Sys !== "undefined") {
         initializeItemSelector();
     });
 };
-
-$(document).ready(function () {
-    initializeItemSelector();
-});
 
 var initializeItemSelector = function () {
     var itemSelector = $("[role=item-selector]");

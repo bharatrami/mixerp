@@ -101,14 +101,14 @@ namespace MixERP.Net.Core.Modules.BackOffice.Widgets
 
         private void CreateContent(HtmlGenericControl container)
         {
-            int userId = CurrentUser.GetSignInView().UserId.ToInt();
+            int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
 
             if (userId.Equals(0))
             {
                 return;
             }
 
-            DbGetOfficeInformationModelResult model = Audit.GetOfficeInformationModel(userId);
+            DbGetOfficeInformationModelResult model = Audit.GetOfficeInformationModel(AppUsers.GetCurrentUserDB(), userId);
 
             using (HtmlGenericControl ul = new HtmlGenericControl("ul"))
             {

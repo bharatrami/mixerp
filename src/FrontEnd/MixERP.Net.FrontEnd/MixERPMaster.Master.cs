@@ -19,6 +19,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Globalization;
+using MixERP.Net.Common.Helpers;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
 using MixERP.Net.i18n.Resources;
@@ -29,9 +30,10 @@ namespace MixERP.Net.FrontEnd
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.BranchNameLiteral.Text = CurrentUser.GetSignInView().OfficeName;
+            this.CatalogLiteral.Text = AppUsers.GetCurrentUserDB();
+            this.BranchNameLiteral.Text = AppUsers.GetCurrentLogin().View.OfficeName;
             this.SignOutLiteral.Text = Titles.SignOut;
-            this.UserGreetingLiteral.Text = String.Format(CultureInfo.CurrentCulture, Labels.UserGreeting, CurrentUser.GetSignInView().UserName);
+            this.UserGreetingLiteral.Text = String.Format(CultureInfo.CurrentCulture, Labels.UserGreeting, AppUsers.GetCurrentLogin().View.UserName);
             this.ChangePasswordLiteral.Text = Titles.ChangePassword;
             this.ManageProfileLiteral.Text = Titles.ManageProfile;
             this.MixERPDocumentationLiteral.Text = Titles.MixERPDocumentation;

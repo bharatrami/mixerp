@@ -24,6 +24,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using MixERP.Net.Common;
 using MixERP.Net.Common.Base;
+using MixERP.Net.Common.Helpers;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
 using MixERP.Net.i18n.Resources;
@@ -38,7 +39,7 @@ namespace MixERP.Net.FrontEnd.Services
     public class User : WebService
     {
         [WebMethod(EnableSession = true)]
-        public string Authenticate(string username, string password, bool rememberMe, string language, int branchId)
+        public string Authenticate(string catalog, string username, string password, bool rememberMe, string language, int branchId)
         {
             Thread.Sleep(this.GetDelay());
 
@@ -49,8 +50,8 @@ namespace MixERP.Net.FrontEnd.Services
                 return Titles.AccessIsDenied;
             }
 
-
-            return this.Login(branchId, username, password, language, rememberMe, challenge, this.Context);
+            CatalogHelper.ValidateCatalog(catalog);
+            return this.Login(catalog, branchId, username, password, language, rememberMe, challenge, this.Context);
         }
 
         private int GetDelay()
@@ -65,18 +66,19 @@ namespace MixERP.Net.FrontEnd.Services
             return 1000;
         }
 
-        private string Login(int officeId, string userName, string password, string culture, bool rememberMe, string challenge, HttpContext context)
+        private string Login(string catalog, int officeId, string userName, string password, string culture, bool rememberMe, string challenge, HttpContext context)
         {
             try
             {
-                long signInId = Data.Office.User.SignIn(officeId, userName, password, culture, rememberMe, challenge, context);
+                long globalLoginId = Data.Office.User.SignIn(catalog, officeId, userName, password, culture, rememberMe, challenge, context);
 
                 Log.Information("{UserName} signed in to office : #{OfficeId} from {IP}.", userName, officeId, context.Request.ServerVariables["REMOTE_ADDR"]);
 
-                if (signInId > 0)
+                if (globalLoginId > 0)
                 {
-                    CurrentUser.SetSignInView(signInId);
-                    MixERPWebpage.SetAuthenticationTicket(this.Context.Response, signInId, rememberMe);
+                    AppUsers.SetCurrentLogin(globalLoginId);
+                    MixERPWebpage.SetAuthenticationTicket(this.Context.Response, globalLoginId, rememberMe);
+
 
                     return "OK";
                 }

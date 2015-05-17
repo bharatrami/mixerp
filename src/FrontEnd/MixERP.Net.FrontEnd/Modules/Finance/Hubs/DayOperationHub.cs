@@ -2,6 +2,8 @@
 using Microsoft.AspNet.SignalR;
 using MixERP.Net.Common;
 using MixERP.Net.Common.Events;
+using MixERP.Net.Common.Extensions;
+using MixERP.Net.FrontEnd.Cache;
 using MixERP.Net.i18n.Resources;
 
 namespace MixERP.Net.Core.Modules.Finance.Hubs
@@ -17,8 +19,9 @@ namespace MixERP.Net.Core.Modules.Finance.Hubs
                 return;
             }
 
-            long loginId = Conversion.TryCastLong(this.Context.User.Identity.Name);
-            if (loginId <= 0)
+            long globalLoginId = Conversion.TryCastLong(this.Context.User.Identity.Name);
+
+            if (globalLoginId <= 0)
             {
                 this.Clients.Caller.getNotification(Warnings.AccessIsDenied);
                 return;
@@ -26,11 +29,14 @@ namespace MixERP.Net.Core.Modules.Finance.Hubs
 
             Data.EODOperation operation = new Data.EODOperation();
             operation.NotificationReceived += this.EOD_NotificationReceived;
-            operation.Perform(loginId);
+
+            string catalog = AppUsers.GetCurrentUserDB();
+
+            operation.Perform(catalog, AppUsers.GetCurrentLogin().View.LoginId.ToLong());
         }
 
         private void EOD_NotificationReceived(object sender, MixERPPGEventArgs e)
-        {            
+        {
             this.Clients.Caller.getNotification(e.AdditionalInformation, e.Condition);
         }
     }

@@ -50,10 +50,11 @@ namespace MixERP.Net.Core.Modules.Finance
                 view.DateToFrequencyType = FrequencyType.Today;
                 view.Status = "Unverified";
 
-                view.OfficeName = CurrentUser.GetSignInView().OfficeName;
+                view.OfficeName = AppUsers.GetCurrentLogin().View.OfficeName;
 
-                view.UserId = CurrentUser.GetSignInView().UserId.ToInt();
-                view.OfficeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+                view.UserId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
+                view.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+                view.Catalog = AppUsers.GetCurrentUserDB();
 
                 this.Controls.Add(view);
             }
@@ -146,6 +147,7 @@ namespace MixERP.Net.Core.Modules.Finance
         {
             using (HtmlGenericControl modal = HtmlControlHelper.GetModal())
             {
+                modal.ID = "ActionModal";
                 this.AddHeader(modal);
                 this.AddContent(modal);
                 this.AddActions(modal);

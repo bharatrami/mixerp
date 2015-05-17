@@ -16,11 +16,14 @@ namespace MixERP.Net.Entities
     public sealed class Factory
     {
         private const string ProviderName = "Npgsql";
-        public static IEnumerable<T> Get<T>(string sql, params object[] args)
+        public static string MetaDatabase = ConfigurationHelper.GetDbServerParameter("MetaDatabase");
+
+
+        public static IEnumerable<T> Get<T>(string catalog, string sql, params object[] args)
         {
             try
             {
-                using (Database db = new Database(GetConnectionString(), ProviderName))
+                using (Database db = new Database(GetConnectionString(catalog), ProviderName))
                 {
                     return db.Query<T>(sql, args);
                 }
@@ -37,11 +40,11 @@ namespace MixERP.Net.Entities
             }
         }
 
-        public static T Scalar<T>(string sql, params object[] args)
+        public static T Scalar<T>(string catalog, string sql, params object[] args)
         {
             try
             {
-                using (Database db = new Database(GetConnectionString(), ProviderName))
+                using (Database db = new Database(GetConnectionString(catalog), ProviderName))
                 {
                     return db.ExecuteScalar<T>(sql, args);
                 }
@@ -58,11 +61,11 @@ namespace MixERP.Net.Entities
             }
         }
 
-        public static void NonQuery(string sql, params object[] args)
+        public static void NonQuery(string catalog, string sql, params object[] args)
         {
             try
             {
-                using (Database db = new Database(GetConnectionString(), ProviderName))
+                using (Database db = new Database(GetConnectionString(catalog), ProviderName))
                 {
                     db.Execute(sql, args);
                 }
@@ -91,18 +94,19 @@ namespace MixERP.Net.Entities
             return message;
         }
 
-        private static Assembly GetAssemblyByName(string name)
+        public static string GetConnectionString(string catalog = "")
         {
-            return AppDomain.CurrentDomain.GetAssemblies().
-                   SingleOrDefault(assembly => assembly.GetName().Name == name);
-        }
+            string database = ConfigurationHelper.GetDbServerParameter("Database");
 
-        public static string GetConnectionString()
-        {
+            if (!string.IsNullOrWhiteSpace(catalog))
+            {
+                database = catalog;
+            }
+
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder
             {
                 Host = ConfigurationHelper.GetDbServerParameter("Server"),
-                Database = ConfigurationHelper.GetDbServerParameter("Database"),
+                Database = database,
                 UserName = ConfigurationHelper.GetDbServerParameter("UserId"),
                 Password = ConfigurationHelper.GetDbServerParameter("Password"),
                 Port = Conversion.TryCastInteger(ConfigurationHelper.GetDbServerParameter("Port")),

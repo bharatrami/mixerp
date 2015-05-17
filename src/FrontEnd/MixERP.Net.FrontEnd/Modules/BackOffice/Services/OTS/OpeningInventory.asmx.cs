@@ -48,13 +48,13 @@ namespace MixERP.Net.Core.Modules.BackOffice.Services.OTS
                     return 0;
                 }
 
-                int userId = CurrentUser.GetSignInView().UserId.ToInt();
-                int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
-                long loginId = CurrentUser.GetSignInView().LoginId.ToLong();
+                int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
+                int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+                long loginId = AppUsers.GetCurrentLogin().View.LoginId.ToLong();
 
                 Collection<OpeningStockType> details = this.GetStockDetails(jsonDetails);
 
-                return Data.OneTimeSetup.OpeningInventory.Save(officeId, userId, loginId, valueDate, referenceNumber, statementReference, details);
+                return Data.OneTimeSetup.OpeningInventory.Save(AppUsers.GetCurrentUserDB(), officeId, userId, loginId, valueDate, referenceNumber, statementReference, details);
             }
             catch (Exception ex)
             {

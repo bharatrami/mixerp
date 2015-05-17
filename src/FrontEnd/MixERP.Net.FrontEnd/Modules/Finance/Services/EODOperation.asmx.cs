@@ -41,15 +41,15 @@ namespace MixERP.Net.Core.Modules.Finance.Services
         {
             try
             {
-                if (!CurrentUser.GetSignInView().IsAdmin.ToBool())
+                if (!AppUsers.GetCurrentLogin().View.IsAdmin.ToBool())
                 {
                     return false;
                 }
 
-                int userId = CurrentUser.GetSignInView().UserId.ToInt();
-                int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+                int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
+                int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
-                Data.EODOperation.Initialize(userId, officeId);
+                Data.EODOperation.Initialize(AppUsers.GetCurrentUserDB(), userId, officeId);
 
                 ForceLogOff(officeId);
 
@@ -78,7 +78,7 @@ namespace MixERP.Net.Core.Modules.Finance.Services
 
         private static void ForceLogOff(int officeId)
         {
-            Collection<ApplicationDateModel> applicationDates = CacheFactory.GetApplicationDates();
+            Collection<ApplicationDateModel> applicationDates = CacheFactory.GetApplicationDates(AppUsers.GetCurrentUserDB());
             DateTime forcedLogOffOn = DateTime.Now.AddMinutes(2);
 
             if (applicationDates != null)
@@ -98,15 +98,15 @@ namespace MixERP.Net.Core.Modules.Finance.Services
                     }
 
 
-                    CacheFactory.SetApplicationDates(applicationDates);
+                    CacheFactory.SetApplicationDates(AppUsers.GetCurrentUserDB(), applicationDates);
                 }
             }
         }
 
         private static void SuggestDateReload()
         {
-            int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
-            Collection<ApplicationDateModel> applicationDates = CacheFactory.GetApplicationDates();
+            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+            Collection<ApplicationDateModel> applicationDates = CacheFactory.GetApplicationDates(AppUsers.GetCurrentUserDB());
 
             if (applicationDates != null)
             {
@@ -123,7 +123,7 @@ namespace MixERP.Net.Core.Modules.Finance.Services
                     }
 
 
-                    CacheFactory.SetApplicationDates(applicationDates);
+                    CacheFactory.SetApplicationDates(AppUsers.GetCurrentUserDB(), applicationDates);
                 }
             }
         }

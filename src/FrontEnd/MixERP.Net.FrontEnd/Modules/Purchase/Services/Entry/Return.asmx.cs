@@ -46,12 +46,12 @@ namespace MixERP.Net.Core.Modules.Purchase.Services.Entry
         {
             try
             {
-                if (!StockTransaction.IsValidStockTransactionByTransactionMasterId(tranId))
+                if (!StockTransaction.IsValidStockTransactionByTransactionMasterId(AppUsers.GetCurrentUserDB(), tranId))
                 {
                     throw new InvalidOperationException(Warnings.InvalidStockTransaction);
                 }
 
-                if (!StockTransaction.IsValidPartyByTransactionMasterId(tranId, partyCode))
+                if (!StockTransaction.IsValidPartyByTransactionMasterId(AppUsers.GetCurrentUserDB(), tranId, partyCode))
                 {
                     throw new InvalidOperationException(Warnings.InvalidParty);
                 }
@@ -61,11 +61,11 @@ namespace MixERP.Net.Core.Modules.Purchase.Services.Entry
 
                 Collection<Attachment> attachments = CollectionHelper.GetAttachmentCollection(attachmentsJSON);
 
-                int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
-                int userId = CurrentUser.GetSignInView().UserId.ToInt();
-                long loginId = CurrentUser.GetSignInView().LoginId.ToLong();
+                int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+                int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
+                long loginId = AppUsers.GetCurrentLogin().View.LoginId.ToLong();
 
-                return Data.Transactions.Return.PostTransaction(tranId, valueDate, officeId, userId, loginId, storeId,
+                return Data.Transactions.Return.PostTransaction(AppUsers.GetCurrentUserDB(), tranId, valueDate, officeId, userId, loginId, storeId,
                     partyCode, priceTypeId, referenceNumber, statementReference, details, attachments);
             }
             catch (Exception ex)

@@ -283,8 +283,9 @@ namespace MixERP.Net.Core.Modules.Inventory
 
                 this.valueDateTextBox = new DateTextBox();
                 this.valueDateTextBox.ID = "ValueDateTextBox";
-                this.valueDateTextBox.OfficeId = CurrentUser.GetSignInView().OfficeId.ToInt();
                 this.valueDateTextBox.Mode = FrequencyType.Today;
+                this.valueDateTextBox.Catalog = AppUsers.GetCurrentUserDB();
+                this.valueDateTextBox.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
                 field.Controls.Add(this.valueDateTextBox);
 
@@ -302,7 +303,7 @@ namespace MixERP.Net.Core.Modules.Inventory
             }
 
 
-            this.grid.DataSource = StockItems.ListClosingStock(storeId);
+            this.grid.DataSource = StockItems.ListClosingStock(AppUsers.GetCurrentUserDB(), storeId);
             this.grid.DataBind();
         }
 
@@ -324,8 +325,26 @@ namespace MixERP.Net.Core.Modules.Inventory
         {
             for (int i = 0; i < e.Row.Cells.Count - 2; i++)
             {
-                e.Row.Cells[i].Text = Titles.Get(e.Row.Cells[i].Text);
+                if (!IsEmptyCell(e.Row.Cells[i]))
+                {
+                    e.Row.Cells[i].Text = Titles.Get(e.Row.Cells[i].Text);
+                }
             }
+        }
+
+        public bool IsEmptyCell(TableCell cell)
+        {
+            if (string.IsNullOrWhiteSpace(cell.Text))
+            {
+                return true;
+            }
+
+            if (cell.Text.ToUpperInvariant().Equals("&NBSP;"))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

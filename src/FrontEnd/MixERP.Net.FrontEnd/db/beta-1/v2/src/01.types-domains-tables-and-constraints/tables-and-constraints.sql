@@ -168,7 +168,7 @@ SELECT
     recurring_invoice_code, 
     recurring_invoice_name, 
     item_id, 
-    recurring_frequency_id, 
+    COALESCE(recurring_frequency_id, 2), 
     recurring_amount,
     auto_trigger_on_sales,
     core.get_payment_term_id_by_payment_term_code('07-D'),
@@ -633,3 +633,66 @@ CREATE UNIQUE INDEX localized_resources_culture_key_uix
 ON localization.localized_resources
 (resource_id, UPPER(culture_code));
 
+
+ALTER TABLE core.item_groups
+ALTER COLUMN sales_account_id SET DEFAULT(core.get_account_id_by_account_number('30100'));
+
+ALTER TABLE core.item_groups
+ALTER COLUMN sales_discount_account_id SET DEFAULT(core.get_account_id_by_account_number('40270'));
+
+ALTER TABLE core.item_groups
+ALTER COLUMN sales_return_account_id SET DEFAULT(core.get_account_id_by_account_number('20701'));
+
+ALTER TABLE core.item_groups
+ALTER COLUMN purchase_account_id SET DEFAULT(core.get_account_id_by_account_number('40100'));
+
+ALTER TABLE core.item_groups
+ALTER COLUMN purchase_discount_account_id SET DEFAULT(core.get_account_id_by_account_number('30700'));
+
+ALTER TABLE core.item_groups
+ALTER COLUMN inventory_account_id SET DEFAULT(core.get_account_id_by_account_number('10700'));
+
+ALTER TABLE core.item_groups
+ALTER COLUMN cost_of_goods_sold_account_id SET DEFAULT(core.get_account_id_by_account_number('40200'));
+
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'transactions.transaction_master'::regclass
+        AND    attname = 'book_date'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE transactions.transaction_master
+        ADD COLUMN book_date date NOT NULL DEFAULT(NOW());
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+DROP INDEX IF EXISTS core.compound_units_base_unit_id_uix;
+
+CREATE UNIQUE INDEX compound_units_base_unit_id_uix
+ON core.compound_units(base_unit_id);
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'core.compound_item_details'::regclass
+        AND    attname = 'discount'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE core.compound_item_details
+        ADD COLUMN discount public.money_strict2 NOT NULL DEFAULT(0);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;

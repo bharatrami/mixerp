@@ -127,7 +127,7 @@ namespace MixERP.Net.WebControls.ReportEngine
 
                     string path = reportNode.Attributes["Path"].Value;
 
-                    ReportInstaller.InstallReport(menuCode, parentMenuCode, level, menuText, path);
+                    ReportInstaller.InstallReport(this.Catalog, menuCode, parentMenuCode, level, menuText, path);
                 }
             }
         }
@@ -244,7 +244,7 @@ namespace MixERP.Net.WebControls.ReportEngine
                         }
 
                         //Get DataTable from SQL Query and parameter collection.
-                        using (DataTable table = TableHelper.GetDataTable(sql, parameters))
+                        using (DataTable table = TableHelper.GetDataTable(this.Catalog, sql, parameters))
                         {
                             //Add this datatable to the collection for later binding.
                             this.dataTableCollection.Add(table);

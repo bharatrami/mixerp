@@ -20,11 +20,8 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 
 <style type="text/css">
     #AccountOverViewGrid td:nth-child(1),
-    #AccountOverViewGrid th:nth-child(1) {
-        width: 200px;
-    }
+    #AccountOverViewGrid th:nth-child(1) { width: 200px; }
 </style>
 
 <asp:PlaceHolder runat="server" ID="Placeholder1"></asp:PlaceHolder>
-
 <script src="/Modules/Finance/Scripts/Reports/AccountStatement.js"></script>

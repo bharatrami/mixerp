@@ -35,12 +35,13 @@ namespace MixERP.Net.Core.Modules.Sales.Widgets
 
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+            string catalog = AppUsers.GetCurrentUserDB();
 
             this.TitleLiteral.Text = Titles.SalesByMonthInThousands;
 
             this.SalesByMonthGridView.Attributes.Add("style", "display:none;");
-            this.SalesByMonthGridView.DataSource = Data.Reports.SalesByMonth.GetSalesByOffice(officeId);
+            this.SalesByMonthGridView.DataSource = Data.Reports.SalesByMonth.GetSalesByOffice(catalog, officeId);
             this.SalesByMonthGridView.DataBind();
         }
     }

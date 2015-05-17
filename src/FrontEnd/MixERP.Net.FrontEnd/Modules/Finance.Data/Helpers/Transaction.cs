@@ -21,8 +21,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MixERP.Net.Common;
+using MixERP.Net.Common.Base;
 using MixERP.Net.Common.Helpers;
+using MixERP.Net.Common.Models;
 using MixERP.Net.DbFactory;
+using MixERP.Net.Entities;
 using MixERP.Net.Entities.Core;
 using MixERP.Net.Entities.Models.Transactions;
 using MixERP.Net.i18n.Resources;
@@ -33,7 +36,7 @@ namespace MixERP.Net.Core.Modules.Finance.Data.Helpers
 {
     public static class Transaction
     {
-        public static decimal GetExchangeRate(int officeId, string currencyCode)
+        public static decimal GetExchangeRate(string catalog, int officeId, string currencyCode)
         {
             const string sql = "SELECT transactions.get_exchange_rate(@OfficeId, @CurrencyCode);";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
@@ -41,22 +44,29 @@ namespace MixERP.Net.Core.Modules.Finance.Data.Helpers
                 command.Parameters.AddWithValue("@OfficeId", officeId);
                 command.Parameters.AddWithValue("@CurrencyCode", currencyCode);
 
-                return Conversion.TryCastDecimal(DbOperation.GetScalarValue(command));
+                return Conversion.TryCastDecimal(DbOperation.GetScalarValue(catalog, command));
             }
         }
 
-        public static long GetTranIdByTranCode(string tranCode)
+        public static long GetTranIdByTranCode(string catalog, string tranCode)
         {
             const string sql = "SELECT transaction_master_id FROM transactions.transaction_master WHERE transaction_code=@TranCode;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@TranCode", tranCode);
 
-                return Conversion.TryCastLong(DbOperation.GetScalarValue(command));
+                return Conversion.TryCastLong(DbOperation.GetScalarValue(catalog, command));
             }
         }
 
-        public static void Verify(long tranId, int officeId, int userId, long loginId, short verificationStatusId, string reason)
+        public static bool Reconcile(string catalog, string tranCode, DateTime bookDate)
+        {
+            const string sql = "UPDATE transactions.transaction_master SET book_date=@0::date WHERE transaction_code=@1::national character varying(50);";
+            Factory.NonQuery(catalog, sql, bookDate, tranCode);
+            return true;
+        }
+
+        public static void Verify(string catalog, long tranId, int officeId, int userId, long loginId, short verificationStatusId, string reason)
         {
             const string sql = "SELECT * FROM transactions.verify_transaction(@TranId::bigint, @OfficeId::integer, @UserId::integer, @LoginId::bigint, @VerificationStatusId::smallint, @Reason::national character varying);";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
@@ -68,11 +78,11 @@ namespace MixERP.Net.Core.Modules.Finance.Data.Helpers
                 command.Parameters.AddWithValue("@VerificationStatusId", verificationStatusId);
                 command.Parameters.AddWithValue("@Reason", reason);
 
-                DbOperation.ExecuteNonQuery(command);
+                DbOperation.ExecuteNonQuery(catalog, command);
             }
         }
 
-        public static long Add(DateTime valueDate, int officeId, int userId, long loginId, int costCenterId, string referenceNumber, Collection<JournalDetail> details, Collection<Attachment> attachments)
+        public static long Add(string catalog, DateTime valueDate, int officeId, int userId, long loginId, int costCenterId, string referenceNumber, Collection<JournalDetail> details, Collection<Attachment> attachments)
         {
             if (details == null)
             {
@@ -101,7 +111,7 @@ namespace MixERP.Net.Core.Modules.Finance.Data.Helpers
                 throw new InvalidOperationException(Errors.ReferencingSidesNotEqual);
             }
 
-            using (NpgsqlConnection connection = new NpgsqlConnection(DbConnection.GetConnectionString()))
+            using (NpgsqlConnection connection = new NpgsqlConnection(DbConnection.GetConnectionString(catalog)))
             {
                 connection.Open();
 

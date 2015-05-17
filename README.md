@@ -18,7 +18,7 @@ Tell us what you like to see in the CRM Module! Not sure? Then what about review
 
 ##Beta 1 Version 2 is Coming Soon
 
-Please stay tuned to updates and releases because we are planning to release the second version of the first Beta release with added features and improved functions within March 2015. Case you find any issues with the project , please feel free to post on [MixERP forums](http://mixerp.org/forum). Let us know how we can help you.
+Please stay tuned to updates and releases because we are planning to release the second version of the first Beta release with added features and improved functions within May end 2015. Case you find any issues with the project , please feel free to post on [MixERP forums](http://mixerp.org/forum). Let us know how we can help you.
 
 [Beta 1 Version 2 Milestone](https://github.com/mixerp/mixerp/milestones/Beta%201%20Version%202%20%28QA%29)
 
@@ -29,13 +29,17 @@ All transactions posted to the **v1** is supported and will be automatically upd
 #Where Can I Get Support?
 Please create an account in [MixERP Forums](http://mixerp.org/forum) and post your questions there. We will be happy to help.
 
+If you can afford to, please consider [making a donation](http://www.mixerp.org/donate) for continued development of MixERP project.
+
+<a href="http://www.mixerp.org/donate"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"/></a>
+
+
 #Where is documentation?
 The documentation now lives in the "gh-pages" branch and is hosted on GitHub pages here:
 
 [MixERP Documentation](http://docs.mixerp.org)
 
 Similarly, the branch "gh-pages" is periodically merged into "master" branch. **Using firefox**, you can view the documentation locally by opening "index-ajax.html" on the root folder.
-
 
 ##Why Betas?
 
@@ -138,6 +142,7 @@ MixERP has a very wide range of features which are tightly integrated with each 
 
 ##How Can I Support MixERP?
 
+* Donate to MixERP project.
 * Translate MixERP in your language.
 * Support MixERP by providing ASP.net 4.5 and PostgreSQL hosting.
 * Build and host MixERP on your development server.

@@ -42,7 +42,8 @@ namespace MixERP.Net.Core.Modules.Sales.Entry
                 product.ShowSalesAgents = true;
                 product.ShowSalesType = true;
                 product.ShowStore = true;
-                product.OfficeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+                product.Catalog = AppUsers.GetCurrentUserDB();
+                product.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
                 this.Placeholder1.Controls.Add(product);
             }

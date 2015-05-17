@@ -46,6 +46,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             this.CreateTopPanel(this.Placeholder1);
             this.CreateTabs(this.Placeholder1);
             this.CreateFlagPanel(this.Placeholder1);
+            this.CreateReconcileModal(this.Placeholder1);
             this.AutoInitialize();
         }
 
@@ -64,7 +65,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             {
                 if (accountId > 0)
                 {
-                    accountNumber = AccountHelper.GetAccountNumberByAccountId(accountId);
+                    accountNumber = AccountHelper.GetAccountNumberByAccountId(AppUsers.GetCurrentUserDB(), accountId);
 
                     this.accountNumberInputText.Value = accountNumber;
                 }
@@ -88,7 +89,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             this.CreateAccountOverviewPanel(this.accountOverviewTab);
         }
 
-        private void CreateFlagPanel(Control placeHolder)
+        private void CreateFlagPanel(Control container)
         {
             using (FlagControl flag = new FlagControl())
             {
@@ -97,8 +98,9 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
                 flag.OnClientClick = "return getSelectedItems();";
                 flag.CssClass = "ui form segment initially hidden";
                 flag.Updated += this.Flag_Updated;
+                flag.Catalog = AppUsers.GetCurrentUserDB();
 
-                placeHolder.Controls.Add(flag);
+                container.Controls.Add(flag);
             }
         }
 
@@ -118,9 +120,10 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             const string resource = "account_statement";
             const string resourceKey = "transaction_code";
 
-            int userId = CurrentUser.GetSignInView().UserId.ToInt();
+            int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
 
-            Flags.CreateFlag(userId, flagTypeId, resource, resourceKey, this.GetSelectedValues());
+            Flags.CreateFlag(AppUsers.GetCurrentUserDB(), userId, flagTypeId, resource, resourceKey,
+                this.GetSelectedValues());
 
             this.BindGridView();
             this.CreateAccountOverviewPanel(this.accountOverviewTab);
@@ -371,7 +374,8 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             }
 
             string accountNumber = this.accountNumberInputText.Value;
-            AccountView view = Data.Reports.AccountStatement.GetAccountOverview(accountNumber);
+            AccountView view = Data.Reports.AccountStatement.GetAccountOverview(AppUsers.GetCurrentUserDB(),
+                accountNumber);
 
             if (view == null)
             {
@@ -419,7 +423,9 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
         {
             using (HtmlGenericControl field = HtmlControlHelper.GetField())
             {
-                using (HtmlGenericControl label = HtmlControlHelper.GetLabel(Titles.AccountNumber, "AccountNumberInputText"))
+                using (
+                    HtmlGenericControl label = HtmlControlHelper.GetLabel(Titles.AccountNumber, "AccountNumberInputText")
+                    )
                 {
                     field.Controls.Add(label);
                 }
@@ -453,7 +459,8 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             this.fromDateTextBox = new DateTextBox();
             this.fromDateTextBox.ID = "FromDateTextBox";
             this.fromDateTextBox.Mode = FrequencyType.FiscalYearStartDate;
-            this.fromDateTextBox.OfficeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+            this.fromDateTextBox.Catalog = AppUsers.GetCurrentUserDB();
+            this.fromDateTextBox.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
             using (HtmlGenericControl field = this.GetDateField(Titles.From, this.fromDateTextBox))
             {
@@ -486,7 +493,8 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             this.toDateTextBox = new DateTextBox();
             this.toDateTextBox.ID = "ToDateTextBox";
             this.toDateTextBox.Mode = FrequencyType.FiscalYearEndDate;
-            this.toDateTextBox.OfficeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+            this.toDateTextBox.Catalog = AppUsers.GetCurrentUserDB();
+            this.toDateTextBox.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
             using (HtmlGenericControl field = this.GetDateField(Titles.To, this.toDateTextBox))
             {
@@ -498,11 +506,13 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
         {
             DateTime from = Conversion.TryCastDate(this.fromDateTextBox.Text);
             DateTime to = Conversion.TryCastDate(this.toDateTextBox.Text);
-            int userId = CurrentUser.GetSignInView().UserId.ToInt();
+            int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
             string accountNumber = this.accountNumberInputText.Value;
-            int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
-            this.statementGridView.DataSource = Data.Reports.AccountStatement.GetAccountStatement(from, to, userId, accountNumber, officeId);
+            this.statementGridView.DataSource =
+                Data.Reports.AccountStatement.GetAccountStatement(AppUsers.GetCurrentUserDB(), from, to, userId,
+                    accountNumber, officeId);
             this.statementGridView.DataBound += this.StatementGridViewDataBound;
             this.statementGridView.DataBind();
         }
@@ -542,7 +552,8 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
                     using (HtmlGenericControl icon = new HtmlGenericControl("i"))
                     {
                         icon.Attributes.Add("class", "icon calendar pointer");
-                        icon.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "$('#{0}').datepicker('show');", dateTextBox.ID));
+                        icon.Attributes.Add("onclick",
+                            string.Format(CultureInfo.InvariantCulture, "$('#{0}').datepicker('show');", dateTextBox.ID));
                     }
 
                     field.Controls.Add(iconInput);
@@ -608,6 +619,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             this.AddTemplateFields();
             GridViewHelper.AddDataBoundControl(this.statementGridView, "TranCode", Titles.TranCode);
             GridViewHelper.AddDataBoundControl(this.statementGridView, "ValueDate", Titles.ValueDate, "{0:d}");
+            GridViewHelper.AddDataBoundControl(this.statementGridView, "BookDate", Titles.BookDate, "{0:d}");
             GridViewHelper.AddDataBoundControl(this.statementGridView, "Debit", Titles.Debit, "{0:N}", true);
             GridViewHelper.AddDataBoundControl(this.statementGridView, "Credit", Titles.Credit, "{0:N}", true);
             GridViewHelper.AddDataBoundControl(this.statementGridView, "Balance", Titles.Balance, "{0:N}", true);
@@ -650,13 +662,25 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
 
         #region Top Panel
 
+        private void AddReconcileButton(HtmlGenericControl container)
+        {
+            using (HtmlButton flagButton = new HtmlButton())
+            {
+                flagButton.ID = "ReconcileButton";
+                flagButton.Attributes.Add("class", "ui button");
+                flagButton.Attributes.Add("onclick", "return showReconcileWindow();");
+                flagButton.InnerHtml = "<i class='circle notched icon'></i>" + Titles.Reconcile;
+                container.Controls.Add(flagButton);
+            }
+        }
+
         private void AddFlagButton(HtmlGenericControl container)
         {
             using (HtmlButton flagButton = new HtmlButton())
             {
                 flagButton.ID = "FlagButton";
                 flagButton.Attributes.Add("class", "ui button");
-                flagButton.Attributes.Add("onclick", "return false");
+                flagButton.Attributes.Add("onclick", "return false;");
                 flagButton.InnerHtml = "<i class='icon flag'></i>" + Titles.Flag;
                 container.Controls.Add(flagButton);
             }
@@ -676,7 +700,8 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             {
                 newButton.ID = "AddNewButton";
                 newButton.Attributes.Add("class", "ui button");
-                newButton.Attributes.Add("onclick", "window.location='/Modules/Finance/Entry/JournalVoucher.mix';return false;");
+                newButton.Attributes.Add("onclick",
+                    "window.location='/Modules/Finance/Entry/JournalVoucher.mix';return false;");
                 newButton.InnerHtml = "<i class='icon plus'></i>" + Titles.NewJournalEntry;
                 container.Controls.Add(newButton);
             }
@@ -688,7 +713,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             {
                 printButton.ID = "PrintButton";
                 printButton.Attributes.Add("class", "ui button");
-                printButton.Attributes.Add("onclick", "return false");
+                printButton.Attributes.Add("onclick", "return false;");
                 printButton.InnerHtml = "<i class='icon print'></i>" + Titles.Print;
                 container.Controls.Add(printButton);
             }
@@ -702,6 +727,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
 
                 this.AddNewButton(buttons);
                 this.AddFlagButton(buttons);
+                this.AddReconcileButton(buttons);
                 this.AddPrintButton(buttons);
                 this.AddHiddenFields(buttons);
                 container.Controls.Add(buttons);
@@ -709,5 +735,160 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
         }
 
         #endregion Top Panel
+
+        #region Reconcile Modal
+
+        private void CreateReconcileModal(Control container)
+        {
+            using (HtmlGenericControl modal = HtmlControlHelper.GetModal("ui small modal", "ReconcileModal"))
+            {
+                using (HtmlGenericControl closeIcon = HtmlControlHelper.GetIcon("close icon"))
+                {
+                    modal.Controls.Add(closeIcon);
+                }
+
+                using (HtmlGenericControl header = HtmlControlHelper.GetModalHeader(Titles.Reconcile, "circle notched icon"))
+                {
+                    modal.Controls.Add(header);
+                }
+
+                this.CreateModalContent(modal);
+
+                container.Controls.Add(modal);
+            }
+        }
+
+        private void CreateModalContent(HtmlGenericControl container)
+        {
+            using (HtmlGenericControl content = new HtmlGenericControl("div"))
+            {
+                content.Attributes.Add("class", "content");
+
+                this.CreateModalForm(content);
+
+                container.Controls.Add(content);
+            }
+        }
+
+        private void CreateModalForm(HtmlGenericControl container)
+        {
+            using (HtmlGenericControl form = HtmlControlHelper.GetForm())
+            {
+                this.CreateModalFormFields(form);
+                this.CreateModalButtons(form);
+                container.Controls.Add(form);
+            }
+        }
+
+        private void CreateModalButtons(HtmlGenericControl container)
+        {
+            this.CreateButton(container, Titles.OK, "ui green button", "reconcile();");
+            this.CreateButton(container, Titles.Close, "ui red button", "$(\"#ReconcileModal\").modal(\"hide\");");
+        }
+
+        private void CreateButton(HtmlGenericControl container, string text, string cssClass, string onclick)
+        {
+            using (HtmlInputButton button = new HtmlInputButton())
+            {
+                button.Value = text;
+                button.Attributes.Add("class", cssClass);
+                button.Attributes.Add("onclick", onclick);
+                container.Controls.Add(button);
+            }
+        }
+
+        private void CreateModalFormFields(HtmlGenericControl container)
+        {
+            using (HtmlGenericControl twoFields = HtmlControlHelper.GetFields("two fields"))
+            {
+                this.CreateTranCodeField(twoFields);
+                this.CreateCurrentBookDateField(twoFields);
+
+                container.Controls.Add(twoFields);
+            }
+
+            using (HtmlGenericControl field = HtmlControlHelper.GetField())
+            {
+                using (HtmlGenericControl label = HtmlControlHelper.GetLabel(Titles.NewBookDate))
+                {
+                    field.Controls.Add(label);
+                }
+
+                using (HtmlGenericControl threeFields = HtmlControlHelper.GetFields("three fields"))
+                {
+                    this.CreateYearField(threeFields);
+                    this.CreateMonthField(threeFields);
+                    this.CreateDayField(threeFields);
+
+
+                    field.Controls.Add(threeFields);
+                }
+                container.Controls.Add(field);
+            }
+        }
+
+        private void CreateTranCodeField(HtmlGenericControl container)
+        {
+            this.CreateField(container, Titles.TranCode, "TranCodeInputText");
+        }
+
+        private void CreateCurrentBookDateField(HtmlGenericControl container)
+        {
+            this.CreateField(container, Titles.CurrentBookDate, "CurrentBookDateInputText");
+        }
+
+        private void CreateYearField(HtmlGenericControl container)
+        {
+            this.CreateInlineField(container, "YearInputText", Titles.Year, "integer");
+        }
+
+        private void CreateMonthField(HtmlGenericControl container)
+        {
+            this.CreateInlineField(container, "MonthInputText", Titles.Month, "integer");
+        }
+
+        private void CreateDayField(HtmlGenericControl container)
+        {
+            this.CreateInlineField(container, "DayInputText", Titles.Day, "integer");
+        }
+
+        private void CreateInlineField(HtmlGenericControl container, string id, string placeHolder, string cssClass)
+        {
+            using (HtmlGenericControl field = HtmlControlHelper.GetField())
+            {
+                using (HtmlInputText inputText = new HtmlInputText())
+                {
+                    inputText.ID = id;
+                    inputText.Attributes.Add("placeholder", placeHolder);
+                    inputText.Attributes.Add("class", cssClass);
+
+                    field.Controls.Add(inputText);
+                }
+
+                container.Controls.Add(field);
+            }
+        }
+
+        private void CreateField(HtmlGenericControl container, string label, string id)
+        {
+            using (HtmlGenericControl field = HtmlControlHelper.GetField())
+            {
+                using (HtmlGenericControl fieldLabel = HtmlControlHelper.GetLabel(label, id))
+                {
+                    field.Controls.Add(fieldLabel);
+                }
+
+                using (HtmlInputText inputText = new HtmlInputText())
+                {
+                    inputText.ID = id;
+                    inputText.Disabled = true;
+                    field.Controls.Add(inputText);
+                }
+
+                container.Controls.Add(field);
+            }
+        }
+
+        #endregion
     }
 }

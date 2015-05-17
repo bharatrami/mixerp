@@ -45,7 +45,7 @@ namespace MixERP.Net.Core.Modules.Sales.Widgets
             {
                 grid.ID = "SalesByGeographyGridView";
                 grid.CssClass = "initially hidden";
-                grid.DataSource = SalesByGeography.GetSalesByCountry();
+                grid.DataSource = SalesByGeography.GetSalesByCountry(AppUsers.GetCurrentUserDB());
                 grid.DataBind();
 
                 container.Controls.Add(grid);
@@ -123,7 +123,7 @@ namespace MixERP.Net.Core.Modules.Sales.Widgets
         private void RegisterJavascriptVariables()
         {
             string javascript = JSUtility.GetVar("totalSalesLocalized", Titles.TotalSales);
-            javascript += JSUtility.GetVar("baseCurrencyCode", CurrentUser.GetSignInView().CurrencyCode);
+            javascript += JSUtility.GetVar("baseCurrencyCode", AppUsers.GetCurrentLogin().View.CurrencyCode);
 
             PageUtility.RegisterJavascript("SalesByGeographyWidget_Localized", javascript, this.Page, true);
         }

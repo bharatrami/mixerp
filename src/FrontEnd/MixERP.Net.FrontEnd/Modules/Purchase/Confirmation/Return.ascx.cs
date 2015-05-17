@@ -23,8 +23,8 @@ using MixERP.Net.Common.Extensions;
 using MixERP.Net.Entities;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.FrontEnd.Cache;
+using MixERP.Net.FrontEnd.Controls;
 using MixERP.Net.i18n.Resources;
-using MixERP.Net.WebControls.TransactionChecklist;
 
 namespace MixERP.Net.Core.Modules.Purchase.Confirmation
 {
@@ -34,12 +34,13 @@ namespace MixERP.Net.Core.Modules.Purchase.Confirmation
         {
             long transactionMasterId = Conversion.TryCastLong(this.Request["TranId"]);
 
-            using (TransactionChecklistForm checklist = new TransactionChecklistForm())
+            using (CheckList checklist = new CheckList())
             {
                 checklist.Text = Titles.PurchaseReturn;
                 checklist.ViewReportButtonText = Titles.ViewThisReturn;
                 checklist.EmailReportButtonText = Titles.EmailThisReturn;
-                checklist.PartyEmailAddress = Data.Helpers.Parties.GetEmailAddress(TranBook.Purchase, SubTranBook.Return, transactionMasterId);
+                checklist.PartyEmailAddress = Data.Helpers.Parties.GetEmailAddress(AppUsers.GetCurrentUserDB(),
+                    TranBook.Purchase, SubTranBook.Return, transactionMasterId);
                 checklist.AttachmentBookName = "transaction";
                 checklist.OverridePath = "/Modules/Purchase/Return.mix";
                 checklist.DisplayWithdrawButton = true;
@@ -51,7 +52,7 @@ namespace MixERP.Net.Core.Modules.Purchase.Confirmation
                 checklist.GlAdvicePath = "~/Modules/Finance/Reports/GLAdviceReport.mix";
                 checklist.ViewPath = "/Modules/Purchase/Return.mix";
                 checklist.AddNewPath = "/Modules/Purchase/Entry/Return.mix";
-                checklist.UserId = CurrentUser.GetSignInView().UserId.ToInt();
+                checklist.UserId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
                 checklist.RestrictedTransactionMode = this.IsRestrictedMode;
 
                 this.Placeholder1.Controls.Add(checklist);

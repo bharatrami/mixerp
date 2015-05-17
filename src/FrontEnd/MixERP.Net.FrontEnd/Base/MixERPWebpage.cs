@@ -66,9 +66,9 @@ namespace MixERP.Net.FrontEnd.Base
         }
 
         public void RequestLoginPage()
-        {
+        {            
             FormsAuthentication.SignOut();
-            Log.Information("User {UserName} was signed off.", CurrentUser.GetSignInView().UserName);
+            Log.Information("User {UserName} was signed off.", AppUsers.GetCurrentLogin().View.UserName);
 
             Log.Debug("Clearing Http Cookies.");
             foreach (string cookie in HttpContext.Current.Request.Cookies.AllKeys)
@@ -130,10 +130,10 @@ namespace MixERP.Net.FrontEnd.Base
             {
                 if (this.Request.IsAuthenticated)
                 {
-                    if (CurrentUser.GetSignInView().LoginId.ToLong().Equals(0))
+                    if (AppUsers.GetCurrentLogin().View.LoginId.ToLong().Equals(0))
                     {
-                        CurrentUser.SetSignInView();
-                        if (CurrentUser.GetSignInView().LoginId.ToLong().Equals(0))
+                        AppUsers.SetCurrentLogin();
+                        if (AppUsers.GetCurrentLogin().View.LoginId.ToLong().Equals(0))
                         {
                             this.RequestLoginPage();
                         }
@@ -169,16 +169,16 @@ namespace MixERP.Net.FrontEnd.Base
 
             string menu = "<div id=\"tree\" style='display:none;'><ul id='treeData'>";
 
-            int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
-            int userId = CurrentUser.GetSignInView().UserId.ToInt();
-            string culture = CurrentUser.GetSignInView().Culture;
+            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+            int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
+            string culture = AppUsers.GetCurrentLogin().View.Culture;
 
             if (userId.Equals(0) || officeId.Equals(0))
             {
                 return;
             }
 
-            this.menus = Data.Core.Menu.GetMenuCollection(officeId, userId, culture).ToArray();
+            this.menus = Data.Core.Menu.GetMenuCollection(AppUsers.GetCurrentUserDB(), officeId, userId, culture).ToArray();
 
             if (!this.VerifyAccess())
             {
@@ -309,7 +309,14 @@ namespace MixERP.Net.FrontEnd.Base
 
         private static void SetCulture()
         {
-            string cultureName = CurrentUser.GetSignInView().Culture;
+            var logins = AppUsers.GetCurrentLogin();
+
+            if (logins == null || logins.View == null)
+            {
+                return;
+            }
+
+            string cultureName = logins.View.Culture;
 
             if (string.IsNullOrWhiteSpace(cultureName))
             {
@@ -325,8 +332,8 @@ namespace MixERP.Net.FrontEnd.Base
 
         private void CheckForceLogOffFlags()
         {
-            int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
-            Collection<ApplicationDateModel> applicationDates = CacheFactory.GetApplicationDates();
+            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+            Collection<ApplicationDateModel> applicationDates = CacheFactory.GetApplicationDates(AppUsers.GetCurrentUserDB());
 
             if (applicationDates != null)
             {
@@ -337,7 +344,7 @@ namespace MixERP.Net.FrontEnd.Base
                     if (model.ForcedLogOffTimestamp != null && !model.ForcedLogOffTimestamp.Equals(DateTime.MinValue))
                     {
                         if (model.ForcedLogOffTimestamp <= DateTime.Now &&
-                            model.ForcedLogOffTimestamp >= CurrentUser.GetSignInView().LoginDateTime)
+                            model.ForcedLogOffTimestamp >= AppUsers.GetCurrentLogin().View.LoginDateTime)
                         {
                             this.RequestLoginPage();
                         }

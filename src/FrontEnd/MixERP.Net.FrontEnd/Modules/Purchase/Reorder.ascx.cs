@@ -69,13 +69,13 @@ namespace MixERP.Net.Core.Modules.Purchase
 
         private void AddGridView()
         {
-            int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
+            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
 
             using (GridView grid = new GridView())
             {
                 grid.GridLines = GridLines.None;
                 this.CreateColumns(grid);
-                grid.DataSource = Data.Transactions.Reorder.GetReorderView(officeId);
+                grid.DataSource = Data.Transactions.Reorder.GetReorderView(AppUsers.GetCurrentUserDB(), officeId);
                 grid.ID = "ReorderGrid";
                 grid.AutoGenerateColumns = false;
                 grid.DataBind();

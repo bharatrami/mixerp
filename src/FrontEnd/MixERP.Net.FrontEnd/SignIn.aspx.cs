@@ -49,7 +49,47 @@ namespace MixERP.Net.FrontEnd
         {
             this.CheckDbConnectivity();
             PageUtility.CheckInvalidAttempts(this.Page);
+            this.BindCompanies();
+            this.BindBranches();
 
+            if (branchSelect.Items.Count.Equals(0))
+            {
+                this.Response.Redirect("~/Install.aspx");
+            }
+
+            if (!this.IsPostBack)
+            {
+                if (this.User.Identity.IsAuthenticated)
+                {
+                    long globalLoginId = Conversion.TryCastLong(this.User.Identity.Name);
+
+                    if (globalLoginId > 0)
+                    {
+                        AppUsers.SetCurrentLogin();
+                        this.RedirectToDashboard();
+                    }
+                }
+            }
+        }
+
+
+        private void BindCompanies()
+        {
+            string catalogs = ConfigurationHelper.GetDbServerParameter("Catalogs");
+            string defaultCatalog = AppUsers.GetCurrentUserDB();
+
+            if (!string.IsNullOrWhiteSpace(catalogs))
+            {
+                List<string> list = catalogs.Split(',').Select(p => p.Trim()).ToList();
+                this.companySelect.DataSource = list;
+                this.companySelect.DataBind();
+
+                this.companySelect.SelectedValue = defaultCatalog;
+            }
+        }
+
+        private void BindBranches()
+        {
             try
             {
                 this.BindBranchDropDownList();
@@ -61,32 +101,12 @@ namespace MixERP.Net.FrontEnd
                 //Swallow the exception
                 //and redirect to application offline page.
                 this.RedirectToOfflinePage();
-                return;
-            }
-
-            if (branchSelect.Items.Count.Equals(0))
-            {
-                this.Response.Redirect("~/Install.aspx");
-            }
-
-            if (!this.IsPostBack)
-            {
-                if (this.User.Identity.IsAuthenticated)
-                {
-                    long signInId = Conversion.TryCastLong(this.User.Identity.Name);
-
-                    if (signInId > 0)
-                    {
-                        CurrentUser.SetSignInView();
-                        this.RedirectToDashboard();
-                    }
-                }
             }
         }
 
         private void BindBranchDropDownList()
         {
-            IEnumerable<DbGetOfficesResult> offices = Offices.GetOffices();
+            IEnumerable<DbGetOfficesResult> offices = Offices.GetOffices(AppUsers.GetCurrentUserDB());
 
             this.branchSelect.DataSource = offices;
             this.branchSelect.DataBind();
@@ -128,10 +148,48 @@ namespace MixERP.Net.FrontEnd
             PageUtility.RegisterJavascript("SignInPage_Vars", script, this.Page, true);
         }
 
-        #region Controls
 
+        #region IDispoable
+
+        private bool disposed;
         private HtmlSelect branchSelect;
+        private DropDownList companySelect;
 
+        public override sealed void Dispose()
+        {
+            if (!this.disposed)
+            {
+                this.Dispose(true);
+                GC.SuppressFinalize(this);
+                base.Dispose();
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                return;
+            }
+
+            if (this.branchSelect != null)
+            {
+                this.branchSelect.Dispose();
+                this.branchSelect = null;
+            }
+
+            if (this.companySelect != null)
+            {
+                this.companySelect.Dispose();
+                this.companySelect = null;
+            }
+
+            this.disposed = true;
+        }
+
+        #endregion
+
+        #region Controls
         private void CreateDimmer(Control container)
         {
             using (HtmlGenericControl pageDimmer = new HtmlGenericControl("div"))
@@ -212,6 +270,26 @@ namespace MixERP.Net.FrontEnd
         }
 
         #region Form
+
+        private void AddCompanyField(HtmlGenericControl container)
+        {
+            using (HtmlGenericControl field = new HtmlGenericControl("div"))
+            {
+                field.Attributes.Add("class", "field");
+
+                using (HtmlGenericControl label = HtmlControlHelper.GetLabel(Titles.SelectCompany, "CompanySelect"))
+                {
+                    field.Controls.Add(label);
+                }
+
+                this.companySelect = new DropDownList();
+                this.companySelect.ID = "CompanySelect";
+
+                field.Controls.Add(this.companySelect);
+
+                container.Controls.Add(field);
+            }
+        }
 
         private void AddBranchField(HtmlGenericControl container)
         {
@@ -412,6 +490,7 @@ namespace MixERP.Net.FrontEnd
                 AddPasswordField(form);
                 AddRememberMeField(form);
                 AddIconDivider(form);
+                this.AddCompanyField(form);
                 this.AddBranchField(form);
                 this.AddLanguageField(form);
                 AddExceptionField(form);

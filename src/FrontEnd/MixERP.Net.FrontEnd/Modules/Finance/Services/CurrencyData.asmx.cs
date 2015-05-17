@@ -36,8 +36,8 @@ namespace MixERP.Net.Core.Modules.Finance.Services
         [WebMethod]
         public IEnumerable<Currency> GetExchangeCurrencies()
         {
-            int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
-            return Data.Helpers.Currencies.GetExchangeCurrencies(officeId);
+            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+            return Data.Helpers.Currencies.GetExchangeCurrencies(AppUsers.GetCurrentUserDB(), officeId);
         }
     }
 }

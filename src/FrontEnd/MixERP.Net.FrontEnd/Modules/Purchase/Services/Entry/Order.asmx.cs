@@ -46,11 +46,11 @@ namespace MixERP.Net.Core.Modules.Purchase.Services.Entry
 
                 Collection<Attachment> attachments = CollectionHelper.GetAttachmentCollection(attachmentsJSON);
 
-                int officeId = CurrentUser.GetSignInView().OfficeId.ToInt();
-                int userId = CurrentUser.GetSignInView().UserId.ToInt();
-                long loginId = CurrentUser.GetSignInView().LoginId.ToLong();
+                int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+                int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
+                long loginId = AppUsers.GetCurrentLogin().View.LoginId.ToLong();
 
-                return Data.Transactions.Order.Add(officeId, userId, loginId, "Purchase.Order", valueDate, partyCode, 0, details, referenceNumber, statementReference, null, attachments);
+                return Data.Transactions.Order.Add(AppUsers.GetCurrentUserDB(), officeId, userId, loginId, "Purchase.Order", valueDate, partyCode, 0, details, referenceNumber, statementReference, null, attachments);
             }
             catch (Exception ex)
             {

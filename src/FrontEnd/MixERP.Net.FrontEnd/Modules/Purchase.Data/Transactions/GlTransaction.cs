@@ -33,7 +33,7 @@ namespace MixERP.Net.Core.Modules.Purchase.Data.Transactions
 {
     internal static class GlTransaction
     {
-        internal static long Add(DateTime valueDate, string book, int officeId, int userId, long loginId, int costCenterId, string referenceNumber, string statementReference, StockMaster stockMaster, Collection<StockDetail> details, Collection<long> transactionIdCollection, Collection<Attachment> attachments)
+        internal static long Add(string catalog, DateTime valueDate, string book, int officeId, int userId, long loginId, int costCenterId, string referenceNumber, string statementReference, StockMaster stockMaster, Collection<StockDetail> details, Collection<long> transactionIdCollection, Collection<Attachment> attachments)
         {
             if (stockMaster == null)
             {
@@ -54,7 +54,7 @@ namespace MixERP.Net.Core.Modules.Purchase.Data.Transactions
             string detail = StockMasterDetailHelper.CreateStockMasterDetailParameter(details);
             string attachment = AttachmentHelper.CreateAttachmentModelParameter(attachments);
 
-            string sql = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM transactions.post_purchase(@BookName::national character varying(12), @OfficeId::integer, @UserId::integer, @LoginId::bigint, @ValueDate::date, @CostCenterId::integer, @ReferenceNumber::national character varying(12), @StatementReference::text, @IsCredit::boolean, @PartyCode::national character varying(12), @PriceTypeId::integer, @ShipperId::integer, @StoreId::integer, ARRAY[{0}]::bigint[], ARRAY[{1}], ARRAY[{2}])", tranIds, detail, attachment);
+            string sql = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM transactions.post_purchase(@BookName::national character varying(48), @OfficeId::integer, @UserId::integer, @LoginId::bigint, @ValueDate::date, @CostCenterId::integer, @ReferenceNumber::national character varying(12), @StatementReference::text, @IsCredit::boolean, @PartyCode::national character varying(12), @PriceTypeId::integer, @ShipperId::integer, @StoreId::integer, ARRAY[{0}]::bigint[], ARRAY[{1}], ARRAY[{2}])", tranIds, detail, attachment);
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 command.Parameters.AddWithValue("@BookName", book);
@@ -94,7 +94,7 @@ namespace MixERP.Net.Core.Modules.Purchase.Data.Transactions
                 command.Parameters.AddRange(StockMasterDetailHelper.AddStockMasterDetailParameter(details).ToArray());
                 command.Parameters.AddRange(AttachmentHelper.AddAttachmentParameter(attachments).ToArray());
 
-                long tranId = Conversion.TryCastLong(DbOperation.GetScalarValue(command));
+                long tranId = Conversion.TryCastLong(DbOperation.GetScalarValue(catalog, command));
                 return tranId;
             }
         }

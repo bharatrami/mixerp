@@ -165,7 +165,10 @@
     <Compile Include="Base\TransactionCheckListControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Cache\AppUsers.cs" />
+    <Compile Include="Controls\CheckList.cs" />
     <Compile Include="Controls\Scrud.cs" />
+    <Compile Include="Controls\WebReport.cs" />
     <Compile Include="Dashboard\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -206,7 +209,6 @@
     <Compile Include="MixERPReportMaster.Master.designer.cs">
       <DependentUpon>MixERPReportMaster.Master</DependentUpon>
     </Compile>
-    <Compile Include="Cache\CurrentUser.cs" />
     <Compile Include="Modules\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -245,6 +247,10 @@
     </Compile>
     <Compile Include="Services\Install.asmx.cs">
       <DependentUpon>Install.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\Office.asmx.cs">
+      <DependentUpon>Office.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\User.asmx.cs">
@@ -327,12 +333,14 @@
     <Content Include="db\beta-1\v2\mixerp-incremental-sample.sql" />
     <Content Include="db\index.html" />
     <Content Include="Install.aspx" />
+    <Content Include="License.txt" />
     <Content Include="MixERP.Installation.xml" />
     <Content Include="Modules\Default.aspx" />
     <Content Include="Resource\Backups\index.html" />
     <Content Include="Resource\Configuration\ApiConfiguration.xml" />
     <Content Include="Resource\Configuration\AttachmentFactoryParameters.xml" />
     <Content Include="Resource\Configuration\DbParameters.xml" />
+    <Content Include="Resource\Configuration\StockTransactionFactoryParameters.xml" />
     <Content Include="Resource\Configuration\DbServer.xml" />
     <Content Include="Resource\Configuration\index.html" />
     <Content Include="Resource\Configuration\MessagingParameters.xml" />
@@ -580,6 +588,7 @@
     <Content Include="Scripts\qunit\qunit-1.17.1.css" />
     <Content Include="Scripts\qunit\qunit-1.17.1.js" />
     <Content Include="Services\Install.asmx" />
+    <Content Include="Services\Office.asmx" />
     <Content Include="Tests\all-tests.js">
       <DependentUpon>all-tests.js.bundle</DependentUpon>
     </Content>
@@ -980,10 +989,6 @@
     <ProjectReference Include="..\MixERP.Net.FrontEnd.Data\MixERP.Net.FrontEnd.Data.csproj">
       <Project>{a84ed536-8e44-4d32-a22d-26d9924a9481}</Project>
       <Name>MixERP.Net.FrontEnd.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="Modules\API\MixERP.Net.Core.Api\MixERP.Net.Core.Api.csproj">
-      <Project>{d7037326-f14d-4359-bb87-3637bb9d93ee}</Project>
-      <Name>MixERP.Net.Core.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

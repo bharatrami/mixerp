@@ -1,16 +1,16 @@
-INSERT INTO localization.cultures SELECT 'de', 'German';
-INSERT INTO localization.cultures SELECT 'en', 'English';
-INSERT INTO localization.cultures SELECT 'es', 'Spanish';
-INSERT INTO localization.cultures SELECT 'fil', 'Filipino';
-INSERT INTO localization.cultures SELECT 'fr', 'French';
-INSERT INTO localization.cultures SELECT 'id', 'Indonesian';
-INSERT INTO localization.cultures SELECT 'ja', 'Japanese';
-INSERT INTO localization.cultures SELECT 'ms', 'Malay';
-INSERT INTO localization.cultures SELECT 'nl', 'Dutch';
-INSERT INTO localization.cultures SELECT 'pt', 'Portuguese';
-INSERT INTO localization.cultures SELECT 'ru', 'Russian';
-INSERT INTO localization.cultures SELECT 'sv', 'Swedish';
-INSERT INTO localization.cultures SELECT 'zh', 'Simplified Chinese';
+SELECT * FROM localization.create_culture('de', 'German');
+SELECT * FROM localization.create_culture('en', 'English');
+SELECT * FROM localization.create_culture('es', 'Spanish');
+SELECT * FROM localization.create_culture('fil', 'Filipino');
+SELECT * FROM localization.create_culture('fr', 'French');
+SELECT * FROM localization.create_culture('id', 'Indonesian');
+SELECT * FROM localization.create_culture('ja', 'Japanese');
+SELECT * FROM localization.create_culture('ms', 'Malay');
+SELECT * FROM localization.create_culture('nl', 'Dutch');
+SELECT * FROM localization.create_culture('pt', 'Portuguese');
+SELECT * FROM localization.create_culture('ru', 'Russian');
+SELECT * FROM localization.create_culture('sv', 'Swedish');
+SELECT * FROM localization.create_culture('zh', 'Simplified Chinese');
 
 
 DO
@@ -15524,3 +15524,181 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+
+SELECT * FROM localization.add_localized_resource('Titles', '', 'EODBegun', 'End of Day Processing Has Begun');
+SELECT * FROM localization.add_localized_resource('Labels', '', 'EODBegunSaveYourWork', 'Please close this window and save your existing work before you will be signed off automatically.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'EODBegun', '日处理结束已经开始');
+SELECT * FROM localization.add_localized_resource('Labels', 'zh', 'EODBegunSaveYourWork', '请关闭此窗口并保存现有的工作之前，你会被自动签字。');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'EODBegun', 'Eind van Dag Processing is begonnen');
+SELECT * FROM localization.add_localized_resource('Labels', 'nl', 'EODBegunSaveYourWork', 'Sluit dit venster en sla uw bestaand werk voordat wordt u automatisch afgemeld.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'EODBegun', 'Dulo ng Processing Day ay sinimulan');
+SELECT * FROM localization.add_localized_resource('Labels', 'fil', 'EODBegunSaveYourWork', 'Mangyaring isara ang window na ito at i-save ang iyong mga umiiral na trabaho bago kayo ay naka-sign off awtomatikong.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'EODBegun', 'Fin du traitement Day Has Begun');
+SELECT * FROM localization.add_localized_resource('Labels', 'fr', 'EODBegunSaveYourWork', 'S''il vous plaît fermer cette fenêtre et enregistrer votre travail existant avant vous serez connecté automatiquement hors tension.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'EODBegun', 'Tagesendverarbeitung hat begonnen');
+SELECT * FROM localization.add_localized_resource('Labels', 'de', 'EODBegunSaveYourWork', 'Schließen Sie dieses Fenster und speichern Sie Ihre existierenden Werk, bevor Sie sich automatisch signiert werden.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'EODBegun', 'Akhir Hari Pengolahan Telah Dimulai');
+SELECT * FROM localization.add_localized_resource('Labels', 'id', 'EODBegunSaveYourWork', 'Silakan tutup jendela ini dan menyimpan pekerjaan yang ada sebelum Anda akan ditandatangani secara otomatis.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'EODBegun', '日処理の終了が始まりました');
+SELECT * FROM localization.add_localized_resource('Labels', 'ja', 'EODBegunSaveYourWork', 'このウィンドウを閉じて、あなたは自動的にオフに署名される前に、既存の作業を保存してください。');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'EODBegun', 'Akhir Pemprosesan Hari Telah Bermula');
+SELECT * FROM localization.add_localized_resource('Labels', 'ms', 'EODBegunSaveYourWork', 'Sila tutup tetingkap ini dan menyimpan kerja yang sedia ada anda sebelum anda akan ditandatangani secara automatik.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'EODBegun', 'Fim de Processamento dia começou');
+SELECT * FROM localization.add_localized_resource('Labels', 'pt', 'EODBegunSaveYourWork', 'Por favor, feche esta janela e salvar seu trabalho existente antes de ser assinado fora automaticamente.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'EODBegun', 'Конец дня обработка Бегун');
+SELECT * FROM localization.add_localized_resource('Labels', 'ru', 'EODBegunSaveYourWork', 'Пожалуйста, закройте это окно и сохранить существующую работу, прежде чем будет подписан автоматически.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'EODBegun', 'Fin de Procesamiento día ha comenzado');
+SELECT * FROM localization.add_localized_resource('Labels', 'es', 'EODBegunSaveYourWork', 'Por favor, cierre esta ventana y guardar su trabajo existente antes se le inscribió apaga automáticamente.');
+
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'EODBegun', 'Slut på dagens slut har börjat');
+SELECT * FROM localization.add_localized_resource('Labels', 'sv', 'EODBegunSaveYourWork', 'Stäng fönstret och spara din befintliga arbete innan du kommer att undertecknas av automatiskt.');
+
+
+SELECT * FROM localization.add_localized_resource('DbErrors', '', 'P1302', 'Cannot post sales. Invalid cash account mapping on store.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'sv', 'P1302', 'Det går inte att lägga försäljningen. Ogiltig likvidkonto kartläggning på butiken.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'es', 'P1302', 'No se puede publicar ventas. Asignación de cuentas de efectivo no válida en la tienda.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'ru', 'P1302', 'Не можете прикреплять продаж. Неверный отображение денежный счет на складе.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'pt', 'P1302', 'Não é possível postar vendas. Inválida de mapeamento de conta em dinheiro na loja.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'ms', 'P1302', 'Tidak boleh hantar jualan. Pemetaan akaun tunai tidak sah di kedai.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'ja', 'P1302', '販売を投稿することはできません。ストアの無効な現金アカウントマッピング。');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'de', 'P1302', 'Kann Umsatz nicht erlaubt. Ungültige Geldkonto-Mapping auf Laden.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'fr', 'P1302', 'Vous ne pouvez pas afficher des ventes. Invalid compte de trésorerie cartographie sur la boutique.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'fil', 'P1302', 'Hindi maaaring mag-post ng mga benta. Hindi wastong mapping cash account sa store.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'nl', 'P1302', 'Kan de verkoop niet plaatsen. Ongeldige geldrekening mapping op te slaan.');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'zh', 'P1302', '不能发布销售。在商店无效的现金帐户的映射。');
+SELECT * FROM localization.add_localized_resource('DbErrors', 'id', 'P1302', 'Tidak dapat mengirim penjualan. Pemetaan rekening kas tidak valid di toko.');
+
+
+SELECT * FROM localization.add_localized_resource('Titles', '', 'SelectCompany', 'Select Company');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'SelectCompany', '选择公司');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'SelectCompany', 'Selecteer Company');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'SelectCompany', 'Piliin ang Company');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'SelectCompany', 'Sélectionnez Société');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'SelectCompany', 'Wählen Sie die Firma');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'SelectCompany', 'Pilih Perusahaan');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'SelectCompany', '選択して会社');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'SelectCompany', 'Pilih Syarikat');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'SelectCompany', 'Selecione Empresa');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'SelectCompany', 'Выберите компании');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'SelectCompany', 'Seleccione la empresa');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'SelectCompany', 'Välj företag');
+
+
+SELECT * FROM localization.add_localized_resource('Titles', '', 'BookDate', 'Book Date');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'BookDate', 'libro Fecha');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'BookDate', 'bok Datum');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'BookDate', 'Книга Дата');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'BookDate', 'livro Data');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'BookDate', 'buku Tarikh');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'BookDate', '予約日');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'BookDate', 'buku Tanggal');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'BookDate', 'buchen Datum');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'BookDate', 'date de livre');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'BookDate', 'Petsa Book');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'BookDate', 'Book Date');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'BookDate', '书日期');
+
+SELECT * FROM localization.add_localized_resource('ScrudResource', '', 'book_date', 'Book Date');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'es', 'book_date', 'libro Fecha');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'sv', 'book_date', 'bok Datum');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ru', 'book_date', 'Книга Дата');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'pt', 'book_date', 'livro Data');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ms', 'book_date', 'buku Tarikh');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ja', 'book_date', '予約日');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'id', 'book_date', 'buku Tanggal');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'de', 'book_date', 'buchen Datum');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'fr', 'book_date', 'date de livre');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'fil', 'book_date', 'Petsa Book');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'nl', 'book_date', 'Book Date');
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'zh', 'book_date', '书日期');
+
+SELECT * FROM localization.add_localized_resource('Titles', '', 'Reconcile', 'Reconcile');
+SELECT * FROM localization.add_localized_resource('Titles', '', 'CurrentBookDate', 'Current Book Date');
+SELECT * FROM localization.add_localized_resource('Titles', '', 'NewBookDate', 'New Book Date');
+SELECT * FROM localization.add_localized_resource('Titles', '', 'Year', 'Year');
+SELECT * FROM localization.add_localized_resource('Titles', '', 'Month', 'Month');
+SELECT * FROM localization.add_localized_resource('Titles', '', 'Day', 'Day');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'Reconcile', '调和');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'CurrentBookDate', '当前书日期');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'NewBookDate', '新书日期');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'Year', '年');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'Month', '月');
+SELECT * FROM localization.add_localized_resource('Titles', 'zh', 'Day', '天');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'Reconcile', 'verzoenen');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'CurrentBookDate', 'Huidige Book Date');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'NewBookDate', 'Nieuw boek Date');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'Year', 'jaar');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'Month', 'maand');
+SELECT * FROM localization.add_localized_resource('Titles', 'nl', 'Day', 'dag');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'Reconcile', 'mapagkasundo');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'CurrentBookDate', 'Current Date Book');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'NewBookDate', 'New Date Book');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'Year', 'taon');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'Month', 'buwan');
+SELECT * FROM localization.add_localized_resource('Titles', 'fil', 'Day', 'araw');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Reconcile', 'réconcilier');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'CurrentBookDate', 'Réservez la date courante');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'NewBookDate', 'Nouvelle date du livre');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Year', 'année');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Month', 'mois');
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Day', 'jour');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'Reconcile', 'versöhnen');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'CurrentBookDate', 'Aktuelle Buch Datum');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'NewBookDate', 'Neues Buch Datum');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'Year', 'Jahr');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'Month', 'Monat');
+SELECT * FROM localization.add_localized_resource('Titles', 'de', 'Day', 'Tag');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'Reconcile', 'mendamaikan');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'CurrentBookDate', 'Buku saat Tanggal');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'NewBookDate', 'Buku Baru Tanggal');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'Year', 'tahun');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'Month', 'bulan');
+SELECT * FROM localization.add_localized_resource('Titles', 'id', 'Day', 'hari');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'Reconcile', '調整します');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'CurrentBookDate', '現在の予約日');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'NewBookDate', '新刊日');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'Year', '年');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'Month', '月');
+SELECT * FROM localization.add_localized_resource('Titles', 'ja', 'Day', '日');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'Reconcile', 'mendamaikan');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'CurrentBookDate', 'Tarikh Tempah semasa');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'NewBookDate', 'Tarikh Tempah New');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'Year', 'tahun');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'Month', 'bulan');
+SELECT * FROM localization.add_localized_resource('Titles', 'ms', 'Day', 'hari');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'Reconcile', 'conciliar');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'CurrentBookDate', 'Livro Data Atual');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'NewBookDate', 'Novo livro Data');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'Year', 'ano');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'Month', 'mês');
+SELECT * FROM localization.add_localized_resource('Titles', 'pt', 'Day', 'dia');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'Reconcile', 'согласовать');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'CurrentBookDate', 'Текущий Книга Дата');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'NewBookDate', 'Новая книга Дата');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'Year', 'год');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'Month', 'месяц');
+SELECT * FROM localization.add_localized_resource('Titles', 'ru', 'Day', 'день');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'Reconcile', 'conciliar');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'CurrentBookDate', 'Actual Agenda');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'NewBookDate', 'Nuevo libro Fecha');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'Year', 'año');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'Month', 'mes');
+SELECT * FROM localization.add_localized_resource('Titles', 'es', 'Day', 'día');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'Reconcile', 'förena');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'CurrentBookDate', 'Aktuell Bok Datum');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'NewBookDate', 'Ny bok Datum');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'Year', 'år');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'Month', 'månad');
+SELECT * FROM localization.add_localized_resource('Titles', 'sv', 'Day', 'dag');
