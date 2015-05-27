@@ -268,7 +268,12 @@ var printGridView = function (templatePath, headerPath, reportTitle, gridViewId,
     });
 };
 ///#source 1 1 /Scripts/mixerp/core/libraries/chartjs.js
-var chartColors = ["#3366CC", "#DC3912", "#109618", "#FF9900", "#990099", "#0099C6", "#DD4477", "#66AA00", "#B82E2E", "#316395", "#994499", "#AAAA11", "#E67300", "#8B0707", "#3B3EAC", "#B77322", "#16D620"];
+function shuffle(o) {
+    for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
+var chartColors = shuffle(["#DF0101", "#DF3A01", "#DF7401", "#DBA901", "#D7DF01", "#A5DF00", "#74DF00", "#3ADF00", "#01DF74", "#01DFA5", "#01DFD7", "#01A9DB", "#0174DF", "#013ADF", "#0101DF", "#3A01DF", "#7401DF", "#A901DB", "#DF01D7", "#DF01A5", "#DF0174", "#DF013A", "#6E6E6E"]);
 
 function getFillColor(index) {
     var color = hexToRgb(chartColors[index]);
@@ -292,6 +297,7 @@ function hexToRgb(hex) {
 };
 
 function prepareChart(datasourceId, canvasId, legendId, type, log) {
+    chartColors = shuffle(chartColors);
     var table = $("#" + datasourceId);
     var labels = [];
     var data = [];
@@ -367,6 +373,7 @@ function prepareChart(datasourceId, canvasId, legendId, type, log) {
 }
 
 function preparePieChart(datasourceId, canvasId, legendId, type, hide, titleColumnIndex, valueColumnIndex) {
+    chartColors = shuffle(chartColors);
     var table = $("#" + datasourceId);
     var value;
     var data = [];
@@ -849,11 +856,12 @@ var getData = function (data) {
     return null;
 };
 
-jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue) {
+jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue, dataValueField, dataTextField) {
     "use strict";
     var selected;
     var targetControl = $(this);
     targetControl.empty();
+
 
     if (ajaxData.length === 0) {
         appendItem(targetControl, "", window.noneLocalized);
@@ -863,17 +871,25 @@ jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue) {
     if (!skipSelect) {
         appendItem(targetControl, "", window.selectLocalized);
     }
+   
+    if (!dataValueField) {
+        dataValueField = "Value";
+    };
+
+    if (!dataTextField) {
+        dataTextField = "Text";
+    };
 
     $.each(ajaxData, function () {
+        
         selected = false;
 
         if (selectedValue) {
-            if (this.Value === selectedValue) {
+            if (this[dataValueField] === selectedValue) {
                 selected = true;
             };
         };
-
-        appendItem(targetControl, this.Value, this.Text, selected);
+        appendItem(targetControl, this[dataValueField], this[dataTextField], selected);
     });
 };
 
@@ -918,6 +934,7 @@ var ajaxUpdateVal = function (url, data, targetControls) {
     };
 
     ajax.success(function (msg) {
+
         targetControls.each(function () {
             $(this).val(msg.d).trigger('change');
         });
@@ -932,7 +949,8 @@ var ajaxUpdateVal = function (url, data, targetControls) {
     });
 };
 
-var ajaxDataBind = function (url, targetControl, data, selectedValue, associatedControl, callback) {
+var ajaxDataBind = function (url, targetControl, data, selectedValue, associatedControl, callback, dataValueField, dataTextField) {
+   
     if (!targetControl) {
         return;
     };
@@ -950,17 +968,18 @@ var ajaxDataBind = function (url, targetControl, data, selectedValue, associated
     };
 
     ajax.success(function (msg) {
+
         if (typeof callback === "function") {
             callback();
         };
 
         if (targetControl.length === 1) {
-            targetControl.bindAjaxData(msg.d, false, selectedValue);
+            targetControl.bindAjaxData(msg.d, false, selectedValue, dataValueField, dataTextField);
         };
 
         if (targetControl.length > 1) {
             targetControl.each(function () {
-                $(this).bindAjaxData(msg.d, false, selectedValue);
+                $(this).bindAjaxData(msg.d, false, selectedValue, dataValueField, dataTextField);
             });
         };
 

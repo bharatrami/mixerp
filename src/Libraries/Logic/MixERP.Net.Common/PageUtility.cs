@@ -85,7 +85,7 @@ namespace MixERP.Net.Common
                 if (triedAttempts >= allowedAttemps)
                 {
                     Log.Error("Disallowed access to {Host}/{IP} using {Browser}.", GetUserHostAddress(), GetUserIpAddress(), GetBrowser().Browsers);
-                    page.Response.Redirect("~/Resource/Static/AccessIsDenied.html");
+                    page.Response.Redirect("~/Static/AccessIsDenied.html");
                 }
             }
         }
@@ -151,6 +151,11 @@ namespace MixERP.Net.Common
 
         public static string GetCurrentDomainName()
         {
+            if (HttpContext.Current == null)
+            {
+                return string.Empty;
+            }
+
             string url = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host;
 
             if (HttpContext.Current.Request.Url.Port != 80)
