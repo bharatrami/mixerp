@@ -102,6 +102,11 @@ namespace MixERP.Net.Common.Helpers
             return GetConfigurationValue(path, keyName);
         }
 
+        public static string GetResourceDirectory()
+        {
+            return MapPath(ConfigurationManager.AppSettings["ResourceDirectory"]);
+        }
+
         public static string GetReportParameter(string keyName)
         {
             string path = MapPath(ConfigurationManager.AppSettings["ReportConfigFileLocation"]);
@@ -129,6 +134,12 @@ namespace MixERP.Net.Common.Helpers
         public static string GetTransactionChecklistParameter(string keyName)
         {
             string path = MapPath(ConfigurationManager.AppSettings["TransactionChecklistConfigFileLocation"]);
+            return GetConfigurationValue(path, keyName);
+        }
+
+        public static string GetUpdaterParameter(string keyName)
+        {
+            string path = MapPath(ConfigurationManager.AppSettings["UpdaterConfigFileLocation"]);
             return GetConfigurationValue(path, keyName);
         }
 
