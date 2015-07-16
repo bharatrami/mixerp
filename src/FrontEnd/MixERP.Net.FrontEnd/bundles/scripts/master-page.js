@@ -50091,16 +50091,14 @@ function removeLoader(el) {
 };
 ///#source 1 1 /Scripts/mixerp/core/dom/popunder.js
 function popUnder(div, button) {
-    div.css("position", "fixed");
+    div.removeClass("initially hidden");
+    div.show(500);
 
     div.position({
         my: "left top",
         at: "left bottom",
-        of: button,
-        collision: "fit"
+        of: button
     });
-
-    div.show(500);
 };
 ///#source 1 1 /Scripts/mixerp/core/dom/select.js
 jQuery.fn.getSelectedItem = function () {
@@ -50154,11 +50152,11 @@ var sumOfColumn = function (tableSelector, columnIndex) {
     var total = 0;
 
     $(tableSelector).find('tr').each(function () {
-        var value = parseFormattedNumber($('td', this).eq(columnIndex).text());
-        total += parseFloat2(value);
+        var value = parseFloat2($('td', this).eq(columnIndex).text());
+        total += value;
     });
 
-    return $.number(total, currencyDecimalPlaces, decimalSeparator, thousandSeparator);
+    return total;
 };
 
 var getColumnText = function (row, columnIndex) {
@@ -50185,7 +50183,7 @@ var toggleSuccess = function (cell) {
 };
 
 var removeRow = function (cell) {
-    var result = confirm(areYouSureLocalized);
+    var result = confirm(Resources.Questions.AreYouSure());
 
     if (result) {
         cell.closest("tr").remove();
@@ -50445,7 +50443,7 @@ function displayMessage(a, b) {
 };
 
 function displaySucess() {
-    $.notify(taskCompletedSuccessfullyLocalized, "success");
+    $.notify(Resources.Labels.TaskCompletedSuccessfully(), "success");
 };
 
 var logError = function (a, b) {
@@ -50646,6 +50644,14 @@ $(document).ready(function () {
         }
     });
 });
+///#source 1 1 /Scripts/mixerp/core/browser.js
+function supportsBrowserStorage() {
+    try {
+        return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+        return false;
+    }
+};
 ///#source 1 1 /Scripts/mixerp/core/flag.js
 jQuery.fn.getTotalColumns = function () {
     var grid = $($(this).selector);
@@ -50869,12 +50875,12 @@ jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue, dataValu
 
 
     if (ajaxData.length === 0) {
-        appendItem(targetControl, "", window.noneLocalized);
+        appendItem(targetControl, "", Resources.Titles.None());
         return;
     };
 
     if (!skipSelect) {
-        appendItem(targetControl, "", window.selectLocalized);
+        appendItem(targetControl, "", Resources.Titles.Select());
     }
    
     if (!dataValueField) {
@@ -51009,7 +51015,14 @@ var ajaxDataBind = function (url, targetControl, data, selectedValue, associated
 
 var getAjaxErrorMessage = function (xhr) {
     if (xhr) {
-        var err = JSON.parse(xhr.responseText).Message;
+        var err;
+
+        try {
+            err = JSON.parse(xhr.responseText).Message;
+        } catch (e) {
+            err = xhr.responseText.Message;
+        }
+
         if (err) {
             return err;
         };
@@ -51060,7 +51073,7 @@ function isDate(val) {
 };
 ///#source 1 1 /Scripts/mixerp/core/window.js
 var confirmAction = function () {
-    return confirm(areYouSureLocalized);
+    return confirm(Resources.Questions.AreYouSure());
 };
 
 ///#source 1 1 /Scripts/mixerp/master-page/declaration.js
@@ -51132,7 +51145,11 @@ function urlExists(url) {
 };
 
 
-$(document).ready(function() {
+$(document).ready(function () {
+    loadDatePickerLocale();
+});
+
+function loadDatePickerLocale() {
     window.datepickerLanguagePath = window.jqueryUIi18nPath + '/datepicker-' + window.culture + '.js';
 
     if (!urlExists(window.datepickerLanguagePath)) {
@@ -51144,15 +51161,19 @@ $(document).ready(function() {
     };
 
     if (window.datepickerLanguagePath) {
-        var picker = document.createElement('script');
-        picker.type = 'text/javascript';
-        picker.async = true;
-        picker.src = window.datepickerLanguagePath;
-
-        var element = document.body.getElementsByTagName('script')[0];
-        element.parentNode.insertBefore(picker, element);
+        addScriptReference(window.datepickerLanguagePath);
     };
-});
+};
+
+function addScriptReference(path) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = path;
+
+    var element = document.body.getElementsByTagName('script')[0];
+    element.parentNode.insertBefore(script, element);
+};
 ///#source 1 1 /Scripts/mixerp/master-page/scrud.js
 function pageLoad() {
     initializeItemSelector();
@@ -51236,22 +51257,25 @@ $.extend(true, $.fn.form.settings.rules, {
     }
 });
 ///#source 1 1 /Scripts/mixerp/master-page/menu.js
-var data;
+var menus;
 var depth = 2;
-var sidebar = $('.sidebar');
-var wrapper = $('#page-wrapper');
 
 $(document).ready(function () {
     adjustSidebar();
     var topMenu = $("#top-menu");
     var resetMenu = $("#reset-menu");
+    var menuId = 0;
+
+    if (window.supportsBrowserStorage()) {
+        menuId = parseInt(localStorage["menuId"] || 0);
+    };
 
     var ajaxMenu = getAjaxMenu();
 
     ajaxMenu.success(function (msg) {
-        data = JSON.parse(msg.d);
+        menus = JSON.parse(msg.d);
         loadMenu(topMenu);
-        loadTree(0, createTree);
+        loadTree(menuId, createTree);
     });
 
     resetMenu.click(function () {
@@ -51265,7 +51289,7 @@ $(document).ready(function () {
 function loadMenu(appendTo) {
     var anchors = "";
 
-    $.each(data, function (i, v) {
+    $.each(menus, function (i, v) {
         var anchor = "<a class='item' href='javascript:void(0);' onclick='javascript:loadTree(%s, createTree);'>%s</a>";
         anchor = sprintf(anchor, v.Menu.MenuId, v.Menu.MenuText);
 
@@ -51372,8 +51396,11 @@ function loadTree(menuId, callback) {
     var tree = $("#tree");
     var treeData = tree.find("ul");
 
+    if (window.supportsBrowserStorage()) {
+        localStorage["menuId"] = menuId;
+    };
 
-    $.each(data, function (i, v) {
+    $.each(menus, function (i, v) {
         var items;
         var li;
 
@@ -51465,24 +51492,24 @@ function getAjaxMenu() {
 };
 
 function toggleSidebar(el) {
-    if (sidebar.is(":visible")) {
-        wrapper.css('margin-left', '0');
+    if ($('.sidebar').is(":visible")) {
+        $('#page-wrapper').css('margin-left', '0');
     } else {
-        wrapper.css('margin-left', '250px');
+        $('#page-wrapper').css('margin-left', '250px');
     };
 
-    sidebar.toggle(100);
+    $('.sidebar').toggle(100);
 };
 
 function adjustSidebar(){
     if ($(document).width() < 800) {
-        wrapper.css('margin-left', '0');
-        sidebar.hide(100);
+        $('#page-wrapper').css('margin-left', '0');
+        $('.sidebar').hide(100);
         return;
     };
 
-    wrapper.css('margin-left', '250px');
-    sidebar.show(100);
+    $('#page-wrapper').css('margin-left', '250px');
+    $('.sidebar').show(100);
     return;
 };
 
@@ -51494,6 +51521,6 @@ window.onresize = function (event) {
 ///#source 1 1 /Scripts/mixerp/master-page/updater.js
 $(document).ready(function() {
     if (update === "1") {
-        addNotification(updateLocalized, "document.location = \"/Modules/Update.aspx\";");
+        addNotification(Resources.Titles.Update(), "document.location = \"/Modules/Update.aspx\";");
     };
 });

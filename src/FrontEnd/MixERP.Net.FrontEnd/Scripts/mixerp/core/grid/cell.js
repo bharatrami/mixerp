@@ -2,11 +2,11 @@ var sumOfColumn = function (tableSelector, columnIndex) {
     var total = 0;
 
     $(tableSelector).find('tr').each(function () {
-        var value = parseFormattedNumber($('td', this).eq(columnIndex).text());
-        total += parseFloat2(value);
+        var value = parseFloat2($('td', this).eq(columnIndex).text());
+        total += value;
     });
 
-    return $.number(total, currencyDecimalPlaces, decimalSeparator, thousandSeparator);
+    return total;
 };
 
 var getColumnText = function (row, columnIndex) {
@@ -33,7 +33,7 @@ var toggleSuccess = function (cell) {
 };
 
 var removeRow = function (cell) {
-    var result = confirm(areYouSureLocalized);
+    var result = confirm(Resources.Questions.AreYouSure());
 
     if (result) {
         cell.closest("tr").remove();

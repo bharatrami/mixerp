@@ -1,31 +1,33 @@
-﻿using System.Configuration;
-using System.Web.Hosting;
-using MixERP.Net.Common;
+﻿using MixERP.Net.Common;
+using MixERP.Net.Common.Helpers;
 
 namespace MixERP.Net.WebControls.AttachmentFactory.Helpers
 {
     public static class ConfigurationHelper
     {
-        private static readonly string configPath = HostingEnvironment.MapPath(ConfigurationManager.AppSettings["AttachmentFactoryConfigFileLocation"]);
+        private const string configFile = "AttachmentFactoryConfigFileLocation";
 
-        public static string GetAllowedExtensions()
+        public static string GetAllowedExtensions(string catalog)
         {
-            return Common.Helpers.ConfigurationHelper.GetConfigurationValue(configPath, "AllowedExtensions");
+            return DbConfig.GetAttachmentParameter(catalog, "AllowedExtensions");
         }
 
-        public static string GetUploadHandlerUrl()
+        public static string GetUploadHandlerUrl(string catalog)
         {
-            return PageUtility.ResolveUrl(Common.Helpers.ConfigurationHelper.GetConfigurationValue(configPath, "UploadHandlerUrl"));
+            string url = DbConfig.GetAttachmentParameter(catalog, "UploadHandlerUrl");
+            return PageUtility.ResolveUrl(url);
         }
 
-        public static string GetAttachmentsDirectory()
+        public static string GetAttachmentsDirectory(string catalog)
         {
-            return PageUtility.ResolveUrl(Common.Helpers.ConfigurationHelper.GetConfigurationValue(configPath, "AttachmentsDirectory"));
+            string url = DbConfig.GetAttachmentParameter(catalog, "AttachmentsDirectory");
+            return PageUtility.ResolveUrl(url);
         }
 
-        public static string GetUndoUploadServiceUrl()
+        public static string GetUndoUploadServiceUrl(string catalog)
         {
-            return PageUtility.ResolveUrl(Common.Helpers.ConfigurationHelper.GetConfigurationValue(configPath, "UndoUploadServiceUrl"));
+            string url = DbConfig.GetAttachmentParameter(catalog, "UndoUploadServiceUrl");
+            return PageUtility.ResolveUrl(url);
         }
     }
 }

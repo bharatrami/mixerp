@@ -1,19 +1,22 @@
-﻿var data;
+﻿var menus;
 var depth = 2;
-var sidebar = $('.sidebar');
-var wrapper = $('#page-wrapper');
 
 $(document).ready(function () {
     adjustSidebar();
     var topMenu = $("#top-menu");
     var resetMenu = $("#reset-menu");
+    var menuId = 0;
+
+    if (window.supportsBrowserStorage()) {
+        menuId = parseInt(localStorage["menuId"] || 0);
+    };
 
     var ajaxMenu = getAjaxMenu();
 
     ajaxMenu.success(function (msg) {
-        data = JSON.parse(msg.d);
+        menus = JSON.parse(msg.d);
         loadMenu(topMenu);
-        loadTree(0, createTree);
+        loadTree(menuId, createTree);
     });
 
     resetMenu.click(function () {
@@ -27,7 +30,7 @@ $(document).ready(function () {
 function loadMenu(appendTo) {
     var anchors = "";
 
-    $.each(data, function (i, v) {
+    $.each(menus, function (i, v) {
         var anchor = "<a class='item' href='javascript:void(0);' onclick='javascript:loadTree(%s, createTree);'>%s</a>";
         anchor = sprintf(anchor, v.Menu.MenuId, v.Menu.MenuText);
 
@@ -134,8 +137,11 @@ function loadTree(menuId, callback) {
     var tree = $("#tree");
     var treeData = tree.find("ul");
 
+    if (window.supportsBrowserStorage()) {
+        localStorage["menuId"] = menuId;
+    };
 
-    $.each(data, function (i, v) {
+    $.each(menus, function (i, v) {
         var items;
         var li;
 
@@ -227,24 +233,24 @@ function getAjaxMenu() {
 };
 
 function toggleSidebar(el) {
-    if (sidebar.is(":visible")) {
-        wrapper.css('margin-left', '0');
+    if ($('.sidebar').is(":visible")) {
+        $('#page-wrapper').css('margin-left', '0');
     } else {
-        wrapper.css('margin-left', '250px');
+        $('#page-wrapper').css('margin-left', '250px');
     };
 
-    sidebar.toggle(100);
+    $('.sidebar').toggle(100);
 };
 
 function adjustSidebar(){
     if ($(document).width() < 800) {
-        wrapper.css('margin-left', '0');
-        sidebar.hide(100);
+        $('#page-wrapper').css('margin-left', '0');
+        $('.sidebar').hide(100);
         return;
     };
 
-    wrapper.css('margin-left', '250px');
-    sidebar.show(100);
+    $('#page-wrapper').css('margin-left', '250px');
+    $('.sidebar').show(100);
     return;
 };
 

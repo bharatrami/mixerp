@@ -20,7 +20,6 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Web;
 using System.Web.Hosting;
 
 namespace MixERP.Net.Common.Helpers
@@ -34,9 +33,11 @@ namespace MixERP.Net.Common.Helpers
                 return string.Empty;
             }
 
+            string path = HostingEnvironment.MapPath(ConfigurationManager.AppSettings[configFileName]);
 
-            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFileName };
-            Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = path};
+            Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap,
+                ConfigurationUserLevel.None);
             AppSettingsSection section = config.GetSection("appSettings") as AppSettingsSection;
 
             if (section != null)
@@ -50,102 +51,46 @@ namespace MixERP.Net.Common.Helpers
             return string.Empty;
         }
 
-        private static string MapPath(string virtualPath)
+        public static string GetDbServerParameter(string key)
         {
-            if (string.IsNullOrWhiteSpace(virtualPath))
-            {
-                return string.Empty;
-            }
-
-            string path = HostingEnvironment.MapPath(virtualPath);
-
-            if (string.IsNullOrWhiteSpace(path) && HttpContext.Current != null)
-            {
-                path = HttpContext.Current.Server.MapPath(virtualPath);
-            }
-
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                return virtualPath;
-            }
-
-            return path;
+            return GetConfigurationValue("DbServerConfigFileLocation", key);
         }
 
-        public static string GetMixERPParameter(string keyName)
+        public static string GetParameter(string key)
         {
-            string path = MapPath(ConfigurationManager.AppSettings["MixERPConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
+            return GetConfigurationValue("ParameterConfigFileLocation", key);
         }
 
-        public static string GetDbServerParameter(string keyName)
-        {
-            string path = MapPath(ConfigurationManager.AppSettings["DbServerConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
-        }
 
-        public static string GetDbParameter(string keyName)
+        public static string GetReportParameter(string key)
         {
-            string path = MapPath(ConfigurationManager.AppSettings["DBParameterConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
-        }
-
-        public static string GetMessagingParameter(string keyName)
-        {
-            string path = MapPath(ConfigurationManager.AppSettings["MessagingParameterConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
-        }
-
-        public static string GetParameter(string keyName)
-        {
-            string path = MapPath(ConfigurationManager.AppSettings["ParameterConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
+            return GetConfigurationValue("ReportConfigFileLocation", key);
         }
 
         public static string GetResourceDirectory()
         {
-            return MapPath(ConfigurationManager.AppSettings["ResourceDirectory"]);
+            return HostingEnvironment.MapPath(ConfigurationManager.AppSettings["ResourceDirectory"]);
         }
 
-        public static string GetReportParameter(string keyName)
+        public static string GetStockTransactionFactoryParameter(string key)
         {
-            string path = MapPath(ConfigurationManager.AppSettings["ReportConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
+            return GetConfigurationValue("StockTransactionFactoryConfigFileLocation", key);
         }
 
-        public static string GetScrudParameter(string keyName)
+        public static string GetTransactionChecklistParameter(string key)
         {
-            string path = MapPath(ConfigurationManager.AppSettings["ScrudConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
+            return GetConfigurationValue("TransactionChecklistConfigFileLocation", key);
         }
 
-        public static string GetStockTransactionFactoryParameter(string keyName)
+        public static string GetUpdaterParameter(string key)
         {
-            string path = MapPath(ConfigurationManager.AppSettings["StockTransactionFactoryConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
+            return GetConfigurationValue("UpdaterConfigFileLocation", key);
         }
 
-        public static bool GetSwitch(string keyName)
-        {
-            string path = MapPath(ConfigurationManager.AppSettings["SwitchConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName).ToUpperInvariant().Equals("TRUE");
-        }
-
-        public static string GetTransactionChecklistParameter(string keyName)
-        {
-            string path = MapPath(ConfigurationManager.AppSettings["TransactionChecklistConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
-        }
-
-        public static string GetUpdaterParameter(string keyName)
-        {
-            string path = MapPath(ConfigurationManager.AppSettings["UpdaterConfigFileLocation"]);
-            return GetConfigurationValue(path, keyName);
-        }
 
         public static string SetConfigurationValues(string configFileName, string sectionName, string value)
         {
-            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFileName };
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFileName};
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
             AppSettingsSection section = config.GetSection("appSettings") as AppSettingsSection;
 
@@ -161,9 +106,10 @@ namespace MixERP.Net.Common.Helpers
             return string.Empty;
         }
 
-        public static void SetConfigurationValues(string configFileName, Collection<KeyValuePair<string, string>> sections)
+        public static void SetConfigurationValues(string configFileName,
+            Collection<KeyValuePair<string, string>> sections)
         {
-            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFileName };
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFileName};
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
             AppSettingsSection appsetting = config.GetSection("appSettings") as AppSettingsSection;
 

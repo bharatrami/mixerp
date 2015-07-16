@@ -27,9 +27,9 @@ using MixERP.Net.Common.Extensions;
 using MixERP.Net.Common.Helpers;
 using MixERP.Net.Entities;
 using MixERP.Net.FrontEnd.Base;
-using MixERP.Net.FrontEnd.Cache;
 using MixERP.Net.i18n.Resources;
 using MixERP.Net.WebControls.Common;
+using MixER.Net.ApplicationState.Cache;
 
 namespace MixERP.Net.Core.Modules.Finance.Reports
 {
@@ -105,10 +105,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
 
         private void TrialBalanceGridView_DataBound(object sender, EventArgs eventArgs)
         {
-            if (this.trialBalanceGridView.HeaderRow != null)
-            {
-                this.trialBalanceGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
-            }
+            this.trialBalanceGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
         }
 
         #endregion
@@ -187,7 +184,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
                 this.fromDateTextBox.ID = "FromDateTextBox";
                 this.fromDateTextBox.Mode = FrequencyType.QuarterStartDate;
                 this.fromDateTextBox.Catalog = AppUsers.GetCurrentUserDB();
-                this.fromDateTextBox.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+                this.fromDateTextBox.OfficeId = AppUsers.GetCurrent().View.UserId.ToInt();
 
 
                 field.Controls.Add(this.fromDateTextBox);
@@ -233,7 +230,7 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
                 this.toDateTextBox.ID = "ToDateTextBox";
                 this.toDateTextBox.Mode = FrequencyType.QuarterEndDate;
                 this.toDateTextBox.Catalog = AppUsers.GetCurrentUserDB();
-                this.toDateTextBox.OfficeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+                this.toDateTextBox.OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
 
                 field.Controls.Add(this.toDateTextBox);
 
@@ -251,8 +248,8 @@ namespace MixERP.Net.Core.Modules.Finance.Reports
             bool changeSide = this.ChangeSideWhenNegative();
             bool includeZeroBalanceAccounts = this.IncludeZeroBalanceAccounts();
 
-            int userId = AppUsers.GetCurrentLogin().View.UserId.ToInt();
-            int officeId = AppUsers.GetCurrentLogin().View.OfficeId.ToInt();
+            int userId = AppUsers.GetCurrent().View.UserId.ToInt();
+            int officeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
 
             using (DataTable table = Data.Reports.TrialBalance.GetTrialBalance(AppUsers.GetCurrentUserDB(), from, to, userId, officeId, compact, factor, changeSide, includeZeroBalanceAccounts))
             {

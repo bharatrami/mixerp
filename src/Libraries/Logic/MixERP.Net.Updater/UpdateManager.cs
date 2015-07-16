@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MixERP.Net.Updater.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using MixERP.Net.Updater.Api;
 
 namespace MixERP.Net.Updater
 {
@@ -10,9 +11,8 @@ namespace MixERP.Net.Updater
     {
         private static Version GetCurrentVersion()
         {
-            //Todo
-            //return Assembly.GetExecutingAssembly().GetName().Version;
-            return new Version("1.0.0.0");
+            return Assembly.GetExecutingAssembly().GetName().Version;
+            //return new Version("1.0.0.0");
         }
 
         public async Task<Release> GetLatestRelease()

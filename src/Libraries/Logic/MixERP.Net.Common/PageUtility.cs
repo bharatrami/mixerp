@@ -17,16 +17,19 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 
+using MixERP.Net.i18n.Resources;
+using Serilog;
 using System;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using MixERP.Net.i18n.Resources;
-using Serilog;
+using MixERP.Net.Common.Helpers;
 
 namespace MixERP.Net.Common
 {
@@ -89,6 +92,17 @@ namespace MixERP.Net.Common
                 }
             }
         }
+
+        public static string MapPath(string path)
+        {
+            if (Path.IsPathRooted(path))
+            {
+                return PathHelper.NormalizePhysicalPath(path);
+            }
+
+            return HostingEnvironment.MapPath(path);
+        }
+
 
         /// <summary>
         ///     Check if the input is a valid url.

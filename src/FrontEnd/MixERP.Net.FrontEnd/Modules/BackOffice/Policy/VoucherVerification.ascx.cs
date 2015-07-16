@@ -17,15 +17,15 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using MixERP.Net.Common.Domains;
+using MixER.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using MixERP.Net.Common.Helpers;
+using MixERP.Net.Framework.Controls;
 using MixERP.Net.FrontEnd.Base;
-using MixERP.Net.FrontEnd.Cache;
 using MixERP.Net.FrontEnd.Controls;
 using MixERP.Net.i18n.Resources;
+using System;
+using System.Collections.Generic;
 
 namespace MixERP.Net.Core.Modules.BackOffice.Policy
 {
@@ -40,15 +40,15 @@ namespace MixERP.Net.Core.Modules.BackOffice.Policy
         {
             using (Scrud scrud = new Scrud())
             {
-                bool denyToNonAdmins = !AppUsers.GetCurrentLogin().View.IsAdmin.ToBool();
+                bool denyToNonAdmins = !AppUsers.GetCurrent().View.IsAdmin.ToBool();
 
                 scrud.DenyAdd = denyToNonAdmins;
                 scrud.DenyEdit = denyToNonAdmins;
                 scrud.DenyDelete = denyToNonAdmins;
 
-                scrud.ExcludeEdit = "user_id";
+                scrud.ExcludeEdit = "policy_id";
 
-                scrud.KeyColumn = "user_id";
+                scrud.KeyColumn = "policy_id";
 
                 scrud.TableSchema = "policy";
                 scrud.Table = "voucher_verification_policy";
@@ -67,13 +67,14 @@ namespace MixERP.Net.Core.Modules.BackOffice.Policy
             }
         }
 
+
         private static string GetDisplayFields()
         {
             List<string> displayFields = new List<string>();
             ScrudHelper.AddDisplayField(displayFields, "office.users.user_id",
-                ConfigurationHelper.GetDbParameter("UserDisplayField"));
+                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "UserDisplayField"));
             ScrudHelper.AddDisplayField(displayFields, "office.offices.office_id",
-                ConfigurationHelper.GetDbParameter("OfficeDisplayField"));
+                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "OfficeDisplayField"));
             return string.Join(",", displayFields);
         }
 
