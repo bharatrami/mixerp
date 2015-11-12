@@ -3,7 +3,7 @@
 When your business needs to generate invoices on a regular basis, **Recurring Invoices** feature comes handy.
 Not only recurring invoices saves hours of manual posting task, but also it reduces human mistakes.
 
-<div class="alert-box scrud radius">
+<div class="ui info message">
         Recurring invoices is a workflow which automatically posts invoices on a periodic basis until the
         term (total duration) is over.
 </div>
@@ -15,7 +15,7 @@ entry it produces:
 
 Whenever a recurring invoice is posted, the following GL entry will be created:
 
-<table border="1" style="border-collapse:collapse;border:1px solid black;width:100%;">
+<table class="ui compact striped small table">
     <thead>
         <tr>
             <td>
@@ -122,15 +122,15 @@ A recurring invoice is only effective for a period (in days), which can be set i
 There are two kinds of recurrences types :
 
 
-<table border="1" style="border-collapse:collapse;border:1px solid black;width:100%;">
+<table class="ui compact striped small table">
     <thead>
         <tr>
-            <td>
+            <th>
                 Recurrence Type
-            </td>
-            <td>
+            </th>
+            <th>
                 Description
-            </td>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -241,7 +241,7 @@ operation.
 
 
 
-<div class="alert-box scrud radius">
+<div class="ui info message">
     Since this form implements ScrudFactory helper module, the detailed explanation of this feature is not provided
     in this document. View <a href="../../core-concepts/scrud-factory.md">ScrudFactory Helper Module Documentation</a>
     for more information.

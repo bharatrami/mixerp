@@ -3,162 +3,32 @@
 function isExternal(url) {
     var match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
     if (typeof match[1] === "string" && match[1].length > 0 && match[1].toLowerCase() !== location.protocol) return true;
-    if (typeof match[2] === "string" && match[2].length > 0 && match[2].replace(new RegExp(":("+{"http:":80,"https:":443}[location.protocol]+")?$"), "") !== location.host) return true;
+    if (typeof match[2] === "string" && match[2].length > 0 && match[2].replace(new RegExp(":(" + { "http:": 80, "https:": 443 }[location.protocol] + ")?$"), "") !== location.host) return true;
     return false;
 };
 
-function convertDocument(text)
-{
-    return marked(text);
-};
 
-function processDocument(url)
-{
-    var xhr= new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange= function() {
-        if (this.readyState!==4) return;
-        if (this.status!==200) return;
-        
-        var content = $("#content");
-        var html = convertDocument(this.responseText);
-        html = processImages(html);
+function processSocialSharing() {
+    var url = encodeURIComponent(window.location.href);
+    var title = encodeURIComponent($("h1:first").html());
+    var tweet = encodeURIComponent("#mixerp documentation " + title + "\r\n" + url);
+    var message = 'Hi,' + escape("\n\n") + 'The following link is related to the topic %22' + title + '%22 from MixERP documentation.' + escape("\n\n") + url + escape("\n\n");
 
-        content.html(html);
-        var header = content.find("h1, h2, h3").html();
-
-        if(header)
-        {
-            document.title = header;            
-        }
-
-        $(".footer").show();
-        content.show();
-
-        createSubTopics();
-        processAnchors();
-        processVideos();
-    };
-    xhr.send();
-};
-
-function processImages(html) {
-    var markup = $(html);
-
-    var images = markup.find("img");
-    var path = getPath();
-
-    images.each(function () {
-        var el = $(this);
-        var src = path + el.attr("src");
-        $(this).attr("src", src);
-
-        var anchor = $("<a/>");
-        anchor.prop("href", src);
-        $(this).wrap(anchor);
-    });
-
-    return markup;
-};
-
-function processVideos() {
-    var videos = $("#content").find("video");
-    var path = getPath();
-
-
-    videos.each(function () {
-        var el = $(this);
-        var src = path + el.attr("src");
-        $(this).attr("src", src);
-    });
-};
-
-function getPath()
-{
-    var path = window.location.hash.replace("#", "");
-    path = path.substring(0,path.lastIndexOf("/")+1);
-    return path;    
-}
-
-function processAnchors()
-{
-    var anchors = $("#content").find("a");
-    var path = getPath();
-    
-    anchors.each(function(){
+    $(".social.sharing a").each(function () {
         var el = $(this);
         var href = el.attr("href");
-        
-        if(href)
-        {
-            if(isExternal(href))
-            {
-                el.attr("target", "_blank");                
-            }
-            else
-            {
-                href = path + href;
-                href = URI(href).normalizePathname()._parts.path
-                el.attr("href", "#" + href);                
-            }
-        }
-    });
-    
-    anchors.click(function(){
-        var href = $(this).attr("href");
-        if(!isExternal(href))
-        {
-            window.location = href;
-            window.location.reload();
-        }
+
+        href = href.replace("{url}", url);
+        href = href.replace("{title}", title);
+        href = href.replace("{tweet}", tweet);
+        href = href.replace("{message}", message);
+
+        el.attr("href", href);
     });
 };
 
 
-window.onload = function()
-{
-    loadDocument();
-    $(document).foundation();
-    $("#content").css("min-height", $(window).height() + "px");
-};
-
-function createSubTopics() {
-$("#content").find("h1, h2, h3").each(function () {
-    var topics = $(".topics");
-    var $section = $(this);
-    var safeName = $section.attr("id");
-    var id;
-    var text = $section.text();
-
-    if (!safeName) {
-        safeName = text.trim().replace(/\s+/g, '-').replace(/[^-,'A-Za-z0-9]+/g, '').toLowerCase();
-        id = window.escape(safeName);
-        $section.attr("id", id);
-    };
-
-    id = window.escape(safeName);
-    var anchor = "<li><a class='item' href='#" + id + "'>" + text + "</a></li>";
-    topics.append(anchor);            
+$(document).ready(function () {
+    $("img:not(.logo)").addClass("ui bordered centered rounded image");
+    processSocialSharing();
 });
-};
-
-function loadDocument()
-{
-    var url = window.location.hash.replace("#", "");
-
-    if (!url)
-    {
-        url = "index.md";
-        window.location.hash = url;
-    }
-
-    processDocument(url);
-};
-
-window.onhashchange = function (event) {
-    if(window.location.hash)
-    {
-        loadDocument();
-        top.scroll(0, 0);
-    };
-};        

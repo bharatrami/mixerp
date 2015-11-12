@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\FrontEnd\MixERP.Net.FrontEnd\bin\</OutputPath>
+    <OutputPath>..\..\..\FrontEnd\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,9 +39,9 @@
     <AssemblyOriginatorKeyFile>Mix Open Foundation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,6 +68,10 @@
     <Compile Include="UrlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Logic\MixER.Net.StateServer\MixERP.Net.ApplicationState.csproj">
+      <Project>{61AB8B69-2097-4595-97B7-4A930A70163D}</Project>
+      <Name>MixERP.Net.ApplicationState</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Logic\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>
       <Name>MixERP.Net.Common</Name>
@@ -78,6 +82,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Mix Open Foundation.snk" />
     <None Include="packages.config" />
   </ItemGroup>

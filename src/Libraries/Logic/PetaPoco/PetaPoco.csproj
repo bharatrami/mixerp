@@ -38,6 +38,10 @@
     <AssemblyOriginatorKeyFile>Mix Open Foundation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Npgsql">
       <HintPath>..\..\..\packages\Npgsql.2.2.3\lib\net45\Npgsql.dll</HintPath>
     </Reference>
@@ -52,13 +56,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessValidator.cs" />
+    <Compile Include="Attributes.cs" />
+    <Compile Include="CustomField.cs" />
+    <Compile Include="DbAccess.cs" />
+    <Compile Include="DisplayField.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IDBAccess.cs" />
+    <Compile Include="IPoco.cs" />
+    <Compile Include="IPolicy.cs" />
+    <Compile Include="PetaPocoDB.cs" />
     <Compile Include="PetaPoco\ConfigurationHelper.cs" />
     <Compile Include="PetaPoco\Factory.cs" />
     <Compile Include="PetaPoco\Models\PetaPoco.cs" />
+    <Compile Include="PolicyValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnauthorizedException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Mix Open Foundation.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -1,24 +1,4 @@
-﻿/********************************************************************************
-Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-
-
-using MixERP.Net.Common;
+﻿using MixERP.Net.Common;
 using MixERP.Net.Common.Helpers;
 using MixERP.Net.i18n;
 using System;
@@ -73,7 +53,9 @@ namespace MixERP.Net.WebControls.ReportEngine
                         }
                     }
 
-                    grid.FooterRow.Cells[index].Text = string.Format(Thread.CurrentThread.CurrentCulture, "{0:N}", total);
+
+                    var culture = CultureManager.GetCurrent();
+                    grid.FooterRow.Cells[index].Text = total.ToString("C", culture).Replace(culture.NumberFormat.CurrencySymbol, "");
                     grid.FooterRow.Cells[index].CssClass = "text right";
                     grid.FooterRow.Cells[index].Font.Bold = true;
                 }
@@ -114,7 +96,7 @@ namespace MixERP.Net.WebControls.ReportEngine
                 {
                     int index = Conversion.TryCastInteger(fieldIndex);
                     decimal value = Conversion.TryCastDecimal(e.Row.Cells[index].Text);
-                    e.Row.Cells[index].Text = string.Format(Thread.CurrentThread.CurrentCulture, "{0:N}", value);
+                    e.Row.Cells[index].Text = string.Format(CultureManager.GetCurrent(), "{0:N}", value);
                     e.Row.Cells[index].CssClass = "text right";
                 }
             }

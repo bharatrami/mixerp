@@ -1,0 +1,44 @@
+﻿<div class="form factory" style="display: none;">
+    <div class="ui stackable grid">
+        <div class="eight wide column">
+            <div class="ui grey huge header">
+                <span class="title initial value"></span>
+                <span class="live"></span>
+                <div class="ui sub header"></div>
+            </div>
+        </div>
+        <div class="eight wide right aligned column">
+            <div class="ui small basic icon buttons">
+                <div class="ui basic button" title="First"><i class="arrow  left icon"></i></div>
+                <div class="ui basic button" title="Previous"><i class="angle left icon"></i></div>
+                <div class="ui basic button" title="Next"><i class="angle right icon"></i></div>
+                <div class="ui basic button" title="Last"><i class="arrow right icon"></i></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ui info description message" style="display: none;"></div>
+
+    <div class='ui divider'></div>
+
+    <div data-role="form-members">
+        <div class="ui stackable form" id="scrud" data-role="pre-tab" style="display: none;">
+        </div>
+        <div id="scrud-tabs">
+            <div id="scrud-tab-menus" class="ui pointing secondary tabular purple stackable menu">
+            </div>
+            <div id="scrud-tab-members">
+            </div>
+        </div>
+    </div>
+
+    <div class="big error"></div>
+    <div class="ui buttons tpad8">
+        <input type="button" class="ui purple button" id="SaveButton" data-localized-resource="Titles.Save" data-localization-target="value" />
+        <input type="button" class="ui basic purple button" id="CancelButton" data-localized-resource="Titles.Cancel" data-localization-target="value" />
+    </div>
+</div>
+
+<script src="/bundles/scrudfactory-form.js"></script>
+<script src="/Scripts/mixerp/utitlities/localizable.js"></script>

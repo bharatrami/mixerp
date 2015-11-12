@@ -1,13 +1,3 @@
-/* PetaPoco v4.0.3 - A Tiny ORMish thing for your POCO's.
- * Copyright © 2011 Topten Software.  All Rights Reserved.
- * 
- * Apache License 2.0 - http://www.toptensoftware.com/petapoco/license
- * 
- * Special thanks to Rob Conery (@robconery) for original inspiration (ie:Massive) and for 
- * use of Subsonic's T4 templates, Rob Sullivan (@DataChomp) for hard core DBA advice 
- * and Adam Schroder (@schotime) for lots of suggestions, improvements and Oracle support
- */
-
 // Define PETAPOCO_NO_DYNAMIC in your project settings on .NET 3.5
 
 using System;
@@ -71,7 +61,7 @@ namespace PetaPoco
         public PrimaryKeyAttribute(string primaryKey)
         {
             Value = primaryKey;
-            autoIncrement = true;
+            autoIncrement = false;
         }
 
         public string Value { get; private set; }

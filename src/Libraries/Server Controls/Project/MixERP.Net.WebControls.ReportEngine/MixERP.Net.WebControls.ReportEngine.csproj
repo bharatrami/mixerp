@@ -44,6 +44,10 @@
     <AssemblyOriginatorKeyFile>Mix Open Foundation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\Serilog.1.5.7\lib\net45\Serilog.dll</HintPath>
@@ -92,6 +96,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Logic\MixER.Net.StateServer\MixERP.Net.ApplicationState.csproj">
+      <Project>{61AB8B69-2097-4595-97B7-4A930A70163D}</Project>
+      <Name>MixERP.Net.ApplicationState</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Logic\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>
       <Name>MixERP.Net.Common</Name>

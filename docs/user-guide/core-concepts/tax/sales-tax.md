@@ -16,7 +16,7 @@
 * [Sales Tax Exempt Details](sales-tax-exempt-details.md)
 
 ##Default Sales Tax
-* [Store Setup](../../inventory/stores.md)
+* [Store Setup](../../inventory-management/stores.md)
 
 ##Tax Setup
 * [Creating Sales Tax](creating-sales-tax.md)

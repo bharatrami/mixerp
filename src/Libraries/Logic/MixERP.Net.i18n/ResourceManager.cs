@@ -10,15 +10,20 @@ namespace MixERP.Net.i18n
 {
     public class ResourceManager
     {
-        private static readonly bool supressException = ConfigurationManager.AppSettings["SupressMissingResourceException"].ToUpperInvariant().Equals("TRUE");
+        private static readonly bool suppressException = ConfigurationManager.AppSettings["SuppressMissingResourceException"].ToUpperInvariant().Equals("TRUE");
 
         public static string GetString(string resourceClass, string resourceKey, string cultureCode = null)
         {
+            if (string.IsNullOrWhiteSpace(resourceClass))
+            {
+                return resourceKey;
+            }
+
             string result = TryGetResourceFromCache(resourceClass, resourceKey, cultureCode);
 
             if (result == null)
             {
-                if (supressException)
+                if (suppressException)
                 {
                     return resourceKey;
                 }
@@ -31,7 +36,7 @@ namespace MixERP.Net.i18n
 
         public static string TryGetResourceFromCache(string resourceClass, string resourceKey, string cultureCode = null)
         {
-            CultureInfo culture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo culture = CultureManager.GetCurrent();
 
             if (!string.IsNullOrWhiteSpace(cultureCode))
             {
@@ -94,12 +99,6 @@ namespace MixERP.Net.i18n
 
             return result;
         }
-
-        private static string GetFallBackResource(ref IDictionary<string, string> cache, CultureInfo culture, string resourceClass, string resourceKey)
-        {
-            throw new NotImplementedException();
-        }
-
 
         private static void InitializeResources()
         {

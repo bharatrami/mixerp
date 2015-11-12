@@ -51,9 +51,11 @@ and produce reports of all child offices it contains.
 - [Change Password](core-concepts/change-password.md)
 
 ##Modules
+- [Human Resource Management](human-resource-management/index.md)
+- [Payroll Management](payroll/index.md)
+- [Inventory Management](inventory-management/index.md)
 - [Sales](sales/index.md)
 - [Purchase](purchase/index.md)
-- [Inventory](inventory/index.md)
 - [Finance](finance/index.md)
 - [Production](production/index.md)
 - [Customer Relationship Management](crm/index.md)

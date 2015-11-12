@@ -61,7 +61,7 @@ if you want to translate MixERP in French or improve the current translation. Th
 </table>
 
 
-* [Click here on how to save the resultset to a file](https://duckduckgo.com/?q=pgadmin+query+yo+csv)
+* [Click here on how to save the result set to a file](https://duckduckgo.com/?q=pgadmin+query+to+csv)
 * Translate the column **translated** to your language.
 * Discuss and send your translation to [community forums](http://mixerp.org/forum).
 

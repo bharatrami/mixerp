@@ -1,23 +1,4 @@
-﻿/********************************************************************************
-Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-
-using MixERP.Net.ApplicationState;
+﻿using MixERP.Net.ApplicationState;
 using MixERP.Net.Common.jQueryHelper;
 using MixERP.Net.Entities;
 using MixERP.Net.i18n.Resources;
@@ -26,6 +7,7 @@ using System;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using MixERP.Net.i18n;
 
 namespace MixERP.Net.WebControls.Common
 {
@@ -125,7 +107,7 @@ namespace MixERP.Net.WebControls.Common
 
 
             this.maxDateCompareValidator.ValueToCompare = this.MaxDate.ToString();
-            this.maxDateCompareValidator.ErrorMessage = string.Format(CultureInfo.CurrentCulture, CommonResource.DateMustBeLessThan, this.MinDate);
+            this.maxDateCompareValidator.ErrorMessage = string.Format(CultureManager.GetCurrent(), CommonResource.DateMustBeLessThan, this.MinDate);
         }
 
         private void AddMinDateValidator()
@@ -146,7 +128,7 @@ namespace MixERP.Net.WebControls.Common
             if (this.MinDate != null)
             {
                 this.compareValidator.ValueToCompare = this.MinDate.ToString();
-                this.compareValidator.ErrorMessage = string.Format(CultureInfo.CurrentCulture, CommonResource.DateMustBeGreaterThan, this.MinDate);
+                this.compareValidator.ErrorMessage = string.Format(CultureManager.GetCurrent(), CommonResource.DateMustBeGreaterThan, this.MinDate);
             }
             else
             {

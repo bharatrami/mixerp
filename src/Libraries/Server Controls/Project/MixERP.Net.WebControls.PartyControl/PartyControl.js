@@ -1,22 +1,4 @@
-﻿/********************************************************************************
-Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-var addressDiv = $("#AddressDiv");
+﻿var addressDiv = $("#AddressDiv");
 
 var creditAllowedSpan = $("#CreditAllowedSpan");
 var cSTNumberSpan = $("#CSTNumberSpan");
@@ -106,7 +88,7 @@ goButton.click(function () {
     });
 
     var ajaxGetPartyView = getPartyView(partyCode);
-    var partyCurrencySymbol = "रू.";//Todo
+    var partyCurrencySymbol = "$";//Todo
 
     ajaxGetPartyView.success(function (msg) {
         var partyView = msg.d;
@@ -213,8 +195,7 @@ function localizeBool(val) {
 };
 
 function getPartyView(partyCode) {
-    //Todo
-    url = "/Modules/Inventory/Services/PartyData.asmx/GetPartyView";//Todo--Parametrize these.
+    url = "/Modules/Inventory/Services/PartyData.asmx/GetPartyView";
     data = appendParameter("", "partyCode", partyCode);
     data = getData(data);
 
@@ -222,7 +203,6 @@ function getPartyView(partyCode) {
 };
 
 function getPartyDueModel(partyCode) {
-    //Todo
     url = "/Modules/Inventory/Services/PartyData.asmx/GetPartyDue";
     data = appendParameter("", "partyCode", partyCode);
     data = getData(data);
@@ -252,5 +232,8 @@ partyCodeTextBox.blur(function () {
 //Ajax Data Binding
 function loadParties() {
     url = "/Modules/Inventory/Services/PartyData.asmx/GetParties";
-    ajaxDataBind(url, partyDropDownList);
+    data = appendParameter("", "book", "");
+    data = getData(data);
+
+    ajaxDataBind(url, partyDropDownList, data);
 };

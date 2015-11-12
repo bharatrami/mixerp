@@ -1,23 +1,4 @@
-﻿/********************************************************************************
-Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-
-using MixERP.Net.Common;
+﻿using MixERP.Net.Common;
 using MixERP.Net.WebControls.Common;
 using MixERP.Net.WebControls.ReportEngine.Data;
 using MixERP.Net.WebControls.ReportEngine.Helpers;
@@ -30,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Web.UI.WebControls;
 using System.Xml;
+using MixERP.Net.i18n;
 
 namespace MixERP.Net.WebControls.ReportEngine
 {
@@ -46,7 +28,7 @@ namespace MixERP.Net.WebControls.ReportEngine
 
                 this.reportTitleLiteral.Text = this.ReportNotFoundErrorMessage;
                 this.reportTitleHidden.Value = this.reportTitleLiteral.Text;
-                this.topSectionLiteral.Text = string.Format(Thread.CurrentThread.CurrentCulture,
+                this.topSectionLiteral.Text = string.Format(CultureManager.GetCurrent(),
                     this.InvalidLocationErrorMessage, this.reportPath);
                 return;
             }
@@ -149,11 +131,11 @@ namespace MixERP.Net.WebControls.ReportEngine
             }
         }
 
-        private string LoadPieCharts(string xml, XmlNode node, string id, int gridViewIndex, bool hideGridView,
+        private string LoadCharts(string xml, XmlNode node, string id, int gridViewIndex, bool hideGridView,
             string type, int width, int height, int titleColumnIndex, int valueColumnIndex, Color backgroundColor,
             Color borderColor)
         {
-            string pieChart = string.Format(CultureInfo.InvariantCulture,
+            string chart = string.Format(CultureInfo.InvariantCulture,
                 "<div style='background-color:{0};padding:24px;maring:0 auto;border:1px solid {1};'>" +
                 "<canvas id='{2}' width='{3}px' height='{4}px'></canvas>" +
                 "<br />" +
@@ -161,13 +143,13 @@ namespace MixERP.Net.WebControls.ReportEngine
                 ColorTranslator.ToHtml(borderColor), id, width, height);
 
             string script = string.Format(CultureInfo.InvariantCulture, "$(document).ready(function () {{" +
-                                                                        "preparePieChart('GridView{0}', '{1}', '{1}-legend', '{2}', {3}, {4}, {5});" +
+                                                                        "prepareReportChart('GridView{0}', '{1}', '{1}-legend', '{2}', {3}, {4}, {5});" +
                                                                         " }});", gridViewIndex, id, type,
                 hideGridView.ToString().ToLower(), titleColumnIndex, valueColumnIndex);
 
             PageUtility.RegisterJavascript(id, script, this.Page, true);
 
-            return xml.Replace(node.OuterXml, pieChart);
+            return xml.Replace(node.OuterXml, chart);
         }
 
         private void SetBodySection()
@@ -183,7 +165,7 @@ namespace MixERP.Net.WebControls.ReportEngine
             string bottomSection = XmlHelper.GetNodeText(this.reportPath, "/MixERPReport/BottomSection");
             bottomSection = ReportParser.ParseExpression(bottomSection, this.dataTableCollection);
             bottomSection = ReportParser.ParseDataSource(bottomSection, this.dataTableCollection);
-            bottomSection = this.SetPieCharts(bottomSection);
+            bottomSection = this.SetCharts(bottomSection);
 
             this.bottomSectionLiteral.Text = bottomSection;
         }
@@ -295,15 +277,15 @@ namespace MixERP.Net.WebControls.ReportEngine
             this.LoadGrid(indices, styles);
         }
 
-        private string SetPieCharts(string xml)
+        private string SetCharts(string xml)
         {
-            XmlNodeList pieCharts = XmlHelper.GetNodesFromText(xml, "//PieChart");
-            if (pieCharts == null)
+            XmlNodeList charts = XmlHelper.GetNodesFromText(xml, "//Chart");
+            if (charts == null)
             {
                 return xml;
             }
 
-            foreach (XmlNode node in pieCharts)
+            foreach (XmlNode node in charts)
             {
                 string id = this.GetAttributeValue(node, "ID");
                 int gridViewIndex = Conversion.TryCastInteger(this.GetAttributeValue(node, "GridViewIndex"));
@@ -320,7 +302,7 @@ namespace MixERP.Net.WebControls.ReportEngine
                 Color backgroundColor = ColorTranslator.FromHtml(this.GetAttributeValue(node, "BackgroundColor"));
                 Color borderColor = ColorTranslator.FromHtml(this.GetAttributeValue(node, "BorderColor"));
 
-                xml = this.LoadPieCharts(xml, node, id, gridViewIndex, hideGridView, pieType, width, height,
+                xml = this.LoadCharts(xml, node, id, gridViewIndex, hideGridView, pieType, width, height,
                     titleColumnIndex, valueColumnIndex, backgroundColor, borderColor);
             }
 
@@ -391,7 +373,7 @@ namespace MixERP.Net.WebControls.ReportEngine
             string topSection = XmlHelper.GetNodeText(this.reportPath, "/MixERPReport/TopSection");
             topSection = ReportParser.ParseExpression(topSection, this.dataTableCollection);
             topSection = ReportParser.ParseDataSource(topSection, this.dataTableCollection);
-            topSection = this.SetPieCharts(topSection);
+            topSection = this.SetCharts(topSection);
             this.topSectionLiteral.Text = topSection;
         }
     }

@@ -11,21 +11,21 @@ A sales delivery entry creates the following GL entries:
 
 ##If Perpetual Inventory System
 
-<table border="1" style="border-collapse:collapse;border:1px solid black;width:100%;">
+<table class="ui compact striped small table">
     <thead>
         <tr>
-            <td>
+            <th>
                 Account
-            </td>
-            <td>
+            </th>
+            <th>
                 Type
-            </td>
-            <td>
+            </th>
+            <th>
                 Mapping
-            </td>
-            <td>
+            </th>
+            <th>
                 Amount
-            </td>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -134,21 +134,21 @@ A sales delivery entry creates the following GL entries:
 
 ##If Periodic Inventory System
 
-<table border="1" style="border-collapse:collapse;border:1px solid black;width:100%;">
+<table class="ui compact striped small table">
     <thead>
         <tr>
-            <td>
+            <th>
                 Account
-            </td>
-            <td>
+            </th>
+            <th>
                 Type
-            </td>
-            <td>
+            </th>
+            <th>
                 Mapping
-            </td>
-            <td>
+            </th>
+            <th>
                 Amount
-            </td>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -235,165 +235,217 @@ A sales delivery entry creates the following GL entries:
 
 ![Top Section](images/sales-delivery-posting-top.png)
 
-**Value Date**
+<table class="ui padded compact attached small blue table">
+    <tr>
+        <th>Value Date
+        </th>
+        <td>The effective date of sales delivery posting.
+        </td>
+    </tr>
+    <tr>
+        <th>Select Store
+        </th>
+        <td>Select a store from where you want to deliver goods.
+        </td>
+    </tr>
+    <tr>
+        <th>Select Party
+        </th>
+        <td>Select the customer who sent the PO.
+            <div class="ui info message">
+                This is a cascading field. When you enter a valid party code in the text box, the associated party
+                will be automatically chosen in the drop down control.
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>Price Type
+        </th>
+        <td>
+            Select the price type associated with this transaction. On a default installation of MixERP, price types are : <br/>
+            <ul>
+                <li>Retail</li>
+                <li>Wholesale</li>
+            </ul>
+            Depending on the price type, effective items selling prices will be displayed.
+        </td>
+    </tr>
+    <tr>
+        <th>Ref #
+        </th>
+        <td>Enter a reference number for this transaction, which will be helpful for filtering transactions later. If applicable, use this field to enter the shipment number associated with the delivery.
+        </td>
+    </tr>
+    <tr>
+        <th>Payment Term
+        </th>
+        <td>Select a payment term you would like to link this document to. If the payment term you selected has an associated late fee, MixERP will start posting fines (late fee) once the term is over and the receivable amount was not collected.
+        </td>
+    </tr>
+    <tr>
+        <th>Shipping Company
+        </th>
+        <td>Select the shipping company for delivering goods.
+        </td>
+    </tr>
+    <tr>
+        <th>Shipping Address
+        </th>
+        <td>A party may have multiple shipping addresses. So, select the desired shipping address code here. Once you select a shipping address code, the destination will be shown on the field Shipping Address on the bottom section of this document.
+        </td>
+    </tr>
+    <tr>
+        <th>Sales Type
+        </th>
+        <td>Select a sales type from the list.
+        </td>
+    </tr>
+</table>
 
-The effective date of sales delivery posting.
-
-**Select Store**
-
-Select a store from where you want to deliver goods.
-
-**Select Party**
-
-Select the customer who sent the PO.
-
-<div class="alert-box scrud radius">
-    This is a cascading field. When you enter a valid party code in the text box, the associated party
-    will be automatically chosen in the drop down control.
-</div>
-
-**Price Type**
-
-Select the price type associated with this transaction. On a default installation of MixERP, price types are :
-
-* Retail
-* Wholesale
-
-Depending on the price type, effective items selling prices will be displayed.
-
-**Ref #**
-
-Enter a reference number for this transaction, which will be helpful for filtering transactions later.
-If applicable, use this field to enter the shipment number associated with the delivery.
-
-**Payment Term**
-
-Select a payment term you would like to link this document to. If the payment term you selected
-has an associated late fee, MixERP will start posting fines (late fee) once the term is over
-and the receivable amount was not collected.
-
-**Shipping Company**
-
-Select the shipping company for delivering goods.
-
-**Shipping Address**
-
-A party may have multiple shipping addresses. So, select the desired shipping address code here.
-Once you select a shipping address code, the destination will be shown on the field 
-**Shipping Address** on the bottom section of this document.
 
 
-**Sales Type**
-
-Select a sales type from the list.
-
-
-##Details Section
+## Details Section
 
 ![Details Section](images/sales-delivery-posting-details.png)
 
-**Item Code**
-
-Enter a valid item code of the product, which will automatically cascade to the field **Item Name**.
-
-**Item Name**
-
-Select the item from the drop down control. This field will automatically update the field **Item Code**.
-
-**Qty**
-
-Enter the quantity of items you are quoting.
-
-**Unit**
-
-Select the unit associated with the item selected earlier.
-
-**Price**
-
-Once you select an item and provide unit and quantity, the unit price will automatically be updated.
-However, you can override the price shown for this quote.
-
-**Amount**
-
-This is a computed field.
-
-Amount = Qty * Price
-
-**Discount**
-
-Enter a flat amount here if you wish to provide a discount.
-
-**Shipping Charge**
-
-Enter shipping charge for this item.
-
-**Sub Total**
-
-This a computed field.
-
-Sub Total = Amount - Discount + Shipping Charge
-
-**Tax Form**
-
-Select a sales tax from the list. Once you leave this field, tax is calculated and updated on the field
-**Tax**.
-
-**Tax**
-
-This is a computed field.
-
-**Add**
-
-Click this button or **hit CTRL + RETURN** to add the current line to the grid.
-
+<table class="ui padded compact attached small blue table">
+    <tr>
+        <th>Item Code
+        </th>
+        <td>Enter a valid item code of the product, which will automatically cascade to the field <strong>Item Name</strong>.
+        </td>
+    </tr>
+    <tr>
+        <th>Item Name
+        </th>
+        <td>Select the item from the drop down control. This field will automatically update the field <strong>Item Code</strong>.
+        </td>
+    </tr>
+    <tr>
+        <th>Qty
+        </th>
+        <td>Enter the quantity of items you are delivering.
+        </td>
+    </tr>
+    <tr>
+        <th>Unit
+        </th>
+        <td>Select the unit associated with the item selected earlier.
+        </td>
+    </tr>
+    <tr>
+        <th>Price
+        </th>
+        <td>
+            Once you select an item and provide unit and quantity, the unit price will automatically be updated.
+            You can override the price shown for this quote.
+        </td>
+    </tr>
+    <tr>
+        <th>Amount
+        </th>
+        <td>This is a computed field. <strong>Amount = Qty * Price</strong>
+        </td>
+    </tr>
+    <tr>
+        <th>Discount
+        </th>
+        <td>Enter a flat amount here if you wish to provide a discount.
+        </td>
+    </tr>
+    <tr>
+        <th>Shipping Charge
+        </th>
+        <td>Enter shipping charge for this item.
+        </td>
+    </tr>
+    <tr>
+        <th>Sub Total
+        </th>
+        <td>This a computed field. <strong>Sub Total = Amount - Discount + Shipping Charge</strong>
+        </td>
+    </tr>
+    <tr>
+        <th>Tax Form
+        </th>
+        <td>Select a sales tax from the list. Once you leave this field, tax is calculated and updated on the field <strong>Tax</strong>.
+        </td>
+    </tr>
+    <tr>
+        <th>Tax
+        </th>
+        <td>This is a computed field.
+        </td>
+    </tr>
+    <tr>
+        <th>Add
+        </th>
+        <td>Click this button or hit <strong>CTRL + RETURN</strong> to add the current line to the grid.
+        </td>
+    </tr>
+</table>
 
 ##Bottom Section
 
 ![Bottom Section](images/sales-delivery-posting-bottom.png)
 
-**Attachments**
-
-See [Inline Attachment Manager](../../user-guide/core-concepts/inline-attachment-manager.md)
-
-**Shipping Address**
-
-This is a readonly field, updated by the field **Shipping Address** in the top section.
-
-**Running Total**
-
-This is a computed field.
-
-Running Total = Sum of Sub Totals
-
-**Tax Total**
-
-This, also, is a computed field.
-
-Tax Total = Sum of Taxes
-
-**Grand Total**
-
-This, also, is a computed field.
-
-Grand Total = Running Total + Tax Total
-
-**Cost Center**
-Select a cost center from the drop down control.
-
-
-**Salesperson**
-
-Select the salesperson from the drop down control.
-
-
-**Statement Reference**
-
-Enter a text reference or a memo which helps explain this transaction when you read it later.
-
-**Save**
-
-Click this button to save the quotation.
-
+<table class="ui padded compact attached small blue table">
+    <tr>
+        <th>Attachments
+        </th>
+        <td>
+            See <a href="../../user-guide/core-concepts/inline-attachment-manager.md">Inline Attachment Manager</a>.
+        </td>
+    </tr>
+    <tr>
+        <th>Shipping Address
+        </th>
+        <td>This is a readonly field, updated by the field <strong>Shipping Address in the top section</strong>.
+        </td>
+    </tr>
+    <tr>
+        <th>Running Total
+        </th>
+        <td>This is a computed field. <strong>Running Total = Sum of Sub Totals</strong>
+        </td>
+    </tr>
+    <tr>
+        <th>Tax Total
+        </th>
+        <td>This is also a computed field. <strong>Tax Total = Sum of Taxes</strong>
+        </td>
+    </tr>
+    <tr>
+        <th>Grand Total
+        </th>
+        <td>This is also a computed field. <strong>Grand Total = Running Total + Tax Total</strong>
+        </td>
+    </tr>
+    <tr>
+        <th>Cost Center
+        </th>
+        <td>Select a cost center from the drop down control.
+        </td>
+    </tr>
+    <tr>
+        <th>Salesperson
+        </th>
+        <td>Select the salesperson from the drop down control.
+        </td>
+    </tr>
+    <tr>
+        <th>Statement Reference
+        </th>
+        <td>Enter a text reference or a memo which helps explain this transaction when you read it later.
+        </td>
+    </tr>
+    <tr>
+        <th>Save
+        </th>
+        <td>Click this button to save the delivery.
+        </td>
+    </tr>
+</table>
 
 #Understanding Sales Delivery View
 

@@ -48,6 +48,10 @@
       <Private>True</Private>
       <HintPath>..\..\..\..\packages\Npgsql.2.2.3\lib\net45\Mono.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Npgsql, Version=2.2.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\..\..\packages\Npgsql.2.2.3\lib\net45\Npgsql.dll</HintPath>
@@ -64,10 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Logic\MixERP.net.Common\MixERP.Net.Common.csproj">
-      <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>
-      <Name>MixERP.Net.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Logic\MixERP.Net.DbFactory\MixERP.Net.DbFactory.csproj">
       <Project>{8fd9661c-2473-4581-8722-18b08d4db252}</Project>
       <Name>MixERP.Net.DbFactory</Name>

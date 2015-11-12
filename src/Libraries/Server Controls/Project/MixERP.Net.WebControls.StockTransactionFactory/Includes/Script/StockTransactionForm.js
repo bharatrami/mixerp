@@ -1,23 +1,4 @@
-﻿/********************************************************************************
-Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-
-/*jshint -W032, -W098, -W020 */
+﻿/*jshint -W032, -W098, -W020 */
 /*global addDanger, ajaxDataBind, ajaxUpdateVal, appendParameter, fadeThis, getAjax, getColumnText, getData, getFormattedNumber, Resources, Resources, isDate, isNullOrWhiteSpace, isSales, logError, makeDirty, parseFloat, parseFormattedNumber, removeDirty, repaint, rowData, selectDropDownListByValue, setColumnText, shortcut, showWindow, sumOfColumn, tableToJSON, tranBook, unitId, uploadedFilesHidden, verifyStock, parseInt */
 
 //Controls
@@ -115,32 +96,13 @@ var url;
 
 var valueDate;
 
-//Page Load Event
-$(document).ready(function () {
-    $(".form-table td").each(function () {
-        var content = $(this).html();
-        if (!content.trim()) {
-            $(this).html("");
-            $(this).hide();
-        };
-    });
-
-    if (cashTransactionInputCheckBox.length === 1) {
-        if (cashTransactionInputCheckBox.is(':checked')) {
-            paymentTermSelect.hide();
-        };
-    };
-
-    addShortcuts();
-    initializeAjaxData();
-});
 
 function initializeAjaxData() {
 
     processCallBackActions();
 
     loadPriceTypes();
-    loadParties();
+    loadParties(window.tranBook);
     loadPaymentTerms();
 
     partySelect.change(function () {
@@ -380,7 +342,6 @@ function updateTax() {
         return 0;
     };
 
-
     addLoader(productGridView.parent());
     var ajaxGetSalesTax = getSalesTax(tranBook, storeId, partyCode, shippingAddressCode, priceTypeId, itemCode, price, quantity, discount, shippingCharge, salesTaxId);
 
@@ -462,7 +423,7 @@ function getDefaultSalesTax() {
 };
 
 var validateProductControl = function () {
-    valueDate = Date.parseExact(dateTextBox.val(), window.shortDateFormat);
+    valueDate = window.parseLocalizedDate(dateTextBox.val());
     errorLabelBottom.html("");
 
     removeDirty(dateTextBox);
@@ -678,9 +639,12 @@ function loadItems() {
     });
 };
 
-function loadParties() {
+function loadParties(tranBook) {
     url = "/Modules/Inventory/Services/PartyData.asmx/GetParties";
-    ajaxDataBind(url, partySelect, null, partyCodeInputText.val());
+    var data = appendParameter("", "book", tranBook);
+
+    data = getData(data);
+    ajaxDataBind(url, partySelect, data, partyCodeInputText.val());
 };
 
 function loadPaymentTerms() {
@@ -955,7 +919,7 @@ var addRowToTable = function (itemCode, itemName, quantity, unitName, price, dis
 
         if (editMode) {
             var target = $("#ProductGridView").find("tbody tr:nth-child(" + updateIndex + ")");
-        
+
             var deleteAnchor = target.find("a:has(> .delete.icon)");
             deleteAnchor.removeClass("no-pointer-events");
 
@@ -1079,6 +1043,22 @@ var countItemInStockByUnitName = function (itemCode, unitName, storeId) {
 
 
 var getCompoundItemDetails = function () {
+
+    var priceTypeId = parseInt(priceTypeSelect.val() || 0);
+    var storeId = parseInt(storeSelect.val() || 0);
+
+    if (storeId <= 0) {
+        $.notify(Resources.Warnings.InvalidStore(), "error");
+        storeSelect.focus();
+        return;
+    };
+
+    if (priceTypeId <= 0) {
+        $.notify(Resources.Warnings.InvalidPriceType(), "error");
+        priceTypeSelect.focus();
+        return;
+    };
+
     url = "/Modules/Inventory/Services/ItemData.asmx/GetCompoundItemDetails";
     data = appendParameter("", "compoundItemCode", itemCodeInputText.val());
     data = appendParameter(data, "salesTaxCode", taxSelect.getSelectedText());
@@ -1235,3 +1215,77 @@ function editRow(el) {
 
     addButton.attr("data-update-index", selectedIndex);
 };
+
+function getMergeModel() {
+    function updateval(selector, value) {
+        var el = $(selector);
+
+        if (!el.length) {
+            return;
+        };
+
+        if (!el.is(":visible")) {
+            return;
+        };
+
+        if (typeof (value) === "undefined") {
+            return;
+        };
+
+        el.val(value).trigger("change");
+    };
+
+    var mergeModel = window.localStorage.getItem('MergeModel');
+    if (!mergeModel) {
+        return;
+    };
+
+    mergeModel = JSON.parse(mergeModel);
+
+    updateval("#PartyCodeInputText", mergeModel[0].PartyCode);
+    updateval("#PartySelect", mergeModel[0].PartyCode);
+    updateval("#PriceTypeSelect", mergeModel[0].PriceTypeId);
+    updateval("#ReferenceNumberInputText", mergeModel[0].ReferenceNumber);
+    updateval("#SalesPersonSelect", mergeModel[0].SalespersonId);
+    updateval("#ShippingCompanySelect", mergeModel[0].ShipperId);
+    updateval("#StoreSelect", mergeModel[0].StoreId);
+    updateval("#ShippingAddressSelect", mergeModel[0].ShippingAddresssCode);
+    updateval("#StatementReferenceTextArea", mergeModel[0].StatementReference);
+
+    $.each(mergeModel, function (i, v) {
+        addRowToTable(v.ItemCode, v.ItemName, v.Quantity, v.UnitName, v.Price, v.Discount, v.ShippingCharge, v.TaxCode, v.Tax);
+    });
+
+    tranIdCollectionHiddenField.val(window.localStorage.getItem('TranIds'));
+    localStorage.removeItem('MergeModel');
+    localStorage.removeItem('TranIds');
+
+};
+
+//Page Load Event
+$(document).ready(function () {
+    $(".form-table td").each(function () {
+        var content = $(this).html();
+        if (!content.trim()) {
+            $(this).html("");
+            $(this).hide();
+        };
+    });
+
+    if (cashTransactionInputCheckBox.length === 1) {
+        if (cashTransactionInputCheckBox.is(':checked')) {
+            paymentTermSelect.hide();
+        };
+    };
+
+    addShortcuts();
+    initializeAjaxData();
+});
+
+var gotMergeModel = false;
+$(document).ajaxStop(function () {
+    if (!gotMergeModel) {
+        getMergeModel();
+        gotMergeModel = true;
+    };
+});

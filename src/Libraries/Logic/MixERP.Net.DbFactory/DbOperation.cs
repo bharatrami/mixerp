@@ -1,23 +1,4 @@
-﻿/********************************************************************************
-Copyright (C) Binod Nepal, Mix Open Foundation (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-
-using MixERP.Net.Framework;
+﻿using MixERP.Net.Framework;
 using MixERP.Net.i18n;
 using MixERP.Net.i18n.Resources;
 using Npgsql;
@@ -28,6 +9,7 @@ using System.Data;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MixERP.Net.DbFactory
 {
@@ -214,7 +196,7 @@ namespace MixERP.Net.DbFactory
                             {
                                 using (DataTable dataTable = new DataTable())
                                 {
-                                    dataTable.Locale = Thread.CurrentThread.CurrentCulture;
+                                    dataTable.Locale = CultureManager.GetCurrent();
                                     adapter.Fill(dataTable);
                                     return dataTable;
                                 }
@@ -308,7 +290,7 @@ namespace MixERP.Net.DbFactory
             return false;
         }
 
-        public void ListenNonQuery(string catalog, NpgsqlCommand command)
+        public Task ListenNonQuery(string catalog, NpgsqlCommand command)
         {
             try
             {
@@ -316,7 +298,7 @@ namespace MixERP.Net.DbFactory
                 {
                     if (ValidateCommand(command))
                     {
-                        ThreadStart queryStart = delegate
+                        Task task = new Task(delegate
                         {
                             try
                             {
@@ -350,13 +332,10 @@ namespace MixERP.Net.DbFactory
 
                                     listen(this, args);
                                 }
-                            }
-                        };
+                            }                            
+                        });
 
-                        queryStart += () => { Thread.Sleep(15000); };
-
-                        Thread query = new Thread(queryStart) {IsBackground = true};
-                        query.Start();
+                        return task;
                     }
                 }
             }
@@ -370,6 +349,8 @@ namespace MixERP.Net.DbFactory
 
                 throw;
             }
+
+            return null;
         }
 
         private static Collection<string> GetCommandTextParameterCollection(string commandText)
@@ -407,7 +388,7 @@ namespace MixERP.Net.DbFactory
 
                 if (!match)
                 {
-                    throw new InvalidOperationException(string.Format(CurrentCulture.GetCurrentUICulture(),
+                    throw new InvalidOperationException(string.Format(CultureManager.GetCurrentUICulture(),
                         Warnings.InvalidParameterName, npgsqlParameter.ParameterName));
                 }
             }

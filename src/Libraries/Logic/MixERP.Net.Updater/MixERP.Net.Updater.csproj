@@ -48,9 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Npgsql.2.2.3\lib\net45\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Npgsql, Version=2.2.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -81,12 +81,11 @@
     <Compile Include="Installation\Tasks\RunPatch.cs" />
     <Compile Include="Installation\Tasks\RestoreDirectories.cs" />
     <Compile Include="Installation\Tasks\BackupDirectories.cs" />
-    <Compile Include="Installation\Tasks\CopyUpdate.cs" />
     <Compile Include="Installation\Tasks\DownloadUpdate.cs" />
     <Compile Include="Installation\Tasks\ExtractDownload.cs" />
     <Compile Include="Installation\Tasks\MigrationRestore.cs" />
     <Compile Include="Installation\Tasks\MigrationBackup.cs" />
-    <Compile Include="Installation\Tasks\RemoveApplication.cs" />
+    <Compile Include="Installation\Tasks\ReplaceApplicationFiles.cs" />
     <Compile Include="Installation\UpdaterConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Installation\UpdateInstaller.cs" />
@@ -94,9 +93,9 @@
     <Compile Include="Installation\UpdateTask.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MixER.Net.StateServer\MixER.Net.ApplicationState.csproj">
+    <ProjectReference Include="..\MixER.Net.StateServer\MixERP.Net.ApplicationState.csproj">
       <Project>{61AB8B69-2097-4595-97B7-4A930A70163D}</Project>
-      <Name>MixER.Net.ApplicationState</Name>
+      <Name>MixERP.Net.ApplicationState</Name>
     </ProjectReference>
     <ProjectReference Include="..\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>

@@ -1,7 +1,7 @@
 ﻿using PetaPoco;
 using System;
 
-namespace MixER.Net.ApplicationState.Cache
+namespace MixERP.Net.ApplicationState.Cache
 {
     [TableName("office.sign_in_view")]
     [ExplicitColumns]
@@ -121,5 +121,13 @@ namespace MixER.Net.ApplicationState.Cache
         [Column("allow_transaction_posting")]
         public bool? AllowTransactionPosting { get; set; }
 
+        [Column("week_start_day")]
+        public int? WeekStartDay { get; set; }
+
+        [Column("logo_file")]
+        public string LogoFile { get; set; }
+
+        [Column("sales_quotation_valid_duration")]
+        public int? SalesQuotationValidDuration { get; set; }
     }
 }
